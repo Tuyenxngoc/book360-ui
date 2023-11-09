@@ -2,9 +2,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
 
 :root {
-    --primary: #fe2c55;
+    --primary: #00afef;
+    --text-color: #333333;
+    // Default
+    --default-layout-header-height: 120px;
+    --default-layout-width: 1200px;
 }
-*{
+* {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
@@ -17,4 +23,17 @@ body {
     font-size: 1.6rem;
     line-height: 1.5;
     text-rendering: optimizespeed;
+    color: var(--text-color);
+}
+
+input,
+button,
+[tabindex] {
+    outline: none;
+    border: none;
+}
+
+a[href] {
+    color: var(--text-color);
+    text-decoration: none;
 }

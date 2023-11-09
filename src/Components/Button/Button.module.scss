@@ -1,0 +1,79 @@
+.wrapper {
+    font-size: 1.6rem;
+    font-weight: 600;
+    min-width: 100px;
+    padding: 9px 16px;
+    border-radius: 4px;
+    background-color: white;
+    border: 1px solid transparent;
+    cursor: pointer;
+    user-select: none;
+
+    + .wrapper {
+        margin-left: 16px;
+    }
+
+    &.disabled {
+        pointer-events: none;
+        opacity: 0.5;
+    }
+    &.text {
+        margin-left: 0;
+        padding: 9px 0;
+        margin: 0 4px;
+    }
+}
+.text {
+    color: white;
+    background-color: transparent;
+    &:hover {
+        text-decoration: underline;
+    }
+}
+.rounded {
+    border-radius: 999px;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 6%);
+    border-color: rgba(22, 24, 35, 0.12);
+
+    &:hover {
+        border-color: rgba(22, 24, 35, 0.2);
+        background-color: rgb(255, 255, 255);
+    }
+}
+//icons
+.icon + .title,
+.title + .icon {
+    margin-left: 8px;
+}
+
+.icon {
+    display: inline-block;
+    width: 24px;
+    text-align: center;
+}
+
+//Button type
+.primary {
+    background-color: var(--primary);
+    color: white;
+
+    &:hover {
+        opacity: 0.8;
+    }
+}
+.outLine {
+    border-color: var(--primary);
+    &:hover {
+        opacity: 0.8;
+    }
+}
+//Button size
+.small {
+    min-width: 88px;
+    padding: 4px 16px;
+}
+
+.large {
+    min-width: 140px;
+    padding: 14px, 16px;
+}

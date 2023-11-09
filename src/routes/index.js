@@ -1,5 +1,7 @@
+//Config
+import config from "~/config";
 //Layout
-import { HeaderOnly } from "~/Components/Layout";
+import HeaderOnly from "~/layouts/HeaderOnly";
 //Page
 import Home from "~/pages/Home";
 import BookDetails from "~/pages/BookDetails";
@@ -12,10 +14,10 @@ layout = null=> khong co layout
 khong co layout=> default layout
 */
 const publicRoutes = [
-    { path: '/', component: Home },
-    { path: '/books', component: BookDetails },
-    { path: '/upload', component: UpLoad, layout: HeaderOnly },
-    { path: '/checkouts', component: Checkouts, layout: null },
+    { path: config.routes.home, component: Home },
+    { path: config.routes.bookDetails, component: BookDetails },
+    { path: config.routes.upload, component: UpLoad, layout: HeaderOnly },
+    { path: config.routes.checkouts, component: Checkouts, layout: null },
 ]
 
 const privateRoutes = []
