@@ -30,7 +30,7 @@ function Header() {
                 <div className={cx('actions')}>
                     <Button text leftIcon={<FontAwesomeIcon icon={faSignIn}></FontAwesomeIcon>}>Đăng nhập</Button>
                     <Button text leftIcon={<FontAwesomeIcon icon={faPencilSquare}></FontAwesomeIcon>}>Đăng ký</Button>
-                    <Button text leftIcon={<FontAwesomeIcon icon={faCartShopping}></FontAwesomeIcon>}></Button>
+                    <Button text leftIcon={<FontAwesomeIcon icon={faCartShopping}></FontAwesomeIcon>}>Cart</Button>
                 </div>
             </div>
         </header>

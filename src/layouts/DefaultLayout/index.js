@@ -1,4 +1,5 @@
 import { Fragment } from "react"
+import PropTypes from 'prop-types';
 
 import classNames from "classnames/bind";
 import style from "./DefaultLayout.module.scss"
@@ -18,6 +19,10 @@ function DefaultLayout({ children }) {
             <Footer></Footer>
         </Fragment>
     );
+}
+
+DefaultLayout.propTypes = {
+    children: PropTypes.node.isRequired
 }
 
 export default DefaultLayout;
