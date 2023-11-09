@@ -3,7 +3,6 @@ import request from "~/utils/request";
 function BookDetails() {
 
     useEffect(() => {
-        console.log(1);
         request
             .get('https://jsonplaceholder.typicode.com/albums')
             .then((response) => {
