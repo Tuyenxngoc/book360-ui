@@ -4,13 +4,13 @@ import Slide from '~/components/Slider';
 
 function Home() {
     return (
-        <>
+        <div className='Home'>
             <ProductCategory>{<Slide></Slide>}</ProductCategory>
             <HomeProduct title={'SÁCH MỚI'}></HomeProduct>
             <HomeProduct title={'BÁN CHẠY'}></HomeProduct>
             <HomeProduct title={'COMBO'}></HomeProduct>
             <HomeProduct title={'DORAEMON'}></HomeProduct>
-        </>
+        </div>
     );
 }
 
