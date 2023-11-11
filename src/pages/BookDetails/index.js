@@ -1,19 +1,24 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import request from "~/utils/request";
-function BookDetails() {
+import { useParams } from 'react-router-dom';
 
+
+function BookDetails() {
+    const { id } = useParams();
+    const [data, setData] = useState({});
+    // Xử lý logic với Id
     useEffect(() => {
         request
-            .get('https://jsonplaceholder.typicode.com/albums')
-            .then((response) => {
-                console.log(response.data);
-            })
-            .catch((error) => { console.log(error); });
+            .get(`product/get-product-detail/${id}`)
+            .then((response) => { setData(response.data.data) })
+            .catch((error) => { console.log(error.response.data.message); });
     }, []);
 
     return (
-        <h1>BookDetails</h1>
-    );
+        <div>
+            {data.description}
+        </div>
+    )
 }
 
 export default BookDetails;

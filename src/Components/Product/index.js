@@ -1,29 +1,52 @@
 import { Link } from "react-router-dom";
 import PropTypes from 'prop-types';
+// Style
+import style from './Product.module.scss'
+import classNames from "classnames/bind";
 
-function Product(props) {
+const cx = classNames.bind(style)
+
+function Product({ data }) {
+    const calculateDiscountedPrice = () => {
+        return data.discount > 0 ? data.price - (data.price * data.discount / 100) : data.price;
+    };
+    const currentPrice = calculateDiscountedPrice();
+
     return (
-        <div className="product-item">
-            <div className="product-img">
-                <Link to={props.id}>
-                    <img src={props.img || 'https://product.hstatic.net/200000343865/product/pages_from_ty_quay_tap6_ruot_172tr__page_01_aee4b3dcdfd6413697cb6f97682b1d61_master.jpg'} alt={props.name} />
+        <div className={cx('product-item')}>
+            <div className={cx('product-img')}>
+                <Link to={`product/${data.productID}`}>
+                    <img src={data.image} alt={data.name} />
                 </Link>
-                <div className="product-tags">-10%</div>
-            </div>
-            <div className="product-info">
-                <div className="product-title">
-                    <Link to={props.id}>{props.name}</Link>
+
+                <div className={cx('product-tags')}>
+                    {data.discount > 0 && <div className={cx('tag-saleoff')}>-{data.discount}%</div>}
+                    {data.quantity === 0 && <div className={cx('tag-soldout')}>Hết hàng</div>}
                 </div>
-                <div className="product-price">
-                    <span className="current-price">{props.currentPrice}₫</span>
-                    <span className="original-price"><s>{props.originalPrice}₫</s></span>
+            </div>
+
+            <div className={cx('product-info')}>
+                <div className={cx('product-title')}>
+                    <Link to={`/${data.productID}`}>{data.name}</Link>
+                </div>
+
+                <div className={cx('product-price')}>
+                    <span className={cx('current-price')}>{currentPrice}₫</span>
+                    <span className={cx('original-price')}><s>{data.price}₫</s></span>
                 </div>
             </div>
         </div>
     );
 }
-Product.prototype = {
-    props: PropTypes.node.isRequired
-}
+
+Product.propTypes = {
+    data: PropTypes.shape({
+        productID: PropTypes.number.isRequired,
+        image: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+        price: PropTypes.number.isRequired,
+        discount: PropTypes.number.isRequired,
+    }).isRequired,
+};
 
 export default Product;

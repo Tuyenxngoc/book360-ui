@@ -1,8 +1,9 @@
 const routes = {
     home: '/',
-    bookDetails: '/books',
+    bookDetails: '/product/:id',
     upload: '/upload',
-    checkouts: '/checkouts'
+    checkouts: '/checkouts',
+    notFound: '*',
 }
 
 export default routes;

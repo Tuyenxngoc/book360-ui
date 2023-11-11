@@ -1,0 +1,50 @@
+.wrapper {
+}
+
+.inner {
+}
+
+.img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.custom-slick-arrow {
+    height: 34px;
+    line-height: 34px;
+    width: 34px;
+    padding: 0;
+    margin: 0;
+    background: var(--primary);
+    color: #fff;
+    opacity: 0.6;
+    position: absolute;
+    top: calc(50% - 17px);
+    z-index: 1;
+
+    &::before {
+        display: none;
+    }
+
+    &:hover {
+        opacity: 1;
+        color: #fff;
+        background: var(--primary);
+    }
+}
+
+.custom-next-arrow {
+    right: 0;
+}
+
+.custom-prev-arrow {
+    left: 0;
+}
+.icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 16px;
+}

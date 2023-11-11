@@ -1,0 +1,44 @@
+.wrapper {
+    padding: 30px 0px 0px 0px;
+    color: #333333;
+    border-top: 1px solid #e6e6e6;
+    position: relative;
+    font-size: 14px;
+    background-color: white;
+}
+.title {
+    margin-bottom: 16px;
+}
+
+.list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.item {
+    margin-bottom: 8px;
+}
+
+.link {
+    cursor: pointer;
+    color: #333333;
+    &:hover {
+        color: #d51c24;
+    }
+}
+.copyrights {
+    margin-top: 30px;
+    background: #f2f5f7;
+    padding: 10px 0px;
+    color: #333333;
+    a {
+        display: inline-block;
+        position: relative;
+    }
+}
+.input {
+    border: 1px solid #ccc;
+    margin-right: 4px;
+    border-radius: 4px;
+    padding: 6px;
+}

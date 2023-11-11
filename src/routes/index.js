@@ -7,6 +7,7 @@ import Home from "~/pages/Home";
 import BookDetails from "~/pages/BookDetails";
 import UpLoad from "~/pages/Upload";
 import Checkouts from "~/pages/Checkouts";
+import NotFound from "~/pages/NotFound";
 
 //Public routes
 /*
@@ -18,6 +19,7 @@ const publicRoutes = [
     { path: config.routes.bookDetails, component: BookDetails },
     { path: config.routes.upload, component: UpLoad, layout: HeaderOnly },
     { path: config.routes.checkouts, component: Checkouts, layout: null },
+    { path: config.routes.notFound, component: NotFound },
 ]
 
 const privateRoutes = []

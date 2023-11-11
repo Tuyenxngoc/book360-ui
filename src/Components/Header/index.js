@@ -6,7 +6,7 @@ import Button from '~/components/Button';
 import config from '~/config';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCartShopping, faMagnifyingGlass, faPencilSquare, faSignIn } from '@fortawesome/free-solid-svg-icons'
+import { faMagnifyingGlass, faSignIn } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
@@ -15,7 +15,7 @@ function Header() {
     return (
         <header className={cx('wrapper')}>
 
-            <div className={cx('inner')}>
+            <div className={cx('inner', 'container')}>
                 <div className={cx('logo')}>
                     <Link to={config.routes.home}> <img src={images.logo} alt='logo'></img></Link>
                 </div>
@@ -28,9 +28,8 @@ function Header() {
                 </div>
 
                 <div className={cx('actions')}>
-                    <Button text leftIcon={<FontAwesomeIcon icon={faSignIn}></FontAwesomeIcon>}>Đăng nhập</Button>
-                    <Button text leftIcon={<FontAwesomeIcon icon={faPencilSquare}></FontAwesomeIcon>}>Đăng ký</Button>
-                    <Button text leftIcon={<FontAwesomeIcon icon={faCartShopping}></FontAwesomeIcon>}>Cart</Button>
+                    <Button text leftIcon={<img src={images.cart}></img>}></Button>
+                    <Button leftIcon={<FontAwesomeIcon icon={faSignIn}></FontAwesomeIcon>}>Đăng nhập</Button>
                 </div>
             </div>
         </header>
