@@ -41,10 +41,11 @@
 }
 
 .home-products {
-    margin-bottom: 30px;
+    margin-bottom: var(--default-distance);
     background-color: white;
-    border-radius: 8px;
+    border-radius: var(--border-radius);
 }
+
 //section-title
 .section-title {
     margin: 15px 0;

@@ -15,7 +15,7 @@ function Product({ data }) {
     return (
         <div className={cx('product-item')}>
             <div className={cx('product-img')}>
-                <Link to={`product/${data.productID}`}>
+                <Link to={`/product/${data.productID}`}>
                     <img src={data.image} alt={data.name} />
                 </Link>
 
@@ -27,7 +27,7 @@ function Product({ data }) {
 
             <div className={cx('product-info')}>
                 <div className={cx('product-title')}>
-                    <Link to={`/${data.productID}`}>{data.name}</Link>
+                    <Link to={`/product/${data.productID}`}>{data.name}</Link>
                 </div>
 
                 <div className={cx('product-price')}>

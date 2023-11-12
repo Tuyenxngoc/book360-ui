@@ -7,6 +7,9 @@
     // Default
     --default-layout-header-height: 120px;
     --default-layout-width: 1200px;
+
+    --border-radius: 8px;
+    --default-distance: 24px;
 }
 
 * {
@@ -26,6 +29,7 @@ body {
     text-rendering: optimizespeed;
     color: var(--text-color);
     background-color: #fafafa;
+    // background-color: #333333;
 }
 
 input,

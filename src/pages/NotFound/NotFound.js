@@ -1,36 +1,21 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import Style from './NotFound.module.scss';
+import classNames from "classnames/bind";
+const cx = classNames.bind(Style);
 
 function NotFound() {
-    const navigate = useNavigate();
-    const [secondsRemaining, setSecondsRemaining] = useState(5); // Số giây ban đầu
-
-    useEffect(() => {
-        let isMounted = true;
-
-        const timeoutId = setTimeout(() => {
-            if (isMounted) {
-                navigate('/');
-            }
-        }, secondsRemaining * 1000);
-
-        const intervalId = setInterval(() => {
-            if (isMounted) {
-                setSecondsRemaining((prevSeconds) => Math.max(0, prevSeconds - 1));
-            }
-        }, 1000);
-
-        return () => {
-            isMounted = false;
-            clearTimeout(timeoutId);
-            clearInterval(intervalId);
-        };
-    }, [navigate, secondsRemaining]);
 
     return (
-        <div>
-            <div>Không tìm thấy trang! Đang chuyển hướng về trang home...</div>
-            <div>Chuyển hướng trong {secondsRemaining} giây</div>
+        <div className={cx('wrapper')}>
+            <div className={cx('four_zero_four_bg')}>
+                <h1 className="text-center">404</h1>
+            </div>
+            <span>Địa chỉ không hợp lệ</span>
+            <span>Địa chỉ URL bạn yêu cầu không tìm thấy trên server.</span>
+            <span>Có thể bạn gõ sai địa chỉ hoặc dữ liệu này đã bị xóa khỏi server.</span>
+            <button>
+                <Link to='/'>Trở về trang chủ</Link>
+            </button>
         </div>
     );
 }

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import PropTypes from 'prop-types';
 
 import request from "~/utils/request";
 import Product from "~/components/Product";
@@ -38,11 +39,11 @@ function ControlButton({ className, style, onClick, NextArrow = false, PrevArrow
     );
 }
 
-function HomeProduct({ title }) {
+function HomeProduct({ title, url }) {
     const [data, setData] = useState([]);
     useEffect(() => {
         request
-            .get('product/get-products')
+            .get(url)
             .then((response) => setData(response.data.data.items))
             .catch((error) => console.error(error));
     }, []);
@@ -111,6 +112,10 @@ function HomeProduct({ title }) {
             </div>
         </div>
     );
+}
+HomeProduct.propTypes = {
+    title: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired
 }
 
 export default HomeProduct;

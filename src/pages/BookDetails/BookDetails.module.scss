@@ -1,0 +1,137 @@
+//breadcrumb
+.breadcrumb {
+    display: flex;
+    font-size: 14px;
+    padding: 16px 0;
+}
+
+.product {
+    padding-top: 20px;
+    background-color: #fff;
+    border-radius: var(--border-radius);
+    margin-bottom: var(--default-distance);
+}
+
+.product-content {
+    padding: 0 24px;
+}
+
+.product-img {
+    position: relative;
+    padding: 24px;
+}
+
+.sale-percentage-btn {
+    position: absolute;
+    top: 34px;
+    right: 34px;
+    z-index: 99;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    background: #d51c24;
+    border-radius: 100%;
+    font-size: 12px;
+    text-align: center;
+    color: #fff;
+    font-weight: bold;
+}
+
+.prod-img {
+    img {
+        height: auto;
+        object-fit: contain;
+        width: 100%;
+    }
+}
+
+.pro-content-head {
+    margin-bottom: 16px;
+    h1 {
+        font-weight: 700;
+        font-size: 20px;
+        margin: 0;
+    }
+}
+
+.pro-rating {
+    margin-bottom: 16px;
+}
+
+.pro-price {
+    margin-bottom: 16px;
+}
+
+.current-price {
+    font-size: 24px;
+    color: #ee2624;
+    font-weight: 700;
+}
+
+.original-price {
+    margin-top: 4px;
+    font-size: 16px;
+}
+
+.priceSaving {
+    margin-left: 4px;
+    color: #ee2624;
+}
+
+.pro-short-desc {
+    margin-bottom: 16px;
+}
+
+.product-quantity {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+
+    span {
+        margin-right: 40px;
+    }
+}
+
+.btn {
+    background-color: #e7e8ea;
+    border: 1px solid #e7e8ea;
+    color: #3f4b53;
+    border-radius: 4px;
+    font-weight: 700;
+    width: 32px;
+    height: 32px;
+}
+
+.input {
+    background-color: #fff;
+    border-color: #cfd2d4;
+    color: #3f4b53;
+    border: 1px solid #cfd2d4;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 700;
+    height: 3.2rem;
+    margin: 0 0.4rem;
+    text-align: center;
+    width: 4rem;
+}
+
+.quantity {
+    margin-left: 40px;
+    color: #ee6c0e;
+}
+
+//description
+.product-description-wrapper,
+.product-author-wrapper {
+    background-color: white;
+    border-radius: var(--border-radius);
+    padding: 24px;
+    margin-bottom: var(--default-distance);
+}
+
+.tile {
+    margin-bottom: 16px;
+}
+.description {
+}
