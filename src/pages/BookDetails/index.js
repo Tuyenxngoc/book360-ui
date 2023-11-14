@@ -20,6 +20,7 @@ const cx = classNames.bind(Style);
 function BookDetails() {
     const { id } = useParams();
     const [data, setData] = useState({});
+    const [valueInput, setValueInput] = useState(1);
 
     // Xử lý logic với Id
     useEffect(() => {
@@ -34,8 +35,27 @@ function BookDetails() {
     const calculateDiscountedPrice = () => {
         return data.discount > 0 ? data.price - (data.price * data.discount / 100) : data.price;
     };
+
     const currentPrice = calculateDiscountedPrice();
 
+    const [quantity, setQuantity] = useState(1);
+    const maxQuantity = data.quantity;
+    const increaseQuantity = () => {
+        if (quantity < maxQuantity) {
+            setQuantity(quantity + 1);
+        }
+    };
+    const decreaseQuantity = () => {
+        if (quantity > 1) {
+            setQuantity(quantity - 1);
+        }
+    };
+    const handleQuantityChange = (event) => {
+        const newQuantity = parseInt(event.target.value, 10);
+        if (!isNaN(newQuantity) && newQuantity >= 1 && newQuantity <= maxQuantity) {
+            setQuantity(newQuantity);
+        }
+    };
     return (
         <>
             <Breadcrumbs currentPage={data.name}></Breadcrumbs>
@@ -98,9 +118,19 @@ function BookDetails() {
                                 <div className={cx('product-quantity')}>
                                     <span>Chọn số lượng: </span>
                                     <div className={cx('qty-addcart')}>
-                                        <button className={cx('btn', 'decrease')}>-</button>
-                                        <input className={cx('input')} type="text" defaultValue={1} />
-                                        <button className={cx('btn', 'increase')}>+</button>
+                                        <button
+                                            className={cx('btn', 'decrease')}
+                                            onClick={decreaseQuantity}
+                                        >-</button>
+                                        <input
+                                            value={quantity}
+                                            onChange={handleQuantityChange}
+                                            className={cx('input')}
+                                            type="text" />
+                                        <button
+                                            className={cx('btn', 'increase')}
+                                            onClick={increaseQuantity}
+                                        >+</button>
                                     </div>
                                     <div className={cx('quantity')} >{`Còn ${data.quantity} sản phẩm`}</div>
                                 </div>

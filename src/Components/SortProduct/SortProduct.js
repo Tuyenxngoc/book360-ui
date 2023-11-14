@@ -6,7 +6,7 @@ const SortProduct = ({ handleSortChange, filters }) => {
     function handleSelectChange(event) {
         const selectedOption = event.target.value;
         const selectedIndex = event.target.selectedIndex;
-        handleSortChange(selectedOption, selectedIndex % 2 === 0)
+        handleSortChange(selectedOption, selectedIndex % 2 !== 0)
     }
 
     return (
@@ -24,8 +24,8 @@ const SortProduct = ({ handleSortChange, filters }) => {
                 <option value="">Tùy chọn</option>
                 <option value="name">Tên A-Z</option>
                 <option value="name">Tên Z-A</option>
-                <option value="price">Giá giảm dần</option>
                 <option value="price">Giá tăng dần</option>
+                <option value="price">Giá giảm dần</option>
             </select>
 
         </div>

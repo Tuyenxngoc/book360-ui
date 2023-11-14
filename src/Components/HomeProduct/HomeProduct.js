@@ -46,7 +46,7 @@ function HomeProduct({ title, url }) {
             .get(url)
             .then((response) => setData(response.data.data.items))
             .catch((error) => console.error(error));
-    }, []);
+    }, [url]);
 
     const settings = {
         infinite: true,
