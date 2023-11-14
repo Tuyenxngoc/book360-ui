@@ -105,7 +105,7 @@ function HomeProduct({ title, url }) {
                 <div className="row">
                     <div className="col">
                         <div className={cx('grid-item')}>
-                            <Link to="/collections/sach-moi-phat-hanh">Xem thêm &gt;&gt;</Link>
+                            <Link to="/collections">Xem thêm &gt;&gt;</Link>
                         </div>
                     </div>
                 </div>

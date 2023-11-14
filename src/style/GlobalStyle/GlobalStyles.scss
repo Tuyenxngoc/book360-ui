@@ -3,6 +3,7 @@
 
 :root {
     --primary: #00afef;
+    --primary-light: #36d8ff;
     --text-color: #333333;
     // Default
     --default-layout-header-height: 120px;
@@ -41,4 +42,10 @@ button,
 
 a[href] {
     text-decoration: none;
+}
+
+// custom styles col bootstraps
+.col-2-4 {
+    flex: 0 0 auto;
+    max-width: 20%;
 }

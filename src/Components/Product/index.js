@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 // Style
 import style from './Product.module.scss'
 import classNames from "classnames/bind";
+import MoneyDisplay from "../MoneyDisplay";
 
 const cx = classNames.bind(style)
 
@@ -31,8 +32,12 @@ function Product({ data }) {
                 </div>
 
                 <div className={cx('product-price')}>
-                    <span className={cx('current-price')}>{currentPrice}₫</span>
-                    <span className={cx('original-price')}><s>{data.price}₫</s></span>
+                    <span className={cx('current-price')}>
+                        <MoneyDisplay amount={currentPrice}></MoneyDisplay>
+                    </span>
+                    <span className={cx('original-price')}>
+                        <s><MoneyDisplay amount={data.price}></MoneyDisplay></s>
+                    </span>
                 </div>
             </div>
         </div>

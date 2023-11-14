@@ -1,14 +1,14 @@
 .wrapper {
-    padding: 30px 0px 0px 0px;
+    padding: 3rem 0rem 0rem 0rem;
     color: #333333;
-    border-top: 1px solid #e6e6e6;
+    border-top: 0.1rem solid #e6e6e6;
     position: relative;
-    font-size: 14px;
+    font-size: 1.4rem;
     background-color: white;
-    height: 240px;
+    height: 24rem;
 }
 .title {
-    margin-bottom: 16px;
+    margin-bottom: 1.6rem;
 }
 
 .list {
@@ -17,7 +17,7 @@
 }
 
 .item {
-    margin-bottom: 8px;
+    margin-bottom: 0.8rem;
 }
 
 .link {
@@ -28,9 +28,9 @@
     }
 }
 .copyrights {
-    margin-top: 30px;
+    margin-top: 3rem;
     background: #f2f5f7;
-    padding: 10px 0px;
+    padding: 1rem 0rem;
     color: #333333;
     a {
         display: inline-block;
@@ -39,7 +39,7 @@
 }
 .input {
     border: 1px solid #ccc;
-    margin-right: 4px;
-    border-radius: 4px;
-    padding: 6px;
+    margin-right: 0.4rem;
+    border-radius: 0.4rem;
+    padding: 0.6rem;
 }

@@ -28,7 +28,7 @@ function Header() {
                 </div>
 
                 <div className={cx('actions')}>
-                    <Button text leftIcon={<img src={images.cart}></img>}></Button>
+                    <Button text leftIcon={<img src={images.cart} alt='cart'></img>}></Button>
                     <Button leftIcon={<FontAwesomeIcon icon={faSignIn}></FontAwesomeIcon>}>Đăng nhập</Button>
                 </div>
             </div>

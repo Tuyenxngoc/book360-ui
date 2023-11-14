@@ -1,7 +1,7 @@
 .custom-slick-arrow {
-    height: 34px;
-    line-height: 34px;
-    width: 34px;
+    height: 3.4rem;
+    line-height: 3.4rem;
+    width: 3.4rem;
     padding: 0;
     margin: 0;
     background: #e6e6e6;
@@ -9,7 +9,7 @@
     opacity: 0.6;
     position: absolute;
     top: calc(50% - 17px);
-    border-radius: 3px;
+    border-radius: 0.3rem;
     z-index: 1;
 
     &::before {
@@ -18,7 +18,7 @@
 
     &:hover {
         opacity: 1;
-        border-radius: 3px;
+        border-radius: 0.3rem;
         color: #fff;
         background: #e6e6e6;
     }
@@ -37,7 +37,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 16px;
+    font-size: 1.6rem;
 }
 
 .home-products {
@@ -48,7 +48,7 @@
 
 //section-title
 .section-title {
-    margin: 15px 0;
+    margin: 1.5rem 0;
     text-align: center;
     h2 {
         font-size: 2.4rem;
@@ -59,7 +59,7 @@
 //xem them
 .grid-item {
     text-align: right;
-    padding: 10px;
+    padding: 1rem;
     a {
         color: #d51c24;
     }

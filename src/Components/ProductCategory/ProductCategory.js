@@ -38,6 +38,7 @@ function ProductCategory({ children }) {
                                         </Link>
                                     </li>
                                 }
+                                return false;
                             }
                             )}
                         </ul>

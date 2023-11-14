@@ -13,7 +13,7 @@ function NotFound() {
             <span>Địa chỉ không hợp lệ</span>
             <span>Địa chỉ URL bạn yêu cầu không tìm thấy trên server.</span>
             <span>Có thể bạn gõ sai địa chỉ hoặc dữ liệu này đã bị xóa khỏi server.</span>
-            <button>
+            <button type="button">
                 <Link to='/'>Trở về trang chủ</Link>
             </button>
         </div>

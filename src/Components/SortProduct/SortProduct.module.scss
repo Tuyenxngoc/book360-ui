@@ -1,0 +1,30 @@
+.wrapper {
+    background-color: white;
+    padding: 1.6rem;
+}
+.label {
+}
+.item {
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.02);
+    height: 3.4rem;
+    line-height: 3.4rem;
+    border-radius: 2px;
+    border: 0;
+    padding: 0 15px;
+    margin-left: 10px;
+    color: #333;
+    outline: none;
+    user-select: none;
+    cursor: pointer;
+}
+.select {
+    background-color: #36d8ff42;
+    border: 1px solid var(--primary);
+
+    option {
+        background-color: white;
+    }
+}
+.active {
+    background-color: var(--primary);
+}

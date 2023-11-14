@@ -13,18 +13,18 @@
 }
 
 .logo {
-    min-width: 100px;
+    min-width: 5rem;
     img {
-        width: 60%;
+        width: 30%;
     }
 }
 
 .search {
-    height: 40px;
-    width: 480px;
+    height: 4rem;
+    width: 48rem;
     background-color: white;
-    border-radius: 2px;
-    padding: 3px;
+    border-radius: 0.2rem;
+    padding: 0.3rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -37,16 +37,16 @@
         padding: 0;
         height: 100%;
         margin: 0;
-        padding-left: 10px;
+        padding-left: 1rem;
         caret-color: var(--primary);
     }
 }
 .search-btn {
-    padding: 0 15px;
+    padding: 0 1.5rem;
     background-color: var(--primary);
     height: 100%;
     color: white;
-    border-radius: 2px;
+    border-radius: 0.2rem;
     &:hover {
         cursor: pointer;
         opacity: 0.8;
