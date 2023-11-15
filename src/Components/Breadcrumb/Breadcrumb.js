@@ -1,15 +1,10 @@
 import { Link } from "react-router-dom";
 import PropTypes from 'prop-types';
 
-import Style from './Breadcrumb.module.scss';
-import classNames from "classnames/bind";
-
-const cx = classNames.bind(Style);
-
 function Breadcrumbs({ breadcrumbs, currentPage }) {
     return (
         <div className="container">
-            <nav aria-label="breadcrumb" className={cx('wrapper')} >
+            <nav aria-label="breadcrumb" className="my-3">
                 <ol className="breadcrumb mb-0">
                     <li className="breadcrumb-item">
                         <Link to="/">Trang chủ</Link>

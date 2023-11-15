@@ -1,18 +1,17 @@
-import { useState, useEffect } from 'react';
-import Style from './SearchResults.module.scss'
-import classNames from 'classnames/bind';
-import Product from '~/components/Product';
+import React, { useState, useEffect } from 'react';
 import request from '~/utils/request';
-import Pagination from '~/components/Pagination';
 import queryString from 'query-string';
 import PropTypes from 'prop-types';
+import ProductList from '~/components/ProductList';
+import { useLocation } from 'react-router-dom';
 
-const cx = classNames.bind(Style);
+function SearchResults({ sortBy, isAscending = false }) {
+    const location = useLocation();
+    const queryParams = queryString.parse(location.search);
+    const keyword = queryParams.keyword || '';
 
-function SearchResults({ keyword = '', sortBy = '', isAscending = false }) {
     const [data, setData] = useState([]);
     const [filters, setFilters] = useState({
-        keyword: keyword,
         sortBy: sortBy,
         isAscending: isAscending,
         pageNum: 1,
@@ -20,42 +19,40 @@ function SearchResults({ keyword = '', sortBy = '', isAscending = false }) {
     })
 
     useEffect(() => {
-        const paramsString = queryString.stringify(filters);
+        const paramsString = queryString.stringify({ ...filters, keyword });
         request
-            .get(`product/get-products?${paramsString}`)
-            .then((response) => { setData(response.data.data) })
+            .get(`product/find-product?${paramsString}`)
+            .then((response) => setData(response.data.data))
             .catch((error) => console.error(error));
-    }, [filters]);
+    }, [filters, keyword]);
 
-    // Xử lý sự kiện thay đổi trang
     const handlePageChange = (pageNumber) => {
-        setFilters({ ...filters, pageNum: pageNumber })
+        setFilters((prevFilters) => ({ ...prevFilters, pageNum: pageNumber }));
     };
 
+    const handleSortChange = (newSortBy, newIsAscending = false) => {
+        setFilters((prevFilters) => ({
+            ...prevFilters,
+            sortBy: newSortBy,
+            isAscending: newIsAscending,
+        }));
+    };
+
+    console.log(data);
+
     return (
-        <div className='container'>
-            <div className='row'>
-                <div className='col-2'>
-                </div>
-                <div className='col'>
-                    <div className='row mb-4'>
-                        {data.items && data.items.map((product) => (
-                            <div key={product.productID} className="col-2-4 mb-4">
-                                <Product data={product} ></Product>
-                            </div>
-                        ))}
-                    </div>
-                    <div className='row'>
-                        {data.meta && <Pagination pagination={data.meta} onPageChange={handlePageChange} />}
-                    </div>
-                </div>
-            </div>
-        </div>
+        <ProductList
+            currentPage='Kết quả tìm kiếm'
+            products={data.items}
+            pagination={data.meta}
+            filters={filters}
+            handleSortChange={handleSortChange}
+            handlePageChange={handlePageChange}
+        ></ProductList>
     );
 }
 
 SearchResults.propTypes = {
-    keyword: PropTypes.string,
     sortBy: PropTypes.string,
     isAscending: PropTypes.bool
 }

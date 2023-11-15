@@ -13,9 +13,12 @@
 }
 
 .logo {
-    min-width: 5rem;
+    width: 12rem;
+    height: 12rem;
     img {
-        width: 30%;
+        width: 100%;
+        height: auto;
+        object-fit: contain;
     }
 }
 
@@ -47,6 +50,7 @@
     height: 100%;
     color: white;
     border-radius: 0.2rem;
+    line-height: 3.4rem;
     &:hover {
         cursor: pointer;
         opacity: 0.8;
