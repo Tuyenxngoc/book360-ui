@@ -1,79 +1,88 @@
 .wrapper {
-    font-size: 1.4rem;
-    font-weight: 600;
-    min-width: 10rem;
-    padding: 0.6rem 1.6rem;
-    border-radius: 0.4rem;
-    background-color: white;
-    border: 0.1rem solid transparent;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 100px;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 700;
+    font-family: var(--font-family);
     cursor: pointer;
+    background-color: var(--white);
+    border: 1px solid transparent;
     user-select: none;
 
     + .wrapper {
-        margin-left: 1.6rem;
+        margin-left: 8px;
     }
 
     &.disabled {
         pointer-events: none;
         opacity: 0.5;
     }
-    &.text {
-        margin-left: 0;
-        padding: 9px 0;
-        margin: 0 0.4rem;
-    }
 }
-.text {
-    color: white;
-    background-color: transparent;
-    &:hover {
-        text-decoration: underline;
-    }
-}
-.rounded {
-    border-radius: 99.9rem;
-    box-shadow: 0 0.2rem 0.8rem rgb(0 0 0 / 6%);
-    border-color: rgba(22, 24, 35, 0.12);
 
-    &:hover {
-        border-color: rgba(22, 24, 35, 0.2);
-        background-color: rgb(255, 255, 255);
-    }
-}
-//icons
 .icon + .title,
 .title + .icon {
-    margin-left: 0.8rem;
+    margin-left: 8px;
+}
+
+.title {
+    color: white;
 }
 
 .icon {
     display: inline-block;
-    width: 2.4rem;
+    width: 24px;
     text-align: center;
 }
 
-//Button type
-.primary {
-    background-color: var(--primary);
-    color: white;
+// Button types
+.rounded {
+    border-radius: 999px;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 6%);
+    border-color: rgba(22, 24, 35, 0.12);
 
     &:hover {
-        opacity: 0.8;
+        border-color: rgba(22, 24, 35, 0.2);
+        background-color: rgba(22, 24, 35, 0.03);
     }
 }
-.outLine {
+
+.primary {
+    color: var(--white);
+    background-color: var(--primary);
     border-color: var(--primary);
+
     &:hover {
-        opacity: 0.8;
+        border-color: var(--primary);
+        background: linear-gradient(0deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.06)), var(--primary);
     }
 }
-//Button size
+
+.outline {
+    color: var(--primary);
+    border-color: currentColor;
+
+    &:hover {
+        border-color: currentColor;
+        background-color: rgba(254, 44, 85, 0.06);
+    }
+}
+
+.text {
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+// Button sizes
 .small {
-    min-width: 8.8rem;
-    padding: 0.4rem 1.6rem;
+    min-width: 88px;
+    padding: 4px 16px;
 }
 
 .large {
     width: 100%;
-    padding: 1.2rem 1.6rem;
 }

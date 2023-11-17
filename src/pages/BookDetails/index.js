@@ -14,14 +14,15 @@ import MoneyDisplay from "~/components/MoneyDisplay";
 import Button from "~/components/Button";
 import HomeProduct from "~/components/HomeProduct";
 import Breadcrumbs from "~/components/Breadcrumb/Breadcrumb";
+//Toast
+import { toast, ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
 const cx = classNames.bind(Style);
 
 function BookDetails() {
     const { id } = useParams();
     const [data, setData] = useState({});
-    const [valueInput, setValueInput] = useState(1);
-
     // Xử lý logic với Id
     useEffect(() => {
         //Lên đầu trang
@@ -56,8 +57,26 @@ function BookDetails() {
             setQuantity(newQuantity);
         }
     };
+    const notify = () => {
+        toast.success('Thêm sản phẩm vào giỏ hàng thành công.', {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
+    }
+
+    if (!data || Object.keys(data).length === 0) {
+        return <h2 className="text-center">Đang load dữ liệu</h2>
+    }
+
     return (
         <>
+            <ToastContainer></ToastContainer>
             <Breadcrumbs currentPage={data.name}></Breadcrumbs>
             <div className='container'>
                 <div className={cx('product')}>
@@ -132,19 +151,29 @@ function BookDetails() {
                                             onClick={increaseQuantity}
                                         >+</button>
                                     </div>
-                                    <div className={cx('quantity')} >{`Còn ${data.quantity} sản phẩm`}</div>
-                                </div>
-
-                                <div className="product-actions">
-                                    <div className="row">
-                                        <div className="col">
-                                            <Button primary large id="AddToCart" className="btnAddToCart">Thêm vào giỏ hàng </Button>
-                                        </div>
-                                        <div className="col">
-                                            <Button primary large id="buy-now" className="btn-light btnBuyNow ">Mua ngay</Button>
-                                        </div>
+                                    <div className={cx('quantity')}>
+                                        {data.quantity > 0 ? `Còn ${data.quantity} sản phẩm` : 'Tạm hết hàng'}
                                     </div>
                                 </div>
+
+                                {data.quantity !== 0 &&
+                                    <div className="product-actions">
+                                        <div className="row">
+                                            <div className="col">
+                                                <Button
+                                                    onClick={notify}
+                                                    primary
+                                                    large
+                                                    id="AddToCart"
+                                                    className="btnAddToCart"
+                                                >Thêm vào giỏ hàng </Button>
+                                            </div>
+                                            <div className="col">
+                                                <Button primary large id="buy-now" className="btn-light btnBuyNow ">Mua ngay</Button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
                             </div>
                         </div>
                     </div>

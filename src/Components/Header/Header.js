@@ -1,19 +1,22 @@
-import classNames from 'classnames/bind';
-import styles from './Header.module.scss';
 import images from '~/assets/images';
 import Button from '~/components/Button';
-
+//Config
 import config from '~/config';
-
+//Icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass, faSignIn } from '@fortawesome/free-solid-svg-icons'
+//React
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+//Styles
+import classNames from 'classnames/bind';
+import styles from './Header.module.scss';
 
 const cx = classNames.bind(styles);
+
 function Header() {
     const [keyword, setKeyword] = useState('');
-    const handleLogin = () => { alert('Login') }
+
     return (
         <header className={cx('wrapper')}>
             <div className="container">
@@ -38,7 +41,7 @@ function Header() {
 
                     <div className={cx('actions')}>
                         <Button text leftIcon={<img src={images.cart} alt='cart'></img>}></Button>
-                        <Button onClick={handleLogin} leftIcon={<FontAwesomeIcon icon={faSignIn}></FontAwesomeIcon>}>Đăng nhập</Button>
+                        <Button to={'/login'} leftIcon={<FontAwesomeIcon icon={faSignIn}></FontAwesomeIcon>}>Đăng nhập</Button>
                     </div>
                 </div>
             </div>

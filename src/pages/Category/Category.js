@@ -9,8 +9,8 @@ function Category({ keyword = '', sortBy = 'createdDate', isAscending = false })
     const [data, setData] = useState({});
     const [filters, setFilters] = useState({
         keyword: keyword,
-        sortBy,
-        isAscending,
+        sortBy: sortBy,
+        isAscending: isAscending,
         pageNum: 1,
         pageSize: 10,
     })

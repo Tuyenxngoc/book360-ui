@@ -1,7 +1,7 @@
 import Breadcrumb from "~/components/Breadcrumb";
 import SortProduct from "~/components/SortProduct";
 import Pagination from "~/components/Pagination";
-import Product from "~/components/Product";
+import Product from "~/components/Product/Product";
 
 import PropTypes from 'prop-types'
 
@@ -15,11 +15,12 @@ function ProductList({
 }) {
 
     if (!(products && pagination)) {
-        return <h1 className="text-center">Đang load dữ liệu</h1>
+        return <h2 className="text-center">Đang load dữ liệu</h2>
     } else if (pagination.totalElements === 0) {
-        return <h1 className="text-center">Không tìm thấy sản phẩm nào</h1>
-
+        return <h2 className="text-center">Không tìm thấy sản phẩm nào</h2>
     }
+
+    console.log(products);
 
     return (
         <>

@@ -1,23 +1,16 @@
 function Login() {
     return (
         <form>
-            <h1>Please sign in</h1>
+            <h3>Đăng nhập Book360</h3>
             <div>
+                <label for="floatingInput">Nhập tên tài khoản/Email</label>
                 <input type="email" id="floatingInput" placeholder="name@example.com" />
-                <label for="floatingInput">Email address</label>
             </div>
             <div>
+                <label for="floatingPassword">Mật khẩu</label>
                 <input type="password" id="floatingPassword" placeholder="Password" />
-                <label for="floatingPassword">Password</label>
             </div>
-
-            <div>
-                <input type="checkbox" value="remember-me" id="flexCheckDefault" />
-                <label for="flexCheckDefault">
-                    Remember me
-                </label>
-            </div>
-            <button type="submit">Sign in</button>
+            <button type="submit">Đăng nhập</button>
         </form>
     );
 }

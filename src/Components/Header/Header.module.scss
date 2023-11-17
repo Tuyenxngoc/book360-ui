@@ -13,8 +13,8 @@
 }
 
 .logo {
-    width: 12rem;
-    height: 12rem;
+    width: 120px;
+    height: 120px;
     img {
         width: 100%;
         height: auto;
@@ -23,11 +23,11 @@
 }
 
 .search {
-    height: 4rem;
-    width: 48rem;
+    height: 40px;
+    width: 480px;
     background-color: white;
-    border-radius: 0.2rem;
-    padding: 0.3rem;
+    border-radius: 2px;
+    padding: 3px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -40,17 +40,17 @@
         padding: 0;
         height: 100%;
         margin: 0;
-        padding-left: 1rem;
+        padding-left: 10px;
         caret-color: var(--primary);
     }
 }
 .search-btn {
-    padding: 0 1.5rem;
+    padding: 0 15px;
     background-color: var(--primary);
     height: 100%;
     color: white;
-    border-radius: 0.2rem;
-    line-height: 3.4rem;
+    border-radius: 2px;
+    line-height: 34px;
     &:hover {
         cursor: pointer;
         opacity: 0.8;

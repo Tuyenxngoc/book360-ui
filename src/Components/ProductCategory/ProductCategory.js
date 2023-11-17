@@ -3,8 +3,10 @@ import { Link } from 'react-router-dom';
 
 import request from "~/utils/request";
 
+//Css
 import Style from './ProductCategory.module.scss'
 import classNames from 'classnames/bind';
+//Icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faBook } from '@fortawesome/free-solid-svg-icons';
 
@@ -23,7 +25,7 @@ function ProductCategory({ children }) {
         <div className={cx('wrapper')}>
             <div className="container">
                 <div className="row">
-                    <div className="col-md-2">
+                    <div className="col-3">
                         <h2 className={cx('title')}>
                             <i><FontAwesomeIcon icon={faBars}></FontAwesomeIcon></i>
                             Danh mục sản phẩm
@@ -43,7 +45,7 @@ function ProductCategory({ children }) {
                             )}
                         </ul>
                     </div>
-                    <div className="col-md-10">
+                    <div className="col-9">
                         {children}
                     </div>
                 </div>

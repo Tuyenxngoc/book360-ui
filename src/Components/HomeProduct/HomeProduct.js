@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-
+//Component
 import request from "~/utils/request";
-import Product from "~/components/Product";
-
+import Product from "~/components/Product/Product";
+//Slider
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
-
+//Style
 import Style from './HomeProduct.module.scss'
 import classNames from 'classnames/bind';
-
+//Icon
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
-import { Link } from 'react-router-dom';
 
 const cx = classNames.bind(Style);
 
@@ -27,13 +27,8 @@ function ControlButton({ className, style, onClick, NextArrow = false, PrevArrow
         props.icon = faAngleLeft;
     }
     const buttonClassName = cx(className, 'custom-slick-arrow', props.type);
-
     return (
-        <div
-            className={buttonClassName}
-            style={style}
-            onClick={onClick}
-        >
+        <div className={buttonClassName} style={style} onClick={onClick}>
             <FontAwesomeIcon className={cx('icon')} icon={props.icon}></FontAwesomeIcon>
         </div>
     );

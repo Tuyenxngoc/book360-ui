@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import ProductList from '~/components/ProductList';
 import { useLocation } from 'react-router-dom';
 
-function SearchResults({ sortBy, isAscending = false }) {
+function SearchResults({ sortBy = 'createdDate', isAscending = false }) {
     const location = useLocation();
     const queryParams = queryString.parse(location.search);
     const keyword = queryParams.keyword || '';
@@ -37,8 +37,6 @@ function SearchResults({ sortBy, isAscending = false }) {
             isAscending: newIsAscending,
         }));
     };
-
-    console.log(data);
 
     return (
         <ProductList

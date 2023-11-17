@@ -14,16 +14,16 @@ function Footer() {
         <div className={cx('wrapper')}>
             <div className="container">
                 <div className="row">
-                    <div className="col-md-3">
-                        <h1 className={cx('title')}>BOOK360</h1>
+                    <div className="col-3">
+                        <h2 className={cx('title')}>BOOK360</h2>
                         <ul className={cx('list')}>
                             <li className={cx('item')} >{`Địa chỉ: ${contact.address}`}</li>
                             <li className={cx('item')} >{`Số điện thoại: ${contact.phoneNumber}`}</li>
                             <li className={cx('item')} >{`Email: ${contact.email}`}</li>
                         </ul>
                     </div>
-                    <div className="col-md-3">
-                        <h2 className={cx('title')}>Cửa hàng</h2>
+                    <div className="col-3">
+                        <h3 className={cx('title')}>Cửa hàng</h3>
                         <ul className={cx('list')}>
                             <li className={cx('item')} >
                                 <a href="/" className={cx('link')}>Liên hệ</a>
@@ -36,8 +36,8 @@ function Footer() {
                             </li>
                         </ul>
                     </div>
-                    <div className="col-md-3">
-                        <h2 className={cx('title')}>Tài khoản</h2>
+                    <div className="col-3">
+                        <h3 className={cx('title')}>Tài khoản</h3>
                         <ul className={cx('list')}>
                             <li className={cx('item')}>
                                 <a href="/" className={cx('link')}>Thông tin tài khoản</a>
@@ -50,8 +50,8 @@ function Footer() {
                             </li>
                         </ul>
                     </div>
-                    <div className="col-md-3">
-                        <h2 className={cx('title')}>Khuyến mãi và ưu đãi</h2>
+                    <div className="col-3">
+                        <h3 className={cx('title')}>Khuyến mãi và ưu đãi</h3>
                         <div className={cx('item')}>Đăng ký nhận thông tin tại đây</div>
                         <input className={cx('input')} type="email" placeholder="Nhập email..."></input>
                         <Button primary>Đăng ký</Button>
