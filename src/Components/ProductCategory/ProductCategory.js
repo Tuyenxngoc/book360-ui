@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-import request from "~/utils/request";
+import httpRequest from "~/utils/httpRequest";
 
 //Css
 import Style from './ProductCategory.module.scss'
@@ -15,7 +15,7 @@ const cx = classNames.bind(Style);
 function ProductCategory({ children }) {
     const [listCategory, setListCategory] = useState([]);
     useEffect(() => {
-        request
+        httpRequest
             .get('category/get-categories')
             .then((response) => setListCategory(response.data.data))
             .catch((error) => console.error(error));
@@ -24,24 +24,21 @@ function ProductCategory({ children }) {
     return (
         <div className={cx('wrapper')}>
             <div className="container">
-                <div className="row">
+                <div className="row g-1">
                     <div className="col-3">
                         <h2 className={cx('title')}>
                             <i><FontAwesomeIcon icon={faBars}></FontAwesomeIcon></i>
                             Danh mục sản phẩm
                         </h2>
                         <ul className={cx('list')}>
-                            {listCategory.map((item, index) => {
-                                if (index <= 5) {
-                                    return <li key={item.id} className={cx('item')}>
-                                        <Link to={`category/${item.id}`}>
-                                            <FontAwesomeIcon icon={faBook} />
-                                            <span>{item.name.toUpperCase()}</span>
-                                        </Link>
-                                    </li>
-                                }
-                                return false;
-                            }
+                            {listCategory.map(item => (
+                                <li key={item.id} className={cx('item')}>
+                                    <Link to={`category/${item.id}`}>
+                                        <FontAwesomeIcon icon={faBook} />
+                                        <span>{item.name.toUpperCase()}</span>
+                                    </Link>
+                                </li>
+                            )
                             )}
                         </ul>
                     </div>

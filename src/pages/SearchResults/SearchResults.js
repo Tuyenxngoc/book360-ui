@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import request from '~/utils/request';
+import httpRequest from '~/utils/httpRequest';
 import queryString from 'query-string';
 import PropTypes from 'prop-types';
 import ProductList from '~/components/ProductList';
@@ -20,7 +20,7 @@ function SearchResults({ sortBy = 'createdDate', isAscending = false }) {
 
     useEffect(() => {
         const paramsString = queryString.stringify({ ...filters, keyword });
-        request
+        httpRequest
             .get(`product/find-product?${paramsString}`)
             .then((response) => setData(response.data.data))
             .catch((error) => console.error(error));

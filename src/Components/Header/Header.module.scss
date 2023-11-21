@@ -3,6 +3,11 @@
     background: linear-gradient(0deg, #02bbff, #36d8ff);
     display: flex;
     justify-content: center;
+    // position: fixed;
+    // top: 0;
+    // left: 0;
+    // right: 0;
+    // z-index: 10;
 }
 
 .inner {
@@ -55,4 +60,8 @@
         cursor: pointer;
         opacity: 0.8;
     }
+}
+
+.cart {
+    padding: 0 24px;
 }

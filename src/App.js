@@ -1,35 +1,40 @@
-import { Fragment } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { publicRoutes } from "~/routes";
+//Toast
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+//Routes
+import { privateRoutes, publicRoutes } from "~/routes";
+//Pages
 import DefaultLayout from "~/layouts/DefaultLayout";
+import NotFound from "~/pages/NotFound";
+import RequireAuth from "./utils/RequireAuth";
+import config from "~/config";
 
 function App() {
-  return (
-    <Router>
-      <div className="App">
-        <Routes>
-          {publicRoutes.map((router, index) => {
-            const Page = router.component;
-            let Layout = DefaultLayout;
-            if (router.layout) {
-              Layout = router.layout;
-            } else if (router.layout === null) {
-              Layout = Fragment;
-            }
 
-            return <Route
-              key={index}
-              path={router.path}
-              element={
-                <Layout>
-                  <Page />
-                </Layout>
-              }
-            ></Route>
-          })}
+  return (
+    <div className="App">
+      <ToastContainer />
+      <Router>
+        <Routes>
+          <Route path="/" element={<DefaultLayout />}>
+            {/* public routes */}
+            {publicRoutes.map((route, index) => {
+              return (<Route key={index} path={route.path} element={route.component} />);
+            })}
+
+            {/* private routes */}
+            <Route element={<RequireAuth allowedRoles={[config.ROLES.User, config.ROLES.Admin]} />}>
+              {privateRoutes.map((route, index) => {
+                return (<Route key={index} path={route.path} element={route.component} />);
+              })}
+            </Route>
+            {/* catch all */}
+            <Route path="*" element={<NotFound />} />
+          </Route>
         </Routes>
-      </div>
-    </Router>
+      </Router>
+    </div>
   );
 }
 

@@ -4,18 +4,27 @@ import Button from '~/components/Button';
 import config from '~/config';
 //Icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass, faSignIn } from '@fortawesome/free-solid-svg-icons'
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 //React
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 //Styles
 import classNames from 'classnames/bind';
 import styles from './Header.module.scss';
+import useAuth from '~/hooks/useAuth';
 
 const cx = classNames.bind(styles);
 
 function Header() {
+    let { currentUser, logout } = useAuth();
     const [keyword, setKeyword] = useState('');
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        localStorage.removeItem('accessToken');
+        logout();
+        navigate("/");
+    }
 
     return (
         <header className={cx('wrapper')}>
@@ -40,8 +49,17 @@ function Header() {
                     </div>
 
                     <div className={cx('actions')}>
-                        <Button text leftIcon={<img src={images.cart} alt='cart'></img>}></Button>
-                        <Button to={'/login'} leftIcon={<FontAwesomeIcon icon={faSignIn}></FontAwesomeIcon>}>Đăng nhập</Button>
+                        <Link className={cx('cart')} to={'/cart'}><img src={images.cart} alt='cart'></img></Link>
+                        {currentUser.accessToken ?
+                            (
+                                <button onClick={handleLogout}>Đăng Xuất</button>
+
+                            )
+                            :
+                            (
+                                <Button to={'/login'}>Đăng nhập</Button>
+                            )
+                        }
                     </div>
                 </div>
             </div>

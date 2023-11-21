@@ -1,12 +1,11 @@
+import { Outlet } from 'react-router-dom';
 import Header from '~/components/Header';
 
-function HeaderOnly({ children }) {
+function HeaderOnly() {
     return (
         <>
             <Header></Header>
-            <div className="content">
-                {children}
-            </div>
+            <Outlet />
         </>
     );
 }

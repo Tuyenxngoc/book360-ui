@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 //Component
-import request from "~/utils/request";
+import httpRequest from "~/utils/httpRequest";
 import Product from "~/components/Product/Product";
 //Slider
 import "slick-carousel/slick/slick.css";
@@ -37,7 +37,7 @@ function ControlButton({ className, style, onClick, NextArrow = false, PrevArrow
 function HomeProduct({ title, url }) {
     const [data, setData] = useState([]);
     useEffect(() => {
-        request
+        httpRequest
             .get(url)
             .then((response) => setData(response.data.data.items))
             .catch((error) => console.error(error));

@@ -1,0 +1,41 @@
+.main {
+}
+
+.form-signin {
+}
+
+.title {
+    font-size: 22px;
+    font-weight: 700;
+    margin: auto;
+    text-align: center;
+    min-height: 53px;
+    line-height: 53px;
+    padding: 10px;
+}
+
+.image {
+    text-align: center;
+    img {
+        width: 30%;
+    }
+}
+
+.forget-pass {
+    margin: 5px 0;
+    a {
+        color: #777;
+        font-size: 13px;
+        line-height: 25px;
+    }
+}
+
+.login-btn {
+    margin: 15px 0;
+}
+
+.login-question {
+    display: flex;
+    align-self: center;
+    justify-content: center;
+}

@@ -20,8 +20,6 @@ function ProductList({
         return <h2 className="text-center">Không tìm thấy sản phẩm nào</h2>
     }
 
-    console.log(products);
-
     return (
         <>
             <Breadcrumb currentPage={currentPage} />
