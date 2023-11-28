@@ -1,7 +1,5 @@
 .main {
-}
-
-.form-signin {
+    height: calc(100vh - var(--default-layout-header-height));
 }
 
 .title {
@@ -21,11 +19,25 @@
     }
 }
 
+.error-message {
+    color: #d32f2f;
+    font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+    font-weight: 400;
+    font-size: 0.75rem;
+    line-height: 1.66;
+    letter-spacing: 0.03333em;
+    text-align: left;
+    margin-top: 3px;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+}
+
 .forget-pass {
     margin: 5px 0;
     a {
         color: #777;
-        font-size: 13px;
+        font-size: 14px;
         line-height: 25px;
     }
 }
@@ -38,4 +50,9 @@
     display: flex;
     align-self: center;
     justify-content: center;
+    p {
+        color: #777;
+        font-size: 14px;
+        margin-right: 5px;
+    }
 }

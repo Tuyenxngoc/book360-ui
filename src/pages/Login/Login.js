@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import { useFormik } from 'formik';
@@ -11,46 +10,53 @@ import Style from './Login.module.scss';
 import classNames from 'classnames/bind';
 import images from '~/assets/images';
 import { Button, TextField } from '@mui/material';
-import { decodeToken } from 'react-jwt';
+import { toast } from 'react-toastify';
 
 const cx = classNames.bind(Style);
 
 function Login() {
+    const { login } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || "/";
 
-    const { login } = useAuth();
-    const [isError, setIsError] = useState(false);
-
     const validationSchema = yup.object({
-        emailOrUsername: yup
-            .string('Enter your username of email')
-            .required('Email is required'),
-        password: yup
-            .string('Enter your password')
-            .required('Password is required'),
+        emailOrUsername: yup.string().required('Trường này là bắt buộc'),
+        password: yup.string().required('Trường này là bắt buộc'),
     });
 
     const handleLogin = async (values) => {
         try {
-            const response = await httpRequest.post(`http://localhost:8080/api/v1/auth/login`, values);
+            const response = await httpRequest.post(`/auth/login`, values);
             if (response.status === 200) {
-                localStorage.removeItem("accessToken");
-                localStorage.removeItem("username");
-
-                localStorage.setItem("accessToken", response.data.data.accessToken);
-                localStorage.setItem("username", values.emailOrUsername);
+                const { accessToken, authorities, id, username, refreshToken } = response.data.data;
                 login({
-                    id: decodeToken(response.data.data.accessToken).sub,
-                    user: values.emailOrUsername,
-                    role: response.data.data.authorities[0].authority,
-                    accessToken: response.data.data.accessToken
+                    id,
+                    username,
+                    role: authorities[0].authority,
+                    accessToken,
+                    refreshToken
                 })
                 navigate(from, { replace: true });
             }
         } catch (error) {
-            setIsError(true);
+            let message = '';
+            if (!error?.response) {
+                message = ('Máy chủ không phản hồi');
+            } else {
+                message = ('Đăng nhập thất bại');
+            }
+            toast.error(message, {
+                position: "top-center",
+                autoClose: 2000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                hideCloseButton: true,
+                progress: undefined,
+                theme: "colored",
+            });
         }
     };
 
@@ -75,19 +81,20 @@ function Login() {
                             <img src={images.logo} alt='logo'></img>
                         </div>
 
-                        <form className={cx('form-signin')} onSubmit={formik.handleSubmit}>
+                        <form onSubmit={formik.handleSubmit}>
                             <TextField
                                 fullWidth
                                 variant='standard'
                                 id="emailOrUsername"
                                 name="emailOrUsername"
-                                label="Nhập số điện thoại/email"
+                                label="Nhập tên tài khoản/email"
                                 value={formik.values.emailOrUsername}
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
                                 error={formik.touched.emailOrUsername && Boolean(formik.errors.emailOrUsername)}
-                                helperText={formik.touched.emailOrUsername ? formik.errors.emailOrUsername : " "}
                             />
+                            <p className={cx('error-message')}>{formik.touched.emailOrUsername && formik.errors.emailOrUsername}&emsp;</p>
+
                             <TextField
                                 fullWidth
                                 variant='standard'
@@ -99,8 +106,9 @@ function Login() {
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
                                 error={formik.touched.password && Boolean(formik.errors.password)}
-                                helperText={formik.touched.password ? formik.errors.password : " "}
                             />
+                            <p className={cx('error-message')}>{formik.touched.password && formik.errors.password}&emsp;</p>
+
                             <div className={cx('forget-pass')}>
                                 <Link to='/forgot-password'>Quên mật khẩu?</Link>
                             </div>
@@ -110,15 +118,9 @@ function Login() {
                         </form>
 
                         <div className={cx('login-question')}>
-                            <p className="login-question__text">Bạn chưa có tài khoản? </p>
+                            <p>Bạn chưa có tài khoản? </p>
                             <Link to="/register">Đăng ký ngay</Link>
                         </div>
-                        {
-                            isError &&
-                            <div className="alert alert-danger" role="alert">
-                                Thông tin đăng nhập chưa chính xác
-                            </div>
-                        }
                     </div>
                 </div>
             </div>

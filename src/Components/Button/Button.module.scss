@@ -5,7 +5,7 @@
     min-width: 100px;
     padding: 6px 16px;
     border-radius: 4px;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 700;
     background-color: white;
     border: 1px solid transparent;
@@ -32,17 +32,26 @@
     display: inline-block;
     width: 24px;
     text-align: center;
+    img {
+        width: 24px;
+        object-fit: contain;
+    }
 }
 
 // Button types
 .rounded {
+    padding: 4px;
     border-radius: 999px;
     box-shadow: 0 2px 8px rgb(0 0 0 / 6%);
     border-color: rgba(22, 24, 35, 0.12);
 
     &:hover {
-        border-color: rgba(22, 24, 35, 0.2);
-        background-color: rgba(22, 24, 35, 0.03);
+        border-color: rgba(22, 24, 35, 0.4);
+        background-color: rgba(255, 255, 255, 0.9);
+    }
+
+    .title {
+        flex: 1;
     }
 }
 

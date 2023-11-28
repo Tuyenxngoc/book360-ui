@@ -1,0 +1,37 @@
+.cart-table {
+    background-color: white;
+    width: 100%;
+}
+
+.header-cell {
+    font-size: 14px;
+    color: #888;
+    text-align: center;
+    font-weight: normal;
+}
+
+.checkout {
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 30px;
+    margin: var(--default-distance) 0px;
+
+    .checkout-desciption {
+        margin-right: 20px;
+        display: flex;
+        align-items: center;
+        .quantity-product {
+            font-size: 16px;
+            color: #222;
+            line-height: 19px;
+        }
+        .total-price {
+            font-size: 24px;
+            line-height: 28px;
+            margin-left: 5px;
+            color: #ee4d2d;
+        }
+    }
+}

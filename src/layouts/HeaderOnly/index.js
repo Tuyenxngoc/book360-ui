@@ -1,14 +1,19 @@
-import { Outlet } from 'react-router-dom';
+import PropTypes from 'prop-types';
+
 import Header from '~/components/Header';
 
-function HeaderOnly() {
+function HeaderOnly({ children }) {
     return (
         <>
             <Header></Header>
-            <Outlet />
+            {children}
         </>
     );
+
 }
 
-export default HeaderOnly
-    ;
+HeaderOnly.propTypes = {
+    children: PropTypes.node.isRequired,
+};
+
+export default HeaderOnly;

@@ -14,6 +14,7 @@ import classNames from 'classnames/bind';
 //Icon
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
+import images from "~/assets/images";
 
 const cx = classNames.bind(Style);
 
@@ -34,7 +35,7 @@ function ControlButton({ className, style, onClick, NextArrow = false, PrevArrow
     );
 }
 
-function HomeProduct({ title, url }) {
+function HomeProduct({ title, banner, url }) {
     const [data, setData] = useState([]);
     useEffect(() => {
         httpRequest
@@ -46,7 +47,7 @@ function HomeProduct({ title, url }) {
     const settings = {
         infinite: true,
         speed: 800,
-        slidesToShow: 5,
+        slidesToShow: 6,
         slidesToScroll: 1,
         initialSlide: 0,
         nextArrow: <ControlButton NextArrow />,
@@ -77,39 +78,49 @@ function HomeProduct({ title, url }) {
     };
 
     return (
-        <div className="container">
-            <div className={cx('home-products')}>
-                <div className="row">
-                    <div className="col">
-                        <div className={cx('section-title')}><h2>{title}</h2></div>
-                    </div>
+        <>
+            {banner >= 0 &&
+                <div className={cx('banner-home-pro')}>
+                    <a className={cx('banner-home-pro-link')} href="/">
+                        <img src={images.bannerPro[banner]} alt='home-banner' />
+                    </a>
                 </div>
-                <div className="row">
-                    <div className="col">
-                        <Slider {...settings}>
-                            {data.map((product) => {
-                                return (
-                                    <div key={product.productID} className="px-2">
-                                        <Product data={product} ></Product>
-                                    </div>
-                                )
-                            })}
-                        </Slider>
+            }
+            <div className="container">
+                <div className={cx('home-products')}>
+                    <div className="row">
+                        <div className="col">
+                            <div className={cx('section-title')}><h2>{title}</h2></div>
+                        </div>
                     </div>
-                </div>
-                <div className="row">
-                    <div className="col">
-                        <div className={cx('grid-item')}>
-                            <Link to="/collections">Xem thêm &gt;&gt;</Link>
+                    <div className="row">
+                        <div className="col">
+                            <Slider {...settings}>
+                                {data.map((product) => {
+                                    return (
+                                        <div key={product.productID} className="px-2">
+                                            <Product data={product} ></Product>
+                                        </div>
+                                    )
+                                })}
+                            </Slider>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col">
+                            <div className={cx('grid-item')}>
+                                <Link to="/collections">Xem thêm &gt;&gt;</Link>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 }
 HomeProduct.propTypes = {
     title: PropTypes.string.isRequired,
+    banner: PropTypes.number,
     url: PropTypes.string.isRequired
 }
 

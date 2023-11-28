@@ -1,55 +1,104 @@
-import { createContext, useState, useEffect } from 'react';
+import { useEffect } from 'react';
+import { createContext, useState } from 'react';
+import Loading from '~/components/Loading';
 import { getCurrentUserLogin } from '~/services/apiRequest';
+import { getToken, removeToken, setRefreshToken, setToken } from '~/services/authService';
 
+// Create a context for the authentication state
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-    const defaultUser = { id: '', user: '', email: '', role: '', accessToken: '' };
-    const [currentUser, setCurrentUser] = useState(defaultUser);
+    const defaultAuth = {
+        isAuthenticated: false,
+        user: {
+            id: '',
+            customerId: '',
+            username: '',
+            role: '',
+            email: ''
+        },
+    }
+
+    // State to manage authentication status and user information
+    const [authState, setAuthState] = useState(defaultAuth);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const validateToken = async () => {
             try {
-                const token = localStorage.getItem('accessToken');
+                const token = getToken();
                 if (!token) {
+                    setAuthState(defaultAuth);
+                    setLoading(false);
                     return;
                 }
-                // Gửi token đến máy chủ để xác minh tính hợp lệ
-                const response = await getCurrentUserLogin(token);
+                const response = await getCurrentUserLogin();
                 if (response.status === 200) {
-                    const data = response.data.data;
-                    setCurrentUser(
-                        {
-                            id: data.id,
-                            user: data.username,
-                            email: data.email,
-                            role: data.roleName,
-                            accessToken: token
-                        }
-                    )
+                    const { id, customerId, username, roleName, email } = response.data.data;
+                    setAuthState({
+                        isAuthenticated: true,
+                        user: {
+                            id,
+                            customerId,
+                            username,
+                            role: roleName,
+                            email
+                        },
+                    });
+                } else {
+                    setAuthState(defaultAuth);
                 }
             } catch (error) {
-                localStorage.removeItem('accessToken');
-                setCurrentUser(defaultUser);
+                removeToken();
+                setAuthState(defaultAuth);
+            } finally {
+                setLoading(false);
             }
         };
         validateToken();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const login = (user) => {
-        setCurrentUser({
-            ...defaultUser,
-            ...user
+    // Function to handle user login
+    const login = ({ id, username, role, accessToken, refreshToken }) => {
+        // Add new token from local storage
+        setToken(accessToken);
+        setRefreshToken(refreshToken);
+        // Update the authentication status and user information
+        setAuthState({
+            ...authState,
+            isAuthenticated: true,
+            user: {
+                id,
+                username,
+                role,
+            },
         });
     };
 
+    // Function to handle user logout
     const logout = () => {
-        setCurrentUser(defaultUser);
+        // Remove the token from local storage
+        removeToken();
+        // Update the authentication status and user information
+        setAuthState(defaultAuth);
+        // Redirect or perform other actions upon logout
     };
 
+    // Provide the authentication context values to the components
+    const contextValues = {
+        isAuthenticated: authState.isAuthenticated,
+        user: authState.user,
+        login,
+        logout,
+    };
+
+    if (loading) {
+        return <Loading />
+    }
+
     return (
-        <AuthContext.Provider value={{ currentUser, login, logout }}>
+        <AuthContext.Provider value={contextValues}>
             {children}
         </AuthContext.Provider>
     )

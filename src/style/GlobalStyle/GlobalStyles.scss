@@ -5,6 +5,7 @@
     --primary: #00afef;
     --primary-light: #36d8ff;
     --text-color: #333333;
+    --red-color: #ee4d2d;
 
     // Default layout
     --default-layout-header-height: 120px;
@@ -22,12 +23,12 @@
 
 body {
     font-family: 'Roboto', sans-serif;
-    font-size: 1rem;
+    font-size: 14px;
     line-height: 1rem;
     text-rendering: optimizespeed;
     color: var(--text-color);
     background-color: #fafafa;
-    // background-color: #333333;
+    // background-color: #b86767;
 }
 
 input,

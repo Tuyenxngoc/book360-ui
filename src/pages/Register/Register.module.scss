@@ -1,0 +1,78 @@
+.main {
+}
+
+.navbar-container {
+    display: flex;
+    align-items: center;
+}
+
+.button-back {
+    a {
+        color: #4a4a4a;
+        font-size: 24px;
+    }
+}
+
+.title {
+    font-size: 22px;
+    font-weight: 700;
+    margin: auto;
+    text-align: center;
+    min-height: 53px;
+    line-height: 53px;
+    padding: 10px;
+}
+
+.image {
+    text-align: center;
+    img {
+        width: 30%;
+    }
+}
+
+.message {
+    font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+    font-weight: 400;
+    font-size: 0.75rem;
+    line-height: 1.66;
+    letter-spacing: 0.03333em;
+    text-align: left;
+    margin-top: 3px;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+
+    color: #afafaf;
+    font-size: 13px;
+    font-style: italic;
+    padding-left: 15px;
+}
+.error {
+    color: #d32f2f;
+    font-style: normal;
+    padding-left: 0;
+}
+
+.forget-pass {
+    margin: 5px 0;
+    a {
+        color: #777;
+        font-size: 13px;
+        line-height: 25px;
+    }
+}
+
+.register-btn {
+    margin: 15px 0;
+}
+
+.register-question {
+    display: flex;
+    align-self: center;
+    justify-content: center;
+    p {
+        color: #777;
+        font-size: 14px;
+        margin-right: 5px;
+    }
+}

@@ -9,20 +9,26 @@ import Category from "~/pages/Category";
 import Cart from "~/pages/Cart";
 import Login from "~/pages/Login";
 import Profile from "~/pages/Profile/Profile";
+import Register from "~/pages/Register";
+import { HeaderOnly } from "~/layouts";
+import ForgotPassword from "~/pages/ForgotPassword";
+import Purchase from "~/pages/Purchase";
 
 const publicRoutes = [
-    { path: config.routes.home, component: <Home /> },
-    { path: config.routes.bookDetails, component: <BookDetails /> },
-    { path: config.routes.searchResults, component: <SearchResults /> },
-    { path: config.routes.category, component: <Category /> },
-    { path: config.routes.login, component: <Login /> },
+    { path: config.routes.home, component: Home },
+    { path: config.routes.bookDetails, component: BookDetails },
+    { path: config.routes.searchResults, component: SearchResults },
+    { path: config.routes.category, component: Category },
+    { path: config.routes.login, component: Login, layout: HeaderOnly },
+    { path: config.routes.register, component: Register, layout: HeaderOnly },
+    { path: config.routes.forgotPassword, component: ForgotPassword, layout: HeaderOnly },
 ]
 
 const privateRoutes = [
-    { path: config.routes.cart, component: <Cart /> },
-    { path: config.routes.checkouts, component: <Checkouts /> },
-    { path: config.routes.profile, component: <Profile /> },
-
+    { path: config.routes.cart, component: Cart },
+    { path: config.routes.checkouts, component: Checkouts, layout: null },
+    { path: config.routes.profile, component: Profile },
+    { path: config.routes.purchaseOrder, component: Purchase },
 ]
 
 export { publicRoutes, privateRoutes } 

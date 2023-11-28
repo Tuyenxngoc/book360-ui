@@ -8,7 +8,7 @@ import { privateRoutes, publicRoutes } from "~/routes";
 import DefaultLayout from "~/layouts/DefaultLayout";
 import NotFound from "~/pages/NotFound";
 import RequireAuth from "./utils/RequireAuth";
-import config from "~/config";
+import { Fragment } from "react";
 
 function App() {
 
@@ -17,21 +17,55 @@ function App() {
       <ToastContainer />
       <Router>
         <Routes>
-          <Route path="/" element={<DefaultLayout />}>
-            {/* public routes */}
-            {publicRoutes.map((route, index) => {
-              return (<Route key={index} path={route.path} element={route.component} />);
-            })}
+          {/* public routes */}
+          {publicRoutes.map((route, index) => {
+            const Page = route.component;
+            let Layout = DefaultLayout;
+            if (route.layout) {
+              Layout = route.layout;
+            } else if (route.layout === null) {
+              Layout = Fragment;
+            }
+            return (
+              <Route
+                key={index}
+                path={route.path}
+                element={
+                  <Layout>
+                    <Page />
+                  </Layout>
+                }
+              />
+            );
+          })}
 
-            {/* private routes */}
-            <Route element={<RequireAuth allowedRoles={[config.ROLES.User, config.ROLES.Admin]} />}>
-              {privateRoutes.map((route, index) => {
-                return (<Route key={index} path={route.path} element={route.component} />);
-              })}
-            </Route>
-            {/* catch all */}
-            <Route path="*" element={<NotFound />} />
+          {/* private routes */}
+          <Route element={<RequireAuth />}>
+            {privateRoutes.map((route, index) => {
+              const Page = route.component;
+              let Layout = DefaultLayout;
+              if (route.layout) {
+                Layout = route.layout;
+              } else if (route.layout === null) {
+                Layout = Fragment;
+              }
+              return (
+                <Route
+                  key={index}
+                  path={route.path}
+                  element={
+                    <Layout>
+                      <Page />
+                    </Layout>
+                  }
+                />
+              );
+            })
+            }
           </Route>
+
+          {/* catch all */}
+          <Route path="*" element={<DefaultLayout><NotFound /></DefaultLayout>} />
         </Routes>
       </Router>
     </div>

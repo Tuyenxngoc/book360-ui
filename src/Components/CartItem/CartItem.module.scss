@@ -1,0 +1,101 @@
+.cart-item {
+    height: 120px;
+    border-top: 1px solid #e6e6e6;
+
+    .image-cell {
+        .product-link {
+            display: block;
+            width: 80px;
+
+            .product-image {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+    }
+
+    .name-cell {
+        padding: 10px;
+        .product-name {
+            display: block;
+            color: var(--text-color);
+            margin-bottom: 5px;
+        }
+    }
+
+    .price-cell {
+        padding: 10px;
+        text-align: center;
+        width: 15%;
+
+        .original-price {
+            color: var(--text-color);
+            text-decoration: line-through;
+        }
+
+        .discounted-price {
+            margin-left: 10px;
+        }
+    }
+
+    .quantity-control-cell {
+        padding: 10px;
+
+        .quantity-control {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .quantity-button {
+                height: 32px;
+                width: 32px;
+                font-size: 14px;
+                border: 1px solid rgba(0, 0, 0, 0.09);
+                border-radius: 2px;
+                background: transparent;
+                &:first-child {
+                    border-top-right-radius: 0;
+                    border-bottom-right-radius: 0;
+                }
+                &:last-child {
+                    border-top-left-radius: 0;
+                    border-bottom-left-radius: 0;
+                }
+            }
+            .quantity-input {
+                height: 32px;
+                width: 50px;
+                text-align: center;
+                font-size: 14px;
+                border: 1px solid rgba(0, 0, 0, 0.09);
+                background: transparent;
+                border-left: 0;
+                border-right: 0;
+            }
+        }
+    }
+
+    .total-price-cell {
+        padding: 10px;
+        width: 15%;
+        text-align: center;
+
+        .product-price {
+            color: var(--red-color);
+        }
+    }
+
+    .remove-cell {
+        padding: 10px;
+        text-align: center;
+        width: 10%;
+
+        .delete-button {
+            background-color: white;
+            &:hover {
+                color: var(--red-color);
+            }
+        }
+    }
+}

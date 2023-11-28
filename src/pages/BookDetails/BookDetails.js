@@ -1,6 +1,6 @@
 // React hooks
 import { useEffect, useState } from "react";
-import { useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 //Zoom images
 
 // External libraries
@@ -20,13 +20,18 @@ import Error from "~/components/Error";
 
 import { addProductToCart } from "~/services/apiRequest";
 import useAuth from "~/hooks/useAuth";
+import { toast } from "react-toastify";
 
 const cx = classNames.bind(Style);
 
 function BookDetails() {
-    const { currentUser } = useAuth();
+    //Get user information
+    const { user, isAuthenticated } = useAuth();
+    const navigate = useNavigate();
+    const location = useLocation();
     //Id book
     const { id } = useParams();
+    //Data books
     const [data, setData] = useState({});
     //Loading book
     const [isError, setIsError] = useState(false);
@@ -35,7 +40,6 @@ function BookDetails() {
     const [quantity, setQuantity] = useState(1);
     // Xử lý logic với Id
     useEffect(() => {
-        //Lên đầu trang
         window.scrollTo(0, 0);
         httpRequest
             .get(`product/get-product-detail/${id}`)
@@ -73,7 +77,27 @@ function BookDetails() {
         }
     };
     const handleAddProductToCart = () => {
-        addProductToCart(currentUser.id, id, quantity);
+        if (isAuthenticated) {
+            addProductToCart(user.customerId, id, quantity)
+                .then(response => {
+                    console.log(response.data);
+                    toast.success('Thêm vào giỏ hàng thành công!', {
+                        position: 'top-right',
+                        autoClose: 2000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: false,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        } else {
+            navigate('/login', { replace: true, state: { from: location } });
+        }
     }
 
     if (isError || isLoading) {
@@ -178,7 +202,7 @@ function BookDetails() {
                                                 >Thêm vào giỏ hàng </Button>
                                             </div>
                                             <div className="col">
-                                                <Button primary large id="buy-now" className="btn-light btnBuyNow ">Mua ngay</Button>
+                                                <Button to={"/checkouts"} primary large id="buy-now" className="btn-light btnBuyNow ">Mua ngay</Button>
                                             </div>
                                         </div>
                                     </div>

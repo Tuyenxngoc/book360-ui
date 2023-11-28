@@ -6,7 +6,7 @@ import config from '~/config';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 //React
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useState } from 'react';
 //Styles
 import classNames from 'classnames/bind';
@@ -16,15 +16,9 @@ import useAuth from '~/hooks/useAuth';
 const cx = classNames.bind(styles);
 
 function Header() {
-    let { currentUser, logout } = useAuth();
-    const [keyword, setKeyword] = useState('');
-    const navigate = useNavigate();
 
-    const handleLogout = () => {
-        localStorage.removeItem('accessToken');
-        logout();
-        navigate("/");
-    }
+    const { isAuthenticated, user, logout } = useAuth();
+    const [keyword, setKeyword] = useState('');
 
     return (
         <header className={cx('wrapper')}>
@@ -36,6 +30,8 @@ function Header() {
 
                     <div className={cx('search')}>
                         <input
+                            id="searchInput"
+                            name="searchKeyword"
                             value={keyword}
                             onChange={(event) => { setKeyword(event.target.value) }}
                             placeholder='Tìm kiếm...'
@@ -50,10 +46,22 @@ function Header() {
 
                     <div className={cx('actions')}>
                         <Link className={cx('cart')} to={'/cart'}><img src={images.cart} alt='cart'></img></Link>
-                        {currentUser.accessToken ?
+                        {isAuthenticated ?
                             (
-                                <button onClick={handleLogout}>Đăng Xuất</button>
-
+                                <div className={cx('user-navbar')}>
+                                    <Button rounded leftIcon={<img src={images.userDefault} alt='user default'></img>}>{user.username || 'user'}</Button>
+                                    <ul className={cx("user-menu")}>
+                                        <li className={cx("user-menu-item")}>
+                                            <Link to="/profile">Tài khoản của tôi</Link>
+                                        </li>
+                                        <li className={cx("user-menu-item")}>
+                                            <Link to="/purchase">Đơn mua</Link>
+                                        </li>
+                                        <li className={cx("user-menu-item", "separate")}>
+                                            <Link onClick={logout}>Đăng xuất</Link>
+                                        </li>
+                                    </ul>
+                                </div>
                             )
                             :
                             (
