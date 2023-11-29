@@ -31,7 +31,7 @@ function Checkouts() {
             .catch(error => {
                 console.error(error);
             })
-    }, []);
+    }, [user.id]);
 
     useEffect(() => {
         // Calculate total price when cartItems or checked array changes
@@ -39,7 +39,7 @@ function Checkouts() {
             return sum + product.quantity * (product.price * (100 - product.discount) / 100); // Assuming each product has a 'price' property
         }, 0);
         setTotalPrice(totalPrice);
-    }, []);
+    }, [listProducts]);
 
     const handleSubmit = () => {
         axiosPrivate.post(`bill/order-from-cart/${user.customerId}`, {

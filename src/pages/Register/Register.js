@@ -35,8 +35,10 @@ function Register() {
             .matches(/(?=.*[a-z])/, 'Mật khẩu phải chứa ít nhất một chữ thường')
             .matches(/(?=.*[A-Z])/, 'Mật khẩu phải chứa ít nhất một chữ in hoa')
             .matches(/(?=.*\d)/, 'Mật khẩu phải chứa ít nhất một số')
+            // eslint-disable-next-line
             .matches(/(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-])/, 'Mật khẩu chứa ít nhất một kí tự đặc biệt')
             .required('Trường này là bắt buộc'),
+
         repeatPassword: yup.string()
             .oneOf([yup.ref('password'), null], 'Mật khẩu chưa khớp')
             .required('Trường này là bắt buộc'),

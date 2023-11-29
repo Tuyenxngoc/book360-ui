@@ -26,8 +26,6 @@ function Cart() {
     const [checked, setChecked] = useState(productIdSelect);
     const [totalPrice, setTotalPrice] = useState(0);
 
-
-
     const navigate = useNavigate();
 
     const fetchCartItems = async () => {
