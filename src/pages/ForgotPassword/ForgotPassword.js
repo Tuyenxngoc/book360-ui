@@ -16,7 +16,7 @@ import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
-import images from '~/assets/images';
+import images from '~/assets';
 
 // Network Communication and System Utilities
 import httpRequest from '~/utils/httpRequest';

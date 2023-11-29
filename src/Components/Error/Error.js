@@ -1,4 +1,4 @@
-import images from "~/assets/images";
+import images from "~/assets";
 function Error() {
     return (
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>

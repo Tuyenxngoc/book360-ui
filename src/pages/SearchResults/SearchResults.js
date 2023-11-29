@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import httpRequest from '~/utils/httpRequest';
-import queryString from 'query-string';
-import PropTypes from 'prop-types';
-import ProductList from '~/components/ProductList';
 import { useLocation } from 'react-router-dom';
+import queryString from 'query-string';
+import httpRequest from '~/utils/httpRequest';
+import ProductList from '~/components/ProductList';
 
-function SearchResults({ sortBy = 'createdDate', isAscending = false }) {
+function SearchResults() {
     const location = useLocation();
     const queryParams = queryString.parse(location.search);
     const keyword = queryParams.keyword || '';
+    const sortBy = queryParams.sortBy || 'createdDate';
 
     const [data, setData] = useState([]);
     const [filters, setFilters] = useState({
-        sortBy: sortBy,
-        isAscending: isAscending,
+        sortBy,
+        isAscending: false,
         pageNum: 1,
         pageSize: 10,
     })
@@ -48,11 +48,6 @@ function SearchResults({ sortBy = 'createdDate', isAscending = false }) {
             handlePageChange={handlePageChange}
         ></ProductList>
     );
-}
-
-SearchResults.propTypes = {
-    sortBy: PropTypes.string,
-    isAscending: PropTypes.bool
 }
 
 export default SearchResults;

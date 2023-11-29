@@ -14,7 +14,7 @@ import classNames from 'classnames/bind';
 //Icon
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
-import images from "~/assets/images";
+import images from "~/assets";
 
 const cx = classNames.bind(Style);
 
@@ -35,68 +35,67 @@ function ControlButton({ className, style, onClick, NextArrow = false, PrevArrow
     );
 }
 
-function HomeProduct({ title, banner, url }) {
-    const [data, setData] = useState([]);
+const settings = {
+    infinite: true,
+    speed: 800,
+    slidesToShow: 6,
+    slidesToScroll: 1,
+    initialSlide: 0,
+    nextArrow: <ControlButton NextArrow />,
+    prevArrow: <ControlButton PrevArrow />,
+    responsive: [
+        {
+            breakpoint: 1024,
+            settings: {
+                slidesToShow: 4,
+                slidesToScroll: 1,
+            }
+        },
+        {
+            breakpoint: 600,
+            settings: {
+                slidesToShow: 3,
+                slidesToScroll: 1,
+            }
+        },
+        {
+            breakpoint: 480,
+            settings: {
+                slidesToShow: 1,
+                slidesToScroll: 1
+            }
+        }
+    ]
+};
+
+function HomeProduct({ title, bannerIndex, apiUrl, moreLink }) {
+    const [productData, setProductData] = useState([]);
+
     useEffect(() => {
         httpRequest
-            .get(url)
-            .then((response) => setData(response.data.data.items))
+            .get(apiUrl)
+            .then((response) => setProductData(response.data.data.items))
             .catch((error) => console.error(error));
-    }, [url]);
-
-    const settings = {
-        infinite: true,
-        speed: 800,
-        slidesToShow: 6,
-        slidesToScroll: 1,
-        initialSlide: 0,
-        nextArrow: <ControlButton NextArrow />,
-        prevArrow: <ControlButton PrevArrow />,
-        responsive: [
-            {
-                breakpoint: 1024,
-                settings: {
-                    slidesToShow: 4,
-                    slidesToScroll: 1,
-                }
-            },
-            {
-                breakpoint: 600,
-                settings: {
-                    slidesToShow: 3,
-                    slidesToScroll: 1,
-                }
-            },
-            {
-                breakpoint: 480,
-                settings: {
-                    slidesToShow: 1,
-                    slidesToScroll: 1
-                }
-            }
-        ]
-    };
+    }, [apiUrl]);
 
     return (
         <>
-            {banner >= 0 &&
+            {bannerIndex >= 0 &&
                 <div className={cx('banner-home-pro')}>
                     <a className={cx('banner-home-pro-link')} href="/">
-                        <img src={images.bannerPro[banner]} alt='home-banner' />
+                        <img src={images.bannerPro[bannerIndex]} alt='home-banner' />
                     </a>
                 </div>
             }
             <div className="container">
                 <div className={cx('home-products')}>
                     <div className="row">
-                        <div className="col">
+                        <div className="col-12">
                             <div className={cx('section-title')}><h2>{title}</h2></div>
                         </div>
-                    </div>
-                    <div className="row">
-                        <div className="col">
+                        <div className="col-12">
                             <Slider {...settings}>
-                                {data.map((product) => {
+                                {productData.map((product) => {
                                     return (
                                         <div key={product.productID} className="px-2">
                                             <Product data={product} ></Product>
@@ -105,11 +104,9 @@ function HomeProduct({ title, banner, url }) {
                                 })}
                             </Slider>
                         </div>
-                    </div>
-                    <div className="row">
-                        <div className="col">
+                        <div className="col-12">
                             <div className={cx('grid-item')}>
-                                <Link to="/collections">Xem thêm &gt;&gt;</Link>
+                                <Link to={moreLink}>Xem thêm &gt;&gt;</Link>
                             </div>
                         </div>
                     </div>
@@ -120,8 +117,10 @@ function HomeProduct({ title, banner, url }) {
 }
 HomeProduct.propTypes = {
     title: PropTypes.string.isRequired,
-    banner: PropTypes.number,
-    url: PropTypes.string.isRequired
+    bannerIndex: PropTypes.number,
+    apiUrl: PropTypes.string.isRequired,
+    moreLink: PropTypes.string.isRequired
+
 }
 
 export default HomeProduct;

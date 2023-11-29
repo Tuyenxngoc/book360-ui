@@ -9,26 +9,37 @@ import { Button } from "@mui/material";
 import { axiosPrivate } from "~/utils/httpRequest";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClipboardCheck, faCreditCard, faUserPen } from "@fortawesome/free-solid-svg-icons";
-import images from "~/assets/images";
-import { useState } from "react";
+import images from "~/assets";
+import { useEffect, useState } from "react";
+import { getCustomer } from "~/services/apiRequest";
 
 const cx = classNames.bind(Style);
 
 function Checkouts() {
     const { user } = useAuth();
+    const [customer, setCustomer] = useState({});
+    const [totalPrice, setTotalPrice] = useState(0);
+
     const location = useLocation();
     const listProducts = location.state?.listProducts || [];
 
-    const [paymentMethods, setPaymentMethods] = useState();
+    useEffect(() => {
+        getCustomer(user.id)
+            .then(response => {
+                setCustomer(response.data.data);
+            })
+            .catch(error => {
+                console.error(error);
+            })
+    }, []);
 
-    if (listProducts.length === 0) {
-        return (
-            <>
-                <p>No products selected.</p>
-                <Link to={'/'}>Home</Link>
-            </>
-        );
-    }
+    useEffect(() => {
+        // Calculate total price when cartItems or checked array changes
+        const totalPrice = listProducts.reduce((sum, product) => {
+            return sum + product.quantity * (product.price * (100 - product.discount) / 100); // Assuming each product has a 'price' property
+        }, 0);
+        setTotalPrice(totalPrice);
+    }, []);
 
     const handleSubmit = () => {
         axiosPrivate.post(`bill/order-from-cart/${user.customerId}`, {
@@ -43,6 +54,15 @@ function Checkouts() {
             .catch(err => {
                 console.error(err);
             });
+    }
+
+    if (listProducts.length === 0) {
+        return (
+            <>
+                <p>No products selected.</p>
+                <Link to={'/'}>Home</Link>
+            </>
+        );
     }
 
     return (
@@ -78,6 +98,7 @@ function Checkouts() {
                                                 className="form-control form-control-sm"
                                                 id="input-phone-number"
                                                 placeholder="Số điện thoại liên hệ khi giao hàng"
+                                                defaultValue={customer.phonenumber}
                                             />
                                         </div>
                                         <div className={cx('form-group')}>
@@ -97,6 +118,7 @@ function Checkouts() {
                                                 className="form-control form-control-sm"
                                                 id="input-address"
                                                 placeholder="Nhập số nhà, tên đường"
+                                                defaultValue={customer.address}
                                             />
                                         </div>
                                     </div>
@@ -135,9 +157,9 @@ function Checkouts() {
                                         <span>Thông tin đơn hàng</span>
                                     </div>
                                     <div className={cx('inner')}>
-                                        {listProducts.map(product => {
+                                        {listProducts.map((product, index) => {
                                             return (
-                                                <div key={product.productId} className={cx('product-item')} >
+                                                <div key={index} className={cx('product-item')} >
                                                     <img className={cx('product-image')} src={product.image} alt={product.name}></img>
                                                     <div className={cx('product-description')}>
                                                         <span className={cx('product-name')}> {product.name}</span>
@@ -166,17 +188,23 @@ function Checkouts() {
                                         <div className={cx('bill-total-cost')}>
                                             <div className={cx('order-detail')}>
                                                 <span>Tiền hàng</span>
-                                                <span className={cx('price')}>4.000đ</span>
+                                                <span className={cx('price')}>
+                                                    <MoneyDisplay amount={totalPrice} />
+                                                </span>
                                             </div>
                                             <div className={cx('order-detail')}>
                                                 <span>Phí giao hàng</span>
-                                                <span className={cx('price')}>30.000đ</span>
+                                                <span className={cx('price')}>
+                                                    <MoneyDisplay amount={30000} />
+                                                </span>
                                             </div>
                                         </div>
                                         <div className={cx('total-and-submit')}>
                                             <div className={cx('total-cost')}>
                                                 <span>Tổng thanh toán</span>
-                                                <span className={cx('total-price')}>30.000đ</span>
+                                                <span className={cx('total-price')}>
+                                                    <MoneyDisplay amount={totalPrice + 30000} />
+                                                </span>
                                             </div>
                                             <Button className={cx('button-submit')} onClick={handleSubmit} variant="contained" >Đặt mua</Button>
                                         </div>

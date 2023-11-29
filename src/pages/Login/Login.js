@@ -8,7 +8,7 @@ import useAuth from '~/hooks/useAuth';
 
 import Style from './Login.module.scss';
 import classNames from 'classnames/bind';
-import images from '~/assets/images';
+import images from '~/assets';
 import { Button, TextField } from '@mui/material';
 import { toast } from 'react-toastify';
 

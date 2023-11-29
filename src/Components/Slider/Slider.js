@@ -1,5 +1,5 @@
 import Slider from "react-slick";
-import images from "~/assets/images";
+import images from "~/assets";
 
 import Style from './Slider.module.scss';
 import classNames from "classnames/bind";

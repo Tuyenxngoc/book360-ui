@@ -100,6 +100,22 @@ function BookDetails() {
         }
     }
 
+    const handleBuyNow = () => {
+        if (isAuthenticated) {
+            addProductToCart(user.customerId, id, quantity)
+                .then(response => {
+                    navigate('/cart', { state: { productIdSelect: [data.productID] } });
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+
+        } else {
+            navigate('/login', { replace: true, state: { from: location } });
+        }
+    }
+
+
     if (isError || isLoading) {
         return (
             <>
@@ -202,7 +218,7 @@ function BookDetails() {
                                                 >Thêm vào giỏ hàng </Button>
                                             </div>
                                             <div className="col">
-                                                <Button to={"/checkouts"} primary large id="buy-now" className="btn-light btnBuyNow ">Mua ngay</Button>
+                                                <Button onClick={handleBuyNow} primary large id="buy-now" className="btn-light btnBuyNow ">Mua ngay</Button>
                                             </div>
                                         </div>
                                     </div>
@@ -230,7 +246,7 @@ function BookDetails() {
                     </div>
                 </div>
             </div>
-            <HomeProduct title={'SÁCH MỚI'} url={'product/get-products?sortBy=createdDate'}></HomeProduct>
+            <HomeProduct title={'SÁCH MỚI'} apiUrl={'product/get-products?sortBy=createdDate'} moreLink={'/search'}></HomeProduct>
         </>
     )
 }

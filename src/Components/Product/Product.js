@@ -20,8 +20,8 @@ function Product({ data }) {
                     <img src={data.image} alt={data.name} />
                 </Link>
                 <div className={cx('product-tags')}>
-                    {data.discount > 0 && <div className={cx('tag-saleoff')}>-{data.discount}%</div>}
-                    {data.quantity === 0 && <div className={cx('tag-soldout')}>Hết hàng</div>}
+                    {data.discount > 0 && <div className={cx('tag-sale-off')}>-{data.discount}%</div>}
+                    {data.quantity === 0 && <div className={cx('tag-sold-out')}>Hết hàng</div>}
                 </div>
             </div>
 
@@ -34,9 +34,12 @@ function Product({ data }) {
                     <span className={cx('current-price')}>
                         <MoneyDisplay amount={currentPrice}></MoneyDisplay>
                     </span>
-                    <span className={cx('original-price')}>
-                        <s><MoneyDisplay amount={data.price}></MoneyDisplay></s>
-                    </span>
+
+                    {data.price !== currentPrice && (
+                        <span className={cx('original-price')}>
+                            <s><MoneyDisplay amount={data.price}></MoneyDisplay></s>
+                        </span>
+                    )}
                 </div>
             </div>
         </div>

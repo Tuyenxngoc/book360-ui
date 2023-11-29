@@ -11,17 +11,22 @@ import { removeCartItems, updatedCartItems } from "~/services/apiRequest";
 
 import Style from './Cart.module.scss';
 import classNames from "classnames/bind";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import MoneyDisplay from "~/components/MoneyDisplay";
 import { toast } from "react-toastify";
 
 const cx = classNames.bind(Style);
 
 function Cart() {
+    const location = useLocation();
+    const productIdSelect = location.state?.productIdSelect || [];
+
     const { user } = useAuth();
     const [cartItems, setCartItems] = useState([]);
-    const [checked, setChecked] = useState([]);
+    const [checked, setChecked] = useState(productIdSelect);
     const [totalPrice, setTotalPrice] = useState(0);
+
+
 
     const navigate = useNavigate();
 

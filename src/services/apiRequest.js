@@ -4,6 +4,10 @@ export const getCurrentUserLogin = () => {
     return axiosPrivate.get(`user/current`);
 }
 
+export const getCustomer = (userId) => {
+    return axiosPrivate.get(`customer/get-by-user/${userId}`);
+}
+
 export const addProductToCart = (customerId, productId, quantity) => {
     const data = { productId, quantity, }
     const url = `cart-detail/add-product-to-cart/${customerId}`;

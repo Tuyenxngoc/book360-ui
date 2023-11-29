@@ -1,5 +1,5 @@
 const images = {
-    logo: require('~/assets/images/logo2.png'),
+    logo: require('~/assets/images/logo.png'),
     banners: [
         require('~/assets/images/ms_banner_img1.webp'),
         require('~/assets/images/ms_banner_img2.webp'),
@@ -15,7 +15,6 @@ const images = {
         require('~/assets/images/banner_home_pro_5.jpg'),
         require('~/assets/images/banner_home_pro_6.jpg'),
         require('~/assets/images/banner_home_pro_7.jpg'),
-
     ],
     cart: require('~/assets/images/cart.svg').default,
     loading: require('~/assets/images/Loading.gif'),

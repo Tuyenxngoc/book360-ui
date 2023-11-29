@@ -1,4 +1,4 @@
-import images from '~/assets/images';
+import images from '~/assets';
 import Button from '~/components/Button';
 //Config
 import config from '~/config';
@@ -12,6 +12,7 @@ import { useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from './Header.module.scss';
 import useAuth from '~/hooks/useAuth';
+import { faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons';
 
 const cx = classNames.bind(styles);
 
@@ -23,9 +24,45 @@ function Header() {
     return (
         <header className={cx('wrapper')}>
             <div className="container">
-                <div className={cx('inner')}>
+                <nav className={cx('header-navbar')}>
+                    <ul className={cx('navbar-list')}>
+                        <li className={cx('navbar-item')}>
+                            <a
+                                className={cx('navbar-item-link')}
+                                href="/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                Chăm sóc khách hàng
+                            </a>
+                        </li>
+                        <li className={cx('navbar-item')}>
+                            <div className={cx('navbar-tilte')}>Kêt nối</div>
+                            <a
+                                href="https://www.facebook.com/tuyenngoc03"
+                                target="_blank"
+                                className={cx('navbar-icon-link')}
+                                rel="noopener noreferrer"
+                                title="Kết nối Faceboock"
+                            >
+                                <FontAwesomeIcon icon={faFacebook} />
+                            </a>
+                            <a
+                                href="https://www.facebook.com/tuyenngoc03"
+                                target="_blank"
+                                className={cx('navbar-icon-link')}
+                                rel="noopener noreferrer"
+                                title="Kết nối Instagram!"
+                            >
+                                <FontAwesomeIcon icon={faInstagram} />
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+
+                <div className={cx('header-with-search')}>
                     <div className={cx('logo')}>
-                        <Link to={config.routes.home}> <img src={images.logo} alt='logo'></img></Link>
+                        <a href={config.routes.home}> <img src={images.logo} alt='logo'></img></a>
                     </div>
 
                     <div className={cx('search')}>

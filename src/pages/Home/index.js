@@ -4,36 +4,42 @@ import Slide from '~/components/Slider';
 
 function Home() {
     return (
-        <div className='Home'>
+        <main className='Home'>
             <ProductCategory>{<Slide></Slide>}</ProductCategory>
             <HomeProduct
                 title={'ƯU ĐÃI'}
-                url={'product/get-products?sortBy=discount'}
+                apiUrl={'product/get-products?sortBy=discount'}
+                moreLink={'/search?sortBy=discount'}
             />
             <HomeProduct
                 title={'SÁCH MỚI'}
-                url={'product/get-products?sortBy=createdDate'}
+                apiUrl={'product/get-products?sortBy=createdDate'}
+                moreLink={'/search?sortBy=createdDate'}
             />
             <HomeProduct
                 title={'SÁCH BÁN CHẠY'}
-                url={'product/get-products?sortBy=selled'}
+                apiUrl={'product/get-products?sortBy=selled'}
+                moreLink={'/search?sortBy=selled'}
             />
             <HomeProduct
                 title={'KIẾN THỨC KHOA HỌC'}
-                banner={3}
-                url={'product/get-products-by-categoryId/3'}
+                bannerIndex={3}
+                apiUrl={'product/get-products-by-categoryId/3'}
+                moreLink={'/category/3'}
             />
             <HomeProduct
                 title={'MANGA - COMIC'}
-                banner={4}
-                url={'product/get-products-by-categoryId/5'}
+                bannerIndex={4}
+                apiUrl={'product/get-products-by-categoryId/5'}
+                moreLink={'/category/5'}
             />
             <HomeProduct
                 title={'WINGSBOOKS'}
-                banner={6}
-                url={'product/get-products-by-categoryId/6'}
+                bannerIndex={6}
+                apiUrl={'product/get-products-by-categoryId/6'}
+                moreLink={'/category/6'}
             />
-        </div>
+        </main>
     );
 }
 

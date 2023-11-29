@@ -5,7 +5,7 @@ import * as yup from 'yup';
 
 import Style from './Register.module.scss';
 import classNames from 'classnames/bind';
-import images from '~/assets/images';
+import images from '~/assets';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';

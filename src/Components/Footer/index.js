@@ -68,7 +68,7 @@ function Footer() {
 
             <div className={cx("copyrights")}>
                 <div className="text-center">
-                    Copyrights © 2021 by Book360. <a target="_blank" href="/">Powered by Tuyenngoc</a>
+                    Copyrights © 2023 by Book360. <a target="_blank" href="/">Powered by Tuyenngoc</a>
                 </div>
             </div>
         </div>
