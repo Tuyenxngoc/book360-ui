@@ -2,8 +2,7 @@
     background-color: white;
     padding: 16px;
 }
-.label {
-}
+
 .item {
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.02);
     height: 34px;
@@ -12,7 +11,7 @@
     border: 0;
     padding: 0 15px;
     margin-left: 10px;
-    color: #333;
+    color: var(--text-color);
     outline: none;
     user-select: none;
     cursor: pointer;

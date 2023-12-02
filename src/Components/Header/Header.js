@@ -37,9 +37,9 @@ function Header() {
                             </a>
                         </li>
                         <li className={cx('navbar-item')}>
-                            <div className={cx('navbar-tilte')}>Kêt nối</div>
+                            <div className={cx('navbar-tilte')}>Kết nối</div>
                             <a
-                                href="https://www.facebook.com/tuyenngoc03"
+                                href="https://www.facebook.com"
                                 target="_blank"
                                 className={cx('navbar-icon-link')}
                                 rel="noopener noreferrer"
@@ -48,7 +48,7 @@ function Header() {
                                 <FontAwesomeIcon icon={faFacebook} />
                             </a>
                             <a
-                                href="https://www.facebook.com/tuyenngoc03"
+                                href="https://www.facebook.com"
                                 target="_blank"
                                 className={cx('navbar-icon-link')}
                                 rel="noopener noreferrer"

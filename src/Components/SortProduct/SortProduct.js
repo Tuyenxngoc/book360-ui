@@ -7,27 +7,33 @@ const cx = classNames.bind(Style);
 
 const SortProduct = ({ handleSortChange, filters }) => {
 
-    const handleSelectChange = ({ target: { value, selectedIndex } }) => {
-        handleSortChange(value, selectedIndex % 2 !== 0);
+    const handleSelectChange = (e) => {
+        const selectedValue = e.target.value;
+        const isAscending = e.target.options[e.target.selectedIndex].getAttribute('data-isascending');
+        handleSortChange(selectedValue, isAscending);
     };
 
     return (
         <div className={cx('wrapper')}>
-            <span className={cx('label')}>Sắp xếp theo</span>
+            <span>Sắp xếp theo</span>
             <button
                 className={cx('item', { active: filters.sortBy === 'createdDate' })}
-                onClick={() => handleSortChange('createdDate')}>Mới nhất
+                onClick={() => handleSortChange('createdDate')}
+            >
+                Mới nhất
             </button>
             <button
                 className={cx('item', { active: filters.sortBy === 'selled' })}
-                onClick={() => handleSortChange('selled')}>Bán chạy
+                onClick={() => handleSortChange('selled')}
+            >
+                Bán chạy
             </button>
             <select onChange={(e) => handleSelectChange(e)} className={cx('item', 'select')}>
-                <option value="">Tùy chọn</option>
-                <option value="name">Tên A-Z</option>
-                <option value="name">Tên Z-A</option>
-                <option value="price">Giá tăng dần</option>
-                <option value="price">Giá giảm dần</option>
+                <option data-isascending="false" value="">Tùy chọn</option>
+                <option data-isascending="true" value="name">Tên A-Z</option>
+                <option data-isascending="false" value="name">Tên Z-A</option>
+                <option data-isascending="true" value="price">Giá tăng dần</option>
+                <option data-isascending="false" value="price">Giá giảm dần</option>
             </select>
 
         </div>

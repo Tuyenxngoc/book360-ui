@@ -19,7 +19,7 @@
     padding: 0;
     margin: 0;
     background: #e6e6e6;
-    color: #fff;
+    color: white;
     opacity: 0.6;
     position: absolute;
     top: calc(50% - 17px);
@@ -33,7 +33,7 @@
     &:hover {
         opacity: 1;
         border-radius: 3px;
-        color: #fff;
+        color: white;
         background: #e6e6e6;
     }
 }
@@ -66,7 +66,7 @@
     text-align: center;
     h2 {
         font-size: 24px;
-        color: #333333;
+        color: var(--text-color);
     }
 }
 

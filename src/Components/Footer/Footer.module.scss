@@ -1,6 +1,6 @@
 .wrapper {
     padding: 30px 0 0 0;
-    color: #333333;
+    color: var(--text-color);
     border-top: 1px solid #e6e6e6;
     position: relative;
     font-size: 14px;
@@ -23,16 +23,16 @@
 
 .link {
     cursor: pointer;
-    color: #333333;
+    color: var(--text-color);
     &:hover {
-        color: #d51c24;
+        color: var(--red-color);
     }
 }
 .copyrights {
     margin-top: 38px;
     background: #f2f5f7;
     padding: 10px 0;
-    color: #333333;
+    color: var(--text-color);
     a {
         display: inline-block;
         position: relative;
