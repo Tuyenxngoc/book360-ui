@@ -1,13 +1,10 @@
 .product-item {
-    position: relative;
     overflow: hidden;
+    background: white;
     border-radius: 3px;
-    background: #fff;
     padding: 5px;
 
     &:hover {
-        -moz-box-shadow: 0 1px 7px 0 rgba(0, 0, 0, 0.35);
-        -webkit-box-shadow: 0 1px 7px 0 rgba(0, 0, 0, 0.35);
         box-shadow: 0 1px 7px 0 rgba(0, 0, 0, 0.35);
         transform: translateY(-0.0625rem);
         z-index: 1;
@@ -16,9 +13,8 @@
 
 .product-img {
     position: relative;
-    overflow: hidden;
     img {
-        max-width: 100%;
+        width: 100%;
         height: auto;
     }
 }
@@ -62,7 +58,8 @@
     margin-bottom: 5px;
     display: inline-block;
     color: var(--text-color);
-    min-height: 34px;
+    line-height: 18px;
+    max-height: 36px;
     a {
         display: -webkit-box;
         -webkit-line-clamp: 2;
@@ -84,4 +81,72 @@
 .original-price {
     color: #bebebe;
     float: right;
+}
+
+//custom size
+.small {
+    display: flex;
+    align-items: center;
+
+    &:hover {
+        box-shadow: none;
+        transform: translateY(0);
+    }
+
+    .product-img {
+        width: 80px;
+        min-width: 80px;
+        overflow: hidden;
+
+        img {
+            object-fit: cover;
+            transition: transform 0.5s ease;
+            &:hover {
+                animation: zoomIn 0.5s forwards;
+            }
+            &:not(:hover) {
+                animation: zoomOut 0.5s forwards;
+            }
+        }
+        @keyframes zoomIn {
+            from {
+                transform: scale(1);
+            }
+            to {
+                transform: scale(1.1);
+            }
+        }
+        @keyframes zoomOut {
+            from {
+                transform: scale(1.1);
+            }
+            to {
+                transform: scale(1);
+            }
+        }
+
+        .tag-sale-off,
+        .tag-sold-out {
+            display: none;
+        }
+    }
+
+    .product-info {
+        margin-top: 0;
+        padding-left: 5px;
+
+        .product-title {
+            a {
+                -webkit-line-clamp: 3;
+            }
+        }
+
+        .product-price {
+            display: flex;
+            align-items: center;
+            .current-price {
+                margin-right: 5px;
+            }
+        }
+    }
 }

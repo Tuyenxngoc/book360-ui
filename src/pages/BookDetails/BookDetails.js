@@ -21,12 +21,13 @@ import Error from "~/components/Error";
 import { addProductToCart } from "~/services/apiRequest";
 import useAuth from "~/hooks/useAuth";
 import { toast } from "react-toastify";
+import Product from "~/components/Product";
 
 const cx = classNames.bind(Style);
 
 function BookDetails() {
     //Get user information
-    const { user, isAuthenticated } = useAuth();
+    const { customer, isAuthenticated } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
     //Id book
@@ -78,7 +79,7 @@ function BookDetails() {
     };
     const handleAddProductToCart = () => {
         if (isAuthenticated) {
-            addProductToCart(user.customerId, id, quantity)
+            addProductToCart(customer.id, id, quantity)
                 .then(response => {
                     console.log(response.data);
                     toast.success('Thêm vào giỏ hàng thành công!', {
@@ -102,7 +103,7 @@ function BookDetails() {
 
     const handleBuyNow = () => {
         if (isAuthenticated) {
-            addProductToCart(user.customerId, id, quantity)
+            addProductToCart(customer.id, id, quantity)
                 .then(response => {
                     navigate('/cart', { state: { productIdSelect: [data.productID] } });
                 })
@@ -129,7 +130,7 @@ function BookDetails() {
         <>
             <Breadcrumbs currentPage={data.name}></Breadcrumbs>
             <div className='container'>
-                <div className={cx('product')}>
+                <main className={cx('product')}>
                     <div className='row'>
                         <div className="col-5">
                             <div className={cx('product-img')}>
@@ -226,12 +227,12 @@ function BookDetails() {
                             </div>
                         </div>
                     </div>
-                </div>
+                </main>
             </div>
 
             <div className="container">
                 <div className="row">
-                    <div className="col-9">
+                    <div className="col-8">
                         <div className={cx('product-description-wrapper')}>
                             <h2 className={cx('tile')}>Mô tả sản phẩm</h2>
                             <div className={cx('description')}>
@@ -239,9 +240,17 @@ function BookDetails() {
                             </div>
                         </div>
                     </div>
-                    <div className="col-3">
+                    <div className="col-4">
                         <div className={cx('product-author-wrapper')}>
                             <h2 className={cx('tile')}>Sách cùng tác giả</h2>
+                            <div className="row">
+                                <div className="col">
+                                    <Product data={data} small ></Product>
+                                </div>
+                                <div className="col">
+                                    <Product data={data} small ></Product>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

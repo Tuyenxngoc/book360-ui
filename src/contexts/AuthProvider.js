@@ -2,31 +2,35 @@ import { useEffect } from 'react';
 import { createContext, useState } from 'react';
 import Loading from '~/components/Loading';
 import { getCurrentUserLogin } from '~/services/apiRequest';
-import { getToken, removeToken, setRefreshToken, setToken } from '~/services/authService';
+import localStorageKeys, { getItem, removeItem, setItem } from '~/services/localStorageService';
 
-// Create a context for the authentication state
 const AuthContext = createContext();
 
-const AuthProvider = ({ children }) => {
-    const defaultAuth = {
-        isAuthenticated: false,
-        user: {
-            id: '',
-            customerId: '',
-            username: '',
-            role: '',
-            email: ''
-        },
+const defaultAuth = {
+    isAuthenticated: false,
+    user: {
+        id: '',
+        username: '',
+        roleName: '',
+        email: ''
+    },
+    customer: {
+        id: -1,
+        name: '',
+        phonenumber: '',
+        address: ''
     }
+}
 
-    // State to manage authentication status and user information
+const AuthProvider = ({ children }) => {
+
     const [authState, setAuthState] = useState(defaultAuth);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const validateToken = async () => {
             try {
-                const token = getToken();
+                const token = getItem(localStorageKeys.ACCESS_TOKEN);
                 if (!token) {
                     setAuthState(defaultAuth);
                     setLoading(false);
@@ -34,22 +38,26 @@ const AuthProvider = ({ children }) => {
                 }
                 const response = await getCurrentUserLogin();
                 if (response.status === 200) {
-                    const { id, customerId, username, roleName, email } = response.data.data;
+                    const { id, customer, username, roleName, email } = response.data.data;
                     setAuthState({
                         isAuthenticated: true,
                         user: {
                             id,
-                            customerId,
                             username,
-                            role: roleName,
+                            roleName,
                             email
                         },
+                        customer: {
+                            id: customer.id,
+                            name: customer.name,
+                            phonenumber: customer.phonenumber,
+                            address: customer.address
+                        }
                     });
                 } else {
                     setAuthState(defaultAuth);
                 }
             } catch (error) {
-                removeToken();
                 setAuthState(defaultAuth);
             } finally {
                 setLoading(false);
@@ -59,36 +67,30 @@ const AuthProvider = ({ children }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    // Function to handle user login
-    const login = ({ id, username, role, accessToken, refreshToken }) => {
-        // Add new token from local storage
-        setToken(accessToken);
-        setRefreshToken(refreshToken);
-        // Update the authentication status and user information
+    const login = ({ id, username, roleName, accessToken, refreshToken }) => {
+        setItem(localStorageKeys.ACCESS_TOKEN, accessToken);
+        setItem(localStorageKeys.REFRESH_TOKEN, refreshToken);
         setAuthState({
             ...authState,
             isAuthenticated: true,
             user: {
                 id,
                 username,
-                role,
+                roleName,
             },
         });
     };
 
-    // Function to handle user logout
     const logout = () => {
-        // Remove the token from local storage
-        removeToken();
-        // Update the authentication status and user information
+        removeItem(localStorageKeys.ACCESS_TOKEN);
+        removeItem(localStorageKeys.REFRESH_TOKEN);
         setAuthState(defaultAuth);
-        // Redirect or perform other actions upon logout
     };
 
-    // Provide the authentication context values to the components
     const contextValues = {
         isAuthenticated: authState.isAuthenticated,
         user: authState.user,
+        customer: authState.customer,
         login,
         logout,
     };

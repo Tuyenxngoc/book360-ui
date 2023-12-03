@@ -1,55 +1,58 @@
-import { Link, useLocation } from "react-router-dom";
-import Breadcrumb from "~/components/Breadcrumb";
-import useAuth from "~/hooks/useAuth";
-
+//react
+import { useEffect, useMemo, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+//Style
 import Style from './Checkouts.module.scss';
 import classNames from "classnames/bind";
-import MoneyDisplay from "~/components/MoneyDisplay";
+//mui ui
 import { Button } from "@mui/material";
-import { axiosPrivate } from "~/utils/httpRequest";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClipboardCheck, faCreditCard, faUserPen } from "@fortawesome/free-solid-svg-icons";
+//component
 import images from "~/assets";
-import { useEffect, useState } from "react";
-import { getCustomer } from "~/services/apiRequest";
+import useAuth from "~/hooks/useAuth";
+import Breadcrumb from "~/components/Breadcrumb";
+import MoneyDisplay from "~/components/MoneyDisplay";
+import { axiosPrivate } from "~/utils/httpRequest";
 
 const cx = classNames.bind(Style);
 
 function Checkouts() {
-    const { user } = useAuth();
-    const [customer, setCustomer] = useState({});
-    const [totalPrice, setTotalPrice] = useState(0);
-
+    const { user, customer } = useAuth();
     const location = useLocation();
-    const listProducts = location.state?.listProducts || [];
+    const memoizedListProducts = useMemo(() => {
+        return location.state?.listProducts || [];
+    }, [location.state]);
+    const navigate = useNavigate();
+    const listProducts = memoizedListProducts;
+    const [totalPrice, setTotalPrice] = useState(0);
+    const [shippingInfo, setShippingInfo] = useState({
+        nameCustomer: user.username,
+        phonenumber: customer.phonenumber,
+        address: customer.address,
+        listProductId: listProducts.map(item => item.productId),
+    });
 
     useEffect(() => {
-        getCustomer(user.id)
-            .then(response => {
-                setCustomer(response.data.data);
-            })
-            .catch(error => {
-                console.error(error);
-            })
-    }, [user.id]);
-
-    useEffect(() => {
-        // Calculate total price when cartItems or checked array changes
         const totalPrice = listProducts.reduce((sum, product) => {
-            return sum + product.quantity * (product.price * (100 - product.discount) / 100); // Assuming each product has a 'price' property
+            return sum + product.quantity * (product.price * (100 - product.discount) / 100);
         }, 0);
         setTotalPrice(totalPrice);
     }, [listProducts]);
 
+    const handleShippingChange = (e) => {
+        const { name, value } = e.target;
+        setShippingInfo((prevInfo) => ({
+            ...prevInfo,
+            [name]: value,
+        }));
+    };
+
     const handleSubmit = () => {
-        axiosPrivate.post(`bill/order-from-cart/${user.customerId}`, {
-            nameCustomer: user.username,
-            phonenumber: "0984176224",
-            address: "Thanh hoa",
-            listProductId: []
-        })
+        axiosPrivate.post(`bill/order-from-cart/${customer.id}`, shippingInfo)
             .then(response => {
                 console.log(response.data);
+                navigate('/', { replace: true });
             })
             .catch(err => {
                 console.error(err);
@@ -88,7 +91,9 @@ function Checkouts() {
                                                 className="form-control form-control-sm"
                                                 id="input-name"
                                                 placeholder="Họ tên người nhận"
-                                                defaultValue={user.username}
+                                                name="nameCustomer"
+                                                value={shippingInfo.nameCustomer}
+                                                onChange={handleShippingChange}
                                             />
                                         </div>
                                         <div className={cx('form-group')}>
@@ -98,7 +103,9 @@ function Checkouts() {
                                                 className="form-control form-control-sm"
                                                 id="input-phone-number"
                                                 placeholder="Số điện thoại liên hệ khi giao hàng"
-                                                defaultValue={customer.phonenumber}
+                                                name="phonenumber"
+                                                value={shippingInfo.phonenumber}
+                                                onChange={handleShippingChange}
                                             />
                                         </div>
                                         <div className={cx('form-group')}>
@@ -108,7 +115,9 @@ function Checkouts() {
                                                 className="form-control form-control-sm"
                                                 id="input-email"
                                                 placeholder="Email nhận đơn hàng"
-                                                defaultValue={user.email}
+                                                name="email"
+                                                value={user.email}
+                                                onChange={handleShippingChange}
                                             />
                                         </div>
                                         <div className={cx('form-group')}>
@@ -118,7 +127,9 @@ function Checkouts() {
                                                 className="form-control form-control-sm"
                                                 id="input-address"
                                                 placeholder="Nhập số nhà, tên đường"
-                                                defaultValue={customer.address}
+                                                name="address"
+                                                value={shippingInfo.address}
+                                                onChange={handleShippingChange}
                                             />
                                         </div>
                                     </div>

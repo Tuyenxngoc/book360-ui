@@ -7,14 +7,14 @@ import MoneyDisplay from "../MoneyDisplay";
 
 const cx = classNames.bind(style)
 
-function Product({ data }) {
+function Product({ data, small = false }) {
     const calculateDiscountedPrice = () => {
         return data.discount > 0 ? data.price - (data.price * data.discount / 100) : data.price;
     };
     const currentPrice = calculateDiscountedPrice();
 
     return (
-        <div className={cx('product-item')}>
+        <div className={cx('product-item', { small })}>
             <div className={cx('product-img')}>
                 <Link to={`/product/${data.productID}`}>
                     <img src={data.image} alt={data.name} />
@@ -54,6 +54,7 @@ Product.propTypes = {
         price: PropTypes.number.isRequired,
         discount: PropTypes.number.isRequired,
     }).isRequired,
+    small: PropTypes.bool
 };
 
 export default Product;

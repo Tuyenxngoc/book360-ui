@@ -33,7 +33,7 @@ function Login() {
                 login({
                     id,
                     username,
-                    role: authorities[0].authority,
+                    roleName: authorities[0].authority,
                     accessToken,
                     refreshToken
                 })

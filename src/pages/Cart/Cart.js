@@ -21,7 +21,7 @@ function Cart() {
     const location = useLocation();
     const productIdSelect = location.state?.productIdSelect || [];
 
-    const { user } = useAuth();
+    const { customer } = useAuth();
     const [cartItems, setCartItems] = useState([]);
     const [checked, setChecked] = useState(productIdSelect);
     const [totalPrice, setTotalPrice] = useState(0);
@@ -30,7 +30,7 @@ function Cart() {
 
     const fetchCartItems = async () => {
         try {
-            const response = await axiosPrivate.get(`/cart/get-cart-infor/${user.customerId}`);
+            const response = await axiosPrivate.get(`/cart/get-cart-infor/${customer.id}`);
             setCartItems(response.data.data);
         } catch (error) {
             console.error(error);
@@ -55,7 +55,7 @@ function Cart() {
 
     const handleUpdateQuantity = (productId, newQuantity, setIsUpdate) => {
         setIsUpdate(true);
-        updatedCartItems(user.customerId, productId, newQuantity)
+        updatedCartItems(customer.id, productId, newQuantity)
             .then(response => {
                 console.log(response.data);
                 const newCartItems = cartItems.map((item) =>
@@ -72,7 +72,7 @@ function Cart() {
     };
 
     const handleDeleteProduct = (productId) => {
-        removeCartItems(user.customerId, productId)
+        removeCartItems(customer.id, productId)
             .then((response) => {
                 console.log(response);
                 setCartItems(cartItems.filter(item => item.productId !== productId))
@@ -112,7 +112,6 @@ function Cart() {
                     ...productInfo
                 };
             }
-
             // Trường hợp nếu không tìm thấy thông tin sản phẩm
             return null;
         });

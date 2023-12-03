@@ -82,9 +82,9 @@ function HomeProduct({ title, bannerIndex, apiUrl, moreLink }) {
         <>
             {bannerIndex >= 0 &&
                 <div className={cx('banner-home-pro')}>
-                    <a className={cx('banner-home-pro-link')} href="/">
+                    <Link className={cx('banner-home-pro-link')} to={moreLink}>
                         <img src={images.bannerPro[bannerIndex]} alt='home-banner' />
-                    </a>
+                    </Link>
                 </div>
             }
             <div className="container">
@@ -97,7 +97,7 @@ function HomeProduct({ title, bannerIndex, apiUrl, moreLink }) {
                             <Slider {...settings}>
                                 {productData.map((product) => {
                                     return (
-                                        <div key={product.productID} className="px-2">
+                                        <div key={product.productID} className="px-2 mt-2">
                                             <Product data={product} ></Product>
                                         </div>
                                     )
