@@ -29,14 +29,8 @@ function Login() {
         try {
             const response = await httpRequest.post(`/auth/login`, values);
             if (response.status === 200) {
-                const { accessToken, authorities, id, username, refreshToken } = response.data.data;
-                login({
-                    id,
-                    username,
-                    roleName: authorities[0].authority,
-                    accessToken,
-                    refreshToken
-                })
+                const { accessToken, refreshToken } = response.data.data;
+                login({ accessToken, refreshToken });
                 navigate(from, { replace: true });
             }
         } catch (error) {

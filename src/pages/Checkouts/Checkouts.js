@@ -17,20 +17,24 @@ import { axiosPrivate } from "~/utils/httpRequest";
 
 const cx = classNames.bind(Style);
 
+const DELIVERY_FEE = 30000;
+
 function Checkouts() {
+
     const { user, customer } = useAuth();
+    const navigate = useNavigate();
     const location = useLocation();
-    const memoizedListProducts = useMemo(() => {
+
+    const listProducts = useMemo(() => {
         return location.state?.listProducts || [];
     }, [location.state]);
-    const navigate = useNavigate();
-    const listProducts = memoizedListProducts;
+
     const [totalPrice, setTotalPrice] = useState(0);
     const [shippingInfo, setShippingInfo] = useState({
-        nameCustomer: user.username,
+        nameCustomer: customer.name,
         phonenumber: customer.phonenumber,
         address: customer.address,
-        listProductId: listProducts.map(item => item.productId),
+        listProductId: listProducts.map(item => item.productId)
     });
 
     useEffect(() => {
@@ -49,10 +53,10 @@ function Checkouts() {
     };
 
     const handleSubmit = () => {
-        axiosPrivate.post(`bill/order-from-cart/${customer.id}`, shippingInfo)
+        axiosPrivate.post(`bill/order-from-cart/${customer.customerId}`, shippingInfo)
             .then(response => {
                 console.log(response.data);
-                navigate('/', { replace: true });
+                navigate('/purchase', { replace: true });
             })
             .catch(err => {
                 console.error(err);
@@ -206,7 +210,7 @@ function Checkouts() {
                                             <div className={cx('order-detail')}>
                                                 <span>Phí giao hàng</span>
                                                 <span className={cx('price')}>
-                                                    <MoneyDisplay amount={30000} />
+                                                    <MoneyDisplay amount={DELIVERY_FEE} />
                                                 </span>
                                             </div>
                                         </div>
@@ -214,7 +218,7 @@ function Checkouts() {
                                             <div className={cx('total-cost')}>
                                                 <span>Tổng thanh toán</span>
                                                 <span className={cx('total-price')}>
-                                                    <MoneyDisplay amount={totalPrice + 30000} />
+                                                    <MoneyDisplay amount={totalPrice + DELIVERY_FEE} />
                                                 </span>
                                             </div>
                                             <Button className={cx('button-submit')} onClick={handleSubmit} variant="contained" >Đặt mua</Button>

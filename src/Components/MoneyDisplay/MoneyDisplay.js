@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 
-const MoneyDisplay = ({ amount, discountPercent = 0 }) => {
-    // Hàm định dạng số tiền
+function MoneyDisplay({ amount, discountPercent = 0 }) {
+
     const formatMoney = (value, discountPercent) => {
         const discountedAmount = discountPercent > 0 ? value - (value * discountPercent / 100) : value;
         return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(discountedAmount);

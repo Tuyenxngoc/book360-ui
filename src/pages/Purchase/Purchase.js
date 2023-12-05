@@ -1,67 +1,86 @@
-import * as React from 'react';
-import PropTypes from 'prop-types';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
+import { axiosPrivate } from '~/utils/httpRequest';
+import useAuth from '~/hooks/useAuth';
+import PurchaseTab from '~/components/PurchaseTab';
+import { useState, useEffect } from 'react';
+import { buyAgain, cancelOrder } from '~/services/billService';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser, faBell, faClipboard } from '@fortawesome/free-regular-svg-icons';
 
-function CustomTabPanel(props) {
-    const { children, value, index, ...other } = props;
+function Purchase() {
 
-    return (
-        <div
-            role="tabpanel"
-            hidden={value !== index}
-            id={`simple-tabpanel-${index}`}
-            aria-labelledby={`simple-tab-${index}`}
-            {...other}
-        >
-            {value === index && (
-                <div sx={{ p: 3 }}>
-                    <Typography>{children}</Typography>
-                </div>
-            )}
-        </div>
-    );
-}
+    const { customer } = useAuth();
+    const [data, setData] = useState([]);
 
-CustomTabPanel.propTypes = {
-    children: PropTypes.node,
-    index: PropTypes.number.isRequired,
-    value: PropTypes.number.isRequired,
-};
+    const handleCancelOrder = (billId) => {
+        cancelOrder(billId)
+            .then((response) => {
+                console.log(response);
+                const updatedData = data.map((item) =>
+                    item.id === billId ? { ...item, status: 'canceled' } : item
+                );
+                console.log(updatedData);
+                setData(updatedData);
+            })
+            .catch((error) => { console.log(error); })
+    }
+    const handleBuyAgain = (billId) => {
+        buyAgain(billId)
+            .then((response) => { console.log(response); })
+            .catch((error) => { console.log(error); })
+    }
 
-function a11yProps(index) {
-    return {
-        id: `simple-tab-${index}`,
-        'aria-controls': `simple-tabpanel-${index}`,
-    };
-}
-
-export default function Purchase() {
-    const [value, setValue] = React.useState(0);
-
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
+    useEffect(() => {
+        axiosPrivate.get(`bill/get-bills/${customer.customerId}`)
+            .then((response) => {
+                const xxx = response.data.data.items;
+                console.log(xxx);
+                setData(xxx);
+            })
+            .catch((error) => { console.log(error); })
+    }, [])
 
     return (
         <div className="container">
-            <div sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                <Tabs value={value} onChange={handleChange}>
-                    <Tab label="Item One" {...a11yProps(0)} />
-                    <Tab label="Item Two" {...a11yProps(1)} />
-                    <Tab label="Item Three" {...a11yProps(2)} />
-                </Tabs>
+            <div className='row'>
+                <div className='col-2'>
+
+                    <div className='sidebar'>
+                        <ul>
+                            <li>
+                                <Link to="/profile">
+                                    <span className='icon'><FontAwesomeIcon icon={faUser} /></span>
+                                    <span>Tài khoản của tôi</span>
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to="/purchase">
+                                    <span className='icon'><FontAwesomeIcon icon={faClipboard} /></span>
+                                    <span>Đơn mua</span>
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to="/">
+                                    <span className='icon'><FontAwesomeIcon icon={faBell} /></span>
+                                    <span>Thông báo</span>
+                                </Link>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+                <div className='col-10'>
+                    {data.map((data, index) =>
+                        <PurchaseTab
+                            key={index}
+                            data={data}
+                            handleCancelOrder={handleCancelOrder}
+                            handleBuyAgain={handleBuyAgain} />)}
+                </div>
             </div>
-            <CustomTabPanel value={value} index={0}>
-                Item One
-            </CustomTabPanel>
-            <CustomTabPanel value={value} index={1}>
-                Item Two
-            </CustomTabPanel>
-            <CustomTabPanel value={value} index={2}>
-                Item Three
-            </CustomTabPanel>
         </div>
     );
 }
+
+export default Purchase;
+

@@ -33,7 +33,10 @@ function BookDetails() {
     //Id book
     const { id } = useParams();
     //Data books
-    const [data, setData] = useState({});
+    const [bookData, setBookData] = useState({});
+    //Same author
+    const [sameAuthorBookData, setSameAuthorBookData] = useState([]);
+
     //Loading book
     const [isError, setIsError] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
@@ -41,26 +44,34 @@ function BookDetails() {
     const [quantity, setQuantity] = useState(1);
     // Xử lý logic với Id
     useEffect(() => {
-        window.scrollTo(0, 0);
-        httpRequest
-            .get(`product/get-product-detail/${id}`)
-            .then((response) => {
-                setData(response.data.data)
+        const fetchData = async () => {
+            try {
+                window.scrollTo(0, 0);
+
+                const [productDetailResponse, sameAuthorBooksResponse] = await Promise.all([
+                    httpRequest.get(`product/get-product-detail/${id}`),
+                    httpRequest.get(`product/get-products-same-author/${id}`)
+                ]);
+
+                setBookData(productDetailResponse.data.data);
+                setSameAuthorBookData(sameAuthorBooksResponse.data.data);
                 setIsLoading(false);
-            })
-            .catch(() => {
+            } catch (error) {
                 setIsLoading(false);
                 setIsError(true);
-            });
+            }
+        };
+
+        fetchData();
     }, [id]);
 
     const calculateDiscountedPrice = () => {
-        return data.discount > 0 ? data.price - (data.price * data.discount / 100) : data.price;
+        return bookData.discount > 0 ? bookData.price - (bookData.price * bookData.discount / 100) : bookData.price;
     };
 
     const currentPrice = calculateDiscountedPrice();
 
-    const maxQuantity = data.quantity;
+    const maxQuantity = bookData.quantity;
     const increaseQuantity = () => {
         if (quantity < maxQuantity) {
             setQuantity(quantity + 1);
@@ -79,7 +90,7 @@ function BookDetails() {
     };
     const handleAddProductToCart = () => {
         if (isAuthenticated) {
-            addProductToCart(customer.id, id, quantity)
+            addProductToCart(customer.customerId, id, quantity)
                 .then(response => {
                     console.log(response.data);
                     toast.success('Thêm vào giỏ hàng thành công!', {
@@ -103,9 +114,9 @@ function BookDetails() {
 
     const handleBuyNow = () => {
         if (isAuthenticated) {
-            addProductToCart(customer.id, id, quantity)
+            addProductToCart(customer.customerId, id, quantity)
                 .then(response => {
-                    navigate('/cart', { state: { productIdSelect: [data.productID] } });
+                    navigate('/cart', { state: { productIdSelect: [bookData.productID] } });
                 })
                 .catch(error => {
                     console.error(error);
@@ -128,7 +139,7 @@ function BookDetails() {
 
     return (
         <>
-            <Breadcrumbs currentPage={data.name}></Breadcrumbs>
+            <Breadcrumbs currentPage={bookData.name}></Breadcrumbs>
             <div className='container'>
                 <main className={cx('product')}>
                     <div className='row'>
@@ -137,14 +148,14 @@ function BookDetails() {
                                 <div className="row">
                                     <div className="col-3">
                                         <div className={cx('prod-img')}>
-                                            <img src={data.image} alt={data.name}></img>
+                                            <img src={bookData.image} alt={bookData.name}></img>
                                         </div>
                                     </div>
                                     <div className="col">
 
-                                        <div className={cx('sale-percentage-btn')}>{`-${data.discount}%`}</div>
+                                        <div className={cx('sale-percentage-btn')}>{`-${bookData.discount}%`}</div>
                                         <div className={cx('prod-img')}>
-                                            <img src={data.image} alt={data.name}></img>
+                                            <img src={bookData.image} alt={bookData.name}></img>
                                         </div>
                                     </div>
                                 </div>
@@ -154,7 +165,7 @@ function BookDetails() {
                         <div className="col-7">
                             <div className={cx('product-content')}>
                                 <div className={cx('pro-content-head')}>
-                                    <h1>{data.name}</h1>
+                                    <h1>{bookData.name}</h1>
                                 </div>
 
                                 <div className={cx('pro-price')}>
@@ -162,24 +173,24 @@ function BookDetails() {
                                         <MoneyDisplay amount={currentPrice}></MoneyDisplay>
                                     </div>
                                     <div className={cx('original-price')}>
-                                        <s><MoneyDisplay amount={data.price}></MoneyDisplay></s>
+                                        <s><MoneyDisplay amount={bookData.price}></MoneyDisplay></s>
                                         <span className={cx('priceSaving')}>
                                             Bạn đã tiết kiệm được&nbsp;
-                                            {<MoneyDisplay amount={data.price - currentPrice}></MoneyDisplay>}
+                                            {<MoneyDisplay amount={bookData.price - currentPrice}></MoneyDisplay>}
                                         </span>
                                     </div>
                                 </div>
 
                                 <div className={cx('pro-short-desc')}>
                                     <ul>
-                                        <li>{`Tác giả: ${data.author}`}</li>
-                                        <li>{`Khuôn Khổ: ${data.size} cm`}</li>
+                                        <li>{`Tác giả: ${bookData.author}`}</li>
+                                        <li>{`Khuôn Khổ: ${bookData.size} cm`}</li>
                                     </ul>
                                 </div>
 
                                 <div className={cx('pro-rating')}>
                                     <div className={cx('pro-selled')}>
-                                        {`Đã bán: ${data.selled}`}
+                                        {`Đã bán: ${bookData.selled}`}
                                     </div>
                                 </div>
 
@@ -202,11 +213,11 @@ function BookDetails() {
                                         >+</button>
                                     </div>
                                     <div className={cx('quantity')}>
-                                        {data.quantity > 0 ? `Còn ${data.quantity} sản phẩm` : 'Tạm hết hàng'}
+                                        {bookData.quantity > 0 ? `Còn ${bookData.quantity} sản phẩm` : 'Tạm hết hàng'}
                                     </div>
                                 </div>
 
-                                {data.quantity !== 0 &&
+                                {bookData.quantity !== 0 &&
                                     <div className="product-actions">
                                         <div className="row">
                                             <div className="col">
@@ -235,24 +246,26 @@ function BookDetails() {
                     <div className="col-8">
                         <div className={cx('product-description-wrapper')}>
                             <h2 className={cx('tile')}>Mô tả sản phẩm</h2>
-                            <div className={cx('description')}>
-                                {data.description}
+                            <div
+                                className={cx('description')}
+                                dangerouslySetInnerHTML={{ __html: bookData.description }}>
                             </div>
                         </div>
                     </div>
-                    <div className="col-4">
-                        <div className={cx('product-author-wrapper')}>
-                            <h2 className={cx('tile')}>Sách cùng tác giả</h2>
-                            <div className="row">
-                                <div className="col">
-                                    <Product data={data} small ></Product>
-                                </div>
-                                <div className="col">
-                                    <Product data={data} small ></Product>
+                    {sameAuthorBookData.length > 0 &&
+                        <div className="col-4">
+                            <div className={cx('product-author-wrapper')}>
+                                <h2 className={cx('tile')}>Sách cùng tác giả</h2>
+                                <div className="row">
+                                    {sameAuthorBookData.map((data, index) => (
+                                        <div key={index} className="col">
+                                            <Product data={data} small ></Product>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    }
                 </div>
             </div>
             <HomeProduct title={'SÁCH MỚI'} apiUrl={'product/get-products?sortBy=createdDate'} moreLink={'/search'}></HomeProduct>

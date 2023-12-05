@@ -30,7 +30,7 @@ function Cart() {
 
     const fetchCartItems = async () => {
         try {
-            const response = await axiosPrivate.get(`/cart/get-cart-infor/${customer.id}`);
+            const response = await axiosPrivate.get(`/cart/get-cart-infor/${customer.customerId}`);
             setCartItems(response.data.data);
         } catch (error) {
             console.error(error);
@@ -55,7 +55,7 @@ function Cart() {
 
     const handleUpdateQuantity = (productId, newQuantity, setIsUpdate) => {
         setIsUpdate(true);
-        updatedCartItems(customer.id, productId, newQuantity)
+        updatedCartItems(customer.customerId, productId, newQuantity)
             .then(response => {
                 console.log(response.data);
                 const newCartItems = cartItems.map((item) =>
@@ -72,7 +72,7 @@ function Cart() {
     };
 
     const handleDeleteProduct = (productId) => {
-        removeCartItems(customer.id, productId)
+        removeCartItems(customer.customerId, productId)
             .then((response) => {
                 console.log(response);
                 setCartItems(cartItems.filter(item => item.productId !== productId))

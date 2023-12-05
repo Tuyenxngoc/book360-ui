@@ -5,25 +5,14 @@ import Style from './Profile.module.scss';
 import classNames from "classnames/bind";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell, faClipboard, faUser } from "@fortawesome/free-regular-svg-icons";
-import { useEffect, useState } from "react";
 import useAuth from "~/hooks/useAuth";
-import { getCustomer } from "~/services/apiRequest";
+import { Link } from "react-router-dom";
 
 const cx = classNames.bind(Style);
 
 function Profile() {
-    const { user } = useAuth();
-    const [customer, setCustomer] = useState({});
 
-    useEffect(() => {
-        getCustomer(user.id)
-            .then(response => {
-                setCustomer(response.data.data);
-            })
-            .catch(error => {
-                console.error(error);
-            })
-    }, [user.id]);
+    const { user, customer } = useAuth();
 
     const handleSubmit = () => {
         alert('coming soon');
@@ -36,22 +25,22 @@ function Profile() {
                     <div className={cx('sidebar')}>
                         <ul>
                             <li>
-                                <a href="/">
+                                <Link to="/profile">
                                     <span className={cx('icon')}><FontAwesomeIcon icon={faUser} /></span>
                                     <span>Tài khoản của tôi</span>
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a href="/">
+                                <Link to="/purchase">
                                     <span className={cx('icon')}><FontAwesomeIcon icon={faClipboard} /></span>
                                     <span>Đơn mua</span>
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a href="/">
+                                <Link to="/">
                                     <span className={cx('icon')}><FontAwesomeIcon icon={faBell} /></span>
                                     <span>Thông báo</span>
-                                </a>
+                                </Link>
                             </li>
                         </ul>
                     </div>

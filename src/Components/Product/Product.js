@@ -4,43 +4,56 @@ import PropTypes from 'prop-types';
 import style from './Product.module.scss'
 import classNames from "classnames/bind";
 import MoneyDisplay from "../MoneyDisplay";
+import { Skeleton } from "@mui/material";
 
 const cx = classNames.bind(style)
 
 function Product({ data, small = false }) {
-    const calculateDiscountedPrice = () => {
-        return data.discount > 0 ? data.price - (data.price * data.discount / 100) : data.price;
-    };
-    const currentPrice = calculateDiscountedPrice();
 
     return (
         <div className={cx('product-item', { small })}>
             <div className={cx('product-img')}>
-                <Link to={`/product/${data.productID}`}>
-                    <img src={data.image} alt={data.name} />
-                </Link>
-                <div className={cx('product-tags')}>
-                    {data.discount > 0 && <div className={cx('tag-sale-off')}>-{data.discount}%</div>}
-                    {data.quantity === 0 && <div className={cx('tag-sold-out')}>Hết hàng</div>}
-                </div>
+                {data ? (
+                    <>
+                        <Link to={`/product/${data.productID}`}>
+                            <img src={data.image} alt={data.name} />
+                        </Link>
+                        <div className={cx('product-tags')}>
+                            {data.discount > 0 && <div className={cx('tag-sale-off')}>-{data.discount}%</div>}
+                            {data.quantity === 0 && <div className={cx('tag-sold-out')}>Hết hàng</div>}
+                        </div>
+                    </>
+                ) : (
+                    <Skeleton variant="rectangular" fitContent height={250} />
+                )}
             </div>
 
             <div className={cx('product-info')}>
-                <div className={cx('product-title')}>
-                    <Link to={`/product/${data.productID}`}>{data.name}</Link>
-                </div>
+                {data ? (
+                    <>
+                        <div className={cx('product-title')}>
+                            <Link to={`/product/${data.productID}`}>{data.name}</Link>
+                        </div>
 
-                <div className={cx('product-price')}>
-                    <span className={cx('current-price')}>
-                        <MoneyDisplay amount={currentPrice}></MoneyDisplay>
-                    </span>
+                        <div className={cx('product-price')}>
+                            <span className={cx('current-price')}>
+                                <MoneyDisplay amount={data.price} discountPercent={data.discount}></MoneyDisplay>
+                            </span>
 
-                    {data.price !== currentPrice && (
-                        <span className={cx('original-price')}>
-                            <s><MoneyDisplay amount={data.price}></MoneyDisplay></s>
-                        </span>
-                    )}
-                </div>
+                            {data.discount > 0 && (
+                                <span className={cx('original-price')}>
+                                    <s><MoneyDisplay amount={data.price}></MoneyDisplay></s>
+                                </span>
+                            )}
+                        </div>
+                    </>
+                ) : (
+                    <>
+                        <Skeleton />
+                        <Skeleton width="60%" />
+                    </>
+                )}
+
             </div>
         </div>
     );
@@ -53,7 +66,7 @@ Product.propTypes = {
         name: PropTypes.string.isRequired,
         price: PropTypes.number.isRequired,
         discount: PropTypes.number.isRequired,
-    }).isRequired,
+    }),
     small: PropTypes.bool
 };
 

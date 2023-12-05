@@ -6,7 +6,7 @@ import localStorageKeys, { getItem, removeItem, setItem } from '~/services/local
 
 const AuthContext = createContext();
 
-const defaultAuth = {
+const DeFAULT_AUTH = {
     isAuthenticated: false,
     user: {
         id: '',
@@ -24,67 +24,60 @@ const defaultAuth = {
 
 const AuthProvider = ({ children }) => {
 
-    const [authState, setAuthState] = useState(defaultAuth);
+    const [authState, setAuthState] = useState(DeFAULT_AUTH);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const validateToken = async () => {
-            try {
-                const token = getItem(localStorageKeys.ACCESS_TOKEN);
-                if (!token) {
-                    setAuthState(defaultAuth);
-                    setLoading(false);
-                    return;
-                }
-                const response = await getCurrentUserLogin();
-                if (response.status === 200) {
-                    const { id, customer, username, roleName, email } = response.data.data;
-                    setAuthState({
-                        isAuthenticated: true,
-                        user: {
-                            id,
-                            username,
-                            roleName,
-                            email
-                        },
-                        customer: {
-                            id: customer.id,
-                            name: customer.name,
-                            phonenumber: customer.phonenumber,
-                            address: customer.address
-                        }
-                    });
-                } else {
-                    setAuthState(defaultAuth);
-                }
-            } catch (error) {
-                setAuthState(defaultAuth);
-            } finally {
-                setLoading(false);
-            }
-        };
         validateToken();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const login = ({ id, username, roleName, accessToken, refreshToken }) => {
+    const validateToken = async () => {
+        try {
+            const token = getItem(localStorageKeys.ACCESS_TOKEN);
+            if (!token) {
+                setAuthState(DeFAULT_AUTH);
+                setLoading(false);
+                return;
+            }
+            const response = await getCurrentUserLogin();
+            if (response.status === 200) {
+                const { id, username, roleName, email, customerId, name, phonenumber, address } = response.data.data;
+                setAuthState({
+                    isAuthenticated: true,
+                    user: {
+                        id,
+                        username,
+                        roleName,
+                        email
+                    },
+                    customer: {
+                        customerId,
+                        name,
+                        phonenumber,
+                        address
+                    },
+                });
+            } else {
+                setAuthState(DeFAULT_AUTH);
+            }
+        } catch (error) {
+            setAuthState(DeFAULT_AUTH);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const login = ({ accessToken, refreshToken }) => {
         setItem(localStorageKeys.ACCESS_TOKEN, accessToken);
         setItem(localStorageKeys.REFRESH_TOKEN, refreshToken);
-        setAuthState({
-            ...authState,
-            isAuthenticated: true,
-            user: {
-                id,
-                username,
-                roleName,
-            },
-        });
+        validateToken();
     };
 
     const logout = () => {
         removeItem(localStorageKeys.ACCESS_TOKEN);
         removeItem(localStorageKeys.REFRESH_TOKEN);
-        setAuthState(defaultAuth);
+        setAuthState(DeFAULT_AUTH);
     };
 
     const contextValues = {

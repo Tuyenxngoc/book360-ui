@@ -15,6 +15,7 @@ import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import images from "~/assets";
+import { Skeleton, Typography } from "@mui/material";
 
 const cx = classNames.bind(Style);
 
@@ -69,7 +70,8 @@ const settings = {
 };
 
 function HomeProduct({ title, bannerIndex, apiUrl, moreLink }) {
-    const [productData, setProductData] = useState([]);
+
+    const [productData, setProductData] = useState();
 
     useEffect(() => {
         httpRequest
@@ -83,7 +85,11 @@ function HomeProduct({ title, bannerIndex, apiUrl, moreLink }) {
             {bannerIndex >= 0 &&
                 <div className={cx('banner-home-pro')}>
                     <Link className={cx('banner-home-pro-link')} to={moreLink}>
-                        <img src={images.bannerPro[bannerIndex]} alt='home-banner' />
+                        {productData ? (
+                            <img src={images.bannerPro[bannerIndex]} alt='home-banner' />
+                        ) : (
+                            <Skeleton variant="rectangular" fitContent height={120} />
+                        )}
                     </Link>
                 </div>
             }
@@ -91,22 +97,36 @@ function HomeProduct({ title, bannerIndex, apiUrl, moreLink }) {
                 <div className={cx('home-products')}>
                     <div className="row">
                         <div className="col-12">
-                            <div className={cx('section-title')}><h2>{title}</h2></div>
+                            <div className={cx('section-title')}>
+                                {productData ? (
+                                    <h2>{title}</h2>
+                                ) : (
+                                    <Typography component="div" variant='h3' style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                        <Skeleton width={200} />
+                                    </Typography>
+                                )}
+                            </div>
                         </div>
                         <div className="col-12">
                             <Slider {...settings}>
-                                {productData.map((product) => {
+                                {(productData ? productData : Array.from(new Array(10))).map((product, index) => {
                                     return (
-                                        <div key={product.productID} className="px-2 mt-2">
-                                            <Product data={product} ></Product>
+                                        <div key={index} className="px-2 mt-2">
+                                            <Product data={product}></Product>
                                         </div>
-                                    )
+                                    );
                                 })}
                             </Slider>
                         </div>
                         <div className="col-12">
                             <div className={cx('grid-item')}>
-                                <Link to={moreLink}>Xem thêm &gt;&gt;</Link>
+                                {productData ? (
+                                    <Link to={moreLink}>Xem thêm &gt;&gt;</Link>
+                                ) : (
+                                    <Typography component="div" style={{ display: 'flex', justifyContent: 'right', alignItems: 'center' }}>
+                                        <Skeleton width={100} />
+                                    </Typography>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -115,12 +135,12 @@ function HomeProduct({ title, bannerIndex, apiUrl, moreLink }) {
         </>
     );
 }
+
 HomeProduct.propTypes = {
     title: PropTypes.string.isRequired,
     bannerIndex: PropTypes.number,
     apiUrl: PropTypes.string.isRequired,
     moreLink: PropTypes.string.isRequired
-
 }
 
 export default HomeProduct;
