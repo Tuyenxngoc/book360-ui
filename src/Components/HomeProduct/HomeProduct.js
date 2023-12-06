@@ -88,7 +88,7 @@ function HomeProduct({ title, bannerIndex, apiUrl, moreLink }) {
                         {productData ? (
                             <img src={images.bannerPro[bannerIndex]} alt='home-banner' />
                         ) : (
-                            <Skeleton variant="rectangular" fitContent height={120} />
+                            <Skeleton animation="wave" variant="rectangular" height={120} />
                         )}
                     </Link>
                 </div>
@@ -102,7 +102,7 @@ function HomeProduct({ title, bannerIndex, apiUrl, moreLink }) {
                                     <h2>{title}</h2>
                                 ) : (
                                     <Typography component="div" variant='h3' style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                        <Skeleton width={200} />
+                                        <Skeleton animation="wave" width={200} />
                                     </Typography>
                                 )}
                             </div>
@@ -124,7 +124,7 @@ function HomeProduct({ title, bannerIndex, apiUrl, moreLink }) {
                                     <Link to={moreLink}>Xem thêm &gt;&gt;</Link>
                                 ) : (
                                     <Typography component="div" style={{ display: 'flex', justifyContent: 'right', alignItems: 'center' }}>
-                                        <Skeleton width={100} />
+                                        <Skeleton animation="wave" width={100} />
                                     </Typography>
                                 )}
                             </div>

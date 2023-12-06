@@ -1,0 +1,28 @@
+.bill-status {
+    background-color: white;
+}
+
+.blank {
+    width: 100%;
+    height: 300px;
+    background-color: white;
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    .no-orders {
+        background-position: 50%;
+        background-size: contain;
+        background-repeat: no-repeat;
+        width: 100px;
+        height: 100px;
+        background-image: url('../../assets/images/no_order.png');
+    }
+
+    h2 {
+        font-size: 18px;
+        font-weight: 400;
+    }
+}

@@ -36,7 +36,6 @@ function BookDetails() {
     const [bookData, setBookData] = useState({});
     //Same author
     const [sameAuthorBookData, setSameAuthorBookData] = useState([]);
-
     //Loading book
     const [isError, setIsError] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
@@ -116,7 +115,7 @@ function BookDetails() {
         if (isAuthenticated) {
             addProductToCart(customer.customerId, id, quantity)
                 .then(response => {
-                    navigate('/cart', { state: { productIdSelect: [bookData.productID] } });
+                    navigate('/cart', { state: { productIdSelect: [bookData.productId] } });
                 })
                 .catch(error => {
                     console.error(error);

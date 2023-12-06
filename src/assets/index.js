@@ -1,12 +1,5 @@
 const images = {
     logo: require('~/assets/images/logo.png'),
-    banners: [
-        require('~/assets/images/ms_banner_img1.webp'),
-        require('~/assets/images/ms_banner_img2.webp'),
-        require('~/assets/images/ms_banner_img3.webp'),
-        require('~/assets/images/ms_banner_img4.webp'),
-        require('~/assets/images/ms_banner_img5.webp'),
-    ],
     bannerPro: [
         require('~/assets/images/banner_home_pro_0.jpg'),
         require('~/assets/images/banner_home_pro_1.jpg'),
@@ -26,6 +19,6 @@ const images = {
         require('~/assets/images/zalopay.svg').default,
         require('~/assets/images/shopeepay_new.svg').default,
 
-    ]
+    ],
 }
 export default images;

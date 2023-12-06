@@ -9,11 +9,18 @@ import classNames from 'classnames/bind';
 //Icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faBook } from '@fortawesome/free-solid-svg-icons';
+import { Skeleton } from '@mui/material';
 
 const cx = classNames.bind(Style);
 
+const skeletonItems = Array.from({ length: 9 }, (_, index) => (
+    <Skeleton animation="wave" key={index} className='my-2' variant="rounded" height={31} />
+));
+
 function ProductCategory({ children }) {
-    const [listCategory, setListCategory] = useState([]);
+
+    const [listCategory, setListCategory] = useState();
+
     useEffect(() => {
         httpRequest
             .get('category/get-categories')
@@ -22,32 +29,41 @@ function ProductCategory({ children }) {
     }, []);
 
     return (
-        <div className={cx('wrapper')}>
+        <nav className={cx('wrapper')}>
             <div className="container">
                 <div className="row g-1">
                     <div className="col-3">
-                        <h2 className={cx('title')}>
-                            <i><FontAwesomeIcon icon={faBars}></FontAwesomeIcon></i>
-                            Danh mục sản phẩm
-                        </h2>
-                        <ul className={cx('list')}>
-                            {listCategory.map(item => (
-                                <li key={item.id} className={cx('item')}>
-                                    <Link to={`category/${item.id}`}>
-                                        <FontAwesomeIcon icon={faBook} />
-                                        <span>{item.name.toUpperCase()}</span>
-                                    </Link>
-                                </li>
-                            )
-                            )}
-                        </ul>
+                        {listCategory ? (
+                            <>
+                                <h2 className={cx('title')}>
+                                    <i><FontAwesomeIcon icon={faBars}></FontAwesomeIcon></i>
+                                    Danh mục sản phẩm
+                                </h2>
+                                <ul className={cx('list')}>
+                                    {listCategory.map(item => (
+                                        <li key={item.id} className={cx('item')}>
+                                            <Link to={`category/${item.id}`}>
+                                                <FontAwesomeIcon icon={faBook} />
+                                                <span>{item.name.toUpperCase()}</span>
+                                            </Link>
+                                        </li>
+                                    )
+                                    )}
+                                </ul>
+                            </>
+                        ) : (
+                            <>
+                                <Skeleton animation="wave" variant="rectangular" height={50} />
+                                {skeletonItems}
+                            </>
+                        )}
                     </div>
                     <div className="col-9">
                         {children}
                     </div>
                 </div>
             </div>
-        </div>
+        </nav>
     );
 }
 

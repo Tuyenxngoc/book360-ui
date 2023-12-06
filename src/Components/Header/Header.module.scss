@@ -3,6 +3,7 @@
     background: linear-gradient(0deg, #02bbff, #36d8ff);
     display: flex;
     justify-content: center;
+    user-select: none;
 }
 //nav
 .header-navbar {
@@ -32,7 +33,6 @@
 .navbar-tilte,
 .navbar-icon-link,
 .navbar-item-link {
-    font-size: 13px;
     color: white;
     font-weight: 400;
 }

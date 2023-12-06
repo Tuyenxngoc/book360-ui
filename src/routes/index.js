@@ -1,5 +1,7 @@
 //Config
 import config from "~/config";
+//Layout
+import { HeaderOnly, UserDashboard } from "~/layouts";
 //Page
 import Home from "~/pages/Home";
 import BookDetails from "~/pages/BookDetails";
@@ -10,7 +12,6 @@ import Cart from "~/pages/Cart";
 import Login from "~/pages/Login";
 import Profile from "~/pages/Profile/Profile";
 import Register from "~/pages/Register";
-import { HeaderOnly } from "~/layouts";
 import ForgotPassword from "~/pages/ForgotPassword";
 import Purchase from "~/pages/Purchase";
 
@@ -27,8 +28,8 @@ const publicRoutes = [
 const privateRoutes = [
     { path: config.routes.cart, component: Cart },
     { path: config.routes.checkouts, component: Checkouts, layout: null },
-    { path: config.routes.profile, component: Profile },
-    { path: config.routes.purchaseOrder, component: Purchase },
+    { path: config.routes.profile, component: Profile, layout: UserDashboard },
+    { path: config.routes.purchaseOrder, component: Purchase, layout: UserDashboard },
 ]
 
 export { publicRoutes, privateRoutes } 

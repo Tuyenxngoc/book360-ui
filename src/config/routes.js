@@ -13,7 +13,7 @@ const routes = {
     upload: '/upload',
     profile: '/profile',
     purchaseOrder: '/purchase',
-
+    //Notfound routes
     notFound: '*',
 }
 export default routes;

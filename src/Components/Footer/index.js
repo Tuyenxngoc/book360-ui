@@ -12,7 +12,7 @@ function Footer() {
         email: 'tuyenn9448@gmail.com'
     }
     return (
-        <div className={cx('wrapper')}>
+        <footer className={cx('wrapper')}>
             <div className="container">
                 <div className="row">
                     <div className="col-3">
@@ -71,7 +71,7 @@ function Footer() {
                     Copyrights © 2023 by Book360. <a target="_blank" href="/">Powered by Tuyenngoc</a>
                 </div>
             </div>
-        </div>
+        </footer>
     )
 }
 

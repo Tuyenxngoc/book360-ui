@@ -15,7 +15,7 @@ function Product({ data, small = false }) {
             <div className={cx('product-img')}>
                 {data ? (
                     <>
-                        <Link to={`/product/${data.productID}`}>
+                        <Link to={`/product/${data.productId}`}>
                             <img src={data.image} alt={data.name} />
                         </Link>
                         <div className={cx('product-tags')}>
@@ -24,7 +24,7 @@ function Product({ data, small = false }) {
                         </div>
                     </>
                 ) : (
-                    <Skeleton variant="rectangular" fitContent height={250} />
+                    <Skeleton animation="wave" variant="rectangular" height={250} />
                 )}
             </div>
 
@@ -32,7 +32,7 @@ function Product({ data, small = false }) {
                 {data ? (
                     <>
                         <div className={cx('product-title')}>
-                            <Link to={`/product/${data.productID}`}>{data.name}</Link>
+                            <Link to={`/product/${data.productId}`}>{data.name}</Link>
                         </div>
 
                         <div className={cx('product-price')}>
@@ -49,8 +49,8 @@ function Product({ data, small = false }) {
                     </>
                 ) : (
                     <>
-                        <Skeleton />
-                        <Skeleton width="60%" />
+                        <Skeleton animation="wave" />
+                        <Skeleton animation="wave" width="60%" />
                     </>
                 )}
 
@@ -61,7 +61,7 @@ function Product({ data, small = false }) {
 
 Product.propTypes = {
     data: PropTypes.shape({
-        productID: PropTypes.number.isRequired,
+        productId: PropTypes.number.isRequired,
         image: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
         price: PropTypes.number.isRequired,
