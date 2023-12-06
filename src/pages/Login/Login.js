@@ -11,11 +11,12 @@ import classNames from 'classnames/bind';
 import images from '~/assets';
 import { Button, TextField } from '@mui/material';
 import { toast } from 'react-toastify';
+import { useEffect } from 'react';
 
 const cx = classNames.bind(Style);
 
 function Login() {
-    const { login } = useAuth();
+    const { isAuthenticated, login } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || "/";
@@ -24,6 +25,13 @@ function Login() {
         emailOrUsername: yup.string().required('Trường này là bắt buộc'),
         password: yup.string().required('Trường này là bắt buộc'),
     });
+
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate('/', { replace: true });
+        }
+    }, []);
 
     const handleLogin = async (values) => {
         try {
