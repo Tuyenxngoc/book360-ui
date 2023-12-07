@@ -18,7 +18,8 @@ const DeFAULT_AUTH = {
         id: -1,
         name: '',
         phonenumber: '',
-        address: ''
+        address: '',
+        avatar: ''
     }
 }
 
@@ -42,7 +43,7 @@ const AuthProvider = ({ children }) => {
             }
             const response = await getCurrentUserLogin();
             if (response.status === 200) {
-                const { id, username, roleName, email, customerId, name, phonenumber, address } = response.data.data;
+                const { id, username, roleName, email, customerId, name, phonenumber, address, avatar } = response.data.data;
                 setAuthState({
                     isAuthenticated: true,
                     user: {
@@ -55,7 +56,8 @@ const AuthProvider = ({ children }) => {
                         customerId,
                         name,
                         phonenumber,
-                        address
+                        address,
+                        avatar
                     },
                 });
             } else {
@@ -65,6 +67,28 @@ const AuthProvider = ({ children }) => {
             setAuthState(DeFAULT_AUTH);
         } finally {
             setLoading(false);
+        }
+    };
+
+    // Function to update customer information
+    const updateCustomerInfo = async () => {
+        try {
+            const response = await getCurrentUserLogin();
+            if (response.status === 200) {
+                const { customerId, name, phonenumber, address, avatar } = response.data.data;
+                setAuthState((prevState) => ({
+                    ...prevState,
+                    customer: {
+                        customerId,
+                        name,
+                        phonenumber,
+                        address,
+                        avatar,
+                    },
+                }));
+            }
+        } catch (error) {
+            console.error("Error updating customer information:", error);
         }
     };
 
@@ -86,6 +110,7 @@ const AuthProvider = ({ children }) => {
         customer: authState.customer,
         login,
         logout,
+        updateCustomerInfo,
     };
 
     if (loading) {

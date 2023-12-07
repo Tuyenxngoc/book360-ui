@@ -81,7 +81,7 @@ function HomeProduct({ title, bannerIndex, apiUrl, moreLink }) {
     }, [apiUrl]);
 
     return (
-        <>
+        <div className="home-product">
             {bannerIndex >= 0 &&
                 <div className={cx('banner-home-pro')}>
                     <Link className={cx('banner-home-pro-link')} to={moreLink}>
@@ -132,7 +132,7 @@ function HomeProduct({ title, bannerIndex, apiUrl, moreLink }) {
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 }
 

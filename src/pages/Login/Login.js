@@ -26,7 +26,6 @@ function Login() {
         password: yup.string().required('Trường này là bắt buộc'),
     });
 
-
     useEffect(() => {
         if (isAuthenticated) {
             navigate('/', { replace: true });

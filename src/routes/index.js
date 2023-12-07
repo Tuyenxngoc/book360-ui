@@ -14,6 +14,9 @@ import Profile from "~/pages/Profile/Profile";
 import Register from "~/pages/Register";
 import ForgotPassword from "~/pages/ForgotPassword";
 import Purchase from "~/pages/Purchase";
+import ChangePassword from "~/pages/ChangePassword";
+import Notification from "~/pages/Notification";
+import Address from "~/pages/Address";
 
 const publicRoutes = [
     { path: config.routes.home, component: Home },
@@ -28,7 +31,11 @@ const publicRoutes = [
 const privateRoutes = [
     { path: config.routes.cart, component: Cart },
     { path: config.routes.checkouts, component: Checkouts, layout: null },
+
     { path: config.routes.profile, component: Profile, layout: UserDashboard },
+    { path: config.routes.password, component: ChangePassword, layout: UserDashboard },
+    { path: config.routes.address, component: Address, layout: UserDashboard },
+    { path: config.routes.notification, component: Notification, layout: UserDashboard },
     { path: config.routes.purchaseOrder, component: Purchase, layout: UserDashboard },
 ]
 

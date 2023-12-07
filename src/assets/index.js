@@ -20,5 +20,6 @@ const images = {
         require('~/assets/images/shopeepay_new.svg').default,
 
     ],
+    success: require('~/assets/images/success.svg').default,
 }
 export default images;

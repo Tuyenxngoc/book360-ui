@@ -10,8 +10,10 @@ const routes = {
     //Private routes
     checkouts: '/checkouts',
     cart: '/cart',
-    upload: '/upload',
     profile: '/profile',
+    password: '/password',
+    address: '/address',
+    notification: '/notification',
     purchaseOrder: '/purchase',
     //Notfound routes
     notFound: '*',

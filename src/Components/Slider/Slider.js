@@ -58,22 +58,20 @@ function Slide() {
     }, []);
 
     return (
-        <div className={cx('wrapper')}>
-            <div className={cx('inner')}>
-                {bannerData ? (
-                    <Slider {...settings}>
-                        {bannerData.map((banner, index) => (
-                            <div key={index}>
-                                <Link to={'/test'}>
-                                    <img className={cx('img')} src={banner.image} alt="banner" />
-                                </Link>
-                            </div>
-                        ))}
-                    </Slider>
-                ) : (
-                    <Skeleton animation="wave" variant="rectangular" height={400} />
-                )}
-            </div>
+        <div className={cx('slide')}>
+            {bannerData ? (
+                <Slider {...settings}>
+                    {bannerData.map((banner, index) => (
+                        <div key={index}>
+                            <Link to={'/search?keyword='}>
+                                <img className={cx('img')} src={banner.image} alt="banner" />
+                            </Link>
+                        </div>
+                    ))}
+                </Slider>
+            ) : (
+                <Skeleton animation="wave" variant="rectangular" height={400} />
+            )}
         </div>
     );
 }

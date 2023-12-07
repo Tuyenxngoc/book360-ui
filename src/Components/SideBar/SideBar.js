@@ -1,6 +1,6 @@
 import { Avatar } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faKey, faLocationDot, faBell, faClipboard, faHeart, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faKey, faLocationDot, faBell, faClipboard, faHeart, faUser, faPen } from "@fortawesome/free-solid-svg-icons";
 
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
@@ -16,10 +16,10 @@ const cx = classNames.bind(Style);
 
 function SideBar() {
 
-    const { user } = useAuth();
+    const location = useLocation();
+    const { customer } = useAuth();
     const [isAccountPanelOpen, setAccountPanelOpen] = useState(true);
     const [isTransactionPanelOpen, setTransactionPanelOpen] = useState(true);
-    const location = useLocation();
 
     // Function to determine if a Link is active based on its "to" prop
     const isLinkActive = (to) => {
@@ -38,11 +38,14 @@ function SideBar() {
         <aside>
             <div className={cx('user-info')}>
                 <div className={cx('avatar')}>
-                    <Avatar alt="user" src={images.userDefault} sx={{ width: 50, height: 50 }} />
+                    <Avatar alt="user" src={customer.avatar || images.userDefault} sx={{ width: 50, height: 50 }} />
                 </div>
                 <div className={cx('info')}>
-                    <p>{user.username}</p>
-                    <Link to="/profile">Chỉnh sửa tài khoản</Link>
+                    <p>{customer.name}</p>
+                    <Link to="/profile">
+                        <FontAwesomeIcon icon={faPen} />
+                        <span>Chỉnh sửa tài khoản</span>
+                    </Link>
                 </div>
             </div>
 
@@ -60,19 +63,19 @@ function SideBar() {
                                 </Link>
                             </li>
                             <li className={cx('panelItem')}>
-                                <Link className={cx('panelLink')}>
+                                <Link to='/address' className={cx('panelLink', { 'active': isLinkActive('/address') })}>
                                     <span className={cx('icon')}><FontAwesomeIcon icon={faLocationDot} /></span>
                                     Địa chỉ
                                 </Link>
                             </li>
                             <li className={cx('panelItem')}>
-                                <Link className={cx('panelLink')}>
+                                <Link to='/password' className={cx('panelLink', { 'active': isLinkActive('/password') })}>
                                     <span className={cx('icon')}><FontAwesomeIcon icon={faKey} /></span>
                                     Đổi mật khẩu
                                 </Link>
                             </li>
                             <li className={cx('panelItem')}>
-                                <Link className={cx('panelLink')}>
+                                <Link to='/notification' className={cx('panelLink', { 'active': isLinkActive('/notification') })}>
                                     <span className={cx('icon')}><FontAwesomeIcon icon={faBell} /></span>
                                     Cài đặt thông báo
                                 </Link>

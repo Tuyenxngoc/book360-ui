@@ -1,97 +1,218 @@
-import { Button } from "@mui/material";
+import { Avatar, Button, Dialog, DialogContent, TextField } from "@mui/material";
 import images from "~/assets";
 
 import Style from './Profile.module.scss';
 import classNames from "classnames/bind";
 
 import useAuth from "~/hooks/useAuth";
+import { useRef } from "react";
+
+import { useFormik } from 'formik';
+import * as yup from 'yup';
+import { updateCustomer } from "~/services/customerService";
+import { useState } from "react";
+
+const validationSchema = yup.object({
+    name: yup.string()
+        .max(25, 'Họ và tên không dài quá 25 ký tự.')
+        .required('Tên là bắt buộc'),
+    address: yup.string()
+        .required('Địa chỉ là bắt buộc'),
+    phonenumber: yup.string()
+        .matches(/^(?:\+84|0)(?:1[2689]|9[0-9]|3[2-9]|5[6-9]|7[0-9])(?:\d{7}|\d{8})$/, 'Phải là số điện thoại hợp lệ')
+        .required('Số điện thoại là bắt buộc'),
+    avatar: yup.mixed(),
+});
 
 const cx = classNames.bind(Style);
 
 function Profile() {
+    const fileInputRef = useRef(null);
+    const { user, customer, updateCustomerInfo } = useAuth();
+    const [loading, setLoading] = useState(false);
+    const [open, setOpen] = useState(false);
 
-    const { user, customer } = useAuth();
+    const formik = useFormik({
+        initialValues: {
+            name: customer.name,
+            address: customer.address,
+            phonenumber: customer.phonenumber,
+            avatar: customer.avatar,
+        },
+        validationSchema: validationSchema,
+        onSubmit: (values) => {
+            handleSubmit(values);
+        },
+    });
 
-    const handleSubmit = () => {
-        alert('coming soon');
+    const handleSelectInput = () => {
+        fileInputRef.current.click();
+    };
+
+    const handleAvatarChange = (event) => {
+        const file = event.target.files[0];
+
+        if (file) {
+            if (
+                (file.type === 'image/jpeg' || file.type === 'image/png') &&
+                file.size <= 1024 * 1024 // 1MB
+            ) {
+                formik.setFieldValue('avatar', file);
+            } else {
+                alert('Vui lòng chọn file JPEG hoặc PNG có dung lượng tối đa 1MB.');
+            }
+        }
+    };
+
+    const handleSubmit = (values) => {
+        setLoading(true);
+        updateCustomer(customer.customerId, values)
+            .then(response => {
+                setOpen(true);
+                updateCustomerInfo();
+            })
+            .catch(error => {
+                console.log(error)
+            })
+            .finally(() => {
+                setLoading(false);
+            });
     }
 
+    const handleClose = () => {
+        setOpen(false);
+    };
+
     return (
-        <div className={cx('main-content')}>
-            <div className="row">
-                <div className="col-12">
-                    <div className={cx('header')}>
-                        <h3 className={cx('title')}>Hồ sơ của tôi</h3>
-                        <div className={cx('description')}>Quản lý thông tin hồ sơ để bảo mật tài khoản</div>
+        <>
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogContent id="alert-dialog-description">
+                    <div className={cx('popup-container')}>
+                        <img src={images.success} alt="success" />
+                        Cập nhật thông tin thành công
                     </div>
-                </div>
-            </div>
+                </DialogContent>
+            </Dialog>
 
-            <div className="row pt-4">
-                <div className="col-8">
-                    <form>
-                        <div className={cx('form-group')}>
-                            <label>Tên đăng nhập</label>
-                            <input
-                                type="text"
-                                className="form-control form-control-sm"
-                                disabled
-                                defaultValue={customer.name}
-                            />
-                        </div>
-                        <div className={cx('form-group')}>
-                            <label>Tên</label>
-                            <input
-                                type="text"
-                                className="form-control form-control-sm"
-                            />
-                        </div>
-                        <div className={cx('form-group')}>
-                            <label>Email</label>
-                            <input
-                                type="text"
-                                className="form-control form-control-sm"
-                                defaultValue={user.email}
-                            />
-                        </div>
-                        <div className={cx('form-group')}>
-                            <label>Số điện thoại</label>
-                            <input
-                                type="text"
-                                className="form-control form-control-sm"
-                                defaultValue={customer.phonenumber}
-                            />
-                        </div>
-                        <div className={cx('form-group')}>
-                            <label>Địa chỉ</label>
-                            <input
-                                type="text"
-                                className="form-control form-control-sm"
-                                defaultValue={customer.address}
-                            />
-                        </div>
-                        <div className={cx('form-group')}>
-                            <label></label>
-                            <Button onClick={handleSubmit} size="small" variant="contained">Lưu</Button>
-                        </div>
-                    </form>
-                </div>
-
-                <div className="col-4">
-                    <div className={cx('user-avt')}>
-                        <div>
-                            <img className={cx("avatar")} src={images.userDefault} alt="avatar"></img>
-                        </div>
-                        <input type="file" />
-                        <Button size="small" variant="outlined">Chọn ảnh</Button>
-                        <div className={cx('file-description')}>
-                            <div>Dụng lượng file tối đa 1 MB</div>
-                            <div>Định dạng:.JPEG, .PNG</div>
+            <div className={cx('main-content')}>
+                <div className="row">
+                    <div className="col-12">
+                        <div className={cx('header')}>
+                            <h3 className={cx('title')}>Hồ sơ của tôi</h3>
+                            <div>Quản lý thông tin hồ sơ để bảo mật tài khoản</div>
                         </div>
                     </div>
                 </div>
+
+                <div className="row pt-4">
+                    <div className="col-8">
+                        <form onSubmit={formik.handleSubmit}>
+                            <div className={cx('form-group')}>
+                                <label>Tên đăng nhập</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    disabled
+                                    defaultValue={user.username}
+                                />
+                            </div>
+                            <div className={cx('form-group')}>
+                                <label>Tên</label>
+                                <TextField
+                                    fullWidth
+                                    size="small"
+                                    id="name"
+                                    name="name"
+                                    value={formik.values.name}
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    error={formik.touched.name && Boolean(formik.errors.name)}
+                                    helperText={formik.touched.name && formik.errors.name}
+                                />
+                            </div>
+                            <div className={cx('form-group')}>
+                                <label>Email</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    disabled
+                                    defaultValue={user.email}
+                                />
+                            </div>
+                            <div className={cx('form-group')}>
+                                <label>Số điện thoại</label>
+                                <TextField
+                                    fullWidth
+                                    size="small"
+                                    id="phonenumber"
+                                    name="phonenumber"
+                                    value={formik.values.phonenumber}
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    error={formik.touched.phonenumber && Boolean(formik.errors.phonenumber)}
+                                    helperText={formik.touched.phonenumber && formik.errors.phonenumber}
+                                />
+                            </div>
+                            <div className={cx('form-group')}>
+                                <label>Địa chỉ</label>
+                                <TextField
+                                    fullWidth
+                                    size="small"
+                                    id="address"
+                                    name="address"
+                                    value={formik.values.address}
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    error={formik.touched.address && Boolean(formik.errors.address)}
+                                    helperText={formik.touched.address && formik.errors.address}
+                                />
+                            </div>
+                            <div className={cx('form-group')}>
+                                <label></label>
+                                <Button color="primary" variant="contained" type="submit" disabled={loading}>Lưu</Button>
+                            </div>
+                            <input
+                                ref={fileInputRef}
+                                type="file"
+                                id="avatar"
+                                name="avatar"
+                                onChange={handleAvatarChange}
+                                accept=".jpg,.jpeg,.png"
+                                style={{ display: 'none' }}
+                            />
+                        </form>
+                    </div>
+
+                    <div className="col-4">
+                        <div className={cx('user-avt')}>
+                            <div className={cx("avatar")}>
+                                <Avatar
+                                    alt="avatar"
+                                    src={
+                                        formik.values.avatar ? (
+                                            formik.values.avatar instanceof File ?
+                                                URL.createObjectURL(formik.values.avatar)
+                                                : formik.values.avatar
+                                        ) : (images.userDefault)
+                                    }
+                                    sx={{ width: 100, height: 100, cursor: 'pointer' }}
+                                    onClick={handleSelectInput}
+                                />
+                            </div>
+                            <Button size="small" onClick={handleSelectInput} variant="outlined">Chọn ảnh</Button>
+                            <div className={cx('file-description')}>
+                                <div>Dụng lượng file tối đa 1 MB</div>
+                                <div>Định dạng: .JPG, .JPEG, .PNG</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+        </>
     );
 }
 

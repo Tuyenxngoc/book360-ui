@@ -6,20 +6,21 @@ import config from '~/config';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 //React
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 //Styles
 import classNames from 'classnames/bind';
 import styles from './Header.module.scss';
 import useAuth from '~/hooks/useAuth';
 import { faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons';
+import { Avatar } from '@mui/material';
 
 const cx = classNames.bind(styles);
 
 function Header() {
-
-    const { isAuthenticated, user, logout } = useAuth();
+    const location = useLocation();
     const [keyword, setKeyword] = useState('');
+    const { isAuthenticated, user, customer, logout } = useAuth();
 
     return (
         <header className={cx('wrapper')}>
@@ -62,7 +63,11 @@ function Header() {
 
                 <div className={cx('header-with-search')}>
                     <div className={cx('logo')}>
-                        <a href={config.routes.home}> <img src={images.logo} alt='logo'></img></a>
+                        {location.pathname === config.routes.home ? (
+                            <a href={config.routes.home}> <img src={images.logo} alt='logo'></img></a>
+                        ) : (
+                            <Link to={config.routes.home}> <img src={images.logo} alt='logo'></img></Link>
+                        )}
                     </div>
 
                     <div className={cx('search')}>
@@ -86,7 +91,15 @@ function Header() {
                         {isAuthenticated ?
                             (
                                 <div className={cx('user-navbar')}>
-                                    <Button rounded leftIcon={<img src={images.userDefault} alt='user default'></img>}>{user.username || 'user'}</Button>
+                                    <Button
+                                        rounded
+                                        leftIcon={
+                                            <Avatar alt="avt" src={customer.avatar} sx={{ width: 24, height: 24 }} />
+                                        }
+                                    >
+                                        {customer.name || user.username || 'user'}
+                                    </Button>
+
                                     <ul className={cx("user-menu")}>
                                         <li className={cx("user-menu-item")}>
                                             <Link to="/profile">Tài khoản của tôi</Link>

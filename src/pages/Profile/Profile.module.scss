@@ -1,3 +1,17 @@
+.popup-container {
+    width: 440px;
+    padding: 10px 30px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    img {
+        margin-bottom: 14px;
+    }
+}
+
 .main-content {
     background-color: white;
     border-radius: 3px;
@@ -16,9 +30,6 @@
     font-weight: 500;
 }
 
-.description {
-}
-
 .form-group {
     display: flex;
     align-items: center;
@@ -35,13 +46,12 @@
 .user-avt {
     text-align: center;
     border-left: 1px solid #efefef;
-
-    input {
-        display: none;
-    }
 }
 
 .avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin: 20px 0;
 }
 

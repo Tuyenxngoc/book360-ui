@@ -40,6 +40,7 @@
 
 // Button types
 .rounded {
+    max-width: 150px;
     padding: 4px;
     border-radius: 999px;
     box-shadow: 0 2px 8px rgb(0 0 0 / 6%);
@@ -52,6 +53,10 @@
 
     .title {
         flex: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-weight: 500;
     }
 }
 
