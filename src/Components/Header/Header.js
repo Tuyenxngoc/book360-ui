@@ -7,13 +7,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 //React
 import { Link, useLocation } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 //Styles
 import classNames from 'classnames/bind';
 import styles from './Header.module.scss';
 import useAuth from '~/hooks/useAuth';
 import { faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons';
-import { Avatar } from '@mui/material';
+import { Avatar, Badge } from '@mui/material';
+import { getTotalProducts } from '~/services/cartService';
 
 const cx = classNames.bind(styles);
 
@@ -21,6 +22,14 @@ function Header() {
     const location = useLocation();
     const [keyword, setKeyword] = useState('');
     const { isAuthenticated, user, customer, logout } = useAuth();
+
+    const [totalProducts, setTotalProducts] = useState(0);
+
+    useEffect(() => {
+        getTotalProducts(customer.customerId)
+            .then((response) => setTotalProducts(response.data.data.totalProducts))
+            .catch((error) => console.log(error));
+    }, [customer.customerId]);
 
     return (
         <header className={cx('wrapper')}>
@@ -87,7 +96,13 @@ function Header() {
                     </div>
 
                     <div className={cx('actions')}>
-                        <Link className={cx('cart')} to={'/cart'}><img src={images.cart} alt='cart'></img></Link>
+
+                        <Link className={cx('cart')} to='/cart'>
+                            <Badge badgeContent={totalProducts} color="primary">
+                                <img src={images.cart} alt='cart'></img>
+                            </Badge>
+                        </Link>
+
                         {isAuthenticated ?
                             (
                                 <div className={cx('user-navbar')}>

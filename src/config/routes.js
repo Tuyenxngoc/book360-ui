@@ -15,6 +15,7 @@ const routes = {
     address: '/address',
     notification: '/notification',
     purchaseOrder: '/purchase',
+    favorite: '/favorite',
     //Notfound routes
     notFound: '*',
 }
