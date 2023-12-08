@@ -6,13 +6,16 @@ import reportWebVitals from '~/reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import GlobalStyles from '~/style/GlobalStyle';
 import { AuthProvider } from "~/contexts/AuthProvider";
+import { CartProvider } from './contexts/CartContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <GlobalStyles>
       <AuthProvider>
-        <App />
+        <CartProvider>
+          <App />
+        </CartProvider>
       </AuthProvider>
     </GlobalStyles>
   </React.StrictMode>

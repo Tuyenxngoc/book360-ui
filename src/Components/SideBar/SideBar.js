@@ -99,7 +99,7 @@ function SideBar() {
                                 </Link>
                             </li>
                             <li className={cx('panelItem')}>
-                                <Link className={cx('panelLink')}>
+                                <Link to='/favorite' className={cx('panelLink', { 'active': isLinkActive('/favorite') })}>
                                     <span className={cx('icon')}><FontAwesomeIcon icon={faHeart} /></span>
                                     Sản phẩm yêu thích
                                 </Link>

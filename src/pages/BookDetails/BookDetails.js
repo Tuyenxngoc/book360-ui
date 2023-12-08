@@ -22,12 +22,14 @@ import { addProductToCart } from "~/services/apiRequest";
 import useAuth from "~/hooks/useAuth";
 import { toast } from "react-toastify";
 import Product from "~/components/Product";
+import useCart from "~/hooks/useCart";
 
 const cx = classNames.bind(Style);
 
 function BookDetails() {
     //Get user information
     const { customer, isAuthenticated } = useAuth();
+    const { updateTotalProducts } = useCart();
     const navigate = useNavigate();
     const location = useLocation();
     //Id book
@@ -91,7 +93,7 @@ function BookDetails() {
         if (isAuthenticated) {
             addProductToCart(customer.customerId, id, quantity)
                 .then(response => {
-                    console.log(response.data);
+                    updateTotalProducts(customer.customerId);
                     toast.success('Thêm vào giỏ hàng thành công!', {
                         position: 'top-right',
                         autoClose: 2000,

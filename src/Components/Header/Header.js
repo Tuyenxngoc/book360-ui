@@ -14,7 +14,7 @@ import styles from './Header.module.scss';
 import useAuth from '~/hooks/useAuth';
 import { faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons';
 import { Avatar, Badge } from '@mui/material';
-import { getTotalProducts } from '~/services/cartService';
+import useCart from '~/hooks/useCart';
 
 const cx = classNames.bind(styles);
 
@@ -22,14 +22,12 @@ function Header() {
     const location = useLocation();
     const [keyword, setKeyword] = useState('');
     const { isAuthenticated, user, customer, logout } = useAuth();
-
-    const [totalProducts, setTotalProducts] = useState(0);
+    const { totalProducts, updateTotalProducts } = useCart();
 
     useEffect(() => {
-        getTotalProducts(customer.customerId)
-            .then((response) => setTotalProducts(response.data.data.totalProducts))
-            .catch((error) => console.log(error));
-    }, [customer.customerId]);
+        updateTotalProducts(customer.customerId);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <header className={cx('wrapper')}>

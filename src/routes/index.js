@@ -17,6 +17,7 @@ import Purchase from "~/pages/Purchase";
 import ChangePassword from "~/pages/ChangePassword";
 import Notification from "~/pages/Notification";
 import Address from "~/pages/Address";
+import Favorite from "~/pages/Favorite";
 
 const publicRoutes = [
     { path: config.routes.home, component: Home },
@@ -37,6 +38,8 @@ const privateRoutes = [
     { path: config.routes.address, component: Address, layout: UserDashboard },
     { path: config.routes.notification, component: Notification, layout: UserDashboard },
     { path: config.routes.purchaseOrder, component: Purchase, layout: UserDashboard },
+    { path: config.routes.favorite, component: Favorite, layout: UserDashboard },
+
 ]
 
 export { publicRoutes, privateRoutes } 

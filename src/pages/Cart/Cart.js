@@ -14,6 +14,7 @@ import classNames from "classnames/bind";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import MoneyDisplay from "~/components/MoneyDisplay";
 import { toast } from "react-toastify";
+import useCart from "~/hooks/useCart";
 
 const cx = classNames.bind(Style);
 
@@ -22,6 +23,7 @@ function Cart() {
     const productIdSelect = location.state?.productIdSelect || [];
 
     const { customer } = useAuth();
+    const { updateTotalProducts } = useCart();
     const [cartItems, setCartItems] = useState([]);
     const [checked, setChecked] = useState(productIdSelect);
     const [totalPrice, setTotalPrice] = useState(0);
@@ -57,7 +59,7 @@ function Cart() {
         setIsUpdate(true);
         updatedCartItems(customer.customerId, productId, newQuantity)
             .then(response => {
-                console.log(response.data);
+                updateTotalProducts(customer.customerId);
                 const newCartItems = cartItems.map((item) =>
                     item.productId === productId ? { ...item, quantity: newQuantity } : item
                 );
@@ -74,7 +76,7 @@ function Cart() {
     const handleDeleteProduct = (productId) => {
         removeCartItems(customer.customerId, productId)
             .then((response) => {
-                console.log(response);
+                updateTotalProducts(customer.customerId);
                 setCartItems(cartItems.filter(item => item.productId !== productId))
             })
             .catch((error) => {
