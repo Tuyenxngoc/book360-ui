@@ -3,36 +3,13 @@ import Slider from "react-slick";
 import Style from './Slider.module.scss';
 import classNames from "classnames/bind";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import httpRequest from "~/utils/httpRequest";
 import { Skeleton } from "@mui/material";
+import CustomArrows from "../CustomArrows";
 
 const cx = classNames.bind(Style);
-
-function ControlButton({ className, style, onClick, NextArrow = false, PrevArrow = false }) {
-    const props = {};
-    if (NextArrow) {
-        props.type = 'custom-next-arrow';
-        props.icon = faAngleRight;
-    } else if (PrevArrow) {
-        props.type = 'custom-prev-arrow';
-        props.icon = faAngleLeft;
-    }
-    const buttonClassName = cx(className, 'custom-slick-arrow', props.type);
-
-    return (
-        <div
-            className={buttonClassName}
-            style={style}
-            onClick={onClick}
-        >
-            <FontAwesomeIcon className={cx('icon')} icon={props.icon}></FontAwesomeIcon>
-        </div>
-    );
-}
 
 const settings = {
     infinite: true,
@@ -41,8 +18,8 @@ const settings = {
     autoplay: true,
     speed: 1000,
     autoplaySpeed: 5000,
-    nextArrow: <ControlButton NextArrow />,
-    prevArrow: <ControlButton PrevArrow />,
+    nextArrow: <CustomArrows color="primary" isNextArrow />,
+    prevArrow: <CustomArrows color="primary" />,
 };
 
 function Slide() {

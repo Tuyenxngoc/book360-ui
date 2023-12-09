@@ -19,7 +19,7 @@ import useCart from '~/hooks/useCart';
 const cx = classNames.bind(styles);
 
 function Header() {
-    const location = useLocation();
+
     const [keyword, setKeyword] = useState('');
     const { isAuthenticated, user, customer, logout } = useAuth();
     const { totalProducts, updateTotalProducts } = useCart();
@@ -70,11 +70,7 @@ function Header() {
 
                 <div className={cx('header-with-search')}>
                     <div className={cx('logo')}>
-                        {location.pathname === config.routes.home ? (
-                            <a href={config.routes.home}> <img src={images.logo} alt='logo'></img></a>
-                        ) : (
-                            <Link to={config.routes.home}> <img src={images.logo} alt='logo'></img></Link>
-                        )}
+                        <Link to={config.routes.home}> <img src={images.logo} alt='logo'></img></Link>
                     </div>
 
                     <div className={cx('search')}>
@@ -107,7 +103,7 @@ function Header() {
                                     <Button
                                         rounded
                                         leftIcon={
-                                            <Avatar alt="avt" src={customer.avatar} sx={{ width: 24, height: 24 }} />
+                                            <Avatar alt="avt" src={customer.avatar || images.userDefault} sx={{ width: 24, height: 24 }} />
                                         }
                                     >
                                         {customer.name || user.username || 'user'}

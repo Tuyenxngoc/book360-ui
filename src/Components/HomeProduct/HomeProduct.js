@@ -12,29 +12,11 @@ import Slider from "react-slick";
 import Style from './HomeProduct.module.scss'
 import classNames from 'classnames/bind';
 //Icon
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import images from "~/assets";
 import { Skeleton, Typography } from "@mui/material";
+import CustomArrows from "../CustomArrows";
 
 const cx = classNames.bind(Style);
-
-function ControlButton({ className, style, onClick, NextArrow = false, PrevArrow = false }) {
-    const props = {};
-    if (NextArrow) {
-        props.type = 'custom-next-arrow';
-        props.icon = faAngleRight;
-    } else if (PrevArrow) {
-        props.type = 'custom-prev-arrow';
-        props.icon = faAngleLeft;
-    }
-    const buttonClassName = cx(className, 'custom-slick-arrow', props.type);
-    return (
-        <div className={buttonClassName} style={style} onClick={onClick}>
-            <FontAwesomeIcon className={cx('icon')} icon={props.icon}></FontAwesomeIcon>
-        </div>
-    );
-}
 
 const settings = {
     infinite: true,
@@ -42,8 +24,8 @@ const settings = {
     slidesToShow: 6,
     slidesToScroll: 1,
     initialSlide: 0,
-    nextArrow: <ControlButton NextArrow />,
-    prevArrow: <ControlButton PrevArrow />,
+    nextArrow: <CustomArrows color="secondary" isNextArrow />,
+    prevArrow: <CustomArrows color="secondary" />,
     responsive: [
         {
             breakpoint: 1024,

@@ -4,11 +4,11 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 //Zoom images
 
 // External libraries
-import classNames from "classnames/bind";
 import httpRequest from "~/utils/httpRequest";
 
 // Styles
 import Style from './BookDetails.module.scss';
+import classNames from "classnames/bind";
 
 // Components
 import MoneyDisplay from "~/components/MoneyDisplay";
@@ -23,8 +23,38 @@ import useAuth from "~/hooks/useAuth";
 import { toast } from "react-toastify";
 import Product from "~/components/Product";
 import useCart from "~/hooks/useCart";
+import { addFavoriteProduct, checkFavoriteProduct, removeFavoriteProduct } from "~/services/customerService";
+import images from "~/assets";
+import { CircularProgress } from "@mui/material";
+import Slider from "react-slick";
+import CustomArrows from "~/components/CustomArrows";
 
 const cx = classNames.bind(Style);
+
+const settingsNav = {
+    dots: false,
+    infinite: false,
+    swipeToSlide: true,
+    focusOnSelect: true,
+    speed: 200,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    vertical: true,
+    verticalSwiping: true,
+    nextArrow: <CustomArrows isVertical color='red' isNextArrow />,
+    prevArrow: <CustomArrows isVertical color='red' />,
+};
+
+const settingsMain = {
+    dots: false,
+    infinite: false,
+    swipeToSlide: true,
+    speed: 200,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    nextArrow: <CustomArrows color="secondary" isNextArrow />,
+    prevArrow: <CustomArrows color="secondary" />,
+};
 
 function BookDetails() {
     //Get user information
@@ -32,6 +62,9 @@ function BookDetails() {
     const { updateTotalProducts } = useCart();
     const navigate = useNavigate();
     const location = useLocation();
+    //Slide
+    const [mainSlider, setMainSlider] = useState(null);
+    const [navSlider, setNavSlider] = useState(null);
     //Id book
     const { id } = useParams();
     //Data books
@@ -41,8 +74,12 @@ function BookDetails() {
     //Loading book
     const [isError, setIsError] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const [isSend, setIsSend] = useState(false);
     //Quantity add cart
     const [quantity, setQuantity] = useState(1);
+    //Favorite product
+    const [isFavorite, setIsFavorite] = useState(false);
+
     // Xử lý logic với Id
     useEffect(() => {
         const fetchData = async () => {
@@ -65,6 +102,39 @@ function BookDetails() {
 
         fetchData();
     }, [id]);
+
+    useEffect(() => {
+        if (isAuthenticated && bookData.productId) {
+            const fetchData = async () => {
+                try {
+                    const response = await checkFavoriteProduct(customer.customerId, bookData.productId);
+                    setIsFavorite(response.data.data);
+                } catch (error) {
+                    console.error('Error checking favorite status:', error);
+                }
+            };
+
+            fetchData();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isAuthenticated, bookData.productId]);
+
+    const handleToggleFavorite = async () => {
+        setIsSend(true);
+        try {
+            if (isFavorite) {
+                await removeFavoriteProduct(customer.customerId, bookData.productId);
+                setIsFavorite(false);
+            } else {
+                await addFavoriteProduct(customer.customerId, bookData.productId);
+                setIsFavorite(true);
+            }
+        } catch (error) {
+            console.error('Error toggling favorite status:', error);
+        } finally {
+            setIsSend(false);
+        }
+    };
 
     const calculateDiscountedPrice = () => {
         return bookData.discount > 0 ? bookData.price - (bookData.price * bookData.discount / 100) : bookData.price;
@@ -128,14 +198,12 @@ function BookDetails() {
         }
     }
 
+    if (isLoading) {
+        return <Loading />;
+    }
 
-    if (isError || isLoading) {
-        return (
-            <>
-                {isLoading && <Loading />}
-                {isError && <Error />}
-            </>
-        )
+    if (isError) {
+        return <Error />;
     }
 
     return (
@@ -148,15 +216,32 @@ function BookDetails() {
                             <div className={cx('product-img')}>
                                 <div className="row">
                                     <div className="col-3">
-                                        <div className={cx('prod-img')}>
+                                        <Slider {...settingsNav} asNavFor={mainSlider} ref={(slider) => setNavSlider(slider)}>
                                             <img src={bookData.image} alt={bookData.name}></img>
-                                        </div>
+                                        </Slider>
                                     </div>
-                                    <div className="col">
-
-                                        <div className={cx('sale-percentage-btn')}>{`-${bookData.discount}%`}</div>
+                                    <div className="col-9">
                                         <div className={cx('prod-img')}>
-                                            <img src={bookData.image} alt={bookData.name}></img>
+                                            <div className={cx('sale-percentage-btn')}>{`-${bookData.discount}%`}</div>
+                                            <Slider {...settingsMain} asNavFor={navSlider} ref={(slider) => setMainSlider(slider)}>
+                                                <img src={bookData.image} alt={bookData.name}></img>
+                                            </Slider>
+                                            {!isLoading && (
+                                                <div className={cx('interaction')}>
+                                                    <div className={cx('interaction-item')} style={{ marginRight: 8 }}>
+                                                        <img className={cx('interaction-img')} src={images.share} alt="share"></img>
+                                                    </div>
+                                                    <div className={cx('interaction-item')}>
+                                                        {isSend ? (
+                                                            <CircularProgress size={15} color="inherit" />
+                                                        ) : (
+                                                            isFavorite
+                                                                ? <img className={cx('interaction-img')} onClick={handleToggleFavorite} src={images.like} alt="like"></img>
+                                                                : <img className={cx('interaction-img')} onClick={handleToggleFavorite} src={images.unLike} alt="unlike"></img>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 </div>

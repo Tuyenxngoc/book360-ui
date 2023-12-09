@@ -1,21 +1,24 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+
+import useAuth from '~/hooks/useAuth';
+import Product from '~/components/Product';
+import { getFavoriteProducts } from '~/services/customerService';
+
 import Style from './Favorite.module.scss';
 import classNames from "classnames/bind";
-import { useEffect } from 'react';
-import httpRequest from '~/utils/httpRequest';
-import Product from '~/components/Product';
 
 const cx = classNames.bind(Style);
 
 function Favorite() {
 
     const [data, setData] = useState([]);
+    const { customer } = useAuth();
 
     useEffect(() => {
-        httpRequest
-            .get(`product/find-product`)
+        getFavoriteProducts(customer.customerId)
             .then((response) => setData(response.data.data.items))
             .catch((error) => console.error(error));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

@@ -18,3 +18,20 @@ export const updateCustomer = (customerId, { name, phonenumber, address, avatar 
         },
     });
 }
+
+export const getFavoriteProducts = (customerId) => {
+    return axiosPrivate.get(`customer/${customerId}/favorite-products`);
+}
+
+export const checkFavoriteProduct = (customerId, productId) => {
+    return axiosPrivate.get(`customer/${customerId}/favorite-products/${productId}`);
+}
+
+export const addFavoriteProduct = (customerId, productId) => {
+    return axiosPrivate.post(`customer/${customerId}/favorite-products/${productId}`);
+}
+
+export const removeFavoriteProduct = (customerId, productId) => {
+    return axiosPrivate.delete(`customer/${customerId}/favorite-products/${productId}`);
+}
+

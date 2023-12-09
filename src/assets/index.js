@@ -21,5 +21,8 @@ const images = {
 
     ],
     success: require('~/assets/images/success.svg').default,
+    like: require('~/assets/images/like.svg').default,
+    unLike: require('~/assets/images/unlike.svg').default,
+    share: require('~/assets/images/share.svg').default,
 }
 export default images;

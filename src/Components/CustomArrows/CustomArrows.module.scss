@@ -1,0 +1,78 @@
+.slick-arrow {
+    height: 34px;
+    line-height: 34px;
+    width: 34px;
+    padding: 0;
+    margin: 0;
+    background: white;
+    color: white;
+    opacity: 0.5;
+    position: absolute;
+    top: calc(50% - 17px);
+    border-radius: 3px;
+    z-index: 1;
+    transition: opacity 0.5s ease-out;
+
+    &::before {
+        display: none;
+    }
+
+    &:hover {
+        opacity: 1;
+    }
+}
+
+.right-arrow {
+    right: 0;
+}
+
+.left-arrow {
+    left: 0;
+}
+
+.up-arrow {
+    top: 0;
+    left: calc(50% - 17px);
+}
+
+.down-arrow {
+    top: 100%;
+    left: calc(50% - 17px);
+}
+
+.icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 14px;
+}
+
+.primary {
+    background: var(--primary);
+    &:hover {
+        color: white;
+        background: var(--primary);
+    }
+}
+
+.secondary {
+    color: #3f4b53;
+    background: #e6e6e6;
+    &:hover {
+        color: #3f4b53;
+        background: #e6e6e6;
+    }
+}
+
+.red {
+    background: #d51c24;
+    &:hover {
+        color: white;
+        background: #d51c24;
+    }
+}
+
+.slick-disabled {
+    display: none !important;
+}
