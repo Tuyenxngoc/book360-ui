@@ -20,6 +20,7 @@ const cx = classNames.bind(Style);
 
 const settings = {
     infinite: true,
+    draggable: false,
     speed: 800,
     slidesToShow: 6,
     slidesToScroll: 1,
@@ -91,17 +92,15 @@ function HomeProduct({ title, bannerIndex, apiUrl, moreLink }) {
                         </div>
                         <div className="col-12">
                             <Slider {...settings}>
-                                {(productData ? productData : Array.from(new Array(10))).map((product, index) => {
-                                    return (
-                                        <div key={index} className="px-2 mt-2">
-                                            <Product data={product}></Product>
-                                        </div>
-                                    );
-                                })}
+                                {(productData ? productData : Array.from(new Array(10))).map((product, index) => (
+                                    <div key={index} className="px-2 mt-2">
+                                        <Product data={product}></Product>
+                                    </div>
+                                ))}
                             </Slider>
                         </div>
                         <div className="col-12">
-                            <div className={cx('grid-item')}>
+                            <div className={cx('more-link')}>
                                 {productData ? (
                                     <Link to={moreLink}>Xem thêm &gt;&gt;</Link>
                                 ) : (

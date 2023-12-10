@@ -37,7 +37,6 @@ const settingsNav = {
     swipeToSlide: true,
     focusOnSelect: true,
     speed: 200,
-    slidesToShow: 3,
     slidesToScroll: 1,
     vertical: true,
     verticalSwiping: true,
@@ -216,16 +215,28 @@ function BookDetails() {
                             <div className={cx('product-img')}>
                                 <div className="row">
                                     <div className="col-3">
-                                        <Slider {...settingsNav} asNavFor={mainSlider} ref={(slider) => setNavSlider(slider)}>
-                                            <img src={bookData.image} alt={bookData.name}></img>
-                                        </Slider>
+                                        {bookData.images.length > 1 ? (
+                                            <Slider {...settingsNav} slidesToShow={Math.min(3, bookData.images.length)} asNavFor={mainSlider} ref={(slider) => setNavSlider(slider)}>
+                                                {bookData.images.map((image, index) => (
+                                                    <img key={index} src={image} alt={bookData.name}></img>
+                                                ))}
+                                            </Slider>
+                                        ) : (
+                                            <img src={bookData.images[0]} alt={bookData.name}></img>
+                                        )}
                                     </div>
                                     <div className="col-9">
                                         <div className={cx('prod-img')}>
                                             <div className={cx('sale-percentage-btn')}>{`-${bookData.discount}%`}</div>
-                                            <Slider {...settingsMain} asNavFor={navSlider} ref={(slider) => setMainSlider(slider)}>
-                                                <img src={bookData.image} alt={bookData.name}></img>
-                                            </Slider>
+                                            {bookData.images.length > 1 ? (
+                                                <Slider {...settingsMain} asNavFor={navSlider} ref={(slider) => setMainSlider(slider)}>
+                                                    {bookData.images.map((image, index) => (
+                                                        <img key={index} src={image} alt={bookData.name}></img>
+                                                    ))}
+                                                </Slider>
+                                            ) : (
+                                                <img src={bookData.images[0]} alt={bookData.name}></img>
+                                            )}
                                             {!isLoading && (
                                                 <div className={cx('interaction')}>
                                                     <div className={cx('interaction-item')} style={{ marginRight: 8 }}>
