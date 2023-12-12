@@ -1,18 +1,20 @@
-import { Button, IconButton, InputAdornment, OutlinedInput, TextField } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import Style from './ChangePassword.module.scss';
 import classNames from "classnames/bind";
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { changePassword } from '~/services/authService';
 import useAuth from '~/hooks/useAuth';
-import { useState } from 'react';
 
 const validationSchema = yup.object({
     oldPassword: yup.string()
         .required('Vui lòng nhập mật khẩu cũ'),
     password: yup.string()
-        .required('Vui lòng nhập mật khẩu')
-        .min(8, 'Mật khẩu phải có ít nhất 8 ký tự'),
+        .min(6, 'Mật khẩu tối thiểu 6 kí tự')
+        .max(16, 'Mật khẩu tối đa 16 kí tự')
+        .matches(/(?=.*[a-zA-Z])/, 'Mật khẩu phải chứa ít nhất một chữ cái')
+        .matches(/(?=.*\d)/, 'Mật khẩu phải chứa ít nhất một số')
+        .required('Vui lòng nhập mật khẩu'),
     repeatPassword: yup.string()
         .oneOf([yup.ref('password'), null], 'Mật khẩu và Mật khẩu xác nhận không giống nhau')
         .required('Vui lòng xác nhận lại mật khẩu'),

@@ -11,6 +11,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { updateCustomer } from "~/services/customerService";
 import { useState } from "react";
+import AlertDialog from "../Address/AlertDialog";
 
 const validationSchema = yup.object({
     name: yup.string()
@@ -31,6 +32,7 @@ function Profile() {
     const { user, customer, updateCustomerInfo } = useAuth();
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
+    const [openAlertDialog, setOpenAlertDialog] = useState(false);
 
     const formik = useFormik({
         initialValues: {
@@ -79,6 +81,10 @@ function Profile() {
             });
     }
 
+    const handleClickOpen = () => {
+        setOpenAlertDialog(true);
+    };
+
     const handleClose = () => {
         setOpen(false);
     };
@@ -97,6 +103,11 @@ function Profile() {
                     </div>
                 </DialogContent>
             </Dialog>
+
+            <AlertDialog
+                openAlertDialog={openAlertDialog}
+                setOpenAlertDialog={setOpenAlertDialog}
+                setSelectedAddress={(address) => { formik.setFieldValue('address', address) }} />
 
             <div className={cx('main-content')}>
                 <div className="row">
@@ -167,6 +178,7 @@ function Profile() {
                                     value={formik.values.address}
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
+                                    onClick={handleClickOpen}
                                     error={formik.touched.address && Boolean(formik.errors.address)}
                                     helperText={formik.touched.address && formik.errors.address}
                                 />

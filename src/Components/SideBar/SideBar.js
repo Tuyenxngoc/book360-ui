@@ -1,10 +1,9 @@
 import { Avatar } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faKey, faLocationDot, faBell, faClipboard, faHeart, faUser, faPen } from "@fortawesome/free-solid-svg-icons";
+import { faKey, faBell, faClipboard, faHeart, faUser, faPen } from "@fortawesome/free-solid-svg-icons";
 
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-
 
 import images from "~/assets";
 import useAuth from "~/hooks/useAuth";
@@ -21,7 +20,6 @@ function SideBar() {
     const [isAccountPanelOpen, setAccountPanelOpen] = useState(true);
     const [isTransactionPanelOpen, setTransactionPanelOpen] = useState(true);
 
-    // Function to determine if a Link is active based on its "to" prop
     const isLinkActive = (to) => {
         return location.pathname === to;
     };
@@ -60,12 +58,6 @@ function SideBar() {
                                 <Link to='/profile' className={cx('panelLink', { 'active': isLinkActive('/profile') })}>
                                     <span className={cx('icon')}><FontAwesomeIcon icon={faUser} /></span>
                                     Hồ sơ
-                                </Link>
-                            </li>
-                            <li className={cx('panelItem')}>
-                                <Link to='/address' className={cx('panelLink', { 'active': isLinkActive('/address') })}>
-                                    <span className={cx('icon')}><FontAwesomeIcon icon={faLocationDot} /></span>
-                                    Địa chỉ
                                 </Link>
                             </li>
                             <li className={cx('panelItem')}>

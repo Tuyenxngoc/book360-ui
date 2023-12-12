@@ -1,5 +1,3 @@
-import LocationSelector from './LocationSelector';
-
 import Style from './Address.module.scss';
 import classNames from "classnames/bind";
 
@@ -19,7 +17,7 @@ function Address() {
 
             <div className="row pt-4">
                 <div className="col">
-                    <LocationSelector />
+                    <div>Trang này đang được cập nhật vui lòng thử lại sau</div>
                 </div>
             </div>
         </div>
