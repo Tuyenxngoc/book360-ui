@@ -10,44 +10,70 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
 import httpRequest from '~/utils/httpRequest';
+import { useState } from 'react';
 
 const cx = classNames.bind(Style);
 
+const toastSuccessSettings = {
+    position: "top-center",
+    autoClose: 5000,
+    hideProgressBar: true,
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: true,
+    hideCloseButton: true,
+    progress: undefined,
+    theme: "colored",
+}
+
+const toastErrorSettings = {
+    position: "top-center",
+    autoClose: 2000,
+    hideProgressBar: true,
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: true,
+    hideCloseButton: true,
+    progress: undefined,
+    theme: "colored",
+}
+
+const validationSchema = yup.object({
+    username: yup.string()
+        .min(4, 'Tên tài khoản tối thiểu 4 kí tự')
+        .max(16, 'Tên tài khoản tối đa 16 kí tự')
+        .matches(/^[^\W_]+$/, 'Tên tài khoản không được chứa kí tự đặc biệt')
+        .matches(/^[^A-Z]+$/, 'Tên tài khoản không được viết hoa')
+        .matches(/^[a-z]/, 'Tên tài khoản phải bắt đầu bằng chữ cái')
+        .required('Trường này là bắt buộc'),
+
+    email: yup.string()
+        .email('Định dạng email chưa đúng')
+        .required('Trường này là bắt buộc'),
+
+    password: yup.string()
+        .min(6, 'Mật khẩu tối thiểu 6 kí tự')
+        .max(16, 'Mật khẩu tối đa 16 kí tự')
+        .matches(/(?=.*[a-zA-Z])/, 'Mật khẩu phải chứa ít nhất một chữ cái')
+        .matches(/(?=.*\d)/, 'Mật khẩu phải chứa ít nhất một số')
+        .required('Trường này là bắt buộc'),
+
+    repeatPassword: yup.string()
+        .oneOf([yup.ref('password'), null], 'Mật khẩu chưa khớp')
+        .required('Trường này là bắt buộc'),
+});
+
 function Register() {
+
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
-    const validationSchema = yup.object({
-        username: yup.string()
-            .min(4, 'Tên tài khoản tối thiểu 4 kí tự')
-            .max(16, 'Tên tài khoản tối đa 16 kí tự')
-            .matches(/^[^\W_]+$/, 'Tên tài khoản không được chứa kí tự đặc biệt')
-            .matches(/^[^A-Z]+$/, 'Tên tài khoản không được viết hoa')
-            .matches(/^[a-z]/, 'Tên tài khoản phải bắt đầu bằng chữ cái')
-            .required('Trường này là bắt buộc'),
-
-        email: yup.string()
-            .email('Định dạng email chưa đúng')
-            .required('Trường này là bắt buộc'),
-
-        password: yup.string()
-            .min(8, 'Mật khẩu tối thiểu 8 kí tự')
-            .max(16, 'Mật khẩu tối đa 16 kí tự')
-            .matches(/(?=.*[a-z])/, 'Mật khẩu phải chứa ít nhất một chữ thường')
-            .matches(/(?=.*[A-Z])/, 'Mật khẩu phải chứa ít nhất một chữ in hoa')
-            .matches(/(?=.*\d)/, 'Mật khẩu phải chứa ít nhất một số')
-            // eslint-disable-next-line
-            .matches(/(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-])/, 'Mật khẩu chứa ít nhất một kí tự đặc biệt')
-            .required('Trường này là bắt buộc'),
-
-        repeatPassword: yup.string()
-            .oneOf([yup.ref('password'), null], 'Mật khẩu chưa khớp')
-            .required('Trường này là bắt buộc'),
-    });
-
     const handleRegister = async (values) => {
+        setIsLoading(true);
         try {
             const response = await httpRequest.post('/auth/register', values);
             if (response.status === 200) {
+                toast.success("Đăng ký thành công", toastSuccessSettings);
                 navigate('/login');
             }
         } catch (error) {
@@ -61,17 +87,9 @@ function Register() {
             } else {
                 message = "Đăng ký thất bại";
             }
-            toast.error(message, {
-                position: "top-center",
-                autoClose: 2000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: false,
-                draggable: true,
-                hideCloseButton: true,
-                progress: undefined,
-                theme: "colored",
-            });
+            toast.error(message, toastErrorSettings);
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -154,7 +172,7 @@ function Register() {
                                 <p className={cx('message', (formik.touched.password && formik.errors.password) && 'error')}>
                                     {(formik.touched.password && formik.errors.password)
                                         ? formik.errors.password
-                                        : "(*) Mật khẩu phải nhiều hơn 8 ký tự, ít nhất 1 chữ thường 1 chữ in hoa, 1 chữ số, 1 ký tự đặc biệt"}
+                                        : "(*) Mật khẩu tối thiểu 6 ký tự, ít nhất một chữ cái, ít nhất một chữ số"}
                                 </p>
 
 
@@ -177,7 +195,7 @@ function Register() {
 
 
                                 <div className={cx('register-btn')}>
-                                    <Button color="primary" variant="contained" fullWidth type="submit">Đăng ký</Button>
+                                    <Button color="primary" variant="contained" fullWidth type="submit" disabled={isLoading}>Đăng ký</Button>
                                 </div>
                             </form>
 

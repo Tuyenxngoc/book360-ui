@@ -1,9 +1,12 @@
+import LocationSelector from './LocationSelector';
+
 import Style from './Address.module.scss';
 import classNames from "classnames/bind";
 
 const cx = classNames.bind(Style);
 
 function Address() {
+
     return (
         <div className={cx('main-content')}>
             <div className="row">
@@ -16,7 +19,7 @@ function Address() {
 
             <div className="row pt-4">
                 <div className="col">
-                    <div>Trang này đang được phát triển</div>
+                    <LocationSelector />
                 </div>
             </div>
         </div>

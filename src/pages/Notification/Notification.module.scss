@@ -15,3 +15,45 @@
     margin-bottom: 3px;
     font-weight: 500;
 }
+
+.email {
+    font-size: 16px;
+    line-height: 20px;
+    margin-bottom: 20px;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.notification-wrapper {
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+}
+
+.notification-title {
+    flex: 1;
+}
+
+.notification-text {
+    font-size: 1rem;
+    line-height: 1.5rem;
+    color: var(--text-color);
+    margin-bottom: 4px;
+}
+
+.notification-body {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    color: #999;
+}
+
+.checkbox-container {
+    margin: auto 0;
+    display: flex;
+    align-items: center;
+}
+
+.label-activation {
+    font-size: 1rem;
+    line-height: 1.5rem;
+}
