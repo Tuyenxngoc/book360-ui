@@ -6,7 +6,7 @@ import config from '~/config';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 //React
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 //Styles
 import classNames from 'classnames/bind';
@@ -25,7 +25,7 @@ function Header() {
     const { totalProducts, updateTotalProducts } = useCart();
 
     useEffect(() => {
-        updateTotalProducts(customer.customerId);
+        updateTotalProducts();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -70,7 +70,7 @@ function Header() {
 
                 <div className={cx('header-with-search')}>
                     <div className={cx('logo')}>
-                        <Link to={config.routes.home}> <img src={images.logo} alt='logo'></img></Link>
+                        <Link to={config.routes.home}> <img src={images.logo} alt='logo' /></Link>
                     </div>
 
                     <div className={cx('search')}>
@@ -78,10 +78,10 @@ function Header() {
                             id="searchInput"
                             name="searchKeyword"
                             value={keyword}
-                            onChange={(event) => { setKeyword(event.target.value) }}
+                            onChange={(event) => setKeyword(event.target.value)}
                             placeholder='Tìm kiếm...'
-                            spellCheck={false}>
-                        </input>
+                            spellCheck={false}
+                        />
                         <Link
                             to={config.routes.searchResults + `?keyword=${keyword}`}
                             className={cx('search-btn')}>
@@ -93,7 +93,7 @@ function Header() {
 
                         <Link className={cx('cart')} to='/cart'>
                             <Badge badgeContent={totalProducts} color="primary">
-                                <img src={images.cart} alt='cart'></img>
+                                <img src={images.cart} alt='cart' />
                             </Badge>
                         </Link>
 

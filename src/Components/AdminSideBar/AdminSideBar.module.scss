@@ -1,0 +1,18 @@
+.logo {
+    width: 100%;
+    height: 85px;
+    background-color: white;
+    border-right: 2px solid rgba(5, 5, 5, 0.06);
+    text-align: left;
+}
+
+.image {
+    margin-left: 8px;
+    height: 100%;
+    object-fit: contain;
+}
+
+.menu {
+    border-right: 2px solid rgba(5, 5, 5, 0.06);
+    height: calc(100vh - 85px);
+}

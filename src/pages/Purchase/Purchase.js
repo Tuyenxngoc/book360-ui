@@ -2,7 +2,7 @@ import { axiosPrivate } from '~/utils/httpRequest';
 import useAuth from '~/hooks/useAuth';
 import Bill from '~/components/Bill';
 import { useState, useEffect } from 'react';
-import { buyAgain, cancelOrder } from '~/services/billService';
+import { buyAgain, cancelOrder, getBillsByCustomerId } from '~/services/billService';
 import { Tab, Tabs } from '@mui/material';
 
 import Style from './Purchase.module.scss';
@@ -10,20 +10,34 @@ import classNames from 'classnames/bind';
 
 const cx = classNames.bind(Style);
 
-const BILL_STATUS = ["Tất cả", "Chờ xử lý", "Đặt hàng thành công", "Đang giao hàng", "Đã giao", "Đã hủy"];
+const BILL_STATUS = [
+    { label: "Tất cả", isShowOrderCounts: false },
+    { label: "Chờ xử lý", isShowOrderCounts: true },
+    { label: "Đặt hàng thành công", isShowOrderCounts: true },
+    { label: "Đang giao hàng", isShowOrderCounts: true },
+    { label: "Đã giao", isShowOrderCounts: true },
+    { label: "Đã hủy", isShowOrderCounts: false },
+];
 
 function Purchase() {
 
     const { customer } = useAuth();
-    const [value, setValue] = useState(0);
-    const [data, setData] = useState([]);
-    const [filteredData, setFilteredData] = useState([]);
+    const [selectedTabIndex, setSelectedTabIndex] = useState(0);
+    const [billsData, setBillsData] = useState([]);
+    const [filteredBillsData, setFilteredBillsData] = useState([]);
+    const [orderCounts, setOrderCounts] = useState(Array(BILL_STATUS.length).fill(0));
 
     const fetchData = () => {
-        axiosPrivate.get(`bill/get-bills/${customer.customerId}`)
+        getBillsByCustomerId(customer.customerId)
             .then((response) => {
-                setData(response.data.data.items);
-                setFilteredData(response.data.data.items);
+                const { items } = response.data.data;
+                setBillsData(items);
+                setFilteredBillsData(items);
+                // Tính toán số lượng đơn hàng cho mỗi loại
+                const counts = BILL_STATUS.map(status =>
+                    items.filter(item => item.status === status.label).length
+                );
+                setOrderCounts(counts);
             })
             .catch((error) => {
                 console.log(error);
@@ -36,12 +50,14 @@ function Purchase() {
     }, []);
 
     useEffect(() => {
-        const filtered = value === 0 ? data : data.filter(item => item.status === BILL_STATUS[value]);
-        setFilteredData(filtered);
-    }, [value, data]);
+        const filtered = selectedTabIndex === 0
+            ? billsData
+            : billsData.filter(item => item.status === BILL_STATUS[selectedTabIndex].label);
+        setFilteredBillsData(filtered);
+    }, [selectedTabIndex, billsData]);
 
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
+    const handleTabChange = (event, newIndex) => {
+        setSelectedTabIndex(newIndex);
     };
 
     const handleCancelOrder = (billId) => {
@@ -50,7 +66,9 @@ function Purchase() {
                 console.log(response);
                 fetchData();
             })
-            .catch((error) => { console.log(error); })
+            .catch((error) => {
+                console.log(error);
+            })
     }
 
     const handleBuyAgain = (billId) => {
@@ -64,14 +82,25 @@ function Purchase() {
             })
     }
 
+    const calculateTotalOrderCounts = (index) => {
+        const total = orderCounts[index];
+
+        return total === 0 ? '' : `(${total})`;
+    };
+
     return (
         <>
-            <Tabs className={cx('bill-status')} value={value} onChange={handleChange}>
-                {BILL_STATUS.map((status, index) => (<Tab key={index} label={status} />))}
+            <Tabs className={cx('bill-status')} value={selectedTabIndex} onChange={handleTabChange}>
+                {BILL_STATUS.map((status, index) => (
+                    <Tab
+                        key={index}
+                        label={`${status.label} ${status.isShowOrderCounts ? calculateTotalOrderCounts(index) : ''}`}
+                    />
+                ))}
             </Tabs>
             {
-                filteredData.length > 0 ? (
-                    filteredData.map((data, index) =>
+                filteredBillsData.length > 0 ? (
+                    filteredBillsData.map((data, index) =>
                         <Bill
                             key={index}
                             data={data}

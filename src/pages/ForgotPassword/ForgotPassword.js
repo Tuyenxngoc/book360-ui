@@ -72,7 +72,7 @@ function ForgotPassword() {
                                 <div className={cx('title')}>Quên mật khẩu</div>
                             </div>
                             <div className={cx('image')}>
-                                <img src={images.logo} alt='logo'></img>
+                                <img src={images.logo} alt='logo' />
                             </div>
 
                             <form onSubmit={formik.handleSubmit}>

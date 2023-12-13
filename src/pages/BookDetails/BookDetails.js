@@ -32,6 +32,7 @@ import CustomArrows from "~/components/CustomArrows";
 const cx = classNames.bind(Style);
 
 const settingsNav = {
+    accessibility: true,
     dots: false,
     infinite: false,
     swipeToSlide: true,
@@ -51,8 +52,6 @@ const settingsMain = {
     speed: 200,
     slidesToShow: 1,
     slidesToScroll: 1,
-    nextArrow: <CustomArrows color="secondary" isNextArrow />,
-    prevArrow: <CustomArrows color="secondary" />,
 };
 
 function BookDetails() {
@@ -215,40 +214,42 @@ function BookDetails() {
                             <div className={cx('product-img')}>
                                 <div className="row">
                                     <div className="col-3">
-                                        {bookData.images.length > 1 ? (
-                                            <Slider {...settingsNav} slidesToShow={Math.min(3, bookData.images.length)} asNavFor={mainSlider} ref={(slider) => setNavSlider(slider)}>
-                                                {bookData.images.map((image, index) => (
-                                                    <img key={index} src={image} alt={bookData.name}></img>
-                                                ))}
-                                            </Slider>
-                                        ) : (
-                                            <img src={bookData.images[0]} alt={bookData.name}></img>
-                                        )}
+                                        <div className={cx('image')}>
+                                            {bookData.images.length > 1 ? (
+                                                <Slider {...settingsNav} slidesToShow={Math.min(3, bookData.images.length - 1)} asNavFor={mainSlider} ref={(slider) => setNavSlider(slider)}>
+                                                    {bookData.images.map((image, index) => (
+                                                        <img key={index} src={image.url} alt={bookData.name} />
+                                                    ))}
+                                                </Slider>
+                                            ) : (
+                                                <img src={bookData.images[0].url} alt={bookData.name} />
+                                            )}
+                                        </div>
                                     </div>
                                     <div className="col-9">
-                                        <div className={cx('prod-img')}>
+                                        <div className={cx('image')}>
                                             <div className={cx('sale-percentage-btn')}>{`-${bookData.discount}%`}</div>
                                             {bookData.images.length > 1 ? (
                                                 <Slider {...settingsMain} asNavFor={navSlider} ref={(slider) => setMainSlider(slider)}>
                                                     {bookData.images.map((image, index) => (
-                                                        <img key={index} src={image} alt={bookData.name}></img>
+                                                        <img key={index} src={image.url} alt={bookData.name} />
                                                     ))}
                                                 </Slider>
                                             ) : (
-                                                <img src={bookData.images[0]} alt={bookData.name}></img>
+                                                <img src={bookData.images[0].url} alt={bookData.name} />
                                             )}
                                             {!isLoading && (
                                                 <div className={cx('interaction')}>
                                                     <div className={cx('interaction-item')} style={{ marginRight: 8 }}>
-                                                        <img className={cx('interaction-img')} src={images.share} alt="share"></img>
+                                                        <img className={cx('interaction-img')} src={images.share} alt="share" />
                                                     </div>
                                                     <div className={cx('interaction-item')}>
                                                         {isSend ? (
                                                             <CircularProgress size={15} color="inherit" />
                                                         ) : (
                                                             isFavorite
-                                                                ? <img className={cx('interaction-img')} onClick={handleToggleFavorite} src={images.like} alt="like"></img>
-                                                                : <img className={cx('interaction-img')} onClick={handleToggleFavorite} src={images.unLike} alt="unlike"></img>
+                                                                ? <img className={cx('interaction-img')} onClick={handleToggleFavorite} src={images.like} alt="like" />
+                                                                : <img className={cx('interaction-img')} onClick={handleToggleFavorite} src={images.unLike} alt="unlike" />
                                                         )}
                                                     </div>
                                                 </div>

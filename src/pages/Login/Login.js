@@ -12,6 +12,7 @@ import images from '~/assets';
 import { Button, TextField } from '@mui/material';
 import { toast } from 'react-toastify';
 import { useEffect } from 'react';
+import { ROLES } from '~/config';
 
 const cx = classNames.bind(Style);
 
@@ -36,9 +37,14 @@ function Login() {
         try {
             const response = await httpRequest.post(`/auth/login`, values);
             if (response.status === 200) {
-                const { accessToken, refreshToken } = response.data.data;
-                login({ accessToken, refreshToken });
-                navigate(from, { replace: true });
+                const { accessToken, refreshToken, authorities } = response.data.data;
+                const roleName = authorities[0].authority;
+                login({ accessToken, refreshToken, roleName });
+                if (roleName === ROLES.Admin) {
+                    navigate('/admin', { replace: true });
+                } else {
+                    navigate(from, { replace: true });
+                }
             }
         } catch (error) {
             let message = '';
@@ -79,7 +85,7 @@ function Login() {
                     <div className="col-6">
                         <div className={cx('title')}>Đăng nhập Book360</div>
                         <div className={cx('image')}>
-                            <img src={images.logo} alt='logo'></img>
+                            <img src={images.logo} alt='logo' />
                         </div>
 
                         <form onSubmit={formik.handleSubmit}>

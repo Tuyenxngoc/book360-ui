@@ -119,7 +119,7 @@ function Register() {
                                 <div className={cx('title')}>Đăng ký Book360</div>
                             </div>
                             <div className={cx('image')}>
-                                <img src={images.logo} alt='logo'></img>
+                                <img src={images.logo} alt='logo' />
                             </div>
 
                             <form onSubmit={formik.handleSubmit}>

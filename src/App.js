@@ -1,21 +1,21 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
 //Toast
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 //Routes
-import { privateRoutes, publicRoutes } from "~/routes";
+import { privateRoutes, publicRoutes, adminRoutes } from "~/routes";
 //Pages
 import DefaultLayout from "~/layouts/DefaultLayout";
-import NotFound from "~/pages/NotFound";
 import RequireAuth from "./utils/RequireAuth";
 import { Fragment } from "react";
+import { ROLES } from "./config";
 
 function App() {
 
   return (
-    <div className="App">
+    <Fragment>
       <ToastContainer />
-      <Router>
+      <BrowserRouter>
         <Routes>
           {/* public routes */}
           {publicRoutes.map((route, index) => {
@@ -64,11 +64,34 @@ function App() {
             }
           </Route>
 
-          {/* catch all */}
-          <Route path="*" element={<DefaultLayout><NotFound /></DefaultLayout>} />
+          {/* admin routes */}
+          <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
+            {adminRoutes.map((route, index) => {
+              const Page = route.component;
+              let Layout = DefaultLayout;
+              if (route.layout) {
+                Layout = route.layout;
+              } else if (route.layout === null) {
+                Layout = Fragment;
+              }
+              return (
+                <Route
+                  key={index}
+                  path={route.path}
+                  element={
+                    <Layout>
+                      <Page />
+                    </Layout>
+                  }
+                />
+              );
+            })
+            }
+          </Route>
+
         </Routes>
-      </Router>
-    </div>
+      </BrowserRouter>
+    </Fragment>
   );
 }
 

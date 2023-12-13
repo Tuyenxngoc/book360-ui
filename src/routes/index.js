@@ -1,5 +1,5 @@
 //Config
-import config from "~/config";
+import { routes } from "~/config";
 //Layout
 import { HeaderOnly, UserDashboard } from "~/layouts";
 //Page
@@ -18,28 +18,51 @@ import ChangePassword from "~/pages/ChangePassword";
 import Notification from "~/pages/Notification";
 import Address from "~/pages/Address";
 import Favorite from "~/pages/Favorite";
+import NotFound from "~/pages/NotFound";
+import AdminLayout from "~/layouts/AdminLayout";
+import Dashboard from "~/pages/Admin/Dashboard";
+import ManageUsers from "~/pages/Admin/ManageUsers";
+import ManageProducts from "~/pages/Admin/ManageProducts";
+import ManageOrders from "~/pages/Admin/ManageOrders";
+import ManageCategories from "~/pages/Admin/ManageCategories";
+import Forbidden from "~/pages/Forbidden";
+import ManageBanner from "~/pages/Admin/ManageBanners";
 
 const publicRoutes = [
-    { path: config.routes.home, component: Home },
-    { path: config.routes.bookDetails, component: BookDetails },
-    { path: config.routes.searchResults, component: SearchResults },
-    { path: config.routes.category, component: Category },
-    { path: config.routes.login, component: Login, layout: HeaderOnly },
-    { path: config.routes.register, component: Register, layout: HeaderOnly },
-    { path: config.routes.forgotPassword, component: ForgotPassword, layout: HeaderOnly },
+    { path: routes.home, component: Home },
+    { path: routes.bookDetails, component: BookDetails },
+    { path: routes.searchResults, component: SearchResults },
+    { path: routes.category, component: Category },
+    { path: routes.login, component: Login, layout: HeaderOnly },
+    { path: routes.register, component: Register, layout: HeaderOnly },
+    { path: routes.forgotPassword, component: ForgotPassword, layout: HeaderOnly },
+
+    { path: routes.notFound, component: NotFound, layout: HeaderOnly },
+    { path: routes.accessDenied, component: Forbidden, layout: HeaderOnly },
 ]
 
 const privateRoutes = [
-    { path: config.routes.cart, component: Cart },
-    { path: config.routes.checkouts, component: Checkouts, layout: null },
+    { path: routes.cart, component: Cart },
+    { path: routes.checkouts, component: Checkouts, layout: null },
 
-    { path: config.routes.profile, component: Profile, layout: UserDashboard },
-    { path: config.routes.password, component: ChangePassword, layout: UserDashboard },
-    { path: config.routes.address, component: Address, layout: UserDashboard },
-    { path: config.routes.notification, component: Notification, layout: UserDashboard },
-    { path: config.routes.purchaseOrder, component: Purchase, layout: UserDashboard },
-    { path: config.routes.favorite, component: Favorite, layout: UserDashboard },
+    { path: routes.profile, component: Profile, layout: UserDashboard },
+    { path: routes.password, component: ChangePassword, layout: UserDashboard },
+    { path: routes.address, component: Address, layout: UserDashboard },
+    { path: routes.notification, component: Notification, layout: UserDashboard },
+    { path: routes.purchaseOrder, component: Purchase, layout: UserDashboard },
+    { path: routes.favorite, component: Favorite, layout: UserDashboard },
 
 ]
 
-export { publicRoutes, privateRoutes } 
+const adminRoutes = [
+    { path: routes.admin, component: Dashboard, layout: AdminLayout },
+    { path: routes.manageUsers, component: ManageUsers, layout: AdminLayout },
+    { path: routes.manageProduct, component: ManageProducts, layout: AdminLayout },
+    { path: routes.manageOder, component: ManageOrders, layout: AdminLayout },
+    { path: routes.manageCategories, component: ManageCategories, layout: AdminLayout },
+    { path: routes.manageBanners, component: ManageBanner, layout: AdminLayout },
+
+
+]
+
+export { publicRoutes, privateRoutes, adminRoutes } 

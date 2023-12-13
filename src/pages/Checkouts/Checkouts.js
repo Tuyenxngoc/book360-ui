@@ -14,6 +14,7 @@ import useAuth from "~/hooks/useAuth";
 import Breadcrumb from "~/components/Breadcrumb";
 import MoneyDisplay from "~/components/MoneyDisplay";
 import { axiosPrivate } from "~/utils/httpRequest";
+import AlertDialog from "../Address/AlertDialog";
 
 const cx = classNames.bind(Style);
 
@@ -24,7 +25,7 @@ function Checkouts() {
     const { user, customer } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
-
+    const [openAlertDialog, setOpenAlertDialog] = useState(false);
     const listProducts = useMemo(() => {
         return location.state?.listProducts || [];
     }, [location.state]);
@@ -63,6 +64,10 @@ function Checkouts() {
             });
     }
 
+    const handleClickOpen = () => {
+        setOpenAlertDialog(true);
+    };
+
     if (listProducts.length === 0) {
         return (
             <>
@@ -74,6 +79,12 @@ function Checkouts() {
 
     return (
         <>
+            <AlertDialog
+                openAlertDialog={openAlertDialog}
+                setOpenAlertDialog={setOpenAlertDialog}
+                setSelectedAddress={(address) => {
+                    setShippingInfo((prevInfo) => ({ ...prevInfo, address, }));
+                }} />
             <Breadcrumb
                 breadcrumbs={[{ url: '/cart', label: 'Giỏ hàng của bạn' }]}
                 currentPage={'Thanh toán'} />
@@ -134,6 +145,7 @@ function Checkouts() {
                                                 name="address"
                                                 value={shippingInfo.address}
                                                 onChange={handleShippingChange}
+                                                onClick={handleClickOpen}
                                             />
                                         </div>
                                     </div>
@@ -147,15 +159,15 @@ function Checkouts() {
                                     </div>
                                     <div className={cx('inner')}>
                                         <div className={cx('payment-item')}>
-                                            <img src={images.payment[0]} alt="cod"></img>
+                                            <img src={images.payment[0]} alt="cod" />
                                             <span>Thanh toán khi giao hàng (COD)</span>
                                         </div>
                                         <div className={cx('payment-item', 'disabled')}>
-                                            <img src={images.payment[1]} alt="momo"></img>
+                                            <img src={images.payment[1]} alt="momo" />
                                             <span>Ví MoMo</span>
                                         </div>
                                         <div className={cx('payment-item', 'disabled')}>
-                                            <img src={images.payment[2]} alt="zalo"></img>
+                                            <img src={images.payment[2]} alt="zalo" />
                                             <span>Ví Zalopay bằng QRCode</span>
                                         </div>
                                     </div>
@@ -175,7 +187,7 @@ function Checkouts() {
                                         {listProducts.map((product, index) => {
                                             return (
                                                 <div key={index} className={cx('product-item')} >
-                                                    <img className={cx('product-image')} src={product.image} alt={product.name}></img>
+                                                    <img className={cx('product-image')} src={product.image} alt={product.name} />
                                                     <div className={cx('product-description')}>
                                                         <span className={cx('product-name')}> {product.name}</span>
                                                         <div>

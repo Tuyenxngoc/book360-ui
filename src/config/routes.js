@@ -16,7 +16,16 @@ const routes = {
     notification: '/notification',
     purchaseOrder: '/purchase',
     favorite: '/favorite',
-    //Notfound routes
+
+    // Admin routes
+    admin: "/admin",
+    manageUsers: "/admin/users",
+    manageProduct: "/admin/products",
+    manageOder: "/admin/orders",
+    manageCategories: "/admin/categories",
+    manageBanners: "/admin/banners",
+
+    accessDenied: '/access-denied',
     notFound: '*',
 }
 export default routes;

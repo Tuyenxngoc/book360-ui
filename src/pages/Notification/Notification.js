@@ -12,8 +12,8 @@ const notificationTypes = [
     { title: 'Nội dung cá nhân', body: 'Gửi tôi cập nhật cá nhân (ví dụ: quà sinh nhật)' },
 ];
 
-const renderNotification = ({ title, body }) => (
-    <div className={cx('notification-wrapper')}>
+const renderNotification = ({ title, body }, index) => (
+    <div key={index} className={cx('notification-wrapper')}>
         <div className={cx('notification-title')}>
             <div className={cx('notification-text')}>{title}</div>
             <div className={cx('notification-body')}>{body}</div>

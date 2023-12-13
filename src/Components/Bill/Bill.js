@@ -37,7 +37,7 @@ function Bill({ data, handleCancelOrder, handleBuyAgain }) {
                             <div className={cx('product-detail')}>
                                 <div className={cx('product-img')}>
                                     <Link to={`/product/${product.productId}`}>
-                                        <img src={product.image} alt={product.name}></img>
+                                        <img src={product.image} alt={product.name} />
                                     </Link>
                                 </div>
 

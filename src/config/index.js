@@ -7,4 +7,5 @@ const config = {
     ROLES,
 }
 
+export { routes, API_URL, ROLES };
 export default config;

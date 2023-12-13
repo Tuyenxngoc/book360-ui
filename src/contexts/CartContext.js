@@ -1,17 +1,24 @@
 import { createContext, useState } from 'react';
+import useAuth from '~/hooks/useAuth';
 import { getTotalProducts } from '~/services/cartService';
 
 const CartContext = createContext();
 
 const CartProvider = ({ children }) => {
+
+    const { isAuthenticated, customer } = useAuth();
     const [totalProducts, setTotalProducts] = useState(0);
 
-    const updateTotalProducts = async (customerId) => {
-        try {
-            const response = await getTotalProducts(customerId);
-            setTotalProducts(response.data.data.totalProducts);
-        } catch (error) {
-            console.error("Error updating total products:", error);
+    const updateTotalProducts = async () => {
+        if (isAuthenticated) {
+            try {
+                const response = await getTotalProducts(customer.customerId);
+                setTotalProducts(response.data.data.totalProducts);
+            } catch (error) {
+                console.error("Error updating total products:", error);
+            }
+        } else {
+            setTotalProducts(0);
         }
     };
 

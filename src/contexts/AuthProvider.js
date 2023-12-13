@@ -15,7 +15,7 @@ const DeFAULT_AUTH = {
         email: ''
     },
     customer: {
-        id: -1,
+        customerId: -1,
         name: '',
         phonenumber: '',
         address: '',
@@ -92,9 +92,17 @@ const AuthProvider = ({ children }) => {
         }
     };
 
-    const login = ({ accessToken, refreshToken }) => {
+    const login = ({ accessToken, refreshToken, roleName }) => {
         setItem(localStorageKeys.ACCESS_TOKEN, accessToken);
         setItem(localStorageKeys.REFRESH_TOKEN, refreshToken);
+        setAuthState({
+            ...authState,
+            isAuthenticated: true,
+            user: {
+                ...authState.user,
+                roleName,
+            },
+        })
         validateToken();
     };
 

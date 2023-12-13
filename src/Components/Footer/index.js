@@ -47,7 +47,7 @@ function Footer() {
                                 <Link to="/cart" className={cx('link')}>Giỏ hàng</Link>
                             </li>
                             <li className={cx('item')}>
-                                <a href="/" className={cx('link')}>Danh sách ưa thích</a>
+                                <Link to="/favorite" className={cx('link')}>Danh sách ưa thích</Link>
                             </li>
                         </ul>
                     </div>
@@ -61,7 +61,7 @@ function Footer() {
                             type="email"
                             placeholder="Nhập email..."
                             autoComplete="email"
-                        ></input>
+                        />
                         <Button primary>Đăng ký</Button>
                     </div>
                 </div></div>
