@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-import httpRequest from "~/utils/httpRequest";
-
 //Icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faBook } from '@fortawesome/free-solid-svg-icons';
@@ -11,6 +9,7 @@ import { Skeleton } from '@mui/material';
 //Style
 import Style from './ProductCategory.module.scss'
 import classNames from 'classnames/bind';
+import { getAllCategories } from '~/services/categoryService';
 
 const cx = classNames.bind(Style);
 
@@ -23,8 +22,7 @@ function ProductCategory({ children }) {
     const [listCategory, setListCategory] = useState();
 
     useEffect(() => {
-        httpRequest
-            .get('category/get-categories')
+        getAllCategories()
             .then((response) => setListCategory(response.data.data))
             .catch((error) => console.error(error));
     }, []);

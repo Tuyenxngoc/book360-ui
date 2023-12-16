@@ -1,14 +1,14 @@
-import { Routes, Route, BrowserRouter } from "react-router-dom";
+import { Routes, Route, BrowserRouter } from 'react-router-dom';
 //Toast
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 //Routes
-import { privateRoutes, publicRoutes, adminRoutes } from "~/routes";
+import { privateRoutes, publicRoutes, adminRoutes } from '~/routes';
 //Pages
-import DefaultLayout from "~/layouts/DefaultLayout";
-import RequireAuth from "./utils/RequireAuth";
-import { Fragment } from "react";
-import { ROLES } from "./config";
+import DefaultLayout from '~/layouts/DefaultLayout';
+import RequireAuth from './utils/RequireAuth';
+import { Fragment } from 'react';
+import { ROLES } from './config';
 
 function App() {
 

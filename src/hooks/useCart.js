@@ -1,5 +1,5 @@
-import { useContext } from "react";
-const { CartContext } = require("~/contexts/CartContext");
+import { useContext } from 'react';
+const { CartContext } = require('~/contexts/CartContext');
 
 const useCart = () => {
     const context = useContext(CartContext);

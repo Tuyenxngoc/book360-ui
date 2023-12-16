@@ -4,6 +4,21 @@ export const getCustomer = (userId) => {
     return axiosPrivate.get(`customer/get-by-user/${userId}`);
 }
 
+export const getCountCustomer = () => {
+    return axiosPrivate.get('customer/get-count-customer');
+}
+
+export const uploadImage = (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return axiosPrivate.post(`customer/upload-image`, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    });
+}
+
 export const updateCustomer = (customerId, { name, phonenumber, address, avatar }) => {
 
     const customerInfo = { name, phonenumber, address }

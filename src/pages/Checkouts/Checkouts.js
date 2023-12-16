@@ -14,7 +14,7 @@ import useAuth from "~/hooks/useAuth";
 import Breadcrumb from "~/components/Breadcrumb";
 import MoneyDisplay from "~/components/MoneyDisplay";
 import { axiosPrivate } from "~/utils/httpRequest";
-import AlertDialog from "../Address/AlertDialog";
+import AlertDialog from "../Address/ShowDialog";
 
 const cx = classNames.bind(Style);
 

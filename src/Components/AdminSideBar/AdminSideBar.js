@@ -1,19 +1,46 @@
-import { Menu } from "antd";
-import { DollarOutlined, HomeOutlined, OrderedListOutlined, PoweroffOutlined, ShopOutlined, ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
+import { Menu } from 'antd';
+import { BoldOutlined, DollarOutlined, HomeOutlined, OrderedListOutlined, ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
+import { useLocation, useNavigate } from 'react-router-dom';
 import images from '~/assets';
 
 import classNames from 'classnames/bind';
 import styles from './AdminSideBar.module.scss';
+import useAuth from '~/hooks/useAuth';
 
 const cx = classNames.bind(styles);
+function getItem(label, key, icon, children, type) {
+    return {
+        key,
+        icon,
+        children,
+        label,
+        type,
+    };
+}
+const items = [
+    getItem('Trang chủ', '/admin', <HomeOutlined />),
+    getItem('Quản lý khách hàng', '/admin/users', <UserOutlined />),
+    getItem('Quản lý sản phẩm', 'product', <DollarOutlined />, [
+        getItem('Tất cả sản phẩm', '/admin/products'),
+        getItem('Thêm sản phẩm', '/admin/product/create'),
+    ]),
+    getItem('Quản lý đơn hàng', 'order', <ShoppingCartOutlined />, [
+        getItem('Tất cả', '/admin/orders'),
+        getItem('Đơn hủy', '/admin/orders?type=cancelled'),
+    ]),
+    getItem('Quản lý banner', '/admin/banners', <BoldOutlined />),
+    getItem('Quản lý danh mục', '/admin/categories', <OrderedListOutlined />),
+];
 
 function AdminSideBar() {
+    const { logout } = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
 
     const handleMenuItemClick = ({ key }) => {
-        if (key === "signout") {
-            navigate("/");
+        if (key === 'signout') {
+            logout();
+            navigate('/');
         } else {
             navigate(key);
         }
@@ -24,19 +51,12 @@ function AdminSideBar() {
             <div className={cx('logo')}>
                 <img className={cx('image')} src={images.logo} alt='logo' />
             </div>
-
             <Menu
                 onClick={handleMenuItemClick}
                 className={cx('menu')}
-                items={[
-                    { label: "Trang chủ", key: "/admin", icon: <HomeOutlined /> },
-                    { label: "Quản lý khách hàng", key: "/admin/users", icon: <UserOutlined /> },
-                    { label: "Quản lý sản phẩm", key: "/admin/products", icon: <DollarOutlined /> },
-                    { label: "Quản lý đơn hàng", key: "/admin/orders", icon: <ShoppingCartOutlined /> },
-                    { label: "Quản lý banner", key: "/admin/banners", icon: <ShopOutlined /> },
-                    { label: "Quản lý danh mục", key: "/admin/categories", icon: <OrderedListOutlined /> },
-                    { label: "Đăng xuất", key: "signout", icon: <PoweroffOutlined /> },
-                ]}
+                mode='inline'
+                items={items}
+                selectedKeys={[(location.pathname + location.search) || '']}
             />
         </>
     )

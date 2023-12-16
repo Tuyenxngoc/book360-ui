@@ -1,6 +1,6 @@
-import axios from "axios";
-import config from "~/config";
-import localStorageKeys, { getItem, setItem } from "~/services/localStorageService";
+import axios from 'axios';
+import config from '~/config';
+import localStorageKeys, { getItem, setItem } from '~/services/localStorageService';
 
 // Create a base axios instance for general requests
 const httpRequest = axios.create({
@@ -32,7 +32,7 @@ const refresh = async () => {
 
         return accessToken;
     } catch (error) {
-        console.error("Error refreshing token:", error);
+        console.error('Error refreshing token:', error);
         throw error;
     }
 };
@@ -62,7 +62,7 @@ axiosPrivate.interceptors.response.use(
                 prevRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
                 return axiosPrivate(prevRequest);
             } catch (refreshError) {
-                console.error("Error retrying request after token refresh:", refreshError);
+                console.error('Error retrying request after token refresh:', refreshError);
                 return Promise.reject(refreshError);
             }
         }

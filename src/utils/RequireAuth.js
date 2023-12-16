@@ -1,7 +1,7 @@
-import { Navigate, Outlet, useLocation } from "react-router-dom";
-import useAuth from "~/hooks/useAuth";
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import useAuth from '~/hooks/useAuth';
 
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
 function RequireAuth({ allowedRoles }) {
     const { isAuthenticated, user } = useAuth();
@@ -12,12 +12,12 @@ function RequireAuth({ allowedRoles }) {
             const hasRequiredRole = allowedRoles.some(role => user.roleName === role);
 
             if (!hasRequiredRole) {
-                return <Navigate to="/access-denied" />;
+                return <Navigate to='/access-denied' />;
             }
         }
         return <Outlet />;
     } else {
-        return <Navigate to="/login" state={{ from: location }} replace />
+        return <Navigate to='/login' state={{ from: location }} replace />
     }
 }
 

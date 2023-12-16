@@ -12,3 +12,7 @@ export const getBillsByCustomerId = (customerId) => {
     const url = `bill/get-bills/${customerId}`;
     return axiosPrivate.get(url);
 };
+
+export const getCountBills = () => {
+    return axiosPrivate.get('bill/get-count-bill');
+}

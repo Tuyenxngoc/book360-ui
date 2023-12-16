@@ -4,7 +4,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 
-function AlertDialog({ openAlertDialog: open, setOpenAlertDialog: setOpen, setSelectedAddress }) {
+function ShowDialog({ openAlertDialog: open, setOpenAlertDialog: setOpen, setSelectedAddress }) {
 
     const handleClose = () => {
         setOpen(false);
@@ -30,4 +30,4 @@ function AlertDialog({ openAlertDialog: open, setOpenAlertDialog: setOpen, setSe
     );
 }
 
-export default AlertDialog;
+export default ShowDialog;

@@ -24,5 +24,7 @@ const images = {
     like: require('~/assets/images/like.svg').default,
     unLike: require('~/assets/images/unlike.svg').default,
     share: require('~/assets/images/share.svg').default,
+    uploadImage: require('~/assets/images/upload_image.svg').default,
+
 }
 export default images;

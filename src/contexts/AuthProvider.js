@@ -88,7 +88,7 @@ const AuthProvider = ({ children }) => {
                 }));
             }
         } catch (error) {
-            console.error("Error updating customer information:", error);
+            console.error('Error updating customer information:', error);
         }
     };
 

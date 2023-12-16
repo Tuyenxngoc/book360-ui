@@ -15,7 +15,7 @@ const CartProvider = ({ children }) => {
                 const response = await getTotalProducts(customer.customerId);
                 setTotalProducts(response.data.data.totalProducts);
             } catch (error) {
-                console.error("Error updating total products:", error);
+                console.error('Error updating total products:', error);
             }
         } else {
             setTotalProducts(0);

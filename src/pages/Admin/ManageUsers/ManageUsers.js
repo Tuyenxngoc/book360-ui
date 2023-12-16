@@ -1,5 +1,8 @@
 function ManageUsers() {
-    return (<h1>ManageUsers</h1>);
+    return (
+        <div className="container">
+        </div>
+    );
 }
 
 export default ManageUsers;

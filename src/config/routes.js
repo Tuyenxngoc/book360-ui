@@ -18,12 +18,16 @@ const routes = {
     favorite: '/favorite',
 
     // Admin routes
-    admin: "/admin",
-    manageUsers: "/admin/users",
-    manageProduct: "/admin/products",
-    manageOder: "/admin/orders",
-    manageCategories: "/admin/categories",
-    manageBanners: "/admin/banners",
+    admin: '/admin',
+    manageUsers: '/admin/users',
+    //Manage products routes
+    viewListProduct: '/admin/products',
+    createProduct: '/admin/product/create',
+    updateProduct: '/admin/product/:productId',
+    //Manage orders routes
+    manageOder: '/admin/orders',
+    manageCategories: '/admin/categories',
+    manageBanners: '/admin/banners',
 
     accessDenied: '/access-denied',
     notFound: '*',

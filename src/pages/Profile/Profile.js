@@ -11,7 +11,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { updateCustomer } from "~/services/customerService";
 import { useState } from "react";
-import AlertDialog from "../Address/AlertDialog";
+import AlertDialog from "../Address/ShowDialog";
 
 const validationSchema = yup.object({
     name: yup.string()
