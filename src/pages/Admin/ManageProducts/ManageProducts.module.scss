@@ -36,7 +36,7 @@
 }
 
 .product-list-main {
-    background: rgb(255, 255, 255);
+    background: white;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 4px 0px;
     border-radius: 4px;
     overflow: hidden;
@@ -47,11 +47,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-bottom: 12px;
-
-    h4 {
-        margin-bottom: 0;
-    }
+    margin-bottom: 24px;
 }
 
 .product-list-item {
@@ -62,7 +58,7 @@
 
 .product-name {
     margin-left: 10px;
-    max-width: 250px;
+    max-width: 160px;
 }
 
 .preview-image,

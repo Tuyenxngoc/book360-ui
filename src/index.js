@@ -8,13 +8,18 @@ import GlobalStyles from '~/style/GlobalStyle';
 import { AuthProvider } from '~/contexts/AuthProvider';
 import { CartProvider } from './contexts/CartContext';
 
+import { ThemeProvider } from '@mui/material/styles';
+import theme from './contexts/Theme';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <GlobalStyles>
       <AuthProvider>
         <CartProvider>
-          <App />
+          <ThemeProvider theme={theme}>
+            <App />
+          </ThemeProvider>
         </CartProvider>
       </AuthProvider>
     </GlobalStyles>

@@ -18,6 +18,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import FixedBox from './FixedBox';
 
+import { Input } from 'antd';
+const { TextArea } = Input;
+
 const cx = classNames.bind(Style);
 
 const validationSchema = yup.object().shape({
@@ -75,6 +78,7 @@ function ProductForm() {
     const { productId } = useParams();
     const [categories, setCategories] = useState([]);
     const [countImagesLoad, setCountImagesLoad] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     const formik = useFormik({
         initialValues: {
@@ -162,11 +166,13 @@ function ProductForm() {
     };
 
     const handleSubmit = (values) => {
+        setLoading(true);
         createProduct(productId || -1, values)
             .then(() => {
                 navigate('/admin/products', { replace: true });
             })
             .catch((error) => { console.log(error); })
+            .finally(() => { setLoading(false); });
     }
 
     return (
@@ -276,14 +282,19 @@ function ProductForm() {
                             <div className={cx('form-group')}>
                                 <label className={cx('form-label')} htmlFor='formControlTextarea'><span>*</span>Mô tả sản phẩm</label>
                                 <div className={cx('form-input')}>
-                                    <textarea
+                                    <TextArea
+                                        showCount
+                                        maxLength={3000}
                                         id='formControlTextarea'
-                                        {...inputProps(formik.touched.description && Boolean(formik.errors.description))}
-                                        rows={5}
                                         name='description'
                                         value={formik.values.description}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
+                                        status={(formik.touched.description && Boolean(formik.errors.description)) ? 'error' : ''}
+                                        style={{
+                                            height: 200,
+                                            resize: 'none',
+                                        }}
                                     />
                                     {formik.touched.description && formik.errors.description && (
                                         <FormHelperText error>{formik.errors.description}</FormHelperText>
@@ -464,7 +475,7 @@ function ProductForm() {
                 </div>
 
                 <div className='col-10 mt-0'>
-                    <FixedBox handleSubmit={formik.handleSubmit} />
+                    <FixedBox handleSubmit={formik.handleSubmit} loading={loading} />
                 </div>
             </div>
         </div>

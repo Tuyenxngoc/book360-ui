@@ -91,7 +91,6 @@ function TableProducts({ listProduct, fetchListProduct }) {
                                         <Button size='small' className='mx-2' variant='contained' color='warning' onClick={() => handleClickBtnUpdate(item.productId)}>
                                             Cập nhật
                                         </Button>
-
                                         <Button size='small' variant='contained' color='error' onClick={() => handleClickBtnDelete(item.productId)}>
                                             Xoá
                                         </Button>

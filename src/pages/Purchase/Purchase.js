@@ -1,7 +1,7 @@
-import { axiosPrivate } from '~/utils/httpRequest';
+import { useState, useEffect } from 'react';
+
 import useAuth from '~/hooks/useAuth';
 import Bill from '~/components/Bill';
-import { useState, useEffect } from 'react';
 import { buyAgain, cancelOrder, getBillsByCustomerId } from '~/services/billService';
 import { Tab, Tabs } from '@mui/material';
 

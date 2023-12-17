@@ -1,4 +1,6 @@
+import { useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -6,32 +8,43 @@ import * as yup from 'yup';
 import httpRequest from "~/utils/httpRequest";
 import useAuth from '~/hooks/useAuth';
 
-import Style from './Login.module.scss';
-import classNames from 'classnames/bind';
 import images from '~/assets';
 import { Button, TextField } from '@mui/material';
-import { toast } from 'react-toastify';
-import { useEffect } from 'react';
 import { ROLES } from '~/config';
+
+import Style from './Login.module.scss';
+import classNames from 'classnames/bind';
+
+const validationSchema = yup.object({
+    emailOrUsername: yup.string().required('Trường này là bắt buộc'),
+    password: yup.string().required('Trường này là bắt buộc'),
+});
 
 const cx = classNames.bind(Style);
 
 function Login() {
-    const { isAuthenticated, login } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
+    const { isAuthenticated, login } = useAuth();
     const from = location.state?.from?.pathname || "/";
-
-    const validationSchema = yup.object({
-        emailOrUsername: yup.string().required('Trường này là bắt buộc'),
-        password: yup.string().required('Trường này là bắt buộc'),
-    });
 
     useEffect(() => {
         if (isAuthenticated) {
             navigate('/', { replace: true });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    const formik = useFormik({
+        initialValues: {
+            emailOrUsername: '',
+            password: '',
+        },
+        validationSchema: validationSchema,
+        onSubmit: (values) => {
+            handleLogin(values);
+        },
+    });
 
     const handleLogin = async (values) => {
         try {
@@ -66,17 +79,6 @@ function Login() {
             });
         }
     };
-
-    const formik = useFormik({
-        initialValues: {
-            emailOrUsername: '',
-            password: '',
-        },
-        validationSchema: validationSchema,
-        onSubmit: (values) => {
-            handleLogin(values);
-        },
-    });
 
     return (
         <main className={cx('main')}>

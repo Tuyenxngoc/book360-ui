@@ -1,7 +1,6 @@
 // React hooks
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-//Zoom images
 
 // External libraries
 import httpRequest from "~/utils/httpRequest";
@@ -12,7 +11,6 @@ import classNames from "classnames/bind";
 
 // Components
 import MoneyDisplay from "~/components/MoneyDisplay";
-import Button from "~/components/Button";
 import HomeProduct from "~/components/HomeProduct";
 import Breadcrumbs from "~/components/Breadcrumb/Breadcrumb";
 import Loading from "~/components/Loading";
@@ -25,7 +23,7 @@ import Product from "~/components/Product";
 import useCart from "~/hooks/useCart";
 import { addFavoriteProduct, checkFavoriteProduct, removeFavoriteProduct } from "~/services/customerService";
 import images from "~/assets";
-import { CircularProgress } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 import Slider from "react-slick";
 import CustomArrows from "~/components/CustomArrows";
 
@@ -228,7 +226,7 @@ function BookDetails() {
                                     </div>
                                     <div className="col-9">
                                         <div className={cx('image')}>
-                                            <div className={cx('sale-percentage-btn')}>{`-${bookData.discount}%`}</div>
+                                            {bookData.discount > 0 && <div className={cx('sale-percentage-btn')}>{`-${bookData.discount}%`}</div>}
                                             {bookData.images.length > 1 ? (
                                                 <Slider {...settingsMain} asNavFor={navSlider} ref={(slider) => setMainSlider(slider)}>
                                                     {bookData.images.map((image, index) => (
@@ -292,14 +290,15 @@ function BookDetails() {
                                     </div>
                                 </div>
 
-
                                 <div className={cx('product-quantity')}>
                                     <span>Chọn số lượng: </span>
                                     <div className={cx('qty-addcart')}>
                                         <button
                                             className={cx('btn', 'decrease')}
                                             onClick={decreaseQuantity}
-                                        >-</button>
+                                        >
+                                            -
+                                        </button>
                                         <input
                                             value={quantity}
                                             onChange={handleQuantityChange}
@@ -308,7 +307,9 @@ function BookDetails() {
                                         <button
                                             className={cx('btn', 'increase')}
                                             onClick={increaseQuantity}
-                                        >+</button>
+                                        >
+                                            +
+                                        </button>
                                     </div>
                                     <div className={cx('quantity')}>
                                         {bookData.quantity > 0 ? `Còn ${bookData.quantity} sản phẩm` : 'Tạm hết hàng'}
@@ -320,15 +321,21 @@ function BookDetails() {
                                         <div className="row">
                                             <div className="col">
                                                 <Button
+                                                    variant="contained"
+                                                    fullWidth
                                                     onClick={handleAddProductToCart}
-                                                    primary
-                                                    large
-                                                    id="AddToCart"
-                                                    className="btnAddToCart"
-                                                >Thêm vào giỏ hàng </Button>
+                                                >
+                                                    Thêm vào giỏ hàng
+                                                </Button>
                                             </div>
                                             <div className="col">
-                                                <Button onClick={handleBuyNow} primary large id="buy-now" className="btn-light btnBuyNow ">Mua ngay</Button>
+                                                <Button
+                                                    variant="contained"
+                                                    fullWidth
+                                                    onClick={handleBuyNow}
+                                                >
+                                                    Mua ngay
+                                                </Button>
                                             </div>
                                         </div>
                                     </div>

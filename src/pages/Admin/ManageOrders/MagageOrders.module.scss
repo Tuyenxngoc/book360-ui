@@ -1,0 +1,57 @@
+.order-list-main {
+    background: white;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 4px 0px;
+    border-radius: 4px;
+    overflow: hidden;
+    // padding: 24px;
+}
+
+.order-list-tab {
+    padding: 0 24px;
+}
+
+.order-filter-card {
+    margin-bottom: 40px;
+    padding: 0 24px;
+}
+
+.order-list-panel {
+    padding: 0 24px 24px 24px;
+}
+
+.date-range-picker {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.search-section {
+    display: flex;
+    align-items: center;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+
+.title {
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--text-color);
+    font-weight: 600;
+}
+
+.table-pagination {
+    p {
+        margin-bottom: 0;
+    }
+}
+
+//Table
+.payment-method {
+    color: #8c8c8c;
+    font-size: 12px;
+}

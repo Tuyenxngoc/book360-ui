@@ -7,6 +7,7 @@
     background-color: white;
     height: 240px;
 }
+
 .title {
     font-size: 20px;
     margin-bottom: 16px;
@@ -17,7 +18,12 @@
     padding-left: 0;
 }
 
+.form-group {
+    display: flex;
+}
+
 .item {
+    display: block;
     margin-bottom: 8px;
 }
 
@@ -28,6 +34,7 @@
         color: var(--red-color);
     }
 }
+
 .copyrights {
     margin-top: 38px;
     background: #f2f5f7;
@@ -38,6 +45,7 @@
         position: relative;
     }
 }
+
 .input {
     border: 1px solid #ccc;
     margin-right: 4px;

@@ -66,7 +66,7 @@ function ManageProducts() {
     return (
         <div className='container my-3'>
             <div className='row justify-content-center'>
-                <div className='col-auto'>
+                <div className='col-10'>
                     <div className={cx('product-filter-card')}>
                         <form>
                             <div className='filter-form-box'>
@@ -162,16 +162,18 @@ function ManageProducts() {
                                 Thêm mới
                             </Button>
                         </div>
-                        <TableProducts listProduct={dataProducts} fetchListProduct={fetchListProduct} />
-                        <TablePagination
-                            className={cx('table-pagination')}
-                            component='div'
-                            count={meta.totalElements || 100}
-                            page={filters.pageNum}
-                            onPageChange={handleChangePage}
-                            rowsPerPage={meta.pageSize || 10}
-                            onRowsPerPageChange={handleChangeRowsPerPage}
-                        />
+                        <div className='content'>
+                            <TableProducts listProduct={dataProducts} fetchListProduct={fetchListProduct} />
+                            <TablePagination
+                                className={cx('table-pagination')}
+                                component='div'
+                                count={meta.totalElements || 100}
+                                page={filters.pageNum}
+                                onPageChange={handleChangePage}
+                                rowsPerPage={meta.pageSize || 10}
+                                onRowsPerPageChange={handleChangeRowsPerPage}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>

@@ -31,15 +31,15 @@ function Header() {
 
     return (
         <header className={cx('wrapper')}>
-            <div className="container">
+            <div className='container'>
                 <nav className={cx('header-navbar')}>
                     <ul className={cx('navbar-list')}>
                         <li className={cx('navbar-item')}>
                             <a
                                 className={cx('navbar-item-link')}
-                                href="/"
-                                target="_blank"
-                                rel="noopener noreferrer"
+                                href='/'
+                                target='_blank'
+                                rel='noopener noreferrer'
                             >
                                 Chăm sóc khách hàng
                             </a>
@@ -47,20 +47,20 @@ function Header() {
                         <li className={cx('navbar-item')}>
                             <div className={cx('navbar-tilte')}>Kết nối</div>
                             <a
-                                href="https://www.facebook.com"
-                                target="_blank"
+                                href='https://www.facebook.com'
+                                target='_blank'
                                 className={cx('navbar-icon-link')}
-                                rel="noopener noreferrer"
-                                title="Kết nối Faceboock"
+                                rel='noopener noreferrer'
+                                title='Kết nối Faceboock'
                             >
                                 <FontAwesomeIcon icon={faFacebook} />
                             </a>
                             <a
-                                href="https://www.facebook.com"
-                                target="_blank"
+                                href='https://www.facebook.com'
+                                target='_blank'
                                 className={cx('navbar-icon-link')}
-                                rel="noopener noreferrer"
-                                title="Kết nối Instagram!"
+                                rel='noopener noreferrer'
+                                title='Kết nối Instagram!'
                             >
                                 <FontAwesomeIcon icon={faInstagram} />
                             </a>
@@ -75,8 +75,8 @@ function Header() {
 
                     <div className={cx('search')}>
                         <input
-                            id="searchInput"
-                            name="searchKeyword"
+                            id='searchInput'
+                            name='searchKeyword'
                             value={keyword}
                             onChange={(event) => setKeyword(event.target.value)}
                             placeholder='Tìm kiếm...'
@@ -92,7 +92,7 @@ function Header() {
                     <div className={cx('actions')}>
 
                         <Link className={cx('cart')} to='/cart'>
-                            <Badge badgeContent={totalProducts} color="primary">
+                            <Badge badgeContent={totalProducts} color='warning'>
                                 <img src={images.cart} alt='cart' />
                             </Badge>
                         </Link>
@@ -103,20 +103,20 @@ function Header() {
                                     <Button
                                         rounded
                                         leftIcon={
-                                            <Avatar alt="avt" src={customer.avatar || images.userDefault} sx={{ width: 24, height: 24 }} />
+                                            <Avatar alt='avt' src={customer.avatar || images.userDefault} sx={{ width: 24, height: 24 }} />
                                         }
                                     >
                                         {customer.name || user.username || 'user'}
                                     </Button>
 
-                                    <ul className={cx("user-menu")}>
-                                        <li className={cx("user-menu-item")}>
-                                            <Link to="/profile">Tài khoản của tôi</Link>
+                                    <ul className={cx('user-menu')}>
+                                        <li className={cx('user-menu-item')}>
+                                            <Link to='/profile'>Tài khoản của tôi</Link>
                                         </li>
-                                        <li className={cx("user-menu-item")}>
-                                            <Link to="/purchase">Đơn mua</Link>
+                                        <li className={cx('user-menu-item')}>
+                                            <Link to='/purchase'>Đơn mua</Link>
                                         </li>
-                                        <li className={cx("user-menu-item", "separate")}>
+                                        <li className={cx('user-menu-item', 'separate')}>
                                             <Link onClick={logout}>Đăng xuất</Link>
                                         </li>
                                     </ul>

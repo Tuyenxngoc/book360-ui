@@ -16,3 +16,7 @@ export const getBillsByCustomerId = (customerId) => {
 export const getCountBills = () => {
     return axiosPrivate.get('bill/get-count-bill');
 }
+
+export const getAllBills = (paramsString) => {
+    return axiosPrivate.get(`bill/get-all-bills?${paramsString}`);
+}
