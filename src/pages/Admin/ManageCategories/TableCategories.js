@@ -1,14 +1,58 @@
 import { Button } from '@mui/material';
 import Style from './ManageCategories.module.scss';
 import classNames from 'classnames/bind';
+import { useState } from 'react';
+import DialogCategoryForm from './DialogCategoryForm';
+import AlertDialog from '~/components/AlertDialog';
+import { deleteCategory } from '~/services/categoryService';
+import { toast } from 'react-toastify';
 
 const cx = classNames.bind(Style);
 
-function TableCategories({ listCategory, handleClickBtnUpdate, handleClickView, handleClickBtnDelete }) {
+function TableCategories({ listCategory, fetchListCategory }) {
+
+    const [categorySelect, setCategorySelect] = useState();
+
+    const [showDialogUpdateCategory, setShowDialogUpdateCategory] = useState(false);
+    const [showDialogDeleteCategory, setShowDialogDeleteCategory] = useState(false);
+
+    const handleClickBtnUpdate = (category) => {
+        setShowDialogUpdateCategory(true);
+        setCategorySelect(category);
+    }
+
+    const handleClickBtnDelete = (category) => {
+        setShowDialogDeleteCategory(true);
+        setCategorySelect(category);
+    }
+
+    const handleDeleteCategory = () => {
+        deleteCategory(categorySelect.id)
+            .then(() => {
+                fetchListCategory();
+                toast.success('Xoá thành công');
+            })
+            .catch(() => {
+                toast.error('Có lỗi sảy ra');
+            })
+    }
+
     return (
         <div>
-            {console.log("list", listCategory)}
-            <table className="table table-hover table-bordered">
+            <DialogCategoryForm
+                open={showDialogUpdateCategory}
+                setOpen={setShowDialogUpdateCategory}
+                dataCategory={categorySelect}
+                fetchListCategory={fetchListCategory}
+            />
+            <AlertDialog
+                open={showDialogDeleteCategory}
+                setOpen={setShowDialogDeleteCategory}
+                title={'Xóa danh mục'}
+                description={'Bạn có chắc muốn xóa danh mục này? Lưu ý: Sau khi xóa, bạn không thể hoàn tác hay khôi phục danh mục.'}
+                handleSubmit={handleDeleteCategory}
+            />
+            <table className="table table-hover table-bordered" style={{ verticalAlign: 'middle' }}>
                 <thead>
                     <tr>
                         <th scope="col">Hình ảnh</th>
@@ -21,24 +65,25 @@ function TableCategories({ listCategory, handleClickBtnUpdate, handleClickView, 
                         listCategory.map((item, index) => {
                             return (
                                 <tr key={`table-categorys-${index}`}>
-                                    <td className={cx('image-category')}>
-                                        {item.image ? (
-                                            <img src={item.image} alt={`category id ${item.id}`} />
-                                        ) : (
-                                            <div>chưa có hình ảnh</div>
-                                        )}
+                                    <td>
+                                        <div className={cx('image-category')}>
+                                            {item.image ? (
+                                                <img src={item.image} alt={`category id ${item.id}`} />
+                                            ) : (
+                                                <div>chưa có hình ảnh</div>
+                                            )}
+                                        </div>
                                     </td>
                                     <td>{item.name}</td>
                                     <td>
-                                        <Button size='small' variant='contained' color='success' onClick={() => handleClickView(item.id)}>
-                                            Xem
-                                        </Button>
-                                        <Button size='small' className='mx-2' variant='contained' color='warning' onClick={() => handleClickBtnUpdate(item.id)}>
-                                            Cập nhật
-                                        </Button>
-                                        <Button size='small' variant='contained' color='error' onClick={() => handleClickBtnDelete(item.id)}>
-                                            Xoá
-                                        </Button>
+                                        <div className={cx('table-action')}>
+                                            <Button sx={{ minWidth: 90 }} size='small' className='mb-2' variant='contained' color='warning' onClick={() => handleClickBtnUpdate(item)}>
+                                                Cập nhật
+                                            </Button>
+                                            <Button sx={{ minWidth: 90 }} size='small' variant='contained' color='error' onClick={() => handleClickBtnDelete(item)}>
+                                                Xoá
+                                            </Button>
+                                        </div>
                                     </td>
                                 </tr>
                             )

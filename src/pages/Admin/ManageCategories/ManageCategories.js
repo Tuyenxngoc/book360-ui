@@ -10,11 +10,14 @@ import classNames from 'classnames/bind';
 
 import { getAllCategories } from '~/services/categoryService';
 import TableCategories from './TableCategories';
+import DialogCategoryForm from './DialogCategoryForm';
 
 const cx = classNames.bind(Style);
 
 function ManageCategories() {
     const navigate = useNavigate();
+
+    const [showDialogCreate, setShowDialogCreate] = useState(false);
     const [dataCategories, setDataCategories] = useState([]);
 
     const fetchListCategory = () => {
@@ -39,26 +42,25 @@ function ManageCategories() {
         setPage(0);
     };
 
-
     return (
         <div className='container my-3'>
             <div className='row justify-content-center'>
                 <div className='col-10'>
                     <div className={cx('list-main')}>
                         <div className={cx('header')}>
+                            <div className={cx('title')}>{dataCategories.length} Danh mục</div>
                             <Button
                                 size='small'
                                 variant='contained'
                                 startIcon={<FontAwesomeIcon icon={faPlus} />}
-                                onClick={() => {
-                                    navigate('/admin/product/create');
-                                }}
+                                onClick={() => { setShowDialogCreate(true); }}
                             >
                                 Thêm mới
                             </Button>
                         </div>
                         <div className='content'>
-                            <TableCategories listCategory={dataCategories} />
+                            <DialogCategoryForm open={showDialogCreate} setOpen={setShowDialogCreate} fetchListCategory={fetchListCategory} />
+                            <TableCategories listCategory={dataCategories} fetchListCategory={fetchListCategory} />
                             <TablePagination
                                 className={cx('table-pagination')}
                                 component="div"

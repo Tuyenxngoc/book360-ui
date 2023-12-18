@@ -1,5 +1,3 @@
-import MoneyDisplay from "~/components/MoneyDisplay";
-
 import Style from './ManageBanners.module.scss';
 import classNames from 'classnames/bind';
 const cx = classNames.bind(Style);
@@ -9,16 +7,14 @@ function TableBanners({ listBanners }) {
         <table className="table table-hover table-bordered" style={{ verticalAlign: 'middle' }}>
             <thead>
                 <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">IMAGE</th>
+                    <th scope="col">Hình ảnh</th>
                 </tr>
             </thead>
             <tbody>
                 {listBanners && listBanners.length > 0 ? (
                     listBanners.map((item, index) => {
                         return (
-                            <tr key={`table-products-${index}`}>
-                                <td>{item.id}</td>
+                            <tr key={`table-banners-${index}`}>
                                 <td >
                                     <div className={cx('banner-image')}>
                                         <img src={item.image} alt={item.name} />
@@ -29,7 +25,7 @@ function TableBanners({ listBanners }) {
                     })
                 ) : (
                     <tr>
-                        <td colSpan="2">Not found data</td>
+                        <td colSpan="1">Not found data</td>
                     </tr>
                 )}
             </tbody>

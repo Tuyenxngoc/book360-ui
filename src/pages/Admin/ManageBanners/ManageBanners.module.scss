@@ -1,15 +1,33 @@
-.info {
+.list-main {
+    background: white;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 4px 0px;
+    border-radius: 4px;
+    overflow: hidden;
+    padding: 24px;
+}
+
+.header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 12px 0;
-    h4 {
+    margin-bottom: 24px;
+}
+
+.title {
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--text-color);
+    font-weight: 600;
+}
+
+.table-pagination {
+    p {
         margin-bottom: 0;
     }
 }
 
 .banner-image {
-    height: 100px;
+    height: 150px;
     border: 1px solid #ddd;
     display: flex;
     align-items: center;

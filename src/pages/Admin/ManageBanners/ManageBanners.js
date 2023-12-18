@@ -1,6 +1,6 @@
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button } from "@mui/material";
+import { Button, TablePagination } from "@mui/material";
 import TableBanners from "./TableBanners";
 
 import Style from './ManageBanners.module.scss';
@@ -13,6 +13,8 @@ const cx = classNames.bind(Style);
 function ManageBanners() {
 
     const [dataBanners, setDataBanners] = useState([]);
+    const [showDialogCreate, setShowDialogCreate] = useState(false);
+
 
     const fetchListBanner = () => {
         getAllBanners()
@@ -24,13 +26,49 @@ function ManageBanners() {
         fetchListBanner();
     }, [])
 
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);
+    };
+
     return (
-        <div className="container">
-            <div className={cx('info')}>
-                <h4>Quản lý banner</h4>
-                <Button variant="contained" startIcon={<FontAwesomeIcon icon={faPlus} />}>Thêm mới</Button>
+        <div className='container my-3'>
+            <div className='row justify-content-center'>
+                <div className='col-10'>
+                    <div className={cx('list-main')}>
+                        <div className={cx('header')}>
+                            <div className={cx('title')}>{dataBanners.length} Banner</div>
+                            <Button
+                                size='small'
+                                variant='contained'
+                                startIcon={<FontAwesomeIcon icon={faPlus} />}
+                                onClick={() => { setShowDialogCreate(true); }}
+                            >
+                                Thêm mới
+                            </Button>
+                        </div>
+                        <div className='content'>
+                            <TableBanners listBanners={dataBanners} />
+                            <TablePagination
+                                className={cx('table-pagination')}
+                                component="div"
+                                count={dataBanners.length}
+                                page={page}
+                                onPageChange={handleChangePage}
+                                rowsPerPage={rowsPerPage}
+                                onRowsPerPageChange={handleChangeRowsPerPage}
+                            />
+                        </div>
+                    </div>
+                </div>
             </div>
-            <TableBanners listBanners={dataBanners} />
         </div>
     );
 }

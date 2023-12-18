@@ -9,7 +9,7 @@ import queryString from 'query-string';
 import Style from './MagageOrders.module.scss';
 import classNames from 'classnames/bind';
 
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { ConfigProvider, DatePicker, Input, Select, Space, Tabs } from 'antd';
 
 import viVN from 'antd/lib/locale/vi_VN';
@@ -23,18 +23,53 @@ const cx = classNames.bind(Style);
 
 const options = [
     {
-        value: 'zhejiang',
+        value: 'billId',
         label: 'Mã đơn hàng',
     },
     {
-        value: 'jiangsu',
+        value: 'nameCustomer',
         label: 'Tên người mua',
     },
     {
-        value: 'jiangsu2',
+        value: 'product',
         label: 'Sản phẩm',
     },
 ];
+
+const orderStatus = [
+    {
+        label: 'Tất cả',
+        key: '',
+    },
+    {
+        label: 'Chờ xử lý',
+        key: 'unpaid',
+    },
+    {
+        label: 'Đang giao hàng',
+        key: 'shipping',
+    },
+    {
+        label: 'Đặt hàng thành công',
+        key: 'success',
+    },
+    {
+        label: 'Đã giao',
+        key: 'completed',
+    },
+    {
+        label: 'Đã hủy',
+        key: 'cancelled',
+    },
+];
+
+const defaultFilters = {
+    keyword: '',
+    sortBy: 'createdDate',
+    isAscending: false,
+    pageNum: 0,
+    pageSize: 10,
+}
 
 const getDateRange = () => {
     const currentDate = new Date();
@@ -48,36 +83,32 @@ const getDateRange = () => {
     };
 };
 
-function a11yProps(index) {
-    return {
-        id: `tab-${index}`,
-        'aria-controls': `tabpanel-${index}`,
-    };
-}
-
 function ManageOrders() {
     const location = useLocation();
+    const navigate = useNavigate();
 
     const queryParams = queryString.parse(location.search);
-    const type = queryParams.type || '';
+    const [type, setType] = useState(queryParams.type || '');
 
     const [dataOrders, setDataOrders] = useState([]);
     const [meta, setMeta] = useState({});
-    const [filters, setFilters] = useState({
-        keyword: '',
-        sortBy: 'createdDate',
-        isAscending: false,
-        pageNum: 0,
-        pageSize: 10,
-    })
+    const [filters, setFilters] = useState(defaultFilters)
 
-    const [value, setValue] = useState(0);
+    const [typeSearch, setTypeSearch] = useState(options[0].label);
+    const defaultDateRange = useMemo(getDateRange, []);
 
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
+    const handleChangeOrderStatus = (activeKey) => {
+        setType(activeKey);
+        if (activeKey === '') {
+            navigate('/admin/orders');
+        } else {
+            navigate(`/admin/orders?type=${activeKey}`);
+        }
     };
 
-    const defaultDateRange = useMemo(getDateRange, []);
+    const handleSelectChange = (value, option) => {
+        setTypeSearch(option.label);
+    };
 
     const handleChangePage = (event, newPage) => {
         setFilters({ ...filters, pageNum: newPage });
@@ -96,7 +127,7 @@ function ManageOrders() {
     };
 
     const fetchListOrder = () => {
-        const paramsString = queryString.stringify({ ...filters, pageNum: filters.pageNum + 1 });
+        const paramsString = queryString.stringify({ ...filters, pageNum: filters.pageNum + 1, status: type });
         getAllBills(paramsString)
             .then((response) => {
                 const { items, meta } = response.data.data;
@@ -109,7 +140,7 @@ function ManageOrders() {
     useEffect(() => {
         fetchListOrder();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [filters, type])
 
     return (
         <div className='container my-3'>
@@ -118,39 +149,12 @@ function ManageOrders() {
                     <div className={cx('order-list-main')}>
                         <div className={cx('order-list-tab')}>
                             <Tabs
-                                defaultActiveKey="1"
-                                items={[
-                                    {
-                                        label: 'Tất cả',
-                                        key: '1',
-                                    },
-                                    {
-                                        label: 'Chờ xử lý',
-                                        key: '2',
-                                    },
-                                    {
-                                        label: 'Đang giao hàng',
-                                        key: '3',
-                                    },
-                                    {
-                                        label: 'Đặt hàng thành công',
-                                        key: '4',
-                                    },
-                                    {
-                                        label: 'Đã giao',
-                                        key: '5',
-                                    },
-                                    {
-                                        label: 'Đã hủy',
-                                        key: '6',
-                                    },
-                                ]}
-                                onChange={handleChange}
+                                defaultActiveKey={type}
+                                items={orderStatus}
+                                onChange={handleChangeOrderStatus}
                                 size='large'
                             />
-
                         </div>
-
                         <div className={cx('order-filter-card')}>
                             <div className='row gy-3'>
                                 <div className='col-12'>
@@ -169,8 +173,8 @@ function ManageOrders() {
                                     <div className={cx('search-section')}>
                                         <ConfigProvider locale={viVN}>
                                             <Space.Compact style={{ flex: 1 }}>
-                                                <Select defaultValue="Mã đơn hàng" options={options} style={{ minWidth: '190px' }} />
-                                                <Input defaultValue="Nhập mã đơn hàng" />
+                                                <Select defaultValue="Mã đơn hàng" onChange={handleSelectChange} options={options} style={{ minWidth: '190px' }} />
+                                                <Input allowClear={true} placeholder={`Nhập ${typeSearch}`} />
                                             </Space.Compact>
                                         </ConfigProvider>
                                         <Button variant='contained' size='small' sx={{ mx: 1 }} color='primary'>Tìm kiếm</Button>

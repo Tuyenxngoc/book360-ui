@@ -147,9 +147,9 @@ const dataRevenue = [
 
 const todo = [
     { lable: 'Chờ xác nhận', link: '/admin/orders' },
-    { lable: 'Chờ lấy hàng', link: '/admin/orders' },
-    { lable: 'Chờ đã xử lý', link: '/admin/orders' },
-    { lable: 'Chờ đơn hủy', link: '/admin/orders' },
+    { lable: 'Chờ lấy hàng', link: '/admin/orders?type=unpaid' },
+    { lable: 'Đã xử lý', link: '/admin/orders?type=success' },
+    { lable: 'Đơn hủy', link: '/admin/orders?type=cancelled' },
     { lable: 'Sản phẩm hết hàng', link: '/admin/products' },
 ]
 

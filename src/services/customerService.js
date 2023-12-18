@@ -20,18 +20,8 @@ export const uploadImage = (file) => {
 }
 
 export const updateCustomer = (customerId, { name, phonenumber, address, avatar }) => {
-
-    const customerInfo = { name, phonenumber, address }
-
-    if (avatar instanceof File) {
-        customerInfo.avatar = avatar;
-    }
-
-    return axiosPrivate.put(`customer/${customerId}`, customerInfo, {
-        headers: {
-            'Content-Type': 'multipart/form-data',
-        },
-    });
+    const customerInfo = { name, phonenumber, address, avatar };
+    return axiosPrivate.put(`customer/${customerId}`, customerInfo);
 }
 
 export const getFavoriteProducts = (customerId) => {

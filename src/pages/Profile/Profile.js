@@ -1,28 +1,30 @@
-import { Avatar, Button, Dialog, DialogContent, TextField } from "@mui/material";
-import images from "~/assets";
+import { Avatar, Button, Dialog, DialogContent, TextField } from '@mui/material';
+import images from '~/assets';
 
 import Style from './Profile.module.scss';
-import classNames from "classnames/bind";
+import classNames from 'classnames/bind';
 
-import useAuth from "~/hooks/useAuth";
-import { useRef } from "react";
+import useAuth from '~/hooks/useAuth';
+import { useRef } from 'react';
 
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { updateCustomer } from "~/services/customerService";
-import { useState } from "react";
-import AlertDialog from "../Address/ShowDialog";
+import { updateCustomer, uploadImage } from '~/services/customerService';
+import { useState } from 'react';
+import AlertDialog from '../Address/ShowDialog';
+import { toast } from 'react-toastify';
 
 const validationSchema = yup.object({
     name: yup.string()
         .max(25, 'Họ và tên không dài quá 25 ký tự.')
-        .required('Tên là bắt buộc'),
+        .required('Vui lòng nhập họ tên'),
+
     address: yup.string()
-        .required('Địa chỉ là bắt buộc'),
+        .required('Vui lòng nhập địa chỉ'),
+
     phonenumber: yup.string()
         .matches(/^(?:\+84|0)(?:1[2689]|9[0-9]|3[2-9]|5[6-9]|7[0-9])(?:\d{7}|\d{8})$/, 'Phải là số điện thoại hợp lệ')
         .required('Số điện thoại là bắt buộc'),
-    avatar: yup.mixed(),
 });
 
 const cx = classNames.bind(Style);
@@ -36,10 +38,10 @@ function Profile() {
 
     const formik = useFormik({
         initialValues: {
-            name: customer.name,
-            address: customer.address,
-            phonenumber: customer.phonenumber,
-            avatar: customer.avatar,
+            name: customer.name || '',
+            address: customer.address || '',
+            phonenumber: customer.phonenumber || '',
+            avatar: customer.avatar || '',
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
@@ -59,9 +61,13 @@ function Profile() {
                 (file.type === 'image/jpeg' || file.type === 'image/png') &&
                 file.size <= 1024 * 1024 // 1MB
             ) {
-                formik.setFieldValue('avatar', file);
+                uploadImage(file)
+                    .then((response) => {
+                        formik.setFieldValue('avatar', response.data.data);
+                    })
+                    .catch((error) => { console.log(error); })
             } else {
-                alert('Vui lòng chọn file JPEG hoặc PNG có dung lượng tối đa 1MB.');
+                toast.warn('Vui lòng chọn file JPEG hoặc PNG có dung lượng tối đa 1MB.');
             }
         }
     };
@@ -94,11 +100,11 @@ function Profile() {
             <Dialog
                 open={open}
                 onClose={handleClose}
-                aria-describedby="alert-dialog-description"
+                aria-describedby='alert-dialog-description'
             >
-                <DialogContent id="alert-dialog-description">
+                <DialogContent id='alert-dialog-description'>
                     <div className={cx('popup-container')}>
-                        <img src={images.success} alt="success" />
+                        <img src={images.success} alt='success' />
                         Cập nhật thông tin thành công
                     </div>
                 </DialogContent>
@@ -110,8 +116,8 @@ function Profile() {
                 setSelectedAddress={(address) => { formik.setFieldValue('address', address) }} />
 
             <div className={cx('main-content')}>
-                <div className="row">
-                    <div className="col-12">
+                <div className='row'>
+                    <div className='col-12'>
                         <div className={cx('header')}>
                             <h3 className={cx('title')}>Hồ sơ của tôi</h3>
                             <div>Quản lý thông tin hồ sơ để bảo mật tài khoản</div>
@@ -119,14 +125,14 @@ function Profile() {
                     </div>
                 </div>
 
-                <div className="row pt-4">
-                    <div className="col-8">
+                <div className='row pt-4'>
+                    <div className='col-8'>
                         <form onSubmit={formik.handleSubmit}>
                             <div className={cx('form-group')}>
                                 <label>Tên đăng nhập</label>
                                 <input
-                                    type="text"
-                                    className="form-control"
+                                    type='text'
+                                    className='form-control'
                                     disabled
                                     defaultValue={user.username}
                                 />
@@ -135,9 +141,9 @@ function Profile() {
                                 <label>Tên</label>
                                 <TextField
                                     fullWidth
-                                    size="small"
-                                    id="name"
-                                    name="name"
+                                    size='small'
+                                    id='name'
+                                    name='name'
                                     value={formik.values.name}
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
@@ -148,8 +154,8 @@ function Profile() {
                             <div className={cx('form-group')}>
                                 <label>Email</label>
                                 <input
-                                    type="text"
-                                    className="form-control"
+                                    type='text'
+                                    className='form-control'
                                     disabled
                                     defaultValue={user.email}
                                 />
@@ -158,9 +164,9 @@ function Profile() {
                                 <label>Số điện thoại</label>
                                 <TextField
                                     fullWidth
-                                    size="small"
-                                    id="phonenumber"
-                                    name="phonenumber"
+                                    size='small'
+                                    id='phonenumber'
+                                    name='phonenumber'
                                     value={formik.values.phonenumber}
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
@@ -172,9 +178,9 @@ function Profile() {
                                 <label>Địa chỉ</label>
                                 <TextField
                                     fullWidth
-                                    size="small"
-                                    id="address"
-                                    name="address"
+                                    size='small'
+                                    id='address'
+                                    name='address'
                                     value={formik.values.address}
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
@@ -185,37 +191,31 @@ function Profile() {
                             </div>
                             <div className={cx('form-group')}>
                                 <label></label>
-                                <Button color="primary" variant="contained" type="submit" disabled={loading}>Lưu</Button>
+                                <Button color='primary' variant='contained' type='submit' disabled={loading}>Lưu</Button>
                             </div>
                             <input
                                 ref={fileInputRef}
-                                type="file"
-                                id="avatar"
-                                name="avatar"
+                                type='file'
+                                id='avatar'
+                                name='avatar'
                                 onChange={handleAvatarChange}
-                                accept=".jpg,.jpeg,.png"
+                                accept='.jpg,.jpeg,.png'
                                 style={{ display: 'none' }}
                             />
                         </form>
                     </div>
 
-                    <div className="col-4">
+                    <div className='col-4'>
                         <div className={cx('user-avt')}>
-                            <div className={cx("avatar")}>
+                            <div className={cx('avatar')}>
                                 <Avatar
-                                    alt="avatar"
-                                    src={
-                                        formik.values.avatar ? (
-                                            formik.values.avatar instanceof File ?
-                                                URL.createObjectURL(formik.values.avatar)
-                                                : formik.values.avatar
-                                        ) : (images.userDefault)
-                                    }
+                                    alt='avatar'
+                                    src={formik.values.avatar ? (formik.values.avatar) : (images.userDefault)}
                                     sx={{ width: 100, height: 100, cursor: 'pointer' }}
                                     onClick={handleSelectInput}
                                 />
                             </div>
-                            <Button size="small" onClick={handleSelectInput} variant="outlined">Chọn ảnh</Button>
+                            <Button size='small' onClick={handleSelectInput} variant='outlined'>Chọn ảnh</Button>
                             <div className={cx('file-description')}>
                                 <div>Dụng lượng file tối đa 1 MB</div>
                                 <div>Định dạng: .JPG, .JPEG, .PNG</div>

@@ -24,10 +24,7 @@ const items = [
         getItem('Tất cả sản phẩm', '/admin/products'),
         getItem('Thêm sản phẩm', '/admin/product/create'),
     ]),
-    getItem('Quản lý đơn hàng', 'order', <ShoppingCartOutlined />, [
-        getItem('Tất cả', '/admin/orders'),
-        getItem('Đơn hủy', '/admin/orders?type=cancelled'),
-    ]),
+    getItem('Quản lý đơn hàng', '/admin/orders', <ShoppingCartOutlined />),
     getItem('Quản lý banner', '/admin/banners', <BoldOutlined />),
     getItem('Quản lý danh mục', '/admin/categories', <OrderedListOutlined />),
 ];

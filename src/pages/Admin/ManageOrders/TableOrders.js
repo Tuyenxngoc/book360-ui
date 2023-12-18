@@ -4,28 +4,6 @@ import Style from './MagageOrders.module.scss';
 import classNames from 'classnames/bind';
 import { Button, Chip } from '@mui/material';
 import DateTimeDisplay from '~/components/DateTimeDisplay';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPen } from '@fortawesome/free-solid-svg-icons';
-/**
- * 
-*   'createdDate': '2023-12-15T15:23:38.399741',
-    'lastModifiedDate': '2023-12-15T15:23:38.466559',
-    'id': 2,
-    'status': 'Chờ xử lý',
-    'feeShip': 30000,
-    'total': 89500,
-    'billDetail': [],
-    'customer': {
-        'createdDate': '2023-12-13T21:17:32.832814',
-        'lastModifiedDate': '2023-12-14T08:35:35.541409',
-        'id': 2,
-        'name': 'tuyenngoc',
-        'phonenumber': '0984176224',
-        'address': '2 Xã Pải Lủng Huyện Mèo Vạc Tỉnh Hà Giang',
-        'avatar': null,
-        'favoriteProducts': []
-    }
- */
 
 const cx = classNames.bind(Style);
 
@@ -47,8 +25,7 @@ function getChipByStatus(status) {
     )
 }
 
-
-function TableOrders({ listOrder, handleClickBtnUpdate, handleClickView, handleClickBtnDelete }) {
+function TableOrders({ listOrder, handleClickBtnUpdate, handleClickView }) {
     return (
         <div>
             <table className='table table-hover table-bordered' style={{ verticalAlign: 'middle' }}>
@@ -81,9 +58,6 @@ function TableOrders({ listOrder, handleClickBtnUpdate, handleClickView, handleC
                                         </Button>
                                         <Button size='small' className='mx-2' variant='contained' color='warning' onClick={() => handleClickBtnUpdate(item.productId)}>
                                             Cập nhật
-                                        </Button>
-                                        <Button size='small' variant='contained' color='error' onClick={() => handleClickBtnDelete(item.productId)}>
-                                            Xoá
                                         </Button>
                                     </td>
                                 </tr>
