@@ -173,7 +173,7 @@ function ManageOrders() {
                                     <div className={cx('search-section')}>
                                         <ConfigProvider locale={viVN}>
                                             <Space.Compact style={{ flex: 1 }}>
-                                                <Select defaultValue="Mã đơn hàng" onChange={handleSelectChange} options={options} style={{ minWidth: '190px' }} />
+                                                <Select defaultValue='Mã đơn hàng' onChange={handleSelectChange} options={options} style={{ minWidth: '190px' }} />
                                                 <Input allowClear={true} placeholder={`Nhập ${typeSearch}`} />
                                             </Space.Compact>
                                         </ConfigProvider>
@@ -190,7 +190,7 @@ function ManageOrders() {
                                 <Button size='small' startIcon={<FontAwesomeIcon icon={faTruck} />} variant='contained'>Giao hàng loạt</Button>
                             </div>
                             <div className='content'>
-                                <TableOrders listOrder={dataOrders} />
+                                <TableOrders listOrder={dataOrders} fetchListOrder={fetchListOrder} />
                                 <TablePagination
                                     className={cx('table-pagination')}
                                     component='div'

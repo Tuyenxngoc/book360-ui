@@ -11,7 +11,7 @@ import { removeCartItems, updatedCartItems } from "~/services/apiRequest";
 
 import Style from './Cart.module.scss';
 import classNames from "classnames/bind";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import MoneyDisplay from "~/components/MoneyDisplay";
 import { toast } from "react-toastify";
 import useCart from "~/hooks/useCart";
@@ -58,14 +58,14 @@ function Cart() {
     const handleUpdateQuantity = (productId, newQuantity, setIsUpdate) => {
         setIsUpdate(true);
         updatedCartItems(customer.customerId, productId, newQuantity)
-            .then(response => {
+            .then((response) => {
                 updateTotalProducts(customer.customerId);
                 const newCartItems = cartItems.map((item) =>
                     item.productId === productId ? { ...item, quantity: newQuantity } : item
                 );
                 setCartItems(newCartItems);
             })
-            .catch(error => {
+            .catch((error) => {
                 console.error(error);
             })
             .finally(() => {
@@ -80,7 +80,7 @@ function Cart() {
                 setCartItems(cartItems.filter(item => item.productId !== productId))
             })
             .catch((error) => {
-                console.log(error);
+                toast.error('Đã có lỗi sảy ra, vui lòng thử lại sau');
             });
     };
 
@@ -108,13 +108,11 @@ function Cart() {
         }
         const outputArray = checked.map((productId) => {
             const productInfo = cartItems.find((product) => product.productId === productId);
-
             if (productInfo) {
                 return {
                     ...productInfo
                 };
             }
-            // Trường hợp nếu không tìm thấy thông tin sản phẩm
             return null;
         });
         navigate('/checkouts', { state: { listProducts: outputArray } });
@@ -129,10 +127,10 @@ function Cart() {
                         <div className="col">
                             {cartItems.length === 0
                                 ? (
-                                    <>
+                                    <div className={cx('no-product')}>
                                         <p>Giỏ hàng của bạn còn trống</p>
-                                        <Link to='/'>Mua ngay</Link>
-                                    </>
+                                        <Button variant="contained" onClick={() => navigate('/')}>Mua ngay</Button>
+                                    </div>
                                 )
                                 : (
                                     <>

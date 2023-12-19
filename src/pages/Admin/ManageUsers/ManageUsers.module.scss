@@ -1,0 +1,72 @@
+.list-main {
+    background: white;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 4px 0px;
+    border-radius: 4px;
+    overflow: hidden;
+    padding: 24px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+
+.title {
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--text-color);
+    font-weight: 600;
+}
+
+.table-pagination {
+    p {
+        margin-bottom: 0;
+    }
+}
+
+.users-filter-card {
+    margin-bottom: 24px;
+}
+
+.search-section {
+    display: flex;
+    align-items: center;
+
+    input {
+        flex: 1;
+    }
+
+    button {
+        min-width: 90px;
+        margin-left: 16px;
+    }
+}
+
+//Table
+.user-profile-card {
+    display: flex;
+    align-items: center;
+}
+
+.user-profile-info {
+    margin-left: 8px;
+}
+
+.user-profile-name {
+    a {
+        line-height: 20px;
+        color: var(--text-color);
+        font-weight: 500;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+.user-profile-email {
+    line-height: 20px;
+    color: rgb(108, 115, 127);
+    font-weight: 400;
+}

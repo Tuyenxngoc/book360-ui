@@ -36,6 +36,8 @@ function Profile() {
     const [open, setOpen] = useState(false);
     const [openAlertDialog, setOpenAlertDialog] = useState(false);
 
+    const [isLoadingImage, setIsLoadingImage] = useState(false);
+
     const formik = useFormik({
         initialValues: {
             name: customer.name || '',
@@ -61,11 +63,13 @@ function Profile() {
                 (file.type === 'image/jpeg' || file.type === 'image/png') &&
                 file.size <= 1024 * 1024 // 1MB
             ) {
+                setIsLoadingImage(true);
                 uploadImage(file)
                     .then((response) => {
                         formik.setFieldValue('avatar', response.data.data);
                     })
                     .catch((error) => { console.log(error); })
+                    .finally(() => { setIsLoadingImage(false); });
             } else {
                 toast.warn('Vui lòng chọn file JPEG hoặc PNG có dung lượng tối đa 1MB.');
             }
@@ -75,11 +79,11 @@ function Profile() {
     const handleSubmit = (values) => {
         setLoading(true);
         updateCustomer(customer.customerId, values)
-            .then(response => {
+            .then((response) => {
                 setOpen(true);
                 updateCustomerInfo();
             })
-            .catch(error => {
+            .catch((error) => {
                 console.log(error)
             })
             .finally(() => {
@@ -210,7 +214,14 @@ function Profile() {
                             <div className={cx('avatar')}>
                                 <Avatar
                                     alt='avatar'
-                                    src={formik.values.avatar ? (formik.values.avatar) : (images.userDefault)}
+                                    src={
+                                        isLoadingImage
+                                            ? (images.loading)
+                                            : (
+                                                (formik.values.avatar)
+                                                    ? (formik.values.avatar)
+                                                    : (images.userDefault))
+                                    }
                                     sx={{ width: 100, height: 100, cursor: 'pointer' }}
                                     onClick={handleSelectInput}
                                 />

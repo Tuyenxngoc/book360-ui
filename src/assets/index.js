@@ -10,6 +10,7 @@ const images = {
         require('~/assets/images/banner_home_pro_7.jpg'),
     ],
     cart: require('~/assets/images/cart.svg').default,
+    emptyCart: require('~/assets/images/empty-cart.png'),
     loading: require('~/assets/images/Loading.gif'),
     error: require('~/assets/images/Error.gif'),
     userDefault: require('~/assets/images/icon_user_default.png'),

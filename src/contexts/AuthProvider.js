@@ -6,7 +6,7 @@ import localStorageKeys, { getItem, removeItem, setItem } from '~/services/local
 
 const AuthContext = createContext();
 
-const DeFAULT_AUTH = {
+const defaultAuth = {
     isAuthenticated: false,
     user: {
         id: '',
@@ -15,7 +15,7 @@ const DeFAULT_AUTH = {
         email: ''
     },
     customer: {
-        customerId: -1,
+        customerId: 0,
         name: '',
         phonenumber: '',
         address: '',
@@ -25,7 +25,7 @@ const DeFAULT_AUTH = {
 
 const AuthProvider = ({ children }) => {
 
-    const [authState, setAuthState] = useState(DeFAULT_AUTH);
+    const [authState, setAuthState] = useState(defaultAuth);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -37,7 +37,7 @@ const AuthProvider = ({ children }) => {
         try {
             const token = getItem(localStorageKeys.ACCESS_TOKEN);
             if (!token) {
-                setAuthState(DeFAULT_AUTH);
+                setAuthState(defaultAuth);
                 setLoading(false);
                 return;
             }
@@ -61,10 +61,10 @@ const AuthProvider = ({ children }) => {
                     },
                 });
             } else {
-                setAuthState(DeFAULT_AUTH);
+                setAuthState(defaultAuth);
             }
         } catch (error) {
-            setAuthState(DeFAULT_AUTH);
+            setAuthState(defaultAuth);
         } finally {
             setLoading(false);
         }
@@ -93,6 +93,7 @@ const AuthProvider = ({ children }) => {
     };
 
     const login = ({ accessToken, refreshToken, roleName }) => {
+        setLoading(true);
         setItem(localStorageKeys.ACCESS_TOKEN, accessToken);
         setItem(localStorageKeys.REFRESH_TOKEN, refreshToken);
         setAuthState({
@@ -109,7 +110,7 @@ const AuthProvider = ({ children }) => {
     const logout = () => {
         removeItem(localStorageKeys.ACCESS_TOKEN);
         removeItem(localStorageKeys.REFRESH_TOKEN);
-        setAuthState(DeFAULT_AUTH);
+        setAuthState(defaultAuth);
     };
 
     const contextValues = {

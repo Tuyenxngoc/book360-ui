@@ -40,10 +40,10 @@ function ChangePassword() {
 
     const handleSubmit = (values) => {
         changePassword(user.username, values)
-            .then(response => {
+            .then((response) => {
                 console.log(response.data);
             })
-            .catch(error => {
+            .catch((error) => {
                 console.log(error)
             })
     }

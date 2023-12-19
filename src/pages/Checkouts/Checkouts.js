@@ -1,20 +1,21 @@
 //react
-import { useEffect, useMemo, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useMemo, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 //Style
 import Style from './Checkouts.module.scss';
-import classNames from "classnames/bind";
+import classNames from 'classnames/bind';
 //mui ui
-import { Button } from "@mui/material";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faClipboardCheck, faCreditCard, faUserPen } from "@fortawesome/free-solid-svg-icons";
+import { Button } from '@mui/material';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faClipboardCheck, faCreditCard, faUserPen } from '@fortawesome/free-solid-svg-icons';
 //component
-import images from "~/assets";
-import useAuth from "~/hooks/useAuth";
-import Breadcrumb from "~/components/Breadcrumb";
-import MoneyDisplay from "~/components/MoneyDisplay";
-import { axiosPrivate } from "~/utils/httpRequest";
-import AlertDialog from "../Address/ShowDialog";
+import images from '~/assets';
+import useAuth from '~/hooks/useAuth';
+import Breadcrumb from '~/components/Breadcrumb';
+import MoneyDisplay from '~/components/MoneyDisplay';
+import { axiosPrivate } from '~/utils/httpRequest';
+import AlertDialog from '../Address/ShowDialog';
+import { toast } from 'react-toastify';
 
 const cx = classNames.bind(Style);
 
@@ -22,9 +23,9 @@ const DELIVERY_FEE = 30000;
 
 function Checkouts() {
 
-    const { user, customer } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
+    const { user, customer } = useAuth();
     const [openAlertDialog, setOpenAlertDialog] = useState(false);
     const listProducts = useMemo(() => {
         return location.state?.listProducts || [];
@@ -55,12 +56,12 @@ function Checkouts() {
 
     const handleSubmit = () => {
         axiosPrivate.post(`bill/order-from-cart/${customer.customerId}`, shippingInfo)
-            .then(response => {
+            .then((response) => {
                 console.log(response.data);
                 navigate('/purchase', { replace: true });
             })
-            .catch(err => {
-                console.error(err);
+            .catch((error) => {
+                toast.error('Đã có lỗi sảy ra, vui lòng thử lại sau');
             });
     }
 
@@ -88,11 +89,11 @@ function Checkouts() {
             <Breadcrumb
                 breadcrumbs={[{ url: '/cart', label: 'Giỏ hàng của bạn' }]}
                 currentPage={'Thanh toán'} />
-            <div className="container">
-                <div className="row g-2">
-                    <div className="col-7">
-                        <div className="row g-2">
-                            <div className="col-12">
+            <div className='container'>
+                <div className='row g-2'>
+                    <div className='col-7'>
+                        <div className='row g-2'>
+                            <div className='col-12'>
                                 <div className={cx('wrapper')}>
                                     <div className={cx('title')}>
                                         <span className={cx('icon')}><FontAwesomeIcon icon={faUserPen} /></span>
@@ -100,49 +101,49 @@ function Checkouts() {
                                     </div>
                                     <div className={cx('inner')}>
                                         <div className={cx('form-group')}>
-                                            <label htmlFor="input-name">HỌ TÊN NGƯỜI NHẬN</label>
+                                            <label htmlFor='input-name'>HỌ TÊN NGƯỜI NHẬN</label>
                                             <input
-                                                type="text"
-                                                className="form-control form-control-sm"
-                                                id="input-name"
-                                                placeholder="Họ tên người nhận"
-                                                name="nameCustomer"
+                                                type='text'
+                                                className='form-control form-control-sm'
+                                                id='input-name'
+                                                placeholder='Họ tên người nhận'
+                                                name='nameCustomer'
                                                 value={shippingInfo.nameCustomer}
                                                 onChange={handleShippingChange}
                                             />
                                         </div>
                                         <div className={cx('form-group')}>
-                                            <label htmlFor="input-phone-number">SỐ ĐIỆN THOẠI</label>
+                                            <label htmlFor='input-phone-number'>SỐ ĐIỆN THOẠI</label>
                                             <input
-                                                type="text"
-                                                className="form-control form-control-sm"
-                                                id="input-phone-number"
-                                                placeholder="Số điện thoại liên hệ khi giao hàng"
-                                                name="phonenumber"
+                                                type='text'
+                                                className='form-control form-control-sm'
+                                                id='input-phone-number'
+                                                placeholder='Số điện thoại liên hệ khi giao hàng'
+                                                name='phonenumber'
                                                 value={shippingInfo.phonenumber}
                                                 onChange={handleShippingChange}
                                             />
                                         </div>
                                         <div className={cx('form-group')}>
-                                            <label htmlFor="input-email">EMAIL</label>
+                                            <label htmlFor='input-email'>EMAIL</label>
                                             <input
-                                                type="text"
-                                                className="form-control form-control-sm"
-                                                id="input-email"
-                                                placeholder="Email nhận đơn hàng"
-                                                name="email"
+                                                type='text'
+                                                className='form-control form-control-sm'
+                                                id='input-email'
+                                                placeholder='Email nhận đơn hàng'
+                                                name='email'
                                                 value={user.email}
                                                 onChange={handleShippingChange}
                                             />
                                         </div>
                                         <div className={cx('form-group')}>
-                                            <label htmlFor="input-address">ĐỊA CHỈ</label>
+                                            <label htmlFor='input-address'>ĐỊA CHỈ</label>
                                             <input
-                                                type="text"
-                                                className="form-control form-control-sm"
-                                                id="input-address"
-                                                placeholder="Nhập số nhà, tên đường"
-                                                name="address"
+                                                type='text'
+                                                className='form-control form-control-sm'
+                                                id='input-address'
+                                                placeholder='Nhập số nhà, tên đường'
+                                                name='address'
                                                 value={shippingInfo.address}
                                                 onChange={handleShippingChange}
                                                 onClick={handleClickOpen}
@@ -151,7 +152,7 @@ function Checkouts() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-12">
+                            <div className='col-12'>
                                 <div className={cx('wrapper')}>
                                     <div className={cx('title')}>
                                         <span className={cx('icon')}><FontAwesomeIcon icon={faCreditCard} /></span>
@@ -159,15 +160,15 @@ function Checkouts() {
                                     </div>
                                     <div className={cx('inner')}>
                                         <div className={cx('payment-item')}>
-                                            <img src={images.payment[0]} alt="cod" />
+                                            <img src={images.payment[0]} alt='cod' />
                                             <span>Thanh toán khi giao hàng (COD)</span>
                                         </div>
                                         <div className={cx('payment-item', 'disabled')}>
-                                            <img src={images.payment[1]} alt="momo" />
+                                            <img src={images.payment[1]} alt='momo' />
                                             <span>Ví MoMo</span>
                                         </div>
                                         <div className={cx('payment-item', 'disabled')}>
-                                            <img src={images.payment[2]} alt="zalo" />
+                                            <img src={images.payment[2]} alt='zalo' />
                                             <span>Ví Zalopay bằng QRCode</span>
                                         </div>
                                     </div>
@@ -175,9 +176,9 @@ function Checkouts() {
                             </div>
                         </div>
                     </div>
-                    <div className="col-5">
-                        <div className="row g-2">
-                            <div className="col-12">
+                    <div className='col-5'>
+                        <div className='row g-2'>
+                            <div className='col-12'>
                                 <div className={cx('wrapper')}>
                                     <div className={cx('title')}>
                                         <span className={cx('icon')}><FontAwesomeIcon icon={faClipboardCheck} /></span>
@@ -209,7 +210,7 @@ function Checkouts() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-12">
+                            <div className='col-12'>
                                 <div className={cx('wrapper')}>
                                     <div className={cx('checkout')}>
                                         <div className={cx('bill-total-cost')}>
@@ -233,7 +234,7 @@ function Checkouts() {
                                                     <MoneyDisplay amount={totalPrice + DELIVERY_FEE} />
                                                 </span>
                                             </div>
-                                            <Button className={cx('button-submit')} onClick={handleSubmit} variant="contained" >Đặt mua</Button>
+                                            <Button className={cx('button-submit')} onClick={handleSubmit} variant='contained' >Đặt mua</Button>
                                         </div>
                                     </div>
                                 </div>

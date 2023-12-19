@@ -24,6 +24,7 @@ const CartProvider = ({ children }) => {
 
     const contextValues = {
         totalProducts,
+        setTotalProducts,
         updateTotalProducts,
     };
 

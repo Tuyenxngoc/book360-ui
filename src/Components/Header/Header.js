@@ -22,7 +22,12 @@ function Header() {
 
     const [keyword, setKeyword] = useState('');
     const { isAuthenticated, user, customer, logout } = useAuth();
-    const { totalProducts, updateTotalProducts } = useCart();
+    const { totalProducts, setTotalProducts, updateTotalProducts } = useCart();
+
+    const handleLogout = () => {
+        setTotalProducts(0);
+        logout();
+    }
 
     useEffect(() => {
         updateTotalProducts();
@@ -117,7 +122,7 @@ function Header() {
                                             <Link to='/purchase'>Đơn mua</Link>
                                         </li>
                                         <li className={cx('user-menu-item', 'separate')}>
-                                            <Link onClick={logout}>Đăng xuất</Link>
+                                            <Link onClick={handleLogout}>Đăng xuất</Link>
                                         </li>
                                     </ul>
                                 </div>

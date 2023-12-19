@@ -146,16 +146,7 @@ function ProductForm() {
                     console.error(error);
                 }
             } else {
-                toast.error('Bạn chỉ có thể tải lên không quá 9 file', {
-                    position: "top-center",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: true,
-                    theme: "colored",
-                });
+                toast.error('Bạn chỉ có thể tải lên không quá 9 file');
             }
             e.target.value = null;
         }

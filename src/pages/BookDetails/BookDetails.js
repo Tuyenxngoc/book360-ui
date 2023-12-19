@@ -1,31 +1,31 @@
 // React hooks
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 // External libraries
-import httpRequest from "~/utils/httpRequest";
+import httpRequest from '~/utils/httpRequest';
 
 // Styles
 import Style from './BookDetails.module.scss';
-import classNames from "classnames/bind";
+import classNames from 'classnames/bind';
 
 // Components
-import MoneyDisplay from "~/components/MoneyDisplay";
-import HomeProduct from "~/components/HomeProduct";
-import Breadcrumbs from "~/components/Breadcrumb/Breadcrumb";
-import Loading from "~/components/Loading";
-import Error from "~/components/Error";
+import MoneyDisplay from '~/components/MoneyDisplay';
+import HomeProduct from '~/components/HomeProduct';
+import Breadcrumbs from '~/components/Breadcrumb/Breadcrumb';
+import Loading from '~/components/Loading';
+import Error from '~/components/Error';
 
-import { addProductToCart } from "~/services/apiRequest";
-import useAuth from "~/hooks/useAuth";
-import { toast } from "react-toastify";
-import Product from "~/components/Product";
-import useCart from "~/hooks/useCart";
-import { addFavoriteProduct, checkFavoriteProduct, removeFavoriteProduct } from "~/services/customerService";
-import images from "~/assets";
-import { Button, CircularProgress } from "@mui/material";
-import Slider from "react-slick";
-import CustomArrows from "~/components/CustomArrows";
+import { addProductToCart } from '~/services/apiRequest';
+import useAuth from '~/hooks/useAuth';
+import { toast } from 'react-toastify';
+import Product from '~/components/Product';
+import useCart from '~/hooks/useCart';
+import { addFavoriteProduct, checkFavoriteProduct, removeFavoriteProduct } from '~/services/customerService';
+import images from '~/assets';
+import { Button, CircularProgress } from '@mui/material';
+import Slider from 'react-slick';
+import CustomArrows from '~/components/CustomArrows';
 
 const cx = classNames.bind(Style);
 
@@ -158,21 +158,12 @@ function BookDetails() {
     const handleAddProductToCart = () => {
         if (isAuthenticated) {
             addProductToCart(customer.customerId, id, quantity)
-                .then(response => {
+                .then((response) => {
                     updateTotalProducts(customer.customerId);
-                    toast.success('Thêm vào giỏ hàng thành công!', {
-                        position: 'top-right',
-                        autoClose: 2000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: false,
-                        draggable: true,
-                        progress: undefined,
-                        theme: "light",
-                    });
+                    toast.success('Thêm vào giỏ hàng thành công');
                 })
-                .catch(error => {
-                    console.error(error);
+                .catch((error) => {
+                    toast.error('Đã có lỗi sảy ra, vui lòng thử lại sau');
                 });
         } else {
             navigate('/login', { replace: true, state: { from: location } });
@@ -182,11 +173,11 @@ function BookDetails() {
     const handleBuyNow = () => {
         if (isAuthenticated) {
             addProductToCart(customer.customerId, id, quantity)
-                .then(response => {
+                .then((response) => {
                     navigate('/cart', { state: { productIdSelect: [bookData.productId] } });
                 })
-                .catch(error => {
-                    console.error(error);
+                .catch((error) => {
+                    toast.error('Đã có lỗi sảy ra, vui lòng thử lại sau');
                 });
 
         } else {
@@ -208,10 +199,10 @@ function BookDetails() {
             <div className='container'>
                 <main className={cx('product')}>
                     <div className='row'>
-                        <div className="col-5">
+                        <div className='col-5'>
                             <div className={cx('product-img')}>
-                                <div className="row">
-                                    <div className="col-3">
+                                <div className='row'>
+                                    <div className='col-3'>
                                         <div className={cx('image')}>
                                             {bookData.images.length > 1 ? (
                                                 <Slider {...settingsNav} slidesToShow={Math.min(3, bookData.images.length - 1)} asNavFor={mainSlider} ref={(slider) => setNavSlider(slider)}>
@@ -224,7 +215,7 @@ function BookDetails() {
                                             )}
                                         </div>
                                     </div>
-                                    <div className="col-9">
+                                    <div className='col-9'>
                                         <div className={cx('image')}>
                                             {bookData.discount > 0 && <div className={cx('sale-percentage-btn')}>{`-${bookData.discount}%`}</div>}
                                             {bookData.images.length > 1 ? (
@@ -239,15 +230,15 @@ function BookDetails() {
                                             {!isLoading && (
                                                 <div className={cx('interaction')}>
                                                     <div className={cx('interaction-item')} style={{ marginRight: 8 }}>
-                                                        <img className={cx('interaction-img')} src={images.share} alt="share" />
+                                                        <img className={cx('interaction-img')} src={images.share} alt='share' />
                                                     </div>
                                                     <div className={cx('interaction-item')}>
                                                         {isSend ? (
-                                                            <CircularProgress size={15} color="inherit" />
+                                                            <CircularProgress size={15} color='inherit' />
                                                         ) : (
                                                             isFavorite
-                                                                ? <img className={cx('interaction-img')} onClick={handleToggleFavorite} src={images.like} alt="like" />
-                                                                : <img className={cx('interaction-img')} onClick={handleToggleFavorite} src={images.unLike} alt="unlike" />
+                                                                ? <img className={cx('interaction-img')} onClick={handleToggleFavorite} src={images.like} alt='like' />
+                                                                : <img className={cx('interaction-img')} onClick={handleToggleFavorite} src={images.unLike} alt='unlike' />
                                                         )}
                                                     </div>
                                                 </div>
@@ -258,7 +249,7 @@ function BookDetails() {
                             </div>
                         </div>
 
-                        <div className="col-7">
+                        <div className='col-7'>
                             <div className={cx('product-content')}>
                                 <div className={cx('pro-content-head')}>
                                     <h1>{bookData.name}</h1>
@@ -303,7 +294,7 @@ function BookDetails() {
                                             value={quantity}
                                             onChange={handleQuantityChange}
                                             className={cx('input')}
-                                            type="text" />
+                                            type='text' />
                                         <button
                                             className={cx('btn', 'increase')}
                                             onClick={increaseQuantity}
@@ -317,20 +308,20 @@ function BookDetails() {
                                 </div>
 
                                 {bookData.quantity !== 0 &&
-                                    <div className="product-actions">
-                                        <div className="row">
-                                            <div className="col">
+                                    <div className='product-actions'>
+                                        <div className='row'>
+                                            <div className='col'>
                                                 <Button
-                                                    variant="contained"
+                                                    variant='contained'
                                                     fullWidth
                                                     onClick={handleAddProductToCart}
                                                 >
                                                     Thêm vào giỏ hàng
                                                 </Button>
                                             </div>
-                                            <div className="col">
+                                            <div className='col'>
                                                 <Button
-                                                    variant="contained"
+                                                    variant='contained'
                                                     fullWidth
                                                     onClick={handleBuyNow}
                                                 >
@@ -346,9 +337,9 @@ function BookDetails() {
                 </main>
             </div>
 
-            <div className="container">
-                <div className="row">
-                    <div className="col-8">
+            <div className='container'>
+                <div className='row'>
+                    <div className='col-8'>
                         <div className={cx('product-description-wrapper')}>
                             <h2 className={cx('tile')}>Mô tả sản phẩm</h2>
                             <div
@@ -358,12 +349,12 @@ function BookDetails() {
                         </div>
                     </div>
                     {sameAuthorBookData.length > 0 &&
-                        <div className="col-4">
+                        <div className='col-4'>
                             <div className={cx('product-author-wrapper')}>
                                 <h2 className={cx('tile')}>Sách cùng tác giả</h2>
-                                <div className="row">
+                                <div className='row'>
                                     {sameAuthorBookData.map((data, index) => (
-                                        <div key={index} className="col">
+                                        <div key={index} className='col'>
                                             <Product data={data} small ></Product>
                                         </div>
                                     ))}

@@ -25,7 +25,14 @@ function getChipByStatus(status) {
     )
 }
 
-function TableOrders({ listOrder, handleClickBtnUpdate, handleClickView }) {
+function TableOrders({ listOrder, fetchListOrder }) {
+
+    const handleClickBtnUpdate = (order) => {
+    }
+
+    const handleClickBtnView = (order) => {
+    }
+
     return (
         <div>
             <table className='table table-hover table-bordered' style={{ verticalAlign: 'middle' }}>
@@ -53,10 +60,10 @@ function TableOrders({ listOrder, handleClickBtnUpdate, handleClickView }) {
                                         {getChipByStatus(item.status)}
                                     </td>
                                     <td>
-                                        <Button size='small' variant='contained' color='success' onClick={() => handleClickView(item.productId)}>
+                                        <Button size='small' variant='contained' color='success' onClick={() => handleClickBtnView(item)}>
                                             Xem
                                         </Button>
-                                        <Button size='small' className='mx-2' variant='contained' color='warning' onClick={() => handleClickBtnUpdate(item.productId)}>
+                                        <Button size='small' className='mx-2' variant='contained' color='warning' onClick={() => handleClickBtnUpdate(item)}>
                                             Cập nhật
                                         </Button>
                                     </td>

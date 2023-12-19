@@ -79,7 +79,7 @@ function TableProducts({ listProduct, fetchListProduct }) {
                                             </div>
                                         </div>
                                     </td>
-                                    <td>{item.category.name}</td>
+                                    <td>{item.category?.name}</td>
                                     <td>{item.quantity}</td>
                                     <td><MoneyDisplay amount={item.price} /></td>
                                     <td>{item.discount}%</td>
