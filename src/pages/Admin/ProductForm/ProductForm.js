@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import Style from './ProductForm.module.scss';
 import classNames from 'classnames/bind';
@@ -9,7 +9,7 @@ import { getAllCategories } from '~/services/categoryService';
 import images from '~/assets';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 
 import * as yup from 'yup';
 import { useFormik } from 'formik';
@@ -192,6 +192,9 @@ function ProductForm() {
                                                     </div>
                                                 )}
                                                 <div className={cx('image-tools')}>
+                                                    <Link to={image} target='_blank' className={cx('view-image')}>
+                                                        <FontAwesomeIcon icon={faEye} />
+                                                    </Link>
                                                     <button onClick={() => handleRemoveImage(image)} className={cx('delete-image')}>
                                                         <FontAwesomeIcon icon={faTrashCan} />
                                                     </button>

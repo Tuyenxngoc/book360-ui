@@ -101,8 +101,8 @@ function TableProducts({ listProduct, fetchListProduct }) {
                     ) : (
                         <tr>
                             <td colSpan='8'>
-                                <div className={cx('product-no-result')}>
-                                    <div className={cx('product-list-no-product')} />
+                                <div className={cx('no-result')}>
+                                    <div className={cx('icon')} />
                                     <div className={cx('text')}>Không tìm thấy sản phẩm</div>
                                 </div>
                             </td>

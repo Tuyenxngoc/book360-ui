@@ -34,6 +34,7 @@ const AuthProvider = ({ children }) => {
     }, []);
 
     const validateToken = async () => {
+        setLoading(true);
         try {
             const token = getItem(localStorageKeys.ACCESS_TOKEN);
             if (!token) {
@@ -92,18 +93,9 @@ const AuthProvider = ({ children }) => {
         }
     };
 
-    const login = ({ accessToken, refreshToken, roleName }) => {
-        setLoading(true);
+    const login = ({ accessToken, refreshToken }) => {
         setItem(localStorageKeys.ACCESS_TOKEN, accessToken);
         setItem(localStorageKeys.REFRESH_TOKEN, refreshToken);
-        setAuthState({
-            ...authState,
-            isAuthenticated: true,
-            user: {
-                ...authState.user,
-                roleName,
-            },
-        })
         validateToken();
     };
 

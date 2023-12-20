@@ -1,5 +1,5 @@
 // React hooks
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 // External libraries
@@ -109,26 +109,30 @@ function BookDetails() {
                     console.error('Error checking favorite status:', error);
                 }
             };
-
             fetchData();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isAuthenticated, bookData.productId]);
 
     const handleToggleFavorite = async () => {
-        setIsSend(true);
-        try {
-            if (isFavorite) {
-                await removeFavoriteProduct(customer.customerId, bookData.productId);
-                setIsFavorite(false);
-            } else {
-                await addFavoriteProduct(customer.customerId, bookData.productId);
-                setIsFavorite(true);
+        if (isAuthenticated) {
+            setIsSend(true);
+            try {
+                if (isFavorite) {
+                    await removeFavoriteProduct(customer.customerId, bookData.productId);
+                    setIsFavorite(false);
+                } else {
+                    await addFavoriteProduct(customer.customerId, bookData.productId);
+                    setIsFavorite(true);
+                }
+            } catch (error) {
+                console.error('Error toggling favorite status:', error);
+            } finally {
+                setIsSend(false);
             }
-        } catch (error) {
-            console.error('Error toggling favorite status:', error);
-        } finally {
-            setIsSend(false);
+
+        } else {
+            navigate('/login', { replace: true, state: { from: location } });
         }
     };
 
@@ -136,7 +140,7 @@ function BookDetails() {
         return bookData.discount > 0 ? bookData.price - (bookData.price * bookData.discount / 100) : bookData.price;
     };
 
-    const currentPrice = calculateDiscountedPrice();
+    const currentPrice = useMemo(calculateDiscountedPrice, [bookData.price, bookData.discount]);
 
     const maxQuantity = bookData.quantity;
     const increaseQuantity = () => {

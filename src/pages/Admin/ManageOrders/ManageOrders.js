@@ -14,6 +14,8 @@ import { ConfigProvider, DatePicker, Input, Select, Space, Tabs } from 'antd';
 
 import viVN from 'antd/lib/locale/vi_VN';
 import dayjs from 'dayjs';
+import { orderStatus } from '~/config/contans';
+import { toast } from 'react-toastify';
 
 const { RangePicker } = DatePicker;
 
@@ -33,33 +35,6 @@ const options = [
     {
         value: 'product',
         label: 'Sản phẩm',
-    },
-];
-
-const orderStatus = [
-    {
-        label: 'Tất cả',
-        key: '',
-    },
-    {
-        label: 'Chờ xử lý',
-        key: 'unpaid',
-    },
-    {
-        label: 'Đang giao hàng',
-        key: 'shipping',
-    },
-    {
-        label: 'Đặt hàng thành công',
-        key: 'success',
-    },
-    {
-        label: 'Đã giao',
-        key: 'completed',
-    },
-    {
-        label: 'Đã hủy',
-        key: 'cancelled',
     },
 ];
 
@@ -134,7 +109,9 @@ function ManageOrders() {
                 setMeta(meta);
                 setDataOrders(items);
             })
-            .catch((error) => { console.log(error) })
+            .catch((error) => {
+                toast.error('Đã có lỗi xảy ra khi lấy dữ liệu đơn hàng');
+            })
     }
 
     useEffect(() => {

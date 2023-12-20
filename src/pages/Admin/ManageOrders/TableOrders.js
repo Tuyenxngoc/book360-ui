@@ -72,7 +72,12 @@ function TableOrders({ listOrder, fetchListOrder }) {
                         })
                     ) : (
                         <tr>
-                            <td colSpan='6'>Not found data</td>
+                            <td colSpan='6'>
+                                <div className={cx('no-result')}>
+                                    <div className={cx('icon')} />
+                                    <div className={cx('text')}>Không tìm thấy đơn hàng</div>
+                                </div>
+                            </td>
                         </tr>
                     )}
                 </tbody>

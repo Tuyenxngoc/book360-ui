@@ -93,7 +93,7 @@
         .image-tools {
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-around;
         }
         .image-desc {
             display: none;
@@ -110,6 +110,10 @@
     background-color: rgba(0, 0, 0, 0.3);
     border-radius: 0 0 4px 4px;
     display: none;
+}
+
+.view-image {
+    color: white;
 }
 
 .delete-image {

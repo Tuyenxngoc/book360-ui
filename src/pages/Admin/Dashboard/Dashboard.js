@@ -1,5 +1,5 @@
 import { DollarCircleOutlined, ShoppingCartOutlined, ShoppingOutlined, UserOutlined } from "@ant-design/icons";
-import { Space } from "antd";
+import { Button, Space } from "antd";
 import DashBoardCard from "~/components/AdminDashBoardCard";
 import Style from './Dashboard.module.scss';
 import classNames from "classnames/bind";
@@ -8,6 +8,7 @@ import { getCountCustomer } from "~/services/customerService";
 import { getCountProducts } from "~/services/productService";
 import { getCountBills } from "~/services/billService";
 import { Link } from "react-router-dom";
+import { Avatar } from "@mui/material";
 const cx = classNames.bind(Style);
 
 const dataUser = [
@@ -146,11 +147,49 @@ const dataRevenue = [
 ];
 
 const todo = [
-    { lable: 'Chờ xác nhận', link: '/admin/orders' },
+    { lable: 'Chờ xác nhận', link: '/admin/orders?type=to_pay' },
     { lable: 'Chờ lấy hàng', link: '/admin/orders?type=unpaid' },
     { lable: 'Đã xử lý', link: '/admin/orders?type=success' },
-    { lable: 'Đơn hủy', link: '/admin/orders?type=cancelled' },
+    { lable: 'Đơn hủy', link: '/admin/orders?type=canceled' },
     { lable: 'Sản phẩm hết hàng', link: '/admin/products' },
+]
+
+const customer = [
+    {
+        name: 'tuyenngoc',
+        avatar: 'https://material-kit-pro-react.devias.io/assets/avatars/avatar-alcides-antonio.png',
+        createdDate: '',
+        link: '',
+        message: 'Hello, we spoke earlier on the phone',
+    },
+    {
+        name: 'Alcides Antonio',
+        avatar: 'https://material-kit-pro-react.devias.io/assets/avatars/avatar-marcus-finn.png',
+        createdDate: '',
+        link: '',
+        message: 'Is the job still available?',
+    },
+    {
+        name: 'Jie Yan Song',
+        avatar: 'https://material-kit-pro-react.devias.io/assets/avatars/avatar-carson-darrin.png',
+        createdDate: '',
+        link: '',
+        message: 'What is a screening task? I’d like to',
+    },
+    {
+        name: 'tuyenngoc',
+        avatar: 'https://material-kit-pro-react.devias.io/assets/avatars/avatar-fran-perez.png',
+        createdDate: '',
+        link: '',
+        message: 'What is a screening task? I’d like to',
+    },
+    {
+        name: 'Carson Darrin',
+        avatar: 'https://material-kit-pro-react.devias.io/assets/avatars/avatar-jie-yan-song.png',
+        createdDate: '',
+        link: '',
+        message: 'Is the job still available?',
+    },
 ]
 
 function Dashboard() {
@@ -179,7 +218,7 @@ function Dashboard() {
 
     return (
         <div className="container mt-2">
-            <div className="row gy-2">
+            <div className="row g-2">
                 <div className="col-12">
                     <Space size={20} direction="vertical">
                         <Space direction="horizontal"
@@ -275,6 +314,35 @@ function Dashboard() {
                                             <p className={cx('item-title')}>0</p>
                                             <span className={cx('item-desc')}>{item.lable}</span>
                                         </Link>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="col-4">
+                    <div className={cx('cart')}>
+                        <div className='cart-header'>
+                            <div className={cx('title')}>
+                                Tin nhắn
+                                <p className={cx('card-tips')}></p>
+                            </div>
+                        </div>
+                        <div className='cart-content'>
+                            <div className="row">
+                                {customer.map((item, index) => (
+                                    <div key={index} className={cx('user-cart-item', 'col-12')}>
+                                        <div className={cx('user-info-container')}>
+                                            <Avatar className={cx('user-avatar')} alt={item.name} src={item.avatar} />
+                                            <div className={cx('user-info')}>
+                                                <h6>{item.name}</h6>
+                                                <span>{item.message}</span>
+                                            </div>
+                                        </div>
+
+                                        <div className={cx('timestamp-info')}>
+                                            <span>3 giờ trước</span>
+                                        </div>
                                     </div>
                                 ))}
                             </div>

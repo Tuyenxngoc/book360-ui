@@ -13,6 +13,7 @@ import { updateCustomer, uploadImage } from '~/services/customerService';
 import { useState } from 'react';
 import AlertDialog from '../Address/ShowDialog';
 import { toast } from 'react-toastify';
+import { LoadingButton } from '@mui/lab';
 
 const validationSchema = yup.object({
     name: yup.string()
@@ -195,7 +196,13 @@ function Profile() {
                             </div>
                             <div className={cx('form-group')}>
                                 <label></label>
-                                <Button color='primary' variant='contained' type='submit' disabled={loading}>Lưu</Button>
+                                <LoadingButton
+                                    type='submit'
+                                    variant='contained'
+                                    loading={loading || isLoadingImage}
+                                >
+                                    <span>Lưu</span>
+                                </LoadingButton>
                             </div>
                             <input
                                 ref={fileInputRef}

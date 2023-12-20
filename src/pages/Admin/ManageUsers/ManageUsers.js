@@ -1,15 +1,13 @@
-import { useEffect, useState } from "react";
-import { getAllCustomer } from "~/services/customerService";
-import TableUsers from "./TableUsers";
+import { useEffect, useState } from 'react';
+import { getAllCustomer } from '~/services/customerService';
+import TableUsers from './TableUsers';
 
 import Style from './ManageUsers.module.scss';
 import classNames from 'classnames/bind';
-import { Link } from "react-router-dom";
-import { Button, TablePagination } from "@mui/material";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { Button, TablePagination } from '@mui/material';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Input } from 'antd';
-const { Search } = Input;
 
 const cx = classNames.bind(Style);
 
@@ -67,7 +65,7 @@ function ManageUsers() {
                                 <div className='col-12'>
                                     <div className={cx('search-section')}>
                                         <Input
-                                            placeholder="Nhập tên cần tìm"
+                                            placeholder='Nhập tên cần tìm'
                                             allowClear
                                         />
                                         <Button size='small' variant='contained'>Tìm kiếm</Button>
@@ -80,7 +78,7 @@ function ManageUsers() {
                             <TableUsers listUsers={dataUsers} fetchListUser={fetchListUser} />
                             <TablePagination
                                 className={cx('table-pagination')}
-                                component="div"
+                                component='div'
                                 count={dataUsers.length}
                                 page={page}
                                 onPageChange={handleChangePage}

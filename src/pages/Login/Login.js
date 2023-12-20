@@ -55,7 +55,7 @@ function Login() {
             if (response.status === 200) {
                 const { accessToken, refreshToken, authorities } = response.data.data;
                 const roleName = authorities[0].authority;
-                login({ accessToken, refreshToken, roleName });
+                login({ accessToken, refreshToken });
                 if (roleName === ROLES.Admin) {
                     navigate('/admin', { replace: true });
                 } else {
