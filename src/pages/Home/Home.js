@@ -22,22 +22,24 @@ function Home() {
                 moreLink={'/search?sortBy=selled'}
             />
             <HomeProduct
-                title={'KIẾN THỨC KHOA HỌC'}
-                bannerIndex={3}
+                showBanner={true}
                 apiUrl={'product/get-products-by-categoryId/3'}
                 moreLink={'/category/3'}
             />
             <HomeProduct
-                title={'MANGA - COMIC'}
-                bannerIndex={4}
+                showBanner={true}
                 apiUrl={'product/get-products-by-categoryId/5'}
                 moreLink={'/category/5'}
             />
             <HomeProduct
-                title={'WINGSBOOKS'}
-                bannerIndex={6}
+                showBanner={true}
                 apiUrl={'product/get-products-by-categoryId/6'}
                 moreLink={'/category/6'}
+            />
+            <HomeProduct
+                showBanner={true}
+                apiUrl={'product/get-products-by-categoryId/20'}
+                moreLink={'/category/20'}
             />
         </main>
     );

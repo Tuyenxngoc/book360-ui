@@ -1,20 +1,19 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 //Component
-import httpRequest from "~/utils/httpRequest";
-import Product from "~/components/Product/Product";
+import httpRequest from '~/utils/httpRequest';
+import Product from '~/components/Product/Product';
 //Slider
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import Slider from "react-slick";
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import Slider from 'react-slick';
 //Style
 import Style from './HomeProduct.module.scss'
 import classNames from 'classnames/bind';
 //Icon
-import images from "~/assets";
-import { Skeleton, Typography } from "@mui/material";
-import CustomArrows from "../CustomArrows";
+import { Skeleton, Typography } from '@mui/material';
+import CustomArrows from '../CustomArrows';
 
 const cx = classNames.bind(Style);
 
@@ -25,8 +24,8 @@ const settings = {
     slidesToShow: 6,
     slidesToScroll: 1,
     initialSlide: 0,
-    nextArrow: <CustomArrows color="secondary" isNextArrow />,
-    prevArrow: <CustomArrows color="secondary" />,
+    nextArrow: <CustomArrows color='secondary' isNextArrow />,
+    prevArrow: <CustomArrows color='secondary' />,
     responsive: [
         {
             breakpoint: 1024,
@@ -52,7 +51,7 @@ const settings = {
     ]
 };
 
-function HomeProduct({ title, bannerIndex, apiUrl, moreLink }) {
+function HomeProduct({ title, showBanner, apiUrl, moreLink }) {
 
     const [productData, setProductData] = useState();
 
@@ -64,48 +63,56 @@ function HomeProduct({ title, bannerIndex, apiUrl, moreLink }) {
     }, [apiUrl]);
 
     return (
-        <div className="home-product">
-            {bannerIndex >= 0 &&
+        <div className='home-product'>
+            {showBanner &&
                 <div className={cx('banner-home-pro')}>
                     <Link className={cx('banner-home-pro-link')} to={moreLink}>
                         {productData ? (
-                            <img src={images.bannerPro[bannerIndex]} alt='home-banner' />
+                            productData[0] && productData[0].category && productData[0].category.image ? (
+                                <img src={productData[0].category.image} alt='home-banner' />
+                            ) : (
+                                <></>
+                            )
                         ) : (
-                            <Skeleton animation="wave" variant="rectangular" height={120} />
+                            <Skeleton animation='wave' variant='rectangular' height={120} />
                         )}
                     </Link>
                 </div>
             }
-            <div className="container">
+            <div className='container'>
                 <div className={cx('home-products')}>
-                    <div className="row">
-                        <div className="col-12">
+                    <div className='row'>
+                        <div className='col-12'>
                             <div className={cx('section-title')}>
                                 {productData ? (
-                                    <h2>{title}</h2>
+                                    showBanner ? (
+                                        <h2>{productData[0].category.name}</h2>
+                                    ) : (
+                                        <h2>{title}</h2>
+                                    )
                                 ) : (
-                                    <Typography component="div" variant='h3' style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                        <Skeleton animation="wave" width={200} />
+                                    <Typography component='div' variant='h3' style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                        <Skeleton animation='wave' width={200} />
                                     </Typography>
                                 )}
                             </div>
                         </div>
-                        <div className="col-12">
+                        <div className='col-12'>
                             <Slider {...settings}>
                                 {(productData ? productData : Array.from(new Array(10))).map((product, index) => (
-                                    <div key={index} className="px-2 mt-2">
+                                    <div key={index} className='px-2 mt-2'>
                                         <Product data={product}></Product>
                                     </div>
                                 ))}
                             </Slider>
                         </div>
-                        <div className="col-12">
+                        <div className='col-12'>
                             <div className={cx('more-link')}>
                                 {productData ? (
                                     <Link to={moreLink}>Xem thêm &gt;&gt;</Link>
                                 ) : (
-                                    <Typography component="div" style={{ display: 'flex', justifyContent: 'right', alignItems: 'center' }}>
-                                        <Skeleton animation="wave" width={100} />
+                                    <Typography component='div' style={{ display: 'flex', justifyContent: 'right', alignItems: 'center' }}>
+                                        <Skeleton animation='wave' width={100} />
                                     </Typography>
                                 )}
                             </div>
@@ -119,7 +126,7 @@ function HomeProduct({ title, bannerIndex, apiUrl, moreLink }) {
 
 HomeProduct.propTypes = {
     title: PropTypes.string.isRequired,
-    bannerIndex: PropTypes.number,
+    showBanner: PropTypes.bool,
     apiUrl: PropTypes.string.isRequired,
     moreLink: PropTypes.string.isRequired
 }
