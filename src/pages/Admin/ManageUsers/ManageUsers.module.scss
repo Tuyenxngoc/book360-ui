@@ -3,14 +3,13 @@
     box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 4px 0px;
     border-radius: 4px;
     overflow: hidden;
-    padding: 24px;
 }
 
 .header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 24px;
+    padding: 24px 24px 0 24px;
 }
 
 .title {
@@ -27,7 +26,7 @@
 }
 
 .users-filter-card {
-    margin-bottom: 24px;
+    padding: 24px;
 }
 
 .search-section {

@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -77,5 +79,9 @@ function ProductCategory({ children }) {
         </nav>
     );
 }
+
+ProductCategory.propTypes = {
+    children: PropTypes.node,
+};
 
 export default ProductCategory;

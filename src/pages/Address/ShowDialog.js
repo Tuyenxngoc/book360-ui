@@ -1,10 +1,12 @@
+import PropTypes from 'prop-types';
+
 import LocationSelector from './LocationSelector';
 
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 
-function ShowDialog({ openAlertDialog: open, setOpenAlertDialog: setOpen, setSelectedAddress }) {
+function ShowDialog({ open, setOpen, setSelectedAddress }) {
 
     const handleClose = () => {
         setOpen(false);
@@ -29,5 +31,11 @@ function ShowDialog({ openAlertDialog: open, setOpenAlertDialog: setOpen, setSel
         </>
     );
 }
+
+ShowDialog.propTypes = {
+    open: PropTypes.bool.isRequired,
+    setOpen: PropTypes.func.isRequired,
+    setSelectedAddress: PropTypes.func.isRequired,
+};
 
 export default ShowDialog;

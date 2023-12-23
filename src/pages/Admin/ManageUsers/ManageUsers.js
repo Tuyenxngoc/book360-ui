@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import { getAllCustomer } from '~/services/customerService';
-import TableUsers from './TableUsers';
 
 import Style from './ManageUsers.module.scss';
 import classNames from 'classnames/bind';
-import { Button, TablePagination } from '@mui/material';
+import { Button } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Input } from 'antd';
+import EnhancedTable from './test';
+import queryString from 'query-string';
 
 const cx = classNames.bind(Style);
 
@@ -15,9 +16,17 @@ function ManageUsers() {
 
     const [meta, setMeta] = useState({});
     const [dataUsers, setDataUsers] = useState([]);
+    const [filters, setFilters] = useState({
+        keyword: '',
+        sortBy: 'createdDate',
+        isAscending: false,
+        pageNum: 0,
+        pageSize: 10,
+    })
 
     const fetchListUser = () => {
-        getAllCustomer()
+        const paramsString = queryString.stringify(filters);
+        getAllCustomer(paramsString)
             .then((response) => {
                 const { items, meta } = response.data.data;
                 setDataUsers(items)
@@ -28,21 +37,7 @@ function ManageUsers() {
 
     useEffect(() => {
         fetchListUser();
-    }, [])
-
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-    };
-
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
-    };
-
-    const onSearch = (value, _e, info) => console.log(info?.source, value);
+    }, [filters])
 
     return (
         <div className='container my-3'>
@@ -75,15 +70,10 @@ function ManageUsers() {
                         </div>
 
                         <div className='content'>
-                            <TableUsers listUsers={dataUsers} fetchListUser={fetchListUser} />
-                            <TablePagination
-                                className={cx('table-pagination')}
-                                component='div'
-                                count={dataUsers.length}
-                                page={page}
-                                onPageChange={handleChangePage}
-                                rowsPerPage={rowsPerPage}
-                                onRowsPerPageChange={handleChangeRowsPerPage}
+                            <EnhancedTable
+                                listUsers={dataUsers}
+                                filters={filters}
+                                setFilters={setFilters}
                             />
                         </div>
                     </div>

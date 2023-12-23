@@ -1,9 +1,6 @@
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+import PropTypes from 'prop-types';
+
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 
 function AlertDialog({ open, setOpen, title, description, handleSubmit }) {
 
@@ -36,5 +33,13 @@ function AlertDialog({ open, setOpen, title, description, handleSubmit }) {
         </Dialog>
     );
 }
+
+AlertDialog.propTypes = {
+    open: PropTypes.bool.isRequired,
+    setOpen: PropTypes.func.isRequired,
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    handleSubmit: PropTypes.func.isRequired,
+};
 
 export default AlertDialog;

@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 import { createContext, useState } from 'react';
 import useAuth from '~/hooks/useAuth';
 import { getTotalProducts } from '~/services/cartService';
@@ -35,5 +37,8 @@ const CartProvider = ({ children }) => {
     );
 };
 
+CartProvider.propTypes = {
+    children: PropTypes.node,
+};
 
 export { CartContext, CartProvider };

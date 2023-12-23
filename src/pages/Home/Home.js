@@ -22,22 +22,22 @@ function Home() {
                 moreLink={'/search?sortBy=selled'}
             />
             <HomeProduct
-                showBanner={true}
+                showProductByCategory={true}
                 apiUrl={'product/get-products-by-categoryId/3'}
                 moreLink={'/category/3'}
             />
             <HomeProduct
-                showBanner={true}
+                showProductByCategory={true}
                 apiUrl={'product/get-products-by-categoryId/5'}
                 moreLink={'/category/5'}
             />
             <HomeProduct
-                showBanner={true}
+                showProductByCategory={true}
                 apiUrl={'product/get-products-by-categoryId/6'}
                 moreLink={'/category/6'}
             />
             <HomeProduct
-                showBanner={true}
+                showProductByCategory={true}
                 apiUrl={'product/get-products-by-categoryId/20'}
                 moreLink={'/category/20'}
             />

@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -136,5 +138,12 @@ function DialogCategoryForm({ open, setOpen, dataCategory, fetchListCategory }) 
         </Dialog>
     );
 }
+
+DialogCategoryForm.propTypes = {
+    open: PropTypes.bool.isRequired,
+    setOpen: PropTypes.func.isRequired,
+    dataCategory: PropTypes.object,
+    fetchListCategory: PropTypes.func.isRequired,
+};
 
 export default DialogCategoryForm;

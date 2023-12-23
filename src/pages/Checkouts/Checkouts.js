@@ -14,8 +14,9 @@ import useAuth from '~/hooks/useAuth';
 import Breadcrumb from '~/components/Breadcrumb';
 import MoneyDisplay from '~/components/MoneyDisplay';
 import { axiosPrivate } from '~/utils/httpRequest';
-import AlertDialog from '../Address/ShowDialog';
+
 import { toast } from 'react-toastify';
+import ShowDialog from '../Address/ShowDialog';
 
 const cx = classNames.bind(Style);
 
@@ -25,11 +26,14 @@ function Checkouts() {
 
     const navigate = useNavigate();
     const location = useLocation();
+
     const { user, customer } = useAuth();
-    const [openAlertDialog, setOpenAlertDialog] = useState(false);
+
     const listProducts = useMemo(() => {
         return location.state?.listProducts || [];
     }, [location.state]);
+
+    const [openAlertDialog, setOpenAlertDialog] = useState(false);
 
     const [totalPrice, setTotalPrice] = useState(0);
     const [shippingInfo, setShippingInfo] = useState({
@@ -57,7 +61,6 @@ function Checkouts() {
     const handleSubmit = () => {
         axiosPrivate.post(`bill/order-from-cart/${customer.customerId}`, shippingInfo)
             .then((response) => {
-                console.log(response.data);
                 navigate('/purchase', { replace: true });
             })
             .catch((error) => {
@@ -80,15 +83,17 @@ function Checkouts() {
 
     return (
         <>
-            <AlertDialog
-                openAlertDialog={openAlertDialog}
-                setOpenAlertDialog={setOpenAlertDialog}
+            <ShowDialog
+                open={openAlertDialog}
+                setOpen={setOpenAlertDialog}
                 setSelectedAddress={(address) => {
                     setShippingInfo((prevInfo) => ({ ...prevInfo, address, }));
-                }} />
+                }}
+            />
             <Breadcrumb
                 breadcrumbs={[{ url: '/cart', label: 'Giỏ hàng của bạn' }]}
-                currentPage={'Thanh toán'} />
+                currentPage={'Thanh toán'}
+            />
             <div className='container'>
                 <div className='row g-2'>
                     <div className='col-7'>

@@ -29,6 +29,7 @@ function Breadcrumbs({ breadcrumbs, currentPage }) {
 }
 
 Breadcrumbs.prototype = {
+    breadcrumbs: PropTypes.array,
     currentPage: PropTypes.string.isRequired
 }
 

@@ -11,9 +11,10 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { updateCustomer, uploadImage } from '~/services/customerService';
 import { useState } from 'react';
-import AlertDialog from '../Address/ShowDialog';
+
 import { toast } from 'react-toastify';
 import { LoadingButton } from '@mui/lab';
+import ShowDialog from '../Address/ShowDialog';
 
 const validationSchema = yup.object({
     name: yup.string()
@@ -31,12 +32,14 @@ const validationSchema = yup.object({
 const cx = classNames.bind(Style);
 
 function Profile() {
+
     const fileInputRef = useRef(null);
+
     const { user, customer, updateCustomerInfo } = useAuth();
+
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
     const [openAlertDialog, setOpenAlertDialog] = useState(false);
-
     const [isLoadingImage, setIsLoadingImage] = useState(false);
 
     const formik = useFormik({
@@ -115,10 +118,11 @@ function Profile() {
                 </DialogContent>
             </Dialog>
 
-            <AlertDialog
-                openAlertDialog={openAlertDialog}
-                setOpenAlertDialog={setOpenAlertDialog}
-                setSelectedAddress={(address) => { formik.setFieldValue('address', address) }} />
+            <ShowDialog
+                open={openAlertDialog}
+                setOpen={setOpenAlertDialog}
+                setSelectedAddress={(address) => { formik.setFieldValue('address', address) }}
+            />
 
             <div className={cx('main-content')}>
                 <div className='row'>

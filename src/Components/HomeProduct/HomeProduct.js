@@ -51,7 +51,7 @@ const settings = {
     ]
 };
 
-function HomeProduct({ title, showBanner, apiUrl, moreLink }) {
+function HomeProduct({ title, showProductByCategory = false, apiUrl, moreLink }) {
 
     const [productData, setProductData] = useState();
 
@@ -64,7 +64,7 @@ function HomeProduct({ title, showBanner, apiUrl, moreLink }) {
 
     return (
         <div className='home-product'>
-            {showBanner &&
+            {showProductByCategory &&
                 <div className={cx('banner-home-pro')}>
                     <Link className={cx('banner-home-pro-link')} to={moreLink}>
                         {productData ? (
@@ -85,8 +85,8 @@ function HomeProduct({ title, showBanner, apiUrl, moreLink }) {
                         <div className='col-12'>
                             <div className={cx('section-title')}>
                                 {productData ? (
-                                    showBanner ? (
-                                        <h2>{productData[0].category.name}</h2>
+                                    showProductByCategory ? (
+                                        <h2>{productData[0]?.category?.name}</h2>
                                     ) : (
                                         <h2>{title}</h2>
                                     )
@@ -125,8 +125,8 @@ function HomeProduct({ title, showBanner, apiUrl, moreLink }) {
 }
 
 HomeProduct.propTypes = {
-    title: PropTypes.string.isRequired,
-    showBanner: PropTypes.bool,
+    title: PropTypes.string,
+    showProductByCategory: PropTypes.bool,
     apiUrl: PropTypes.string.isRequired,
     moreLink: PropTypes.string.isRequired
 }

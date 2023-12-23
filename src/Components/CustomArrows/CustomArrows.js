@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faAngleLeft, faAngleRight, faAngleUp } from '@fortawesome/free-solid-svg-icons';
 
@@ -25,5 +27,14 @@ function CustomArrows({ className, style, onClick, isNextArrow = false, isVertic
         </div>
     );
 }
+
+CustomArrows.propTypes = {
+    className: PropTypes.string,
+    style: PropTypes.object,
+    onClick: PropTypes.func,
+    isNextArrow: PropTypes.bool,
+    isVertical: PropTypes.bool,
+    color: PropTypes.string,
+};
 
 export default CustomArrows;

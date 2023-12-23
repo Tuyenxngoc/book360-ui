@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 import Style from './ManageBanners.module.scss';
 import classNames from 'classnames/bind';
 const cx = classNames.bind(Style);
@@ -32,5 +34,14 @@ function TableBanners({ listBanners }) {
         </table>
     );
 }
+
+TableBanners.propTypes = {
+    listBanners: PropTypes.arrayOf(
+        PropTypes.shape({
+            image: PropTypes.string.isRequired,
+            name: PropTypes.string.isRequired,
+        })
+    ),
+};
 
 export default TableBanners;

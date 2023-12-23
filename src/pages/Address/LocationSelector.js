@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FormControl, InputLabel, MenuItem, Select, TextField, FormHelperText, Button } from '@mui/material';
@@ -202,6 +204,11 @@ function LocationSelector({ onSelectAddress, onClose }) {
             </form>
         </div>
     );
+};
+
+LocationSelector.propTypes = {
+    onSelectAddress: PropTypes.func.isRequired,
+    onClose: PropTypes.func.isRequired,
 };
 
 export default LocationSelector;

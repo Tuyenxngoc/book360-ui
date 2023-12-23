@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 import { useEffect } from 'react';
 import { createContext, useState } from 'react';
 import Loading from '~/components/Loading';
@@ -123,6 +125,10 @@ const AuthProvider = ({ children }) => {
             {children}
         </AuthContext.Provider>
     )
+};
+
+AuthProvider.propTypes = {
+    children: PropTypes.node,
 };
 
 export { AuthContext, AuthProvider };
