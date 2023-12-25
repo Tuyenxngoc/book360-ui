@@ -9,7 +9,7 @@ const cx = classNames.bind(Style);
 function TableUsers({ listUsers }) {
     return (
         <div>
-            <table className='table table-hover table-bordered' style={{ verticalAlign: 'middle' }}>
+            <table className='table table-striped table-bordered' style={{ verticalAlign: 'middle' }}>
                 <thead>
                     <tr>
                         <th scope='col'>Khách hàng</th>

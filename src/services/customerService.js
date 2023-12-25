@@ -23,6 +23,15 @@ export const uploadImage = (file) => {
     });
 }
 
+export const customerUpload = async ({ file, onSuccess, onError }) => {
+    try {
+        const response = await uploadImage(file);
+        onSuccess(response.data.data, file);
+    } catch (error) {
+        onError(error);
+    }
+};
+
 export const updateCustomer = (customerId, { name, phonenumber, address, avatar }) => {
     const customerInfo = { name, phonenumber, address, avatar };
     return axiosPrivate.put(`customer/${customerId}`, customerInfo);

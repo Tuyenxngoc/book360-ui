@@ -18,9 +18,11 @@ import { visuallyHidden } from '@mui/utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisVertical, faRemove } from '@fortawesome/free-solid-svg-icons';
 import { Fragment, useState } from 'react';
-
 import Style from './ManageUsers.module.scss';
 import classNames from 'classnames/bind';
+import { Avatar } from '@mui/material';
+import { Link } from 'react-router-dom';
+import images from '~/assets';
 
 const cx = classNames.bind(Style);
 
@@ -39,7 +41,7 @@ const headCells = [
     },
     {
         id: 'totalOrder',
-        label: 'Tổng đơn hàng',
+        label: 'Đơn hàng',
     },
     {
         id: 'actions',
@@ -55,7 +57,7 @@ function EnhancedTableHead(props) {
 
     return (
         <TableHead>
-            <TableRow>
+            <TableRow sx={{ backgroundColor: '#0000000a' }}>
                 <TableCell padding="checkbox">
                     <Checkbox
                         color="primary"
@@ -124,7 +126,7 @@ function EnhancedTableToolbar(props) {
                         variant="subtitle1"
                         component="div"
                     >
-                        {numSelected} selected
+                        {numSelected} được chọn
                     </Typography>
                     <Tooltip title="Delete">
                         <IconButton>
@@ -227,18 +229,17 @@ export default function EnhancedTable({ listUsers, filters, setFilters }) {
                             return (
                                 <TableRow
                                     hover
-                                    onClick={(event) => handleClick(event, row.id)}
                                     role="checkbox"
                                     aria-checked={isItemSelected}
                                     tabIndex={-1}
                                     key={row.id}
                                     selected={isItemSelected}
-                                    sx={{ cursor: 'pointer' }}
                                 >
                                     <TableCell padding="checkbox">
                                         <Checkbox
                                             color="primary"
                                             checked={isItemSelected}
+                                            onChange={(event) => handleClick(event, row.id)}
                                             inputProps={{
                                                 'aria-labelledby': labelId,
                                             }}
@@ -249,15 +250,34 @@ export default function EnhancedTable({ listUsers, filters, setFilters }) {
                                         id={labelId}
                                         scope="row"
                                     >
-                                        {row.name}
+                                        <div className={cx('user-profile-card')}>
+                                            <div className={cx('user-profile-avatar')}>
+                                                <Avatar alt={row.name} src={row.avatar || images.userDefault} />
+                                            </div>
+                                            <div className={cx('user-profile-info')}>
+                                                <div className={cx('user-profile-name')}>
+                                                    <Link to='/'>{row.name}</Link>
+                                                </div>
+                                                <div className={cx('user-profile-email')}>user@gmail.com</div>
+                                            </div>
+                                        </div>
                                     </TableCell>
-                                    <TableCell align="left">{row.address}</TableCell>
-                                    <TableCell align="left">{row.phonenumber}</TableCell>
-                                    <TableCell align="left">0</TableCell>
+                                    <TableCell align="left">
+                                        {row.address || 'Chưa cập nhật thông tin'}
+                                    </TableCell>
+                                    <TableCell align="left">
+                                        {row.phonenumber || 'Chưa cập nhật thông tin'}
+                                    </TableCell>
+                                    <TableCell align="left">
+                                        0
+                                    </TableCell>
                                     <TableCell align="right">
-                                        <FontAwesomeIcon icon={faEllipsisVertical} />
+                                        <IconButton aria-label="action" size='small' disableRipple>
+                                            <FontAwesomeIcon icon={faEllipsisVertical} />
+                                        </IconButton>
                                     </TableCell>
                                 </TableRow>
+
                             );
                         })}
                         {emptyRows > 0 && (

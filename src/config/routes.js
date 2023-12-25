@@ -27,7 +27,10 @@ const routes = {
     //Manage orders routes
     manageOder: '/admin/orders',
     manageCategories: '/admin/categories',
-    manageBanners: '/admin/banners',
+
+    viewBanners: '/admin/banner',
+    createBanner: '/admin/banner/create',
+    updateBanner: '/admin/banner/:bannerId',
 
     accessDenied: '/access-denied',
     notFound: '*',

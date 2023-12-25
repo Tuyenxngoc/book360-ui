@@ -28,6 +28,7 @@ import ManageCategories from '~/pages/Admin/ManageCategories';
 import Forbidden from '~/pages/Forbidden';
 import ManageBanner from '~/pages/Admin/ManageBanners';
 import ProductForm from '~/pages/Admin/ProductForm';
+import BannerForm from '~/pages/Admin/ManageBanners/BannerForm';
 
 const publicRoutes = [
     { path: routes.home, component: Home },
@@ -66,8 +67,10 @@ const adminRoutes = [
 
     { path: routes.manageOder, component: ManageOrders, layout: AdminLayout },
     { path: routes.manageCategories, component: ManageCategories, layout: AdminLayout },
-    { path: routes.manageBanners, component: ManageBanner, layout: AdminLayout },
 
+    { path: routes.viewBanners, component: ManageBanner, layout: AdminLayout },
+    { path: routes.createBanner, component: BannerForm, layout: AdminLayout },
+    { path: routes.updateBanner, component: BannerForm, layout: AdminLayout },
 
 ]
 

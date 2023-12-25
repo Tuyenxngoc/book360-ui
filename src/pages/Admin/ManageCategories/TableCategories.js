@@ -52,7 +52,7 @@ function TableCategories({ listCategory, fetchListCategory }) {
                 description={'Bạn có chắc muốn xóa danh mục này? Lưu ý: Sau khi xóa, bạn không thể hoàn tác hay khôi phục danh mục.'}
                 handleSubmit={handleDeleteCategory}
             />
-            <table className="table table-hover table-bordered" style={{ verticalAlign: 'middle' }}>
+            <table className="table table-striped table-bordered" style={{ verticalAlign: 'middle' }}>
                 <thead>
                     <tr>
                         <th scope="col">Hình ảnh</th>

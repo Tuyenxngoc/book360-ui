@@ -24,6 +24,10 @@ function ManageUsers() {
         pageSize: 10,
     })
 
+    const handleSearch = () => {
+        fetchListUser();
+    };
+
     const fetchListUser = () => {
         const paramsString = queryString.stringify(filters);
         getAllCustomer(paramsString)
@@ -37,6 +41,7 @@ function ManageUsers() {
 
     useEffect(() => {
         fetchListUser();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filters])
 
     return (
@@ -62,8 +67,10 @@ function ManageUsers() {
                                         <Input
                                             placeholder='Nhập tên cần tìm'
                                             allowClear
+                                            value={filters.keyword}
+                                            onChange={(e) => setFilters({ ...filters, keyword: e.target.value })}
                                         />
-                                        <Button size='small' variant='contained'>Tìm kiếm</Button>
+                                        <Button size='small' variant='contained' onClick={handleSearch}>Tìm kiếm</Button>
                                     </div>
                                 </div>
                             </div>

@@ -6,6 +6,7 @@ import images from '~/assets';
 import classNames from 'classnames/bind';
 import styles from './AdminSideBar.module.scss';
 import useAuth from '~/hooks/useAuth';
+import { routes } from '~/config';
 
 const cx = classNames.bind(styles);
 function getItem(label, key, icon, children, type) {
@@ -24,8 +25,8 @@ const items = [
         getItem('Tất cả sản phẩm', '/admin/products'),
         getItem('Thêm sản phẩm', '/admin/product/create'),
     ]),
-    getItem('Quản lý đơn hàng', '/admin/orders', <ShoppingCartOutlined />),
-    getItem('Quản lý banner', '/admin/banners', <BoldOutlined />),
+    getItem('Quản lý đơn hàng', routes.manageOder, <ShoppingCartOutlined />),
+    getItem('Quản lý banner', routes.viewBanners, <BoldOutlined />),
     getItem('Quản lý danh mục', '/admin/categories', <OrderedListOutlined />),
 ];
 

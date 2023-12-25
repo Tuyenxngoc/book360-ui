@@ -7,11 +7,13 @@ import Style from './ManageBanners.module.scss';
 import classNames from 'classnames/bind';
 import { useEffect, useState } from "react";
 import { getAllBanners } from "~/services/bannerService";
+import { useNavigate } from "react-router-dom";
+import { routes } from "~/config";
 
 const cx = classNames.bind(Style);
 
 function ManageBanners() {
-
+    const navigate = useNavigate();
     const [dataBanners, setDataBanners] = useState([]);
     const [showDialogCreate, setShowDialogCreate] = useState(false);
 
@@ -38,18 +40,22 @@ function ManageBanners() {
         setPage(0);
     };
 
+    const handleCreateBanner = () => {
+        navigate(routes.createBanner);
+    };
+
     return (
         <div className='container my-3'>
             <div className='row justify-content-center'>
                 <div className='col-10'>
                     <div className={cx('list-main')}>
                         <div className={cx('header')}>
-                            <div className={cx('title')}>{dataBanners.length} Banner</div>
+                            <div className={cx('title')}>{dataBanners.length} Banners</div>
                             <Button
                                 size='small'
                                 variant='contained'
                                 startIcon={<FontAwesomeIcon icon={faPlus} />}
-                                onClick={() => { setShowDialogCreate(true); }}
+                                onClick={handleCreateBanner}
                             >
                                 Thêm mới
                             </Button>

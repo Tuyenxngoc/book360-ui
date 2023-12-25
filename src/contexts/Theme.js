@@ -15,4 +15,11 @@ const theme = createTheme(
     viVN,
 );
 
+const themeAntd = {
+    token: {
+        colorPrimary: '#00afef',
+    },
+}
+
+export { themeAntd };
 export default theme;

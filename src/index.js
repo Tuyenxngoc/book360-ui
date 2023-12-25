@@ -8,8 +8,9 @@ import GlobalStyles from '~/style/GlobalStyle';
 import { AuthProvider } from '~/contexts/AuthProvider';
 import { CartProvider } from './contexts/CartContext';
 
+import { ConfigProvider } from 'antd';
 import { ThemeProvider } from '@mui/material/styles';
-import theme from './contexts/Theme';
+import theme, { themeAntd } from './contexts/Theme';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -18,7 +19,9 @@ root.render(
       <AuthProvider>
         <CartProvider>
           <ThemeProvider theme={theme}>
-            <App />
+            <ConfigProvider theme={themeAntd}>
+              <App />
+            </ConfigProvider>
           </ThemeProvider>
         </CartProvider>
       </AuthProvider>

@@ -40,7 +40,7 @@ function Slide() {
                 <Slider {...settings}>
                     {bannerData.map((banner, index) => (
                         <div key={index}>
-                            <Link to={'/search?keyword='}>
+                            <Link to={banner.url || '/search?keyword='}>
                                 <img className={cx('img')} src={banner.image} alt="banner" />
                             </Link>
                         </div>
