@@ -1,22 +1,32 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, TablePagination } from "@mui/material";
+
 import TableBanners from "./TableBanners";
 
 import Style from './ManageBanners.module.scss';
 import classNames from 'classnames/bind';
-import { useEffect, useState } from "react";
+
 import { getAllBanners } from "~/services/bannerService";
-import { useNavigate } from "react-router-dom";
 import { routes } from "~/config";
 
 const cx = classNames.bind(Style);
 
 function ManageBanners() {
-    const navigate = useNavigate();
-    const [dataBanners, setDataBanners] = useState([]);
-    const [showDialogCreate, setShowDialogCreate] = useState(false);
 
+    const navigate = useNavigate();
+    const [meta, setMeta] = useState({});
+    const [dataBanners, setDataBanners] = useState([]);
+    const [filters, setFilters] = useState({
+        keyword: '',
+        sortBy: 'createdDate',
+        isAscending: false,
+        pageNum: 0,
+        pageSize: 10,
+    })
 
     const fetchListBanner = () => {
         getAllBanners()
@@ -61,7 +71,7 @@ function ManageBanners() {
                             </Button>
                         </div>
                         <div className='content'>
-                            <TableBanners listBanners={dataBanners} />
+                            <TableBanners listBanners={dataBanners} fetchListBanner={fetchListBanner} />
                             <TablePagination
                                 className={cx('table-pagination')}
                                 component="div"

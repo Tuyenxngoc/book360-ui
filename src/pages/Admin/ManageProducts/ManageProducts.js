@@ -13,6 +13,7 @@ import SortProduct from '~/components/SortProduct';
 
 import Style from './ManageProducts.module.scss';
 import classNames from 'classnames/bind';
+import { routes } from '~/config';
 
 const cx = classNames.bind(Style);
 
@@ -156,7 +157,7 @@ function ManageProducts() {
                                 variant='contained'
                                 startIcon={<FontAwesomeIcon icon={faPlus} />}
                                 onClick={() => {
-                                    navigate('/admin/product/create');
+                                    navigate(routes.createProduct);
                                 }}
                             >
                                 Thêm mới

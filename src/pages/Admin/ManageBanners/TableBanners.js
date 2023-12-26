@@ -1,25 +1,26 @@
 import PropTypes from 'prop-types';
 
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
 import Style from './ManageBanners.module.scss';
 import classNames from 'classnames/bind';
+
+import { deleteBanner } from '~/services/bannerService';
+import AlertDialog from '~/components/AlertDialog';
+
 import { Button } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faRemove, faUpDownLeftRight } from '@fortawesome/free-solid-svg-icons';
-import { Link, useNavigate } from 'react-router-dom';
-import { routes } from '~/config';
-import { useState } from 'react';
-import { deleteBanner } from '~/services/bannerService';
-import { toast } from 'react-toastify';
-import AlertDialog from '~/components/AlertDialog';
 
 const cx = classNames.bind(Style);
 
-function TableBanners({ listBanners }) {
+function TableBanners({ listBanners, fetchListBanner }) {
 
     const navigate = useNavigate();
     const [bannerSelect, setBannerSelect] = useState();
     const [showDialogDelete, setShowDialogDelete] = useState(false);
-
 
     const handleClickBtnUpdate = (banner) => {
         navigate(`/admin/banner/${banner.id}`);
@@ -33,6 +34,7 @@ function TableBanners({ listBanners }) {
     const handleDeleteBanner = () => {
         deleteBanner(bannerSelect)
             .then(() => {
+                fetchListBanner();
                 toast.success('Xoá thành công');
             })
             .catch(() => {
@@ -46,7 +48,7 @@ function TableBanners({ listBanners }) {
                 open={showDialogDelete}
                 setOpen={setShowDialogDelete}
                 title={'Xóa banner'}
-                description={'Bạn có chắc muốn xóa banner này? Lưu ý: Sau khi xóa, bạn không thể hoàn tác hay khôi phục danh mục.'}
+                description={'Bạn có chắc muốn xóa banner này? Lưu ý: Sau khi xóa, bạn không thể hoàn tác hay khôi phục.'}
                 handleSubmit={handleDeleteBanner}
             />
             <table className="table table-bordered table-striped" style={{ verticalAlign: 'middle' }}>
@@ -80,7 +82,6 @@ function TableBanners({ listBanners }) {
                                     </td>
                                     <td align='left'>
                                         <div className={cx('banner-actions')}>
-
                                             <Button
                                                 size='small'
                                                 variant='contained'
@@ -106,7 +107,12 @@ function TableBanners({ listBanners }) {
                         })
                     ) : (
                         <tr>
-                            <td colSpan="1">Not found data</td>
+                            <td colSpan="4">
+                                <div className={cx('no-result')}>
+                                    <div className={cx('icon')} />
+                                    <div className={cx('text')}>Chưa có dữ liệu</div>
+                                </div>
+                            </td>
                         </tr>
                     )}
                 </tbody>
@@ -122,6 +128,7 @@ TableBanners.propTypes = {
             url: PropTypes.string,
         })
     ),
+    fetchListBanner: PropTypes.func.isRequired,
 };
 
 export default TableBanners;

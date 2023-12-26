@@ -6,6 +6,8 @@ import DialogCategoryForm from './DialogCategoryForm';
 import AlertDialog from '~/components/AlertDialog';
 import { deleteCategory } from '~/services/categoryService';
 import { toast } from 'react-toastify';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faRemove } from '@fortawesome/free-solid-svg-icons';
 
 const cx = classNames.bind(Style);
 
@@ -77,11 +79,23 @@ function TableCategories({ listCategory, fetchListCategory }) {
                                     <td>{item.name}</td>
                                     <td>
                                         <div className={cx('table-action')}>
-                                            <Button sx={{ minWidth: 90 }} size='small' className='mb-2' variant='contained' color='warning' onClick={() => handleClickBtnUpdate(item)}>
-                                                Cập nhật
+                                            <Button
+                                                size='small'
+                                                variant='contained'
+                                                color='primary'
+                                                onClick={() => handleClickBtnUpdate(item)}
+                                                sx={{ minWidth: 35, height: 35 }}
+                                            >
+                                                <FontAwesomeIcon icon={faEdit} />
                                             </Button>
-                                            <Button sx={{ minWidth: 90 }} size='small' variant='contained' color='error' onClick={() => handleClickBtnDelete(item)}>
-                                                Xoá
+                                            <Button
+                                                size='small'
+                                                variant='contained'
+                                                color='error'
+                                                onClick={() => handleClickBtnDelete(item)}
+                                                sx={{ minWidth: 35, height: 35, ml: 1 }}
+                                            >
+                                                <FontAwesomeIcon icon={faRemove} />
                                             </Button>
                                         </div>
                                     </td>
