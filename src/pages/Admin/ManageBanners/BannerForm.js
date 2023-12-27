@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from 'react-router-dom';
 
 import * as yup from 'yup';
-import { useFormik } from "formik";
+import { useFormik } from 'formik';
 
 import { customerUpload } from '~/services/customerService';
 import { createBanner, getBanner } from '~/services/bannerService';
@@ -20,6 +20,7 @@ import AlertDialog from '~/components/AlertDialog';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave } from '@fortawesome/free-regular-svg-icons';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { toast } from 'react-toastify';
 
 const { Dragger } = Upload;
 
@@ -35,12 +36,14 @@ function inputProps(isError) {
 
 const defaultValue = {
     image: '',
-    url: ''
+    url: '',
+    viewOrder: 0,
 }
 
 const validationSchema = yup.object({
     image: yup.string().required('Hình ảnh là bắt buộc'),
     url: yup.string().required('Liên kết là bắt buộc'),
+    viewOrder: yup.number().required('Vui lòng nhập vào'),
 });
 
 function BannerForm() {
@@ -82,10 +85,11 @@ function BannerForm() {
         if (bannerId) {
             getBanner(bannerId)
                 .then((response) => {
-                    const { image, url } = response.data.data;
+                    const { image, url, viewOrder } = response.data.data;
                     formik.setValues({
                         image,
-                        url
+                        url,
+                        viewOrder,
                     })
                 })
                 .catch((error) => { console.log(error); })
@@ -98,7 +102,10 @@ function BannerForm() {
     const handleSubmit = (values) => {
         setLoading(true);
         createBanner(bannerId || -1, values)
-            .then(() => { navigate(routes.viewBanners, { replace: true }); })
+            .then(() => {
+                navigate(routes.viewBanners, { replace: true });
+                toast.success('Thành công');
+            })
             .catch((error) => { console.log(error); })
             .finally(() => { setLoading(false); });
     }
@@ -136,16 +143,33 @@ function BannerForm() {
                                     )}
                                 </div>
                             </div>
-
+                            <div className={cx('form-group')}>
+                                <label className={cx('form-label')} htmlFor='inputViewOrder'><span>*</span>Thứ tự hiển thị</label>
+                                <div className={cx('form-input')}>
+                                    <Input
+                                        id='inputViewOrder'
+                                        name='viewOrder'
+                                        size='large'
+                                        placeholder='Vui lòng nhập vào'
+                                        value={formik.values.viewOrder}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        {...inputProps(formik.touched.viewOrder && Boolean(formik.errors.viewOrder))}
+                                    />
+                                    {formik.touched.viewOrder && formik.errors.viewOrder && (
+                                        <FormHelperText error>{formik.errors.viewOrder}</FormHelperText>
+                                    )}
+                                </div>
+                            </div>
                             <div className={cx('form-group')}>
                                 <label className={cx('form-label')} htmlFor='inputUrl'><span>*</span>Hình ảnh</label>
                                 <div className={cx('form-input')}>
                                     <Dragger {...props}>
-                                        <p className="ant-upload-drag-icon">
+                                        <p className='ant-upload-drag-icon'>
                                             <InboxOutlined />
                                         </p>
-                                        <p className="ant-upload-text">Nhấp hoặc kéo tệp vào khu vực này để tải lên</p>
-                                        <p className="ant-upload-hint">Kích thước đề xuất [1920, 7750]</p>
+                                        <p className='ant-upload-text'>Nhấp hoặc kéo tệp vào khu vực này để tải lên</p>
+                                        <p className='ant-upload-hint'>Kích thước đề xuất [1920, 7750]</p>
                                     </Dragger>
                                     {formik.touched.image && formik.errors.image && (
                                         <FormHelperText error>{formik.errors.image}</FormHelperText>
@@ -162,7 +186,7 @@ function BannerForm() {
                                     handleSubmit={handleClose}
                                 />
                                 <Button
-                                    variant="outlined"
+                                    variant='outlined'
                                     startIcon={<FontAwesomeIcon icon={faArrowLeft} />}
                                     onClick={() => setShowDialog(true)}
                                     sx={{ height: 35 }}
@@ -171,7 +195,7 @@ function BannerForm() {
                                 </Button>
                                 <LoadingButton
                                     loading={loading}
-                                    variant="contained"
+                                    variant='contained'
                                     startIcon={<FontAwesomeIcon icon={faSave} />}
                                     onClick={formik.handleSubmit}
                                     sx={{ height: 35, marginLeft: '10px' }}

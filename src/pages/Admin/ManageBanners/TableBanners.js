@@ -56,6 +56,7 @@ function TableBanners({ listBanners, fetchListBanner }) {
                     <tr>
                         <th></th>
                         <th scope="col">Hình ảnh</th>
+                        <th scope="col">Thứ tự xem</th>
                         <th scope="col">Liên kết</th>
                         <th scope="col">Thao tác</th>
                     </tr>
@@ -76,6 +77,9 @@ function TableBanners({ listBanners, fetchListBanner }) {
                                         <div className={cx('banner-image')}>
                                             <img src={item.image} alt={item.name} />
                                         </div>
+                                    </td>
+                                    <td align='left'>
+                                        <div className={cx('banner-view-order')}>{item.viewOrder}</div>
                                     </td>
                                     <td align='left'>
                                         <div className={cx('banner-url')}>{item.url}</div>

@@ -12,6 +12,7 @@ import classNames from 'classnames/bind';
 
 import { getAllBanners } from "~/services/bannerService";
 import { routes } from "~/config";
+import queryString from "query-string";
 
 const cx = classNames.bind(Style);
 
@@ -22,32 +23,34 @@ function ManageBanners() {
     const [dataBanners, setDataBanners] = useState([]);
     const [filters, setFilters] = useState({
         keyword: '',
-        sortBy: 'createdDate',
+        sortBy: '',
         isAscending: false,
         pageNum: 0,
         pageSize: 10,
     })
 
     const fetchListBanner = () => {
-        getAllBanners()
-            .then((response) => { setDataBanners(response.data.data) })
+        const paramsString = queryString.stringify({ ...filters, pageNum: filters.pageNum + 1 });
+        getAllBanners(paramsString)
+            .then((response) => {
+                const { items, meta } = response.data.data;
+                setDataBanners(items);
+                setMeta(meta);
+            })
             .catch((error) => { console.log(error) })
     }
 
     useEffect(() => {
         fetchListBanner();
-    }, [])
-
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [filters])
 
     const handleChangePage = (event, newPage) => {
-        setPage(newPage);
+        setFilters({ ...filters, pageNum: newPage });
     };
 
     const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
+        setFilters({ ...filters, pageNum: 0, pageSize: parseInt(event.target.value, 10) })
     };
 
     const handleCreateBanner = () => {
@@ -75,10 +78,10 @@ function ManageBanners() {
                             <TablePagination
                                 className={cx('table-pagination')}
                                 component="div"
-                                count={dataBanners.length}
-                                page={page}
+                                count={meta.totalElements || 100}
+                                page={filters.pageNum}
                                 onPageChange={handleChangePage}
-                                rowsPerPage={rowsPerPage}
+                                rowsPerPage={meta.pageSize || 10}
                                 onRowsPerPageChange={handleChangeRowsPerPage}
                             />
                         </div>
