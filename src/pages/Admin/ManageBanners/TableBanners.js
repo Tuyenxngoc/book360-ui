@@ -66,7 +66,7 @@ function TableBanners({ listBanners, fetchListBanner }) {
                         listBanners.map((item, index) => {
                             return (
                                 <tr key={`table-banners-${index}`}>
-                                    <td align='center' style={{ padding: 0 }}>
+                                    <td align='center' style={{ padding: 0, width: '80px' }}>
                                         <div className={cx('preview-image')}>
                                             <a href={item.image} alt='preview image' target='_blank' rel="noreferrer">
                                                 <FontAwesomeIcon icon={faUpDownLeftRight} />

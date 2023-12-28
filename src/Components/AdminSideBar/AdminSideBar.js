@@ -26,8 +26,8 @@ const items = [
         getItem('Thêm sản phẩm', '/admin/product/create'),
     ]),
     getItem('Quản lý đơn hàng', routes.manageOder, <ShoppingCartOutlined />),
-    getItem('Quản lý banner', routes.viewBanners, <BoldOutlined />),
-    getItem('Quản lý danh mục', '/admin/categories', <OrderedListOutlined />),
+    getItem('Quản lý banner', routes.viewBanner, <BoldOutlined />),
+    getItem('Quản lý danh mục', routes.viewCategory, <OrderedListOutlined />),
 ];
 
 function AdminSideBar() {

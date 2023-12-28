@@ -27,13 +27,12 @@
 }
 
 .preview-image {
-    width: 35px;
-    height: 35px;
-    border: 1px solid rgb(222, 226, 230);
-    border-radius: 4px;
-    user-select: none;
-
     a {
+        width: 35px;
+        height: 35px;
+        border: 1px solid rgb(222, 226, 230);
+        border-radius: 4px;
+        user-select: none;
         display: block;
         color: #93a0dd;
         line-height: 35px;

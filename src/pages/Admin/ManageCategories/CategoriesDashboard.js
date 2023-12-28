@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import { Button, TablePagination } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -10,14 +9,14 @@ import classNames from 'classnames/bind';
 
 import { getAllCategories } from '~/services/categoryService';
 import TableCategories from './TableCategories';
-import DialogCategoryForm from './DialogCategoryForm';
+import { useNavigate } from 'react-router-dom';
+import { routes } from '~/config';
 
 const cx = classNames.bind(Style);
 
-function ManageCategories() {
-    const navigate = useNavigate();
+function CategoriesDashboard() {
 
-    const [showDialogCreate, setShowDialogCreate] = useState(false);
+    const navigate = useNavigate();
     const [dataCategories, setDataCategories] = useState([]);
 
     const fetchListCategory = () => {
@@ -32,6 +31,10 @@ function ManageCategories() {
 
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
+
+    const handleCreateCategory = () => {
+        navigate(routes.createCategory);
+    };
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -53,13 +56,12 @@ function ManageCategories() {
                                 size='small'
                                 variant='contained'
                                 startIcon={<FontAwesomeIcon icon={faPlus} />}
-                                onClick={() => { setShowDialogCreate(true); }}
+                                onClick={handleCreateCategory}
                             >
                                 Thêm mới
                             </Button>
                         </div>
                         <div className='content'>
-                            <DialogCategoryForm open={showDialogCreate} setOpen={setShowDialogCreate} fetchListCategory={fetchListCategory} />
                             <TableCategories listCategory={dataCategories} fetchListCategory={fetchListCategory} />
                             <TablePagination
                                 className={cx('table-pagination')}
@@ -78,4 +80,4 @@ function ManageCategories() {
     );
 }
 
-export default ManageCategories;
+export default CategoriesDashboard;

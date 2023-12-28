@@ -1,5 +1,9 @@
 import httpRequest, { axiosPrivate } from "~/utils/httpRequest";
 
+export const getCategory = (categoryId) => {
+    return axiosPrivate.get(`category/get-category/${categoryId}`);
+}
+
 export const getAllCategories = () => {
     return httpRequest.get('category/get-categories');
 }

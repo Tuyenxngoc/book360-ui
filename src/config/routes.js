@@ -19,16 +19,25 @@ const routes = {
 
     // Admin routes
     admin: '/admin',
+
+    //Manage customers routes
     manageUsers: '/admin/users',
+
     //Manage products routes
-    viewListProduct: '/admin/products',
+    viewProduct: '/admin/products',
     createProduct: '/admin/product/create',
     updateProduct: '/admin/product/:productId',
+
     //Manage orders routes
     manageOder: '/admin/orders',
-    manageCategories: '/admin/categories',
 
-    viewBanners: '/admin/banner',
+    //Manage categories routes
+    viewCategory: '/admin/category',
+    createCategory: '/admin/category/create',
+    updateCategory: '/admin/category/:categoryId',
+
+    //Manage banners routes
+    viewBanner: '/admin/banner',
     createBanner: '/admin/banner/create',
     updateBanner: '/admin/banner/:bannerId',
 

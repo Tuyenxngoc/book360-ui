@@ -22,13 +22,17 @@ import NotFound from '~/pages/NotFound';
 import AdminLayout from '~/layouts/AdminLayout';
 import Dashboard from '~/pages/Admin/Dashboard';
 import ManageUsers from '~/pages/Admin/ManageUsers';
-import ManageProducts from '~/pages/Admin/ManageProducts';
 import ManageOrders from '~/pages/Admin/ManageOrders';
-import ManageCategories from '~/pages/Admin/ManageCategories';
 import Forbidden from '~/pages/Forbidden';
+
+import ManageProducts from '~/pages/Admin/ManageProducts';
+import ProductForm from '~/pages/Admin/ManageProducts/ProductForm';
+
 import ManageBanner from '~/pages/Admin/ManageBanners';
 import BannerForm from '~/pages/Admin/ManageBanners/BannerForm';
-import ProductForm from '~/pages/Admin/ManageProducts/ProductForm';
+
+import CategoriesDashboard from '~/pages/Admin/ManageCategories/CategoriesDashboard';
+import CategoryForm from '~/pages/Admin/ManageCategories/CategoryForm';
 
 const publicRoutes = [
     { path: routes.home, component: Home },
@@ -60,14 +64,17 @@ const adminRoutes = [
     { path: routes.admin, component: Dashboard, layout: AdminLayout },
     { path: routes.manageUsers, component: ManageUsers, layout: AdminLayout },
 
-    { path: routes.viewListProduct, component: ManageProducts, layout: AdminLayout },
+    { path: routes.viewProduct, component: ManageProducts, layout: AdminLayout },
     { path: routes.createProduct, component: ProductForm, layout: AdminLayout },
     { path: routes.updateProduct, component: ProductForm, layout: AdminLayout },
 
     { path: routes.manageOder, component: ManageOrders, layout: AdminLayout },
-    { path: routes.manageCategories, component: ManageCategories, layout: AdminLayout },
 
-    { path: routes.viewBanners, component: ManageBanner, layout: AdminLayout },
+    { path: routes.viewCategory, component: CategoriesDashboard, layout: AdminLayout },
+    { path: routes.createCategory, component: CategoryForm, layout: AdminLayout },
+    { path: routes.updateCategory, component: CategoryForm, layout: AdminLayout },
+
+    { path: routes.viewBanner, component: ManageBanner, layout: AdminLayout },
     { path: routes.createBanner, component: BannerForm, layout: AdminLayout },
     { path: routes.updateBanner, component: BannerForm, layout: AdminLayout },
 

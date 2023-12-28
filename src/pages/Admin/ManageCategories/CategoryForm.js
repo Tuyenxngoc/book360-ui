@@ -5,10 +5,9 @@ import * as yup from 'yup';
 import { useFormik } from 'formik';
 
 import { customerUpload } from '~/services/customerService';
-import { createBanner, getBanner } from '~/services/bannerService';
 import { routes } from '~/config';
 
-import Style from './ManageBanners.module.scss';
+import Style from './ManageCategories.module.scss';
 import classNames from 'classnames/bind';
 
 import { Input } from 'antd';
@@ -21,35 +20,37 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave } from '@fortawesome/free-regular-svg-icons';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
+import { createCategory, getCategory } from '~/services/categoryService';
 
 const { Dragger } = Upload;
 
 const cx = classNames.bind(Style);
 
-function inputProps(isError) {
+function inputProps(isError, message) {
     if (isError) {
         return {
-            status: 'error'
+            status: 'error',
+            placeholder: message,
         };
     }
 }
 
 const defaultValue = {
     image: '',
-    url: '',
-    viewOrder: 0,
+    name: '',
 }
 
 const validationSchema = yup.object({
-    image: yup.string().required('Hình ảnh là bắt buộc'),
-    url: yup.string().required('Liên kết là bắt buộc'),
-    viewOrder: yup.number().required('Vui lòng nhập vào'),
+    name: yup.string()
+        .min(3, "Tên danh mục tối thiểu 3 kí tự")
+        .max(120, "Tên danh mục tối đa 120 kí tự")
+        .required('Tên danh mục là bắt buộc'),
 });
 
-function BannerForm() {
+function CategoryForm() {
 
     const navigate = useNavigate();
-    const { bannerId } = useParams();
+    const { categoryId } = useParams();
     const [loading, setLoading] = useState(false);
     const [showDialog, setShowDialog] = useState(false);
 
@@ -60,6 +61,23 @@ function BannerForm() {
             handleSubmit(values);
         },
     });
+
+    useEffect(() => {
+        if (categoryId) {
+            getCategory(categoryId)
+                .then((response) => {
+                    const { image, name } = response.data.data;
+                    formik.setValues({
+                        image,
+                        name,
+                    })
+                })
+                .catch((error) => { console.log(error); })
+        } else {
+            formik.setValues(defaultValue);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [categoryId]);
 
     const props = {
         name: 'file',
@@ -81,37 +99,19 @@ function BannerForm() {
         },
     };
 
-    useEffect(() => {
-        if (bannerId) {
-            getBanner(bannerId)
-                .then((response) => {
-                    const { image, url, viewOrder } = response.data.data;
-                    formik.setValues({
-                        image,
-                        url,
-                        viewOrder,
-                    })
-                })
-                .catch((error) => { console.log(error); })
-        } else {
-            formik.setValues(defaultValue);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [bannerId]);
-
     const handleSubmit = (values) => {
         setLoading(true);
-        createBanner(bannerId || -1, values)
+        createCategory(categoryId || -1, values)
             .then(() => {
-                navigate(routes.viewBanner, { replace: true });
+                navigate(routes.viewCategory, { replace: true });
                 toast.success('Thành công');
             })
-            .catch((error) => { console.log(error); })
+            .catch(() => { toast.error('Có lỗi xảy ra'); })
             .finally(() => { setLoading(false); });
     }
 
     const handleClose = () => {
-        navigate(routes.viewBanner, { replace: true });
+        navigate(routes.viewCategory, { replace: true });
     }
 
     return (
@@ -126,43 +126,25 @@ function BannerForm() {
                         </div>
                         <div className='panel-content'>
                             <div className={cx('form-group')}>
-                                <label className={cx('form-label')} htmlFor='inputUrl'><span>*</span>Liên kết</label>
+                                <label className={cx('form-label')} htmlFor='inputName'><span>*</span>Tên danh mục</label>
                                 <div className={cx('form-input')}>
                                     <Input
-                                        id='inputUrl'
-                                        name='url'
+                                        id='inputName'
+                                        name='name'
                                         size='large'
                                         placeholder='Vui lòng nhập vào'
-                                        value={formik.values.url}
+                                        value={formik.values.name}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
-                                        {...inputProps(formik.touched.url && Boolean(formik.errors.url))}
+                                        {...inputProps(formik.touched.name && Boolean(formik.errors.name))}
                                     />
-                                    {formik.touched.url && formik.errors.url && (
-                                        <FormHelperText error>{formik.errors.url}</FormHelperText>
+                                    {formik.touched.name && formik.errors.name && (
+                                        <FormHelperText error>{formik.errors.name}</FormHelperText>
                                     )}
                                 </div>
                             </div>
                             <div className={cx('form-group')}>
-                                <label className={cx('form-label')} htmlFor='inputViewOrder'><span>*</span>Thứ tự hiển thị</label>
-                                <div className={cx('form-input')}>
-                                    <Input
-                                        id='inputViewOrder'
-                                        name='viewOrder'
-                                        size='large'
-                                        placeholder='Vui lòng nhập vào'
-                                        value={formik.values.viewOrder}
-                                        onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
-                                        {...inputProps(formik.touched.viewOrder && Boolean(formik.errors.viewOrder))}
-                                    />
-                                    {formik.touched.viewOrder && formik.errors.viewOrder && (
-                                        <FormHelperText error>{formik.errors.viewOrder}</FormHelperText>
-                                    )}
-                                </div>
-                            </div>
-                            <div className={cx('form-group')}>
-                                <label className={cx('form-label')} htmlFor='inputUrl'><span>*</span>Hình ảnh</label>
+                                <label className={cx('form-label')} htmlFor='inputUrl'>Hình ảnh</label>
                                 <div className={cx('form-input')}>
                                     <Dragger {...props}>
                                         <p className='ant-upload-drag-icon'>
@@ -211,4 +193,4 @@ function BannerForm() {
     );
 }
 
-export default BannerForm;
+export default CategoryForm;
