@@ -18,18 +18,20 @@ const routes = {
     favorite: '/favorite',
 
     // Admin routes
-    admin: '/admin',
+    adminDashboard: '/admin',
 
-    //Manage customers routes
-    manageUsers: '/admin/users',
+    //Manage user routes
+    viewUser: '/admin/user',
+    createUser: '/admin/user/create',
+    updateUser: '/admin/user/:userId',
 
     //Manage products routes
-    viewProduct: '/admin/products',
+    viewProduct: '/admin/product',
     createProduct: '/admin/product/create',
     updateProduct: '/admin/product/:productId',
 
     //Manage orders routes
-    manageOder: '/admin/orders',
+    viewOder: '/admin/order',
 
     //Manage categories routes
     viewCategory: '/admin/category',

@@ -1,12 +1,19 @@
-import { Avatar, Button } from "@mui/material";
+import { Avatar, Button } from '@mui/material';
 
 import Style from './ManageUsers.module.scss';
 import classNames from 'classnames/bind';
-import { Link } from "react-router-dom";
+
+import { Link, useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faEye } from '@fortawesome/free-solid-svg-icons';
+import images from '~/assets';
 
 const cx = classNames.bind(Style);
 
 function TableUsers({ listUsers }) {
+
+    const navigate = useNavigate();
+
     return (
         <div>
             <table className='table table-striped table-bordered' style={{ verticalAlign: 'middle' }}>
@@ -15,8 +22,6 @@ function TableUsers({ listUsers }) {
                         <th scope='col'>Khách hàng</th>
                         <th scope='col'>Địa chỉ</th>
                         <th scope='col'>Số điện thoại</th>
-                        <th scope='col'>Số đơn hàng</th>
-                        <th scope='col'>Đã tiêu</th>
                         <th scope='col'>Thao tác</th>
                     </tr>
                 </thead>
@@ -25,10 +30,10 @@ function TableUsers({ listUsers }) {
                         listUsers.map((item, index) => {
                             return (
                                 <tr key={`table-users-${index}`}>
-                                    <td>
+                                    <td align='left'>
                                         <div className={cx('user-profile-card')}>
                                             <div className={cx('user-profile-avatar')}>
-                                                <Avatar alt={item.name} src={item.avatar} />
+                                                <Avatar alt={item.name} src={item.avatar || images.userDefault} />
                                             </div>
                                             <div className={cx('user-profile-info')}>
                                                 <div className={cx('user-profile-name')}>
@@ -38,34 +43,28 @@ function TableUsers({ listUsers }) {
                                             </div>
                                         </div>
                                     </td>
-                                    <td>
-                                        {item.address}
-                                    </td>
-                                    <td>
-                                        {item.phonenumber}
-                                    </td>
-                                    <td>
-                                        0
-                                    </td>
-                                    <td>
-                                        0
-                                    </td>
-                                    <td>
-                                        <Button
-                                            size='small'
-                                            variant='contained'
-                                            color='success'
-                                        >
-                                            Xem
-                                        </Button>
-                                        <Button
-                                            size='small'
-                                            className='mx-2'
-                                            variant='contained'
-                                            color='warning'
-                                        >
-                                            Cập nhật
-                                        </Button>
+                                    <td align='left'>{item.address}</td>
+                                    <td align='left'>{item.phonenumber}</td>
+                                    <td align='left'>
+                                        <div className='user-actions'>
+                                            <Button
+                                                size='small'
+                                                variant='contained'
+                                                color='success'
+                                                sx={{ minWidth: 35, height: 35 }}
+                                            >
+                                                <FontAwesomeIcon icon={faEye} />
+                                            </Button>
+                                            <Button
+                                                size='small'
+                                                variant='contained'
+                                                color='primary'
+                                                sx={{ minWidth: 35, height: 35, ml: 1 }}
+                                                onClick={() => navigate(`/admin/user/${item.id}`)}
+                                            >
+                                                <FontAwesomeIcon icon={faEdit} />
+                                            </Button>
+                                        </div>
                                     </td>
                                 </tr>
                             )

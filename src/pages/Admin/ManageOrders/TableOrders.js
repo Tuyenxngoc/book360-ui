@@ -4,6 +4,8 @@ import Style from './MagageOrders.module.scss';
 import classNames from 'classnames/bind';
 import { Button, Chip } from '@mui/material';
 import DateTimeDisplay from '~/components/DateTimeDisplay';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faEye } from '@fortawesome/free-solid-svg-icons';
 
 const cx = classNames.bind(Style);
 
@@ -60,11 +62,23 @@ function TableOrders({ listOrder, fetchListOrder }) {
                                         {getChipByStatus(item.status)}
                                     </td>
                                     <td>
-                                        <Button size='small' variant='contained' color='success' onClick={() => handleClickBtnView(item)}>
-                                            Xem
+                                        <Button
+                                            size='small'
+                                            variant='contained'
+                                            color='success'
+                                            onClick={() => handleClickBtnView(item)}
+                                            sx={{ minWidth: 35, height: 35 }}
+                                        >
+                                            <FontAwesomeIcon icon={faEye} />
                                         </Button>
-                                        <Button size='small' className='mx-2' variant='contained' color='warning' onClick={() => handleClickBtnUpdate(item)}>
-                                            Cập nhật
+                                        <Button
+                                            size='small'
+                                            variant='contained'
+                                            color='info'
+                                            onClick={() => handleClickBtnUpdate(item)}
+                                            sx={{ minWidth: 35, height: 35, ml: 1 }}
+                                        >
+                                            <FontAwesomeIcon icon={faEdit} />
                                         </Button>
                                     </td>
                                 </tr>

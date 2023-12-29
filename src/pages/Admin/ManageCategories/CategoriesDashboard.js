@@ -65,7 +65,7 @@ function CategoriesDashboard() {
                             <TableCategories listCategory={dataCategories} fetchListCategory={fetchListCategory} />
                             <TablePagination
                                 className={cx('table-pagination')}
-                                component="div"
+                                component='div'
                                 count={dataCategories.length}
                                 page={page}
                                 onPageChange={handleChangePage}

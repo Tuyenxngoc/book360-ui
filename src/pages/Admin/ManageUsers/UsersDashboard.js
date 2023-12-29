@@ -3,26 +3,31 @@ import { getAllCustomer } from '~/services/customerService';
 
 import Style from './ManageUsers.module.scss';
 import classNames from 'classnames/bind';
-import { Button } from '@mui/material';
+import { Button, TablePagination } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Input } from 'antd';
-import EnhancedTable from './test';
 import queryString from 'query-string';
+import TableUsers from './TableUsers';
+import { useNavigate } from 'react-router-dom';
+import { routes } from '~/config';
 
 const cx = classNames.bind(Style);
 
-function ManageUsers() {
+const defaultValue = {
+    keyword: '',
+    sortBy: 'createdDate',
+    isAscending: false,
+    pageNum: 0,
+    pageSize: 10,
+}
 
-    const [meta, setMeta] = useState({});
+function UsersDashboard() {
+
+    const navigate = useNavigate();
     const [dataUsers, setDataUsers] = useState([]);
-    const [filters, setFilters] = useState({
-        keyword: '',
-        sortBy: 'createdDate',
-        isAscending: false,
-        pageNum: 0,
-        pageSize: 10,
-    })
+    const [meta, setMeta] = useState({});
+    const [filters, setFilters] = useState(defaultValue);
 
     const handleSearch = () => {
         fetchListUser();
@@ -33,7 +38,7 @@ function ManageUsers() {
         getAllCustomer(paramsString)
             .then((response) => {
                 const { items, meta } = response.data.data;
-                setDataUsers(items)
+                setDataUsers(items);
                 setMeta(meta);
             })
             .catch((error) => { console.log(error) });
@@ -42,7 +47,18 @@ function ManageUsers() {
     useEffect(() => {
         fetchListUser();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [filters])
+    }, [filters]);
+
+    const handleCreateUser = () => {
+        navigate(routes.createUser);
+    }
+    const handleChangePage = (event, newPage) => {
+        setFilters({ ...filters, pageNum: newPage });
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+        setFilters({ ...filters, pageNum: 0, pageSize: parseInt(event.target.value, 10) })
+    };
 
     return (
         <div className='container my-3'>
@@ -55,6 +71,7 @@ function ManageUsers() {
                                 size='small'
                                 variant='contained'
                                 startIcon={<FontAwesomeIcon icon={faPlus} />}
+                                onClick={handleCreateUser}
                             >
                                 Thêm mới
                             </Button>
@@ -77,10 +94,15 @@ function ManageUsers() {
                         </div>
 
                         <div className='content'>
-                            <EnhancedTable
-                                listUsers={dataUsers}
-                                filters={filters}
-                                setFilters={setFilters}
+                            <TableUsers listUsers={dataUsers} />
+                            <TablePagination
+                                className={cx('table-pagination')}
+                                component='div'
+                                count={meta.totalElements || 100}
+                                page={filters.pageNum}
+                                onPageChange={handleChangePage}
+                                rowsPerPage={meta.pageSize || 10}
+                                onRowsPerPageChange={handleChangeRowsPerPage}
                             />
                         </div>
                     </div>
@@ -90,4 +112,4 @@ function ManageUsers() {
     );
 }
 
-export default ManageUsers;
+export default UsersDashboard;

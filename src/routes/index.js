@@ -21,18 +21,21 @@ import Favorite from '~/pages/Favorite';
 import NotFound from '~/pages/NotFound';
 import AdminLayout from '~/layouts/AdminLayout';
 import Dashboard from '~/pages/Admin/Dashboard';
-import ManageUsers from '~/pages/Admin/ManageUsers';
-import ManageOrders from '~/pages/Admin/ManageOrders';
 import Forbidden from '~/pages/Forbidden';
 
-import ManageProducts from '~/pages/Admin/ManageProducts';
+import OrdersDashboard from '~/pages/Admin/ManageOrders/OrdersDashboard';
+
+import ProductsDashboard from '~/pages/Admin/ManageProducts/ProductsDashboard';
 import ProductForm from '~/pages/Admin/ManageProducts/ProductForm';
 
-import ManageBanner from '~/pages/Admin/ManageBanners';
+import BannersDashboard from '~/pages/Admin/ManageBanners/BannersDashboard';
 import BannerForm from '~/pages/Admin/ManageBanners/BannerForm';
 
 import CategoriesDashboard from '~/pages/Admin/ManageCategories/CategoriesDashboard';
 import CategoryForm from '~/pages/Admin/ManageCategories/CategoryForm';
+
+import UsersDashboard from '~/pages/Admin/ManageUsers/UsersDashboard';
+import UserForm from '~/pages/Admin/ManageUsers/UserForm';
 
 const publicRoutes = [
     { path: routes.home, component: Home },
@@ -61,23 +64,25 @@ const privateRoutes = [
 ]
 
 const adminRoutes = [
-    { path: routes.admin, component: Dashboard, layout: AdminLayout },
-    { path: routes.manageUsers, component: ManageUsers, layout: AdminLayout },
+    { path: routes.adminDashboard, component: Dashboard, layout: AdminLayout },
 
-    { path: routes.viewProduct, component: ManageProducts, layout: AdminLayout },
+    { path: routes.viewUser, component: UsersDashboard, layout: AdminLayout },
+    { path: routes.createUser, component: UserForm, layout: AdminLayout },
+    { path: routes.updateUser, component: UserForm, layout: AdminLayout },
+
+    { path: routes.viewProduct, component: ProductsDashboard, layout: AdminLayout },
     { path: routes.createProduct, component: ProductForm, layout: AdminLayout },
     { path: routes.updateProduct, component: ProductForm, layout: AdminLayout },
 
-    { path: routes.manageOder, component: ManageOrders, layout: AdminLayout },
+    { path: routes.viewOder, component: OrdersDashboard, layout: AdminLayout },
 
     { path: routes.viewCategory, component: CategoriesDashboard, layout: AdminLayout },
     { path: routes.createCategory, component: CategoryForm, layout: AdminLayout },
     { path: routes.updateCategory, component: CategoryForm, layout: AdminLayout },
 
-    { path: routes.viewBanner, component: ManageBanner, layout: AdminLayout },
+    { path: routes.viewBanner, component: BannersDashboard, layout: AdminLayout },
     { path: routes.createBanner, component: BannerForm, layout: AdminLayout },
     { path: routes.updateBanner, component: BannerForm, layout: AdminLayout },
-
 ]
 
 export { publicRoutes, privateRoutes, adminRoutes } 

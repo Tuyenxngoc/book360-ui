@@ -58,7 +58,7 @@ const getDateRange = () => {
     };
 };
 
-function ManageOrders() {
+function OrdersDashboard() {
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -75,9 +75,9 @@ function ManageOrders() {
     const handleChangeOrderStatus = (activeKey) => {
         setType(activeKey);
         if (activeKey === '') {
-            navigate('/admin/orders');
+            navigate('/admin/order');
         } else {
-            navigate(`/admin/orders?type=${activeKey}`);
+            navigate(`/admin/order?type=${activeKey}`);
         }
     };
 
@@ -187,4 +187,4 @@ function ManageOrders() {
     );
 }
 
-export default ManageOrders;
+export default OrdersDashboard;

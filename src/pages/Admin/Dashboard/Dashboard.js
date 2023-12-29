@@ -147,11 +147,11 @@ const dataRevenue = [
 ];
 
 const todo = [
-    { lable: 'Chờ xác nhận', link: '/admin/orders?type=to_pay' },
-    { lable: 'Chờ lấy hàng', link: '/admin/orders?type=unpaid' },
-    { lable: 'Đã xử lý', link: '/admin/orders?type=ordered' },
-    { lable: 'Đơn hủy', link: '/admin/orders?type=canceled' },
-    { lable: 'Sản phẩm hết hàng', link: '/admin/products' },
+    { lable: 'Chờ xác nhận', link: '/admin/order?type=to_pay' },
+    { lable: 'Chờ lấy hàng', link: '/admin/order?type=unpaid' },
+    { lable: 'Đã xử lý', link: '/admin/order?type=ordered' },
+    { lable: 'Đơn hủy', link: '/admin/order?type=canceled' },
+    { lable: 'Sản phẩm hết hàng', link: '/admin/product' },
 ]
 
 const customer = [

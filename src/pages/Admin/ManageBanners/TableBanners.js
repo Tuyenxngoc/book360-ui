@@ -85,7 +85,7 @@ function TableBanners({ listBanners, fetchListBanner }) {
                                         <div className={cx('banner-url')}>{item.url}</div>
                                     </td>
                                     <td align='left'>
-                                        <div className={cx('banner-actions')}>
+                                        <div className='banner-actions'>
                                             <Button
                                                 size='small'
                                                 variant='contained'

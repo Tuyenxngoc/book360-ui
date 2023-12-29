@@ -1,1 +1,1 @@
-export { default } from './ManageBanners';
+export { default } from './BannersDashboard';

@@ -1,1 +1,1 @@
-export { default } from './ManageProducts';
+export { default } from './ProductsDashboard';

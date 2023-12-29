@@ -19,13 +19,13 @@ function getItem(label, key, icon, children, type) {
     };
 }
 const items = [
-    getItem('Trang chủ', '/admin', <HomeOutlined />),
-    getItem('Quản lý khách hàng', '/admin/users', <UserOutlined />),
+    getItem('Trang chủ', routes.adminDashboard, <HomeOutlined />),
+    getItem('Quản lý khách hàng', routes.viewUser, <UserOutlined />),
     getItem('Quản lý sản phẩm', 'product', <DollarOutlined />, [
-        getItem('Tất cả sản phẩm', '/admin/products'),
-        getItem('Thêm sản phẩm', '/admin/product/create'),
+        getItem('Tất cả sản phẩm', routes.viewProduct),
+        getItem('Thêm sản phẩm', routes.createProduct),
     ]),
-    getItem('Quản lý đơn hàng', routes.manageOder, <ShoppingCartOutlined />),
+    getItem('Quản lý đơn hàng', routes.viewOder, <ShoppingCartOutlined />),
     getItem('Quản lý banner', routes.viewBanner, <BoldOutlined />),
     getItem('Quản lý danh mục', routes.viewCategory, <OrderedListOutlined />),
 ];

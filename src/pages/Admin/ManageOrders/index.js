@@ -1,1 +1,1 @@
-export { default } from './ManageOrders';
+export { default } from './OrdersDashboard';

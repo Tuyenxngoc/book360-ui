@@ -1,5 +1,9 @@
 import { axiosPrivate } from "~/utils/httpRequest";
 
+export const createCustomer = (paramsString) => {
+    return axiosPrivate.get(`customer?${paramsString}`);
+}
+
 export const getCustomer = (userId) => {
     return axiosPrivate.get(`customer/get-by-user/${userId}`);
 }

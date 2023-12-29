@@ -16,7 +16,7 @@ import queryString from "query-string";
 
 const cx = classNames.bind(Style);
 
-function ManageBanners() {
+function BannersDashboard() {
 
     const navigate = useNavigate();
     const [meta, setMeta] = useState({});
@@ -92,4 +92,4 @@ function ManageBanners() {
     );
 }
 
-export default ManageBanners;
+export default BannersDashboard;

@@ -17,7 +17,8 @@ import { routes } from '~/config';
 
 const cx = classNames.bind(Style);
 
-function ManageProducts() {
+function ProductsDashboard() {
+
     const navigate = useNavigate();
     const [dataProducts, setDataProducts] = useState([]);
     const [meta, setMeta] = useState({});
@@ -182,4 +183,4 @@ function ManageProducts() {
     );
 }
 
-export default ManageProducts;
+export default ProductsDashboard;

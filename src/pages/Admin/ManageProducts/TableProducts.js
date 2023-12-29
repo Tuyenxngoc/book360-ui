@@ -10,6 +10,8 @@ import classNames from 'classnames/bind';
 import { deleteProduct } from '~/services/productService';
 import { toast } from 'react-toastify';
 import { Button } from '@mui/material';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faEye, faRemove } from '@fortawesome/free-solid-svg-icons';
 
 const cx = classNames.bind(Style);
 
@@ -85,14 +87,32 @@ function TableProducts({ listProduct, fetchListProduct }) {
                                     <td>{item.discount}%</td>
                                     <td>{item.selled}</td>
                                     <td>
-                                        <Button size='small' variant='contained' color='success' onClick={() => handleClickViewProduct(item.productId)}>
-                                            Xem
+                                        <Button
+                                            size='small'
+                                            variant='contained'
+                                            color='success'
+                                            onClick={() => handleClickViewProduct(item.productId)}
+                                            sx={{ minWidth: 35, height: 35 }}
+                                        >
+                                            <FontAwesomeIcon icon={faEye} />
                                         </Button>
-                                        <Button size='small' className='mx-2' variant='contained' color='warning' onClick={() => handleClickBtnUpdate(item.productId)}>
-                                            Cập nhật
+                                        <Button
+                                            size='small'
+                                            variant='contained'
+                                            color='info'
+                                            onClick={() => handleClickBtnUpdate(item.productId)}
+                                            sx={{ minWidth: 35, height: 35, mx: 1 }}
+                                        >
+                                            <FontAwesomeIcon icon={faEdit} />
                                         </Button>
-                                        <Button size='small' variant='contained' color='error' onClick={() => handleClickBtnDelete(item.productId)}>
-                                            Xoá
+                                        <Button
+                                            size='small'
+                                            variant='contained'
+                                            color='error'
+                                            onClick={() => handleClickBtnDelete(item.productId)}
+                                            sx={{ minWidth: 35, height: 35 }}
+                                        >
+                                            <FontAwesomeIcon icon={faRemove} />
                                         </Button>
                                     </td>
                                 </tr>
