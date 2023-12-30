@@ -152,8 +152,6 @@ function ProductForm() {
         }
     };
 
-    console.log(formik.values.cate_id);
-
     const handleRemoveImage = (image) => {
         const newImages = formik.values.images.filter(item => item !== image);
         formik.setFieldValue('images', newImages);

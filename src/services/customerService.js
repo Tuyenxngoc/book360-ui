@@ -1,7 +1,7 @@
 import { axiosPrivate } from "~/utils/httpRequest";
 
-export const createCustomer = (paramsString) => {
-    return axiosPrivate.get(`customer?${paramsString}`);
+export const createCustomer = (values) => {
+    return axiosPrivate.post('auth/admin-register', values);
 }
 
 export const getCustomer = (userId) => {

@@ -1,9 +1,7 @@
-import { faTruck } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, TablePagination } from '@mui/material';
 import TableOrders from './TableOrders';
 import { useEffect, useMemo, useState } from 'react';
-import { getAllBills } from '~/services/billService';
+import { getAllBills, getStatistic } from '~/services/billService';
 import queryString from 'query-string';
 
 import Style from './MagageOrders.module.scss';
@@ -16,6 +14,8 @@ import viVN from 'antd/lib/locale/vi_VN';
 import dayjs from 'dayjs';
 import { orderStatus } from '~/config/contans';
 import { toast } from 'react-toastify';
+
+import { saveAs } from 'file-saver';
 
 const { RangePicker } = DatePicker;
 
@@ -117,7 +117,25 @@ function OrdersDashboard() {
     useEffect(() => {
         fetchListOrder();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [filters, type])
+    }, [filters, type]);
+
+    const handleGetStatistic = () => {
+        const paramsString = queryString.stringify({
+            timeStart: defaultDateRange.start,
+            timeEnd: defaultDateRange.end,
+        });
+        getStatistic(paramsString)
+            .then((response) => {
+                const formattedStart = defaultDateRange.start.replace(/-/g, '');
+                const formattedEnd = defaultDateRange.end.replace(/-/g, '');
+                const filename = `Order.all.${formattedStart}_${formattedEnd}.xlsx`;
+
+                saveAs(response.data, filename);
+            })
+            .catch((error) => {
+                toast.error('Đã có lỗi xảy ra khi lấy dữ liệu đơn hàng');
+            })
+    }
 
     return (
         <div className='container my-3'>
@@ -143,7 +161,15 @@ function OrdersDashboard() {
                                                 format={dateFormat}
                                             />
                                         </ConfigProvider>
-                                        <Button variant='outlined' size='small' sx={{ ml: 1 }} color='primary'>Xuất</Button>
+                                        <Button
+                                            variant='outlined'
+                                            size='small'
+                                            color='primary'
+                                            sx={{ ml: 1 }}
+                                            onClick={handleGetStatistic}
+                                        >
+                                            Xuất
+                                        </Button>
                                     </div>
                                 </div>
                                 <div className='col-12'>
@@ -164,7 +190,6 @@ function OrdersDashboard() {
                         <div className={cx('order-list-panel')}>
                             <div className={cx('header')}>
                                 <div className={cx('title')}>{dataOrders.length} Đơn hàng</div>
-                                <Button size='small' startIcon={<FontAwesomeIcon icon={faTruck} />} variant='contained'>Giao hàng loạt</Button>
                             </div>
                             <div className='content'>
                                 <TableOrders listOrder={dataOrders} fetchListOrder={fetchListOrder} />

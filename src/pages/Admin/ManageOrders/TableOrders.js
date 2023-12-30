@@ -5,7 +5,9 @@ import classNames from 'classnames/bind';
 import { Button, Chip } from '@mui/material';
 import DateTimeDisplay from '~/components/DateTimeDisplay';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faEye } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faEye, faPen } from '@fortawesome/free-solid-svg-icons';
+import { useState } from 'react';
+import UpdateStatusDialog from './UpdateStatusDialog';
 
 const cx = classNames.bind(Style);
 
@@ -16,18 +18,35 @@ const billStatus = [
     { status: 'Đã giao', color: 'success' },
     { status: 'Đã hủy', color: 'error' },
 ]
-function getChipByStatus(status) {
-    const config = billStatus.find(item => item.status === status)
+
+function getChipByStatus(order, handleUpdateStatus) {
+    const { status } = order;
+    const config = billStatus.find(item => item.status === status);
+    const handleDelete = () => {
+        handleUpdateStatus(order);
+    }
     return (
         <Chip
             size='small'
             color={config.color}
             label={config.status}
+            clickable={true}
+            onClick={handleDelete}
+            onDelete={handleDelete}
+            deleteIcon={
+                <FontAwesomeIcon
+                    icon={faPen}
+                    style={{ fontSize: '10px', padding: '0 2px' }}
+                />
+            }
         />
     )
 }
 
 function TableOrders({ listOrder, fetchListOrder }) {
+
+    const [orderSelect, setOrderSelect] = useState({});
+    const [isDialogUpdateStatusOpen, setIsDialogUpdateStatusOpen] = useState(false);
 
     const handleClickBtnUpdate = (order) => {
     }
@@ -35,8 +54,19 @@ function TableOrders({ listOrder, fetchListOrder }) {
     const handleClickBtnView = (order) => {
     }
 
+    const handleUpdateStatus = (status) => {
+        setOrderSelect(status);
+        setIsDialogUpdateStatusOpen(true);
+    }
+
     return (
         <div>
+            <UpdateStatusDialog
+                open={isDialogUpdateStatusOpen}
+                setOpen={setIsDialogUpdateStatusOpen}
+                dataOrder={orderSelect}
+                fetchListOrder={fetchListOrder}
+            />
             <table className='table table-striped table-bordered' style={{ verticalAlign: 'middle' }}>
                 <thead>
                     <tr>
@@ -59,7 +89,7 @@ function TableOrders({ listOrder, fetchListOrder }) {
                                     </td>
                                     <td><DateTimeDisplay datetime={item.createdDate} /></td>
                                     <td>
-                                        {getChipByStatus(item.status)}
+                                        {getChipByStatus(item, handleUpdateStatus)}
                                     </td>
                                     <td>
                                         <Button

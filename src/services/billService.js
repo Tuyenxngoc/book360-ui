@@ -20,3 +20,13 @@ export const getCountBills = () => {
 export const getAllBills = (paramsString) => {
     return axiosPrivate.get(`bill/get-all-bills?${paramsString}`);
 }
+
+export const getStatistic = (paramsString) => {
+    return axiosPrivate.get(`bill/get-statistic?${paramsString}`, {
+        responseType: 'blob',
+    });
+}
+
+export const updateBillStatus = (billId, paramsString) => {
+    return axiosPrivate.put(`bill/update-status/${billId}?${paramsString}`);
+}

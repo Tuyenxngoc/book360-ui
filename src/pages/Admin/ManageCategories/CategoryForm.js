@@ -82,6 +82,7 @@ function CategoryForm() {
     const props = {
         name: 'file',
         multiple: false,
+        maxCount: 1,
         customRequest: customerUpload,
         onChange(info) {
             const { status } = info.file;

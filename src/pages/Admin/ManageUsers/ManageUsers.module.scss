@@ -124,3 +124,19 @@
     align-items: center;
     justify-content: end;
 }
+
+.avatar-uploader {
+    text-align: center;
+    padding-top: 56px;
+}
+
+.uploader > div {
+    margin-right: 0 !important;
+}
+
+.file-description {
+    color: #999;
+    font-size: 14px;
+    line-height: 20px;
+    margin-top: 12px;
+}
