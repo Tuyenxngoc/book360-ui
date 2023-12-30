@@ -59,6 +59,7 @@ const getDateRange = () => {
 };
 
 function OrdersDashboard() {
+
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -137,6 +138,12 @@ function OrdersDashboard() {
             })
     }
 
+    const handleDateRangeChange = (dates) => {
+        const dateF = 'YYYY-MM-DD';
+        defaultDateRange.start = dates[0].format(dateF);
+        defaultDateRange.end = dates[1].format(dateF);
+    };
+
     return (
         <div className='container my-3'>
             <div className='row justify-content-center'>
@@ -157,6 +164,7 @@ function OrdersDashboard() {
                                         <div className='me-2'>Ngày đặt hàng</div>
                                         <ConfigProvider locale={viVN}>
                                             <RangePicker
+                                                onChange={handleDateRangeChange}
                                                 defaultValue={[dayjs(defaultDateRange.start, dateFormat), dayjs(defaultDateRange.end, dateFormat)]}
                                                 format={dateFormat}
                                             />
@@ -208,7 +216,6 @@ function OrdersDashboard() {
                 </div>
             </div>
         </div>
-
     );
 }
 

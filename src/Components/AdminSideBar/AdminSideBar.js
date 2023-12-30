@@ -25,7 +25,10 @@ const items = [
         getItem('Tất cả sản phẩm', routes.viewProduct),
         getItem('Thêm sản phẩm', routes.createProduct),
     ]),
-    getItem('Quản lý đơn hàng', routes.viewOder, <ShoppingCartOutlined />),
+    getItem('Quản lý đơn hàng', 'order', <ShoppingCartOutlined />, [
+        getItem('Tất cả', routes.viewOder),
+        getItem('Đơn hủy', `${routes.viewOder}?type=canceled`),
+    ]),
     getItem('Quản lý banner', routes.viewBanner, <BoldOutlined />),
     getItem('Quản lý danh mục', routes.viewCategory, <OrderedListOutlined />),
 ];
