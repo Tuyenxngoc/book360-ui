@@ -1,25 +1,22 @@
-import { Button, TablePagination } from '@mui/material';
-import TableOrders from './TableOrders';
 import { useEffect, useMemo, useState } from 'react';
-import { getAllBills, getStatistic } from '~/services/billService';
-import queryString from 'query-string';
-
-import Style from './MagageOrders.module.scss';
-import classNames from 'classnames/bind';
-
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ConfigProvider, DatePicker, Input, Select, Space, Tabs } from 'antd';
-
-import viVN from 'antd/lib/locale/vi_VN';
-import dayjs from 'dayjs';
+import { Button, TablePagination } from '@mui/material';
+import { getAllBills, getStatistic } from '~/services/billService';
 import { orderStatus } from '~/config/contans';
 import { toast } from 'react-toastify';
-
 import { saveAs } from 'file-saver';
+import TableOrders from './TableOrders';
+import queryString from 'query-string';
+import Style from './MagageOrders.module.scss';
+import classNames from 'classnames/bind';
+import viVN from 'antd/lib/locale/vi_VN';
+import dayjs from 'dayjs';
 
 const { RangePicker } = DatePicker;
 
 const dateFormat = 'YYYY/MM/DD';
+const dateF = 'YYYY-MM-DD';
 
 const cx = classNames.bind(Style);
 
@@ -82,6 +79,10 @@ function OrdersDashboard() {
         }
     };
 
+    useEffect(() => {
+        setType(queryParams.type || '');
+    }, [queryParams]);
+
     const handleSelectChange = (value, option) => {
         setTypeSearch(option.label);
     };
@@ -139,7 +140,6 @@ function OrdersDashboard() {
     }
 
     const handleDateRangeChange = (dates) => {
-        const dateF = 'YYYY-MM-DD';
         defaultDateRange.start = dates[0].format(dateF);
         defaultDateRange.end = dates[1].format(dateF);
     };
@@ -151,7 +151,7 @@ function OrdersDashboard() {
                     <div className={cx('order-list-main')}>
                         <div className={cx('order-list-tab')}>
                             <Tabs
-                                defaultActiveKey={type}
+                                activeKey={type}
                                 items={orderStatus}
                                 onChange={handleChangeOrderStatus}
                                 size='large'
