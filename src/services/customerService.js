@@ -4,6 +4,10 @@ export const createCustomer = (values) => {
     return axiosPrivate.post('auth/admin-register', values);
 }
 
+export const deleteCustomer = (customerId) => {
+    return axiosPrivate.delete(`customer/${customerId}`);
+}
+
 export const getCustomer = (userId) => {
     return axiosPrivate.get(`customer/get-by-user/${userId}`);
 }

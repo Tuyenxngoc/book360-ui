@@ -36,6 +36,7 @@ import CategoryForm from '~/pages/Admin/ManageCategories/CategoryForm';
 
 import UsersDashboard from '~/pages/Admin/ManageUsers/UsersDashboard';
 import UserForm from '~/pages/Admin/ManageUsers/UserForm';
+import OrderForm from '~/pages/Admin/ManageOrders/OrderForm';
 
 const publicRoutes = [
     { path: routes.home, component: Home },
@@ -75,6 +76,8 @@ const adminRoutes = [
     { path: routes.updateProduct, component: ProductForm, layout: AdminLayout },
 
     { path: routes.viewOder, component: OrdersDashboard, layout: AdminLayout },
+    { path: routes.updateOder, component: OrderForm, layout: AdminLayout },
+
 
     { path: routes.viewCategory, component: CategoriesDashboard, layout: AdminLayout },
     { path: routes.createCategory, component: CategoryForm, layout: AdminLayout },

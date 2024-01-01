@@ -5,17 +5,47 @@ import classNames from 'classnames/bind';
 
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faEye } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faEye, faRemove } from '@fortawesome/free-solid-svg-icons';
 import images from '~/assets';
+import { useState } from 'react';
+import AlertDialog from '~/components/AlertDialog';
+import { toast } from 'react-toastify';
+import { deleteCustomer } from '~/services/customerService';
 
 const cx = classNames.bind(Style);
 
-function TableUsers({ listUsers }) {
+function TableUsers({ listUsers, fetchListUser }) {
+
+    const [userSelect, setUserSelect] = useState();
+    const [showDialogDelete, setShowDialogDelete] = useState(false);
 
     const navigate = useNavigate();
 
+    const handleClickBtnDelete = (userId) => {
+        setUserSelect(userId);
+        setShowDialogDelete(true);
+    }
+
+    const handleDeleteUser = () => {
+        deleteCustomer(userSelect)
+            .then(() => {
+                fetchListUser();
+                toast.success('Xoá thành công');
+            })
+            .catch(() => {
+                toast.error('Có lỗi sảy ra');
+            })
+    }
+
     return (
         <div>
+            <AlertDialog
+                open={showDialogDelete}
+                setOpen={setShowDialogDelete}
+                title={'Xóa khách hàng'}
+                description={'Bạn có chắc muốn xóa khách hàng này? Lưu ý: Sau khi xóa, bạn không thể hoàn tác hay khôi phục.'}
+                handleSubmit={handleDeleteUser}
+            />
             <table className='table table-striped table-bordered' style={{ verticalAlign: 'middle' }}>
                 <thead>
                     <tr>
@@ -59,10 +89,19 @@ function TableUsers({ listUsers }) {
                                                 size='small'
                                                 variant='contained'
                                                 color='primary'
-                                                sx={{ minWidth: 35, height: 35, ml: 1 }}
+                                                sx={{ minWidth: 35, height: 35, mx: 1 }}
                                                 onClick={() => navigate(`/admin/user/${item.id}`)}
                                             >
                                                 <FontAwesomeIcon icon={faEdit} />
+                                            </Button>
+                                            <Button
+                                                size='small'
+                                                variant='contained'
+                                                color='error'
+                                                onClick={() => handleClickBtnDelete(item.id)}
+                                                sx={{ minWidth: 35, height: 35 }}
+                                            >
+                                                <FontAwesomeIcon icon={faRemove} />
                                             </Button>
                                         </div>
                                     </td>

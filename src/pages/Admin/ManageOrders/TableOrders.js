@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faEye, faPen } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import UpdateStatusDialog from './UpdateStatusDialog';
+import { useNavigate } from 'react-router-dom';
 
 const cx = classNames.bind(Style);
 
@@ -45,13 +46,15 @@ function getChipByStatus(order, handleUpdateStatus) {
 
 function TableOrders({ listOrder, fetchListOrder }) {
 
+    const navigate = useNavigate();
     const [orderSelect, setOrderSelect] = useState({});
     const [isDialogUpdateStatusOpen, setIsDialogUpdateStatusOpen] = useState(false);
 
     const handleClickBtnUpdate = (order) => {
     }
 
-    const handleClickBtnView = (order) => {
+    const handleClickBtnView = (orderId) => {
+        navigate(`/admin/order/${orderId}`);
     }
 
     const handleUpdateStatus = (status) => {
@@ -96,7 +99,7 @@ function TableOrders({ listOrder, fetchListOrder }) {
                                             size='small'
                                             variant='contained'
                                             color='success'
-                                            onClick={() => handleClickBtnView(item)}
+                                            onClick={() => handleClickBtnView(item.id)}
                                             sx={{ minWidth: 35, height: 35 }}
                                         >
                                             <FontAwesomeIcon icon={faEye} />

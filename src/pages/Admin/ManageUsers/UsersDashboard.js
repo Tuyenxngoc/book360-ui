@@ -94,7 +94,7 @@ function UsersDashboard() {
                         </div>
 
                         <div className='content'>
-                            <TableUsers listUsers={dataUsers} />
+                            <TableUsers listUsers={dataUsers} fetchListUser={fetchListUser} />
                             <TablePagination
                                 className={cx('table-pagination')}
                                 component='div'

@@ -13,6 +13,11 @@ export const getBillsByCustomerId = (customerId) => {
     return axiosPrivate.get(url);
 };
 
+export const getBillInfo = (billId) => {
+    const url = `bill/get-bill-infor/${billId}`;
+    return axiosPrivate.get(url);
+};
+
 export const getCountBills = () => {
     return axiosPrivate.get('bill/get-count-bill');
 }
