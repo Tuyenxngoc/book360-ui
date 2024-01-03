@@ -107,7 +107,7 @@ function BannerForm() {
                 navigate(routes.viewBanner, { replace: true });
                 toast.success('Thành công');
             })
-            .catch((error) => { console.log(error); })
+            .catch((error) => { toast.error('Có lỗi xảy ra') })
             .finally(() => { setLoading(false); });
     }
 

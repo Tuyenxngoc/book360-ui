@@ -35,3 +35,11 @@ export const getStatistic = (paramsString) => {
 export const updateBillStatus = (billId, paramsString) => {
     return axiosPrivate.put(`bill/update-status/${billId}?${paramsString}`);
 }
+
+export const getCountBillByStatus = () => {
+    return axiosPrivate.get('bill/get-bills-by-status?status=');
+}
+
+export const orderFromCart = (customerId, values) => {
+    return axiosPrivate.post(`bill/order-from-cart/${customerId}`, values);
+}

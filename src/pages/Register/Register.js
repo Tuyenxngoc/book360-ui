@@ -30,7 +30,7 @@ const validationSchema = yup.object({
 
     password: yup.string()
         .min(6, 'Mật khẩu tối thiểu 6 kí tự')
-        .max(16, 'Mật khẩu tối đa 16 kí tự')
+        .max(30, 'Mật khẩu tối đa 30 kí tự')
         .matches(/(?=.*[a-zA-Z])/, 'Mật khẩu phải chứa ít nhất một chữ cái')
         .matches(/(?=.*\d)/, 'Mật khẩu phải chứa ít nhất một số')
         .required('Vui lòng nhập mật khẩu'),

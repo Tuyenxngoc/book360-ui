@@ -78,7 +78,6 @@ const adminRoutes = [
     { path: routes.viewOder, component: OrdersDashboard, layout: AdminLayout },
     { path: routes.updateOder, component: OrderForm, layout: AdminLayout },
 
-
     { path: routes.viewCategory, component: CategoriesDashboard, layout: AdminLayout },
     { path: routes.createCategory, component: CategoryForm, layout: AdminLayout },
     { path: routes.updateCategory, component: CategoryForm, layout: AdminLayout },

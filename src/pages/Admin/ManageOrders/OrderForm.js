@@ -76,7 +76,7 @@ function OrderForm() {
                 <div className='col-10'>
                     <div className={cx('panel-wrapper')}>
                         <div className='panel-content'>
-                            <table className="table align-middle">
+                            <table className="table align-middle mb-0">
                                 <thead className='table-light'>
                                     <tr>
                                         <th scope="col">STT</th>

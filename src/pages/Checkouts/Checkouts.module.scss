@@ -40,8 +40,8 @@
         margin-right: 6px;
     }
 
-    input {
-        height: 36px;
+    .form-input {
+        width: 100%;
     }
 }
 
@@ -51,13 +51,15 @@
     padding: 8px;
     border-radius: 3px;
     background-color: white;
+    user-select: none;
     box-shadow: 0 -4px 16px 0 rgba(0, 0, 0, 0.1), 0 8px 16px 0 rgba(0, 0, 0, 0.1);
 
-    img {
+    .payment-item-img {
         width: 40px;
         height: 40px;
     }
-    span {
+
+    .payment-item-text {
         margin-left: 6px;
     }
 }
@@ -69,7 +71,6 @@
 }
 
 //list products
-
 .product-item {
     display: flex;
     justify-content: space-between;
@@ -117,6 +118,10 @@
     }
 }
 
+.product-item:last-of-type {
+    margin-bottom: 12px;
+}
+
 //checkout
 .checkout {
     background-color: white;
@@ -151,10 +156,6 @@
                 color: var(--red-color);
                 font-weight: 700;
             }
-        }
-
-        .button-submit {
-            width: 100%;
         }
     }
 }

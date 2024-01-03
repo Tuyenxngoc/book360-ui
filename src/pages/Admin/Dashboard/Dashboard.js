@@ -6,9 +6,10 @@ import classNames from "classnames/bind";
 import { useEffect, useState } from "react";
 import { getCountCustomer } from "~/services/customerService";
 import { getCountProducts } from "~/services/productService";
-import { getCountBills } from "~/services/billService";
+import { getCountBillByStatus, getCountBills } from "~/services/billService";
 import { Link } from "react-router-dom";
 import { Avatar } from "@mui/material";
+import queryString from "query-string";
 const cx = classNames.bind(Style);
 
 const dataUser = [
@@ -148,7 +149,7 @@ const dataRevenue = [
 
 const todo = [
     { lable: 'Chờ xác nhận', link: '/admin/order?type=to_pay' },
-    { lable: 'Chờ lấy hàng', link: '/admin/order?type=unpaid' },
+    { lable: 'Chờ lấy hàng', link: '/admin/order?type=to_receive' },
     { lable: 'Đã xử lý', link: '/admin/order?type=ordered' },
     { lable: 'Đơn hủy', link: '/admin/order?type=canceled' },
     { lable: 'Sản phẩm hết hàng', link: '/admin/product' },
@@ -198,6 +199,8 @@ function Dashboard() {
     const [countProducts, setCountProducts] = useState(0);
     const [countBills, setCountBills] = useState(0);
 
+    const [billToPay, setBillToPay] = useState(0);
+
     useEffect(() => {
         getCountCustomer()
             .then((response) => {
@@ -212,6 +215,14 @@ function Dashboard() {
         getCountBills()
             .then((response) => {
                 setCountBills(response.data.data)
+            })
+            .catch((error) => { console.log(error); })
+    }, []);
+
+    useEffect(() => {
+        getCountBillByStatus()
+            .then((response) => {
+                setBillToPay(response.data.data);
             })
             .catch((error) => { console.log(error); })
     }, []);
@@ -311,7 +322,7 @@ function Dashboard() {
                                             to={item.link}
                                             className={cx('cart-item-link')}
                                         >
-                                            <p className={cx('item-title')}>0</p>
+                                            <p className={cx('item-title')}>{billToPay[index]}</p>
                                             <span className={cx('item-desc')}>{item.lable}</span>
                                         </Link>
                                     </div>
