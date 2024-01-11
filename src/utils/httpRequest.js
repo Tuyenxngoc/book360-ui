@@ -7,7 +7,6 @@ const httpRequest = axios.create({
     baseURL: config.API_URL,
     headers: {
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
     },
 });
 
@@ -16,7 +15,6 @@ export const axiosPrivate = axios.create({
     baseURL: config.API_URL,
     headers: {
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
     },
 });
 
