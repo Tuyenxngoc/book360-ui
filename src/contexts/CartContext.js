@@ -8,14 +8,14 @@ const CartContext = createContext();
 
 const CartProvider = ({ children }) => {
 
-    const { isAuthenticated, customer } = useAuth();
+    const { isAuthenticated } = useAuth();
     const [totalProducts, setTotalProducts] = useState(0);
 
     const updateTotalProducts = async () => {
         if (isAuthenticated) {
             try {
-                const response = await getTotalProducts(customer.customerId);
-                setTotalProducts(response.data.data.totalProducts);
+                const response = await getTotalProducts();
+                setTotalProducts(response.data.data);
             } catch (error) {
                 console.error('Error updating total products:', error);
             }

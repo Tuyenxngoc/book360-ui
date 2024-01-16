@@ -2,32 +2,32 @@ import PropTypes from 'prop-types';
 
 import { useEffect } from 'react';
 import { createContext, useState } from 'react';
+import { toast } from 'react-toastify';
 import Loading from '~/components/Loading';
 import { getCurrentUserLogin } from '~/services/apiRequest';
+import { logoutToken } from '~/services/authService';
 import localStorageKeys, { getItem, removeItem, setItem } from '~/services/localStorageService';
 
 const AuthContext = createContext();
 
 const defaultAuth = {
     isAuthenticated: false,
-    user: {
-        id: '',
-        username: '',
-        roleName: '',
-        email: ''
-    },
     customer: {
-        customerId: 0,
-        name: '',
-        phonenumber: '',
+        username: '',
+        nickName: '',
+        roleName: '',
+        email: '',
+        phoneNumber: '',
         address: '',
-        avatar: ''
+        avatar: '',
+        gender: '',
+        dob: ''
     }
 }
 
 const AuthProvider = ({ children }) => {
 
-    const [authState, setAuthState] = useState(defaultAuth);
+    const [authData, setAuthData] = useState(defaultAuth);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -40,60 +40,41 @@ const AuthProvider = ({ children }) => {
         try {
             const token = getItem(localStorageKeys.ACCESS_TOKEN);
             if (!token) {
-                setAuthState(defaultAuth);
+                setAuthData(defaultAuth);
                 setLoading(false);
                 return;
             }
             const response = await getCurrentUserLogin();
             if (response.status === 200) {
-                const { id, username, roleName, email, customerId, name, phonenumber, address, avatar } = response.data.data;
-                setAuthState({
+                const { username, nickName, roleName, email, phoneNumber, address, avatar, gender, dob } = response.data.data;
+                setAuthData({
                     isAuthenticated: true,
-                    user: {
-                        id,
-                        username,
-                        roleName,
-                        email
-                    },
                     customer: {
-                        customerId,
-                        name,
-                        phonenumber,
+                        username,
+                        nickName,
+                        roleName,
+                        email,
+                        phoneNumber,
                         address,
-                        avatar
+                        avatar,
+                        gender,
+                        dob
                     },
                 });
             } else {
-                setAuthState(defaultAuth);
+                setAuthData(defaultAuth);
             }
         } catch (error) {
-            setAuthState(defaultAuth);
+            setAuthData(defaultAuth);
         } finally {
             setLoading(false);
         }
     };
 
-    // Function to update customer information
-    const updateCustomerInfo = async () => {
-        try {
-            const response = await getCurrentUserLogin();
-            if (response.status === 200) {
-                const { customerId, name, phonenumber, address, avatar } = response.data.data;
-                setAuthState((prevState) => ({
-                    ...prevState,
-                    customer: {
-                        customerId,
-                        name,
-                        phonenumber,
-                        address,
-                        avatar,
-                    },
-                }));
-            }
-        } catch (error) {
-            console.error('Error updating customer information:', error);
-        }
+    const updateCustomerInfo = () => {
+        validateToken();
     };
+
 
     const login = ({ accessToken, refreshToken }) => {
         setItem(localStorageKeys.ACCESS_TOKEN, accessToken);
@@ -101,16 +82,20 @@ const AuthProvider = ({ children }) => {
         validateToken();
     };
 
-    const logout = () => {
-        removeItem(localStorageKeys.ACCESS_TOKEN);
-        removeItem(localStorageKeys.REFRESH_TOKEN);
-        setAuthState(defaultAuth);
+    const logout = async () => {
+        try {
+            await logoutToken();
+            removeItem(localStorageKeys.ACCESS_TOKEN);
+            removeItem(localStorageKeys.REFRESH_TOKEN);
+            setAuthData(defaultAuth);
+        } catch (error) {
+            toast.error('Có lỗi xảy ra trong quá trình đăng xuất');
+        }
     };
 
     const contextValues = {
-        isAuthenticated: authState.isAuthenticated,
-        user: authState.user,
-        customer: authState.customer,
+        isAuthenticated: authData.isAuthenticated,
+        customer: authData.customer,
         login,
         logout,
         updateCustomerInfo,

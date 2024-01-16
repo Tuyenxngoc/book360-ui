@@ -1,15 +1,15 @@
 import { axiosPrivate } from "~/utils/httpRequest"
 
-export const cancelOrder = (customerId, billId) => {
-    return axiosPrivate.patch(`bill/cancel-order/${customerId}/${billId}`);
+export const cancelOrder = (billId) => {
+    return axiosPrivate.patch(`bill/cancel-order/${billId}`);
 }
 
-export const buyAgain = (customerId, billId) => {
-    return axiosPrivate.patch(`bill/buy-again/${customerId}/${billId}`);
+export const buyAgain = (billId) => {
+    return axiosPrivate.patch(`bill/buy-again/${billId}`);
 }
 
-export const getBillsByCustomerId = (customerId) => {
-    const url = `bill/get-bills/${customerId}`;
+export const getBillsByCustomerId = () => {
+    const url = 'bill/get-bills';
     return axiosPrivate.get(url);
 };
 
@@ -36,10 +36,10 @@ export const updateBillStatus = (billId, paramsString) => {
     return axiosPrivate.put(`bill/update-status/${billId}?${paramsString}`);
 }
 
-export const getCountBillByStatus = () => {
-    return axiosPrivate.get('bill/get-bills-by-status?status=');
+export const getTodo = () => {
+    return axiosPrivate.get('customer/get-todo');
 }
 
-export const orderFromCart = (customerId, values) => {
-    return axiosPrivate.post(`bill/order-from-cart/${customerId}`, values);
+export const saveOrder = (values) => {
+    return axiosPrivate.post('bill/save-order', values);
 }

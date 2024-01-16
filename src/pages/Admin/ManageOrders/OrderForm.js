@@ -68,7 +68,7 @@ function OrderForm() {
                             <br />
                             Địa chỉ nhận hàng {data.customer.address}
                             <br />
-                            Người nhận hàng {data.customer.name}
+                            Người nhận hàng {data.customer.nickName}
                         </div>
                     </div>
                 </div>

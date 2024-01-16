@@ -14,6 +14,7 @@ import SortProduct from '~/components/SortProduct';
 import Style from './ManageProducts.module.scss';
 import classNames from 'classnames/bind';
 import { routes } from '~/config';
+import { toast } from 'react-toastify';
 
 const cx = classNames.bind(Style);
 
@@ -56,7 +57,7 @@ function ProductsDashboard() {
                 setMeta(meta);
             })
             .catch((error) => {
-                console.log(error);
+                toast.error('Đã có lỗi xảy ra khi lấy dữ liệu sản phẩm');
             })
     }
 

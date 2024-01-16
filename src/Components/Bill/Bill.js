@@ -21,23 +21,23 @@ function Bill({ data, handleCancelOrder, handleBuyAgain }) {
 
             <div className={cx('header')}>
                 <div className={cx('header-item')}>
-                    <div>Người nhận: {data.customer.name}</div>
+                    <div>Người nhận: {data.consigneeName}</div>
                     <div>Ngày đặt: <DateTimeDisplay datetime={data.createdDate} /></div>
                 </div>
                 <div className={cx('header-item')}>
-                    <div className={cx('status')}>{data.status}</div>
+                    <div className={cx('status')}>{data.orderStatus}</div>
                 </div>
             </div>
 
             <div className={cx('content')}>
-                {data.billDetail.map((bill, index) => {
+                {data.billDetails.map((bill, index) => {
                     const product = bill.product;
                     return (
                         <div key={index} className={cx('product')}>
                             <div className={cx('product-detail')}>
                                 <div className={cx('product-img')}>
                                     <Link to={`/product/${product.productId}`}>
-                                        <img src={product.featuredImage} alt={product.name} />
+                                        <img src={product.image} alt={product.name} />
                                     </Link>
                                 </div>
 
@@ -62,7 +62,7 @@ function Bill({ data, handleCancelOrder, handleBuyAgain }) {
 
             <div className={cx('action')}>
                 <div className={cx('total-price')}>
-                    Thành tiền:&nbsp;<strong><MoneyDisplay amount={data.total} /></strong>
+                    Thành tiền:&nbsp;<strong><MoneyDisplay amount={data.totalAmount} /></strong>
                 </div>
 
                 {data.status === "Chờ xử lý" ? (

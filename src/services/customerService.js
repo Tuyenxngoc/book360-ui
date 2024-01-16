@@ -45,19 +45,19 @@ export const updateCustomer = (customerId, { name, phonenumber, address, avatar 
     return axiosPrivate.put(`customer/${customerId}`, customerInfo);
 }
 
-export const getFavoriteProducts = (customerId) => {
-    return axiosPrivate.get(`customer/${customerId}/favorite-products`);
+export const getFavoriteProducts = () => {
+    return axiosPrivate.get(`customer/favorite-products`);
 }
 
-export const checkFavoriteProduct = (customerId, productId) => {
-    return axiosPrivate.get(`customer/${customerId}/favorite-products/${productId}`);
+export const checkFavoriteProduct = (productId) => {
+    return axiosPrivate.get(`customer/favorite-products/${productId}`);
 }
 
-export const addFavoriteProduct = (customerId, productId) => {
-    return axiosPrivate.post(`customer/${customerId}/favorite-products/${productId}`);
+export const addFavoriteProduct = (productId) => {
+    return axiosPrivate.post(`customer/favorite-products/${productId}`);
 }
 
-export const removeFavoriteProduct = (customerId, productId) => {
-    return axiosPrivate.delete(`customer/${customerId}/favorite-products/${productId}`);
+export const removeFavoriteProduct = (productId) => {
+    return axiosPrivate.delete(`customer/favorite-products/${productId}`);
 }
 

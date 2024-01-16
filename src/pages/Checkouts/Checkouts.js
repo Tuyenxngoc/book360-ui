@@ -20,7 +20,7 @@ import ShowDialog from '../Address/ShowDialog';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 import { Input, Radio } from 'antd';
-import { orderFromCart } from '~/services/billService';
+import { saveOrder } from '~/services/billService';
 import { LoadingButton } from '@mui/lab';
 
 const cx = classNames.bind(Style);
@@ -29,29 +29,33 @@ const { TextArea } = Input;
 const DELIVERY_FEE = 30000;
 
 const defaultValue = {
-    nameCustomer: '',
-    phonenumber: '',
+    consigneeName: '',
+    phoneNumber: '',
     email: '',
-    address: '',
+    shippingAddress: '',
+    paymentMethod: '',
+    note: '',
     listProductId: [],
 }
 
 const validationSchema = yup.object({
-    nameCustomer: yup.string()
+    consigneeName: yup.string()
         .required('Họ tên người nhận không được để trống'),
-    phonenumber: yup.string()
+    phoneNumber: yup.string()
         .required('Số điện thoại không được để trống'),
     email: yup.string()
         .email('Địa chỉ email không hợp lệ').required('Email không được để trống'),
-    address: yup.string()
+    shippingAddress: yup.string()
         .required('Địa chỉ không được để trống'),
+    note: yup.string()
+        .max(30, 'Ghi chú tối đa 30 kí tự'),
+    listProductId: yup.array()
+        .min(1, 'Danh sách sản phẩm không được để trống'),
 });
 
 function inputProps(isError) {
     if (isError) {
-        return {
-            status: 'error'
-        };
+        return { status: 'error' };
     }
 }
 
@@ -78,9 +82,9 @@ const PAYMENT_METHODS = [
 
 function Checkouts() {
 
+    const { customer } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
-    const { user, customer } = useAuth();
 
     const listProducts = useMemo(() => {
         return location.state?.listProducts || [];
@@ -102,7 +106,7 @@ function Checkouts() {
 
     const handleSubmit = (values) => {
         setIsLoading(true);
-        orderFromCart(customer.customerId, values)
+        saveOrder(values)
             .then((response) => {
                 navigate('/purchase', { replace: true });
             })
@@ -122,10 +126,12 @@ function Checkouts() {
 
     useEffect(() => {
         formik.setValues({
-            nameCustomer: customer.name,
-            phonenumber: customer.phonenumber,
-            email: user.email,
-            address: customer.address,
+            consigneeName: customer.nickName,
+            phoneNumber: customer.phoneNumber,
+            email: customer.email,
+            shippingAddress: customer.address,
+            paymentMethod: 'cod',
+            note: '',
             listProductId: listProducts.map(item => item.productId)
         })
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -170,20 +176,20 @@ function Checkouts() {
                                     </div>
                                     <div className={cx('inner')}>
                                         <div className={cx('form-group')}>
-                                            <label htmlFor='input-name'>HỌ TÊN NGƯỜI NHẬN</label>
+                                            <label htmlFor='input-consigneeName'>HỌ TÊN NGƯỜI NHẬN</label>
                                             <div className={cx('form-input')}>
                                                 <Input
-                                                    id='input-name'
-                                                    name='nameCustomer'
+                                                    id='input-consigneeName'
+                                                    name='consigneeName'
                                                     size='large'
                                                     placeholder='Họ tên người nhận'
-                                                    value={formik.values.nameCustomer}
+                                                    value={formik.values.consigneeName}
                                                     onChange={formik.handleChange}
                                                     onBlur={formik.handleBlur}
-                                                    {...inputProps(formik.touched.nameCustomer && Boolean(formik.errors.nameCustomer))}
+                                                    {...inputProps(formik.touched.consigneeName && Boolean(formik.errors.consigneeName))}
                                                 />
-                                                {formik.touched.nameCustomer && formik.errors.nameCustomer && (
-                                                    <FormHelperText error>{formik.errors.nameCustomer}</FormHelperText>
+                                                {formik.touched.consigneeName && formik.errors.consigneeName && (
+                                                    <FormHelperText error>{formik.errors.consigneeName}</FormHelperText>
                                                 )}
                                             </div>
                                         </div>
@@ -192,16 +198,16 @@ function Checkouts() {
                                             <div className={cx('form-input')}>
                                                 <Input
                                                     id='input-phone-number'
-                                                    name='phonenumber'
+                                                    name='phoneNumber'
                                                     size='large'
                                                     placeholder='Số điện thoại liên hệ khi giao hàng'
-                                                    value={formik.values.phonenumber}
+                                                    value={formik.values.phoneNumber}
                                                     onChange={formik.handleChange}
                                                     onBlur={formik.handleBlur}
-                                                    {...inputProps(formik.touched.phonenumber && Boolean(formik.errors.phonenumber))}
+                                                    {...inputProps(formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber))}
                                                 />
-                                                {formik.touched.phonenumber && formik.errors.phonenumber && (
-                                                    <FormHelperText error>{formik.errors.phonenumber}</FormHelperText>
+                                                {formik.touched.phoneNumber && formik.errors.phoneNumber && (
+                                                    <FormHelperText error>{formik.errors.phoneNumber}</FormHelperText>
                                                 )}
                                             </div>
                                         </div>
@@ -224,21 +230,21 @@ function Checkouts() {
                                             </div>
                                         </div>
                                         <div className={cx('form-group')}>
-                                            <label htmlFor='input-address'>ĐỊA CHỈ</label>
+                                            <label htmlFor='input-shippingAddress'>ĐỊA CHỈ</label>
                                             <div className={cx('form-input')}>
                                                 <Input
-                                                    id='input-address'
-                                                    name='address'
+                                                    id='input-shippingAddress'
+                                                    name='shippingAddress'
                                                     size='large'
                                                     placeholder='Nhập số nhà, tên đường'
-                                                    value={formik.values.address}
+                                                    value={formik.values.shippingAddress}
                                                     onClick={handleClickOpen}
                                                     onChange={formik.handleChange}
                                                     onBlur={formik.handleBlur}
-                                                    {...inputProps(formik.touched.address && Boolean(formik.errors.address))}
+                                                    {...inputProps(formik.touched.shippingAddress && Boolean(formik.errors.shippingAddress))}
                                                 />
-                                                {formik.touched.address && formik.errors.address && (
-                                                    <FormHelperText error>{formik.errors.address}</FormHelperText>
+                                                {formik.touched.shippingAddress && formik.errors.shippingAddress && (
+                                                    <FormHelperText error>{formik.errors.shippingAddress}</FormHelperText>
                                                 )}
                                             </div>
                                         </div>
@@ -300,7 +306,21 @@ function Checkouts() {
                                                 </div>
                                             )
                                         })}
-                                        <TextArea rows={3} placeholder="Thêm ghi chú" maxLength={6} />
+                                        <TextArea
+                                            id='note'
+                                            name='note'
+                                            rows={3}
+                                            maxLength={30}
+                                            placeholder="Thêm ghi chú"
+                                            value={formik.values.note}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
+                                            {...inputProps(formik.touched.note && Boolean(formik.errors.note))}
+                                            style={{ resize: 'none', }}
+                                        />
+                                        {formik.touched.note && formik.errors.note && (
+                                            <FormHelperText error>{formik.errors.note}</FormHelperText>
+                                        )}
                                     </div>
                                 </div>
                             </div>

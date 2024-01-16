@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { axiosPrivate } from "~/utils/httpRequest";
 
 import Breadcrumb from "~/components/Breadcrumb";
-import useAuth from "~/hooks/useAuth";
 
 import { Button, Checkbox } from "@mui/material";
 import CartItem from "~/components/CartItem";
@@ -22,7 +21,6 @@ function Cart() {
     const location = useLocation();
     const productIdSelect = location.state?.productIdSelect || [];
 
-    const { customer } = useAuth();
     const { updateTotalProducts } = useCart();
     const [cartItems, setCartItems] = useState([]);
     const [checked, setChecked] = useState(productIdSelect);
@@ -32,7 +30,7 @@ function Cart() {
 
     const fetchCartItems = async () => {
         try {
-            const response = await axiosPrivate.get(`/cart/get-cart-infor/${customer.customerId}`);
+            const response = await axiosPrivate.get('cart/get-products');
             setCartItems(response.data.data);
         } catch (error) {
             console.error(error);
@@ -57,9 +55,9 @@ function Cart() {
 
     const handleUpdateQuantity = (productId, newQuantity, setIsUpdate) => {
         setIsUpdate(true);
-        updatedCartItems(customer.customerId, productId, newQuantity)
+        updatedCartItems(productId, newQuantity)
             .then((response) => {
-                updateTotalProducts(customer.customerId);
+                updateTotalProducts();
                 const newCartItems = cartItems.map((item) =>
                     item.productId === productId ? { ...item, quantity: newQuantity } : item
                 );
@@ -74,9 +72,9 @@ function Cart() {
     };
 
     const handleDeleteProduct = (productId) => {
-        removeCartItems(customer.customerId, productId)
+        removeCartItems(productId)
             .then((response) => {
-                updateTotalProducts(customer.customerId);
+                updateTotalProducts();
                 setCartItems(cartItems.filter(item => item.productId !== productId))
             })
             .catch((error) => {

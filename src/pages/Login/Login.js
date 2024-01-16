@@ -17,8 +17,8 @@ import classNames from 'classnames/bind';
 import { LoadingButton } from '@mui/lab';
 
 const validationSchema = yup.object({
-    emailOrUsername: yup.string().required('Trường này là bắt buộc'),
-    password: yup.string().required('Trường này là bắt buộc'),
+    usernameOrEmail: yup.string().required('Vui lòng nhập tên tài khoản hoặc email'),
+    password: yup.string().required('Vui lòng nhập mật khẩu'),
 });
 
 const cx = classNames.bind(Style);
@@ -39,7 +39,7 @@ function Login() {
 
     const formik = useFormik({
         initialValues: {
-            emailOrUsername: '',
+            usernameOrEmail: '',
             password: '',
         },
         validationSchema: validationSchema,
@@ -88,15 +88,15 @@ function Login() {
                             <TextField
                                 fullWidth
                                 variant='standard'
-                                id='emailOrUsername'
-                                name='emailOrUsername'
+                                id='usernameOrEmail'
+                                name='usernameOrEmail'
                                 label='Nhập tên tài khoản/email'
-                                value={formik.values.emailOrUsername}
+                                value={formik.values.usernameOrEmail}
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
-                                error={formik.touched.emailOrUsername && Boolean(formik.errors.emailOrUsername)}
+                                error={formik.touched.usernameOrEmail && Boolean(formik.errors.usernameOrEmail)}
                             />
-                            <p className={cx('error-message')}>{formik.touched.emailOrUsername && formik.errors.emailOrUsername}&emsp;</p>
+                            <p className={cx('error-message')}>{formik.touched.usernameOrEmail && formik.errors.usernameOrEmail}&emsp;</p>
                             <TextField
                                 fullWidth
                                 variant='standard'

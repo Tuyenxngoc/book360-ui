@@ -23,22 +23,22 @@ function Home() {
             />
             <HomeProduct
                 showProductByCategory={true}
-                apiUrl={'product/get-products-by-categoryId/3'}
+                apiUrl={'product/get-products-by-categoryId/1'}
                 moreLink={'/category/3'}
             />
             <HomeProduct
                 showProductByCategory={true}
-                apiUrl={'product/get-products-by-categoryId/5'}
+                apiUrl={'product/get-products-by-categoryId/1'}
                 moreLink={'/category/5'}
             />
             <HomeProduct
                 showProductByCategory={true}
-                apiUrl={'product/get-products-by-categoryId/6'}
+                apiUrl={'product/get-products-by-categoryId/1'}
                 moreLink={'/category/6'}
             />
             <HomeProduct
                 showProductByCategory={true}
-                apiUrl={'product/get-products-by-categoryId/20'}
+                apiUrl={'product/get-products-by-categoryId/1'}
                 moreLink={'/category/20'}
             />
         </main>

@@ -12,10 +12,9 @@ const cx = classNames.bind(Style);
 function Favorite() {
 
     const [data, setData] = useState([]);
-    const { customer } = useAuth();
 
     useEffect(() => {
-        getFavoriteProducts(customer.customerId)
+        getFavoriteProducts()
             .then((response) => setData(response.data.data.items))
             .catch((error) => console.error(error));
         // eslint-disable-next-line react-hooks/exhaustive-deps

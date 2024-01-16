@@ -1,5 +1,9 @@
 import { axiosPrivate } from "~/utils/httpRequest";
 
-export const changePassword = (username, values) => {
-    return axiosPrivate.patch(`auth/change-password/${username}`, values);
+export const changePassword = (values) => {
+    return axiosPrivate.patch('auth/change-password', values);
+}
+
+export const logoutToken = () => {
+    return axiosPrivate.post('auth/logout');
 }

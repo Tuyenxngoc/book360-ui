@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Skeleton } from "@mui/material";
 import CustomArrows from "../CustomArrows";
-import { getAllBanners } from "~/services/bannerService";
+import { getBanners, getAllBanners } from "~/services/bannerService";
 
 const cx = classNames.bind(Style);
 
@@ -29,7 +29,7 @@ function Slide() {
     useEffect(() => {
         getAllBanners()
             .then((response) => {
-                setBannerData(response.data.data.items);
+                setBannerData(response.data.data);
             })
             .catch((error) => { console.log(error); })
     }, []);

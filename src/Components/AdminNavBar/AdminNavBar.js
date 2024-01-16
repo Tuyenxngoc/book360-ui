@@ -14,8 +14,8 @@ function AdminNavBar() {
         <div className={cx('admin-navbar')}>
             <Link className={cx('link')} to='/'>Trang chủ</Link>
             <Link className={cx('link')} to='/' onClick={() => logout()}>Đăng xuất</Link>
-            <Tooltip title={customer.name}>
-                <Avatar className={cx('avatar')} alt={customer.name} src={customer.avatar || images.userDefault} />
+            <Tooltip title={customer.nickName}>
+                <Avatar className={cx('avatar')} alt={customer.nickName} src={customer.avatar || images.userDefault} />
             </Tooltip>
         </div>
     )

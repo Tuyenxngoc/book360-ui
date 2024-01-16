@@ -24,7 +24,7 @@ const validationSchema = yup.object({
     address: yup.string()
         .required('Vui lòng nhập địa chỉ'),
 
-    phonenumber: yup.string()
+    phoneNumber: yup.string()
         .matches(/^(?:\+84|0)(?:1[2689]|9[0-9]|3[2-9]|5[6-9]|7[0-9])(?:\d{7}|\d{8})$/, 'Phải là số điện thoại hợp lệ')
         .required('Số điện thoại là bắt buộc'),
 });
@@ -35,7 +35,7 @@ function Profile() {
 
     const fileInputRef = useRef(null);
 
-    const { user, customer, updateCustomerInfo } = useAuth();
+    const { customer, updateCustomerInfo } = useAuth();
 
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
@@ -44,9 +44,9 @@ function Profile() {
 
     const formik = useFormik({
         initialValues: {
-            name: customer.name || '',
+            name: customer.nickName || '',
             address: customer.address || '',
-            phonenumber: customer.phonenumber || '',
+            phoneNumber: customer.phoneNumber || '',
             avatar: customer.avatar || '',
         },
         validationSchema: validationSchema,
@@ -82,7 +82,7 @@ function Profile() {
 
     const handleSubmit = (values) => {
         setLoading(true);
-        updateCustomer(customer.customerId, values)
+        updateCustomer(values)
             .then((response) => {
                 setOpen(true);
                 updateCustomerInfo();
@@ -143,7 +143,7 @@ function Profile() {
                                     type='text'
                                     className='form-control'
                                     disabled
-                                    defaultValue={user.username}
+                                    defaultValue={customer.username}
                                 />
                             </div>
                             <div className={cx('form-group')}>
@@ -166,7 +166,7 @@ function Profile() {
                                     type='text'
                                     className='form-control'
                                     disabled
-                                    defaultValue={user.email}
+                                    defaultValue={customer.email}
                                 />
                             </div>
                             <div className={cx('form-group')}>
@@ -174,13 +174,13 @@ function Profile() {
                                 <TextField
                                     fullWidth
                                     size='small'
-                                    id='phonenumber'
-                                    name='phonenumber'
-                                    value={formik.values.phonenumber}
+                                    id='phoneNumber'
+                                    name='phoneNumber'
+                                    value={formik.values.phoneNumber}
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
-                                    error={formik.touched.phonenumber && Boolean(formik.errors.phonenumber)}
-                                    helperText={formik.touched.phonenumber && formik.errors.phonenumber}
+                                    error={formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)}
+                                    helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
                                 />
                             </div>
                             <div className={cx('form-group')}>

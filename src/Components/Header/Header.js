@@ -21,7 +21,7 @@ const cx = classNames.bind(styles);
 function Header() {
 
     const [keyword, setKeyword] = useState('');
-    const { isAuthenticated, user, customer, logout } = useAuth();
+    const { isAuthenticated, customer, logout } = useAuth();
     const { totalProducts, setTotalProducts, updateTotalProducts } = useCart();
 
     const handleLogout = () => {
@@ -111,7 +111,7 @@ function Header() {
                                             <Avatar alt='avt' src={customer.avatar || images.userDefault} sx={{ width: 24, height: 24 }} />
                                         }
                                     >
-                                        {customer.name || user.username || 'user'}
+                                        {customer.nickName || customer.username || 'user'}
                                     </Button>
 
                                     <ul className={cx('user-menu')}>

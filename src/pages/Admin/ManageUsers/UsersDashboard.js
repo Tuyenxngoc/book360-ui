@@ -11,6 +11,7 @@ import queryString from 'query-string';
 import TableUsers from './TableUsers';
 import { useNavigate } from 'react-router-dom';
 import { routes } from '~/config';
+import { toast } from 'react-toastify';
 
 const cx = classNames.bind(Style);
 
@@ -41,7 +42,9 @@ function UsersDashboard() {
                 setDataUsers(items);
                 setMeta(meta);
             })
-            .catch((error) => { console.log(error) });
+            .catch((error) => {
+                toast.error('Đã có lỗi xảy ra khi lấy dữ liệu khách hàng');
+            });
     }
 
     useEffect(() => {

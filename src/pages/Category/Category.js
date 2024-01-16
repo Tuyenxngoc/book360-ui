@@ -18,7 +18,7 @@ function Category({ keyword = '', sortBy = 'createdDate', isAscending = false })
     useEffect(() => {
         const paramsString = queryString.stringify(filters);
         httpRequest
-            .get(`product/get-products-by-categoryId/${id}/?${paramsString}`)
+            .get(`product/get-products-by-categoryId/${id}?${paramsString}`)
             .then((response) => { setData(response.data.data) })
             .catch((error) => console.error(error));
     }, [filters, id]);

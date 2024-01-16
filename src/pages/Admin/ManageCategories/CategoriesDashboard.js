@@ -11,6 +11,7 @@ import { getAllCategories } from '~/services/categoryService';
 import TableCategories from './TableCategories';
 import { useNavigate } from 'react-router-dom';
 import { routes } from '~/config';
+import { toast } from 'react-toastify';
 
 const cx = classNames.bind(Style);
 
@@ -22,7 +23,9 @@ function CategoriesDashboard() {
     const fetchListCategory = () => {
         getAllCategories()
             .then((response) => { setDataCategories(response.data.data) })
-            .catch((error) => { console.log(error) });
+            .catch((error) => {
+                toast.error('Đã có lỗi xảy ra khi lấy dữ liệu danh mục');
+            });
     }
 
     useEffect(() => {

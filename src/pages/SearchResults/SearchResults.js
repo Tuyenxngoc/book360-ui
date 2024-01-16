@@ -21,7 +21,7 @@ function SearchResults() {
     useEffect(() => {
         const paramsString = queryString.stringify({ ...filters, keyword });
         httpRequest
-            .get(`product/find-product?${paramsString}`)
+            .get(`product/find-products?${paramsString}`)
             .then((response) => setData(response.data.data))
             .catch((error) => console.error(error));
     }, [filters, keyword]);

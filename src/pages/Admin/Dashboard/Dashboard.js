@@ -6,7 +6,7 @@ import classNames from "classnames/bind";
 import { useEffect, useState } from "react";
 import { getCountCustomer } from "~/services/customerService";
 import { getCountProducts } from "~/services/productService";
-import { getCountBillByStatus, getCountBills } from "~/services/billService";
+import { getTodo, getCountBills } from "~/services/billService";
 import { Link } from "react-router-dom";
 import { Avatar } from "@mui/material";
 import queryString from "query-string";
@@ -147,12 +147,12 @@ const dataRevenue = [
     },
 ];
 
-const todo = [
-    { lable: 'Chờ xác nhận', link: '/admin/order?type=to_pay' },
-    { lable: 'Chờ lấy hàng', link: '/admin/order?type=to_receive' },
-    { lable: 'Đã xử lý', link: '/admin/order?type=ordered' },
-    { lable: 'Đơn hủy', link: '/admin/order?type=canceled' },
-    { lable: 'Sản phẩm hết hàng', link: '/admin/product' },
+const TODO = [
+    { lable: 'Chờ xác nhận', link: '/admin/order?type=to_pay', key: 'waitForConfirmationCount' },
+    { lable: 'Chờ lấy hàng', link: '/admin/order?type=to_receive', key: 'waitForDeliveryCount' },
+    { lable: 'Đã xử lý', link: '/admin/order?type=ordered', key: 'deliveringCount' },
+    { lable: 'Đơn hủy', link: '/admin/order?type=canceled', key: 'cancelledCount' },
+    { lable: 'Sản phẩm hết hàng', link: '/admin/product', key: 'productSoldOut' },
 ]
 
 const customer = [
@@ -199,7 +199,7 @@ function Dashboard() {
     const [countProducts, setCountProducts] = useState(0);
     const [countBills, setCountBills] = useState(0);
 
-    const [billToPay, setBillToPay] = useState(0);
+    const [todos, setTodos] = useState({});
 
     useEffect(() => {
         getCountCustomer()
@@ -220,9 +220,9 @@ function Dashboard() {
     }, []);
 
     useEffect(() => {
-        getCountBillByStatus()
+        getTodo()
             .then((response) => {
-                setBillToPay(response.data.data);
+                setTodos(response.data.data);
             })
             .catch((error) => { console.log(error); })
     }, []);
@@ -316,13 +316,13 @@ function Dashboard() {
 
                         <div className='cart-content'>
                             <div className="row">
-                                {todo.map((item, index) => (
+                                {TODO.map((item, index) => (
                                     <div key={index} className={cx('cart-item', 'col-3')}>
                                         <Link
                                             to={item.link}
                                             className={cx('cart-item-link')}
                                         >
-                                            <p className={cx('item-title')}>{billToPay[index]}</p>
+                                            <p className={cx('item-title')}>{todos[item.key]}</p>
                                             <span className={cx('item-desc')}>{item.lable}</span>
                                         </Link>
                                     </div>

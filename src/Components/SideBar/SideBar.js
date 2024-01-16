@@ -39,7 +39,7 @@ function SideBar() {
                     <Avatar alt="user" src={customer.avatar || images.userDefault} sx={{ width: 50, height: 50 }} />
                 </div>
                 <div className={cx('info')}>
-                    <p>{customer.name}</p>
+                    <p>{customer.customerName}</p>
                     <Link to="/profile">
                         <FontAwesomeIcon icon={faPen} />
                         <span>Chỉnh sửa tài khoản</span>

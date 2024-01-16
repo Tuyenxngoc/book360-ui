@@ -1,6 +1,6 @@
 // React hooks
 import { useEffect, useMemo, useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 
 // External libraries
 import httpRequest from '~/utils/httpRequest';
@@ -58,7 +58,7 @@ function BookDetails() {
     const { id } = useParams();
 
     const { updateTotalProducts } = useCart();
-    const { isAuthenticated, customer } = useAuth();
+    const { isAuthenticated } = useAuth();
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -80,7 +80,7 @@ function BookDetails() {
 
                 const [productDetailResponse, sameAuthorBooksResponse] = await Promise.all([
                     httpRequest.get(`product/get-product-detail/${id}`),
-                    httpRequest.get(`product/get-products-same-author/${id}`)
+                    httpRequest.get(`product/get-products-same-author/${id}?pageNum=0&pageSize=5`)
                 ]);
 
                 setBookData(productDetailResponse.data.data);
@@ -96,7 +96,7 @@ function BookDetails() {
         if (isAuthenticated && bookData) {
             const fetchData = async () => {
                 try {
-                    const response = await checkFavoriteProduct(customer.customerId, bookData.productId);
+                    const response = await checkFavoriteProduct(bookData.productId);
                     setIsFavorite(response.data.data);
                 } catch (error) {
                     console.error('Error checking favorite status:', error);
@@ -112,10 +112,10 @@ function BookDetails() {
             setIsSend(true);
             try {
                 if (isFavorite) {
-                    await removeFavoriteProduct(customer.customerId, bookData.productId);
+                    await removeFavoriteProduct(bookData.productId);
                     setIsFavorite(false);
                 } else {
-                    await addFavoriteProduct(customer.customerId, bookData.productId);
+                    await addFavoriteProduct(bookData.productId);
                     setIsFavorite(true);
                 }
             } catch (error) {
@@ -131,9 +131,9 @@ function BookDetails() {
 
     const handleAddProductToCart = () => {
         if (isAuthenticated) {
-            addProductToCart(customer.customerId, id, quantity)
+            addProductToCart(id, quantity)
                 .then((response) => {
-                    updateTotalProducts(customer.customerId);
+                    updateTotalProducts();
                     toast.success('Thêm vào giỏ hàng thành công');
                 })
                 .catch((error) => {
@@ -146,7 +146,7 @@ function BookDetails() {
 
     const handleBuyNow = () => {
         if (isAuthenticated) {
-            addProductToCart(customer.customerId, id, quantity)
+            addProductToCart(id, quantity)
                 .then((response) => {
                     navigate('/cart', { state: { productIdSelect: [bookData.productId] } });
                 })
@@ -209,11 +209,11 @@ function BookDetails() {
                                                     {bookData.images.length > 1 ? (
                                                         <Slider {...settingsNav} slidesToShow={Math.min(3, bookData.images.length - 1)} asNavFor={mainSlider} ref={(slider) => setNavSlider(slider)}>
                                                             {bookData.images.map((image, index) => (
-                                                                <img key={index} src={image.url} alt={bookData.name} />
+                                                                <img key={index} src={image.image} alt={bookData.name} />
                                                             ))}
                                                         </Slider>
                                                     ) : (
-                                                        <img src={bookData.images[0].url} alt={bookData.name} />
+                                                        <img src={bookData.images[0]?.url} alt={bookData.name} />
                                                     )}
                                                 </div>
                                             </div>
@@ -223,11 +223,11 @@ function BookDetails() {
                                                     {bookData.images.length > 1 ? (
                                                         <Slider {...settingsMain} asNavFor={navSlider} ref={(slider) => setMainSlider(slider)}>
                                                             {bookData.images.map((image, index) => (
-                                                                <img key={index} src={image.url} alt={bookData.name} />
+                                                                <img key={index} src={image.image} alt={bookData.name} />
                                                             ))}
                                                         </Slider>
                                                     ) : (
-                                                        <img src={bookData.images[0].url} alt={bookData.name} />
+                                                        <img src={bookData.images[0]?.url} alt={bookData.name} />
                                                     )}
                                                     <div className={cx('interaction')}>
                                                         <div className={cx('interaction-item')} style={{ marginRight: 8 }}>
@@ -270,14 +270,23 @@ function BookDetails() {
 
                                         <div className={cx('pro-short-desc')}>
                                             <ul>
-                                                <li>{`Tác giả: ${bookData.author}`}</li>
-                                                <li>{`Khuôn Khổ: ${bookData.size} cm`}</li>
+                                                <li>{`ISBN: ${bookData.isbn}`}</li>
+                                                <li>Tác giả:
+                                                    {bookData.authors.map((author, index) => {
+                                                        return <Link key={index} to={`author/${author.id}`}>{author.fullName}</Link>
+                                                    })}
+                                                </li>
+                                                <li>Đối tượng: </li>
+                                                <li>Khuôn Khổ: {bookData.size}</li>
+                                                <li>Số trang: {bookData.pageCount}</li>
+                                                <li>Định dạng: {bookData.format}</li>
+                                                <li>Trọng lượng: {bookData.weight} gram</li>
                                             </ul>
                                         </div>
 
                                         <div className={cx('pro-rating')}>
                                             <div className={cx('pro-selled')}>
-                                                {`Đã bán: ${bookData.selled}`}
+                                                {`Đã bán: ${bookData.soldQuantity}`}
                                             </div>
                                         </div>
 
@@ -303,11 +312,11 @@ function BookDetails() {
                                                 </button>
                                             </div>
                                             <div className={cx('quantity')}>
-                                                {bookData.quantity > 0 ? `Còn ${bookData.quantity} sản phẩm` : 'Tạm hết hàng'}
+                                                {bookData.stockQuantity > 0 ? `Còn ${bookData.stockQuantity} sản phẩm` : 'Tạm hết hàng'}
                                             </div>
                                         </div>
 
-                                        {bookData.quantity !== 0 &&
+                                        {bookData.stockQuantity !== 0 &&
                                             <div className='product-actions'>
                                                 <div className='row'>
                                                     <div className='col'>

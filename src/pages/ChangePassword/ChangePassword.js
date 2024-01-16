@@ -13,7 +13,6 @@ import * as yup from 'yup';
 import { useFormik } from 'formik';
 
 import { changePassword } from '~/services/authService';
-import useAuth from '~/hooks/useAuth';
 
 const validationSchema = yup.object({
     oldPassword: yup.string()
@@ -34,7 +33,6 @@ const cx = classNames.bind(Style);
 
 function ChangePassword() {
 
-    const { user } = useAuth();
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState();
 
@@ -52,7 +50,7 @@ function ChangePassword() {
 
     const handleSubmit = (values) => {
         setIsLoading(true);
-        changePassword(user.username, values)
+        changePassword(values)
             .then((response) => {
                 toast.success('Thay đổi mật khẩu thành công');
                 navigate('/profile', { replace: true });

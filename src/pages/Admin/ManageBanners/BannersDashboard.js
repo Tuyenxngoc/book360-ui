@@ -10,9 +10,10 @@ import TableBanners from "./TableBanners";
 import Style from './ManageBanners.module.scss';
 import classNames from 'classnames/bind';
 
-import { getAllBanners } from "~/services/bannerService";
+import { getBanners } from "~/services/bannerService";
 import { routes } from "~/config";
 import queryString from "query-string";
+import { toast } from "react-toastify";
 
 const cx = classNames.bind(Style);
 
@@ -31,13 +32,15 @@ function BannersDashboard() {
 
     const fetchListBanner = () => {
         const paramsString = queryString.stringify({ ...filters, pageNum: filters.pageNum + 1 });
-        getAllBanners(paramsString)
+        getBanners(paramsString)
             .then((response) => {
                 const { items, meta } = response.data.data;
                 setDataBanners(items);
                 setMeta(meta);
             })
-            .catch((error) => { console.log(error) })
+            .catch((error) => {
+                toast.error('Đã có lỗi xảy ra khi lấy dữ liệu banner');
+            })
     }
 
     useEffect(() => {

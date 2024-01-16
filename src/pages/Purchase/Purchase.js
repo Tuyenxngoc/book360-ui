@@ -21,14 +21,13 @@ const BILL_STATUS = [
 
 function Purchase() {
 
-    const { customer } = useAuth();
     const [selectedTabIndex, setSelectedTabIndex] = useState(0);
     const [billsData, setBillsData] = useState([]);
     const [filteredBillsData, setFilteredBillsData] = useState([]);
     const [orderCounts, setOrderCounts] = useState(Array(BILL_STATUS.length).fill(0));
 
     const fetchData = () => {
-        getBillsByCustomerId(customer.customerId)
+        getBillsByCustomerId()
             .then((response) => {
                 const { items } = response.data.data;
                 setBillsData(items);
@@ -61,7 +60,7 @@ function Purchase() {
     };
 
     const handleCancelOrder = (billId) => {
-        cancelOrder(customer.customerId, billId)
+        cancelOrder(billId)
             .then((response) => {
                 console.log(response);
                 fetchData();
@@ -72,7 +71,7 @@ function Purchase() {
     }
 
     const handleBuyAgain = (billId) => {
-        buyAgain(customer.customerId, billId)
+        buyAgain(billId)
             .then((response) => {
                 console.log(response);
                 fetchData();
