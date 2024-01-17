@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 
-import useAuth from '~/hooks/useAuth';
 import Bill from '~/components/Bill';
-import { buyAgain, cancelOrder, getBillsByCustomerId } from '~/services/billService';
+import { cancelOrder, getBills, getCountBills } from '~/services/billService';
 import { Tab, Tabs } from '@mui/material';
 
 import Style from './Purchase.module.scss';
@@ -11,32 +10,25 @@ import classNames from 'classnames/bind';
 const cx = classNames.bind(Style);
 
 const BILL_STATUS = [
-    { label: "Tất cả", isShowOrderCounts: false },
-    { label: "Chờ xử lý", isShowOrderCounts: true },
-    { label: "Đặt hàng thành công", isShowOrderCounts: true },
-    { label: "Đang giao hàng", isShowOrderCounts: true },
-    { label: "Đã giao", isShowOrderCounts: true },
-    { label: "Đã hủy", isShowOrderCounts: false },
+    { label: "Tất cả", isShowOrderCounts: false, key: '' },
+    { label: "Chờ xác nhận", isShowOrderCounts: true, key: 'unpaid' },
+    { label: "Chờ lấy hàng", isShowOrderCounts: true, key: 'to_ship' },
+    { label: "Đang giao", isShowOrderCounts: true, key: 'shipping' },
+    { label: "Đã giao", isShowOrderCounts: false, key: 'completed' },
+    { label: "Đã hủy", isShowOrderCounts: false, key: 'cancelled' },
 ];
 
 function Purchase() {
 
     const [selectedTabIndex, setSelectedTabIndex] = useState(0);
     const [billsData, setBillsData] = useState([]);
-    const [filteredBillsData, setFilteredBillsData] = useState([]);
-    const [orderCounts, setOrderCounts] = useState(Array(BILL_STATUS.length).fill(0));
+    const [coutBills, setCoutBills] = useState({});
 
-    const fetchData = () => {
-        getBillsByCustomerId()
+    const fetchData = (status) => {
+        getBills(status)
             .then((response) => {
                 const { items } = response.data.data;
                 setBillsData(items);
-                setFilteredBillsData(items);
-                // Tính toán số lượng đơn hàng cho mỗi loại
-                const counts = BILL_STATUS.map(status =>
-                    items.filter(item => item.status === status.label).length
-                );
-                setOrderCounts(counts);
             })
             .catch((error) => {
                 console.log(error);
@@ -49,14 +41,26 @@ function Purchase() {
     }, []);
 
     useEffect(() => {
-        const filtered = selectedTabIndex === 0
-            ? billsData
-            : billsData.filter(item => item.status === BILL_STATUS[selectedTabIndex].label);
-        setFilteredBillsData(filtered);
-    }, [selectedTabIndex, billsData]);
+        getCountBills()
+            .then((response) => {
+                const { unpaid, toShip, shipping, completed, cancelled, refund } = response.data.data;
+                setCoutBills({
+                    'unpaid': unpaid,
+                    'to_ship': toShip,
+                    'shipping': shipping,
+                    'completed': completed,
+                    'cancelled': cancelled
+                });
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const handleTabChange = (event, newIndex) => {
         setSelectedTabIndex(newIndex);
+        fetchData(BILL_STATUS[newIndex].key);
     };
 
     const handleCancelOrder = (billId) => {
@@ -71,35 +75,34 @@ function Purchase() {
     }
 
     const handleBuyAgain = (billId) => {
-        buyAgain(billId)
-            .then((response) => {
-                console.log(response);
-                fetchData();
-            })
-            .catch((error) => {
-                console.log(error);
-            })
+
     }
 
-    const calculateTotalOrderCounts = (index) => {
-        const total = orderCounts[index];
-
-        return total === 0 ? '' : `(${total})`;
-    };
+    const handleGetCountBill = (billStatus) => {
+        const count = coutBills[billStatus];
+        if (count && count > 0) {
+            return `(${count})`;
+        }
+        return '';
+    }
 
     return (
         <>
             <Tabs className={cx('bill-status')} value={selectedTabIndex} onChange={handleTabChange}>
-                {BILL_STATUS.map((status, index) => (
+                {BILL_STATUS.map((item, index) => (
                     <Tab
                         key={index}
-                        label={`${status.label} ${status.isShowOrderCounts ? calculateTotalOrderCounts(index) : ''}`}
+                        label={
+                            <div>
+                                <span>{item.label}</span>
+                                <span style={{ color: '#ee4d2d', marginLeft: '5px' }} >{item.isShowOrderCounts ? handleGetCountBill(item.key) : ''}</span>
+                            </div>}
                     />
                 ))}
             </Tabs>
             {
-                filteredBillsData.length > 0 ? (
-                    filteredBillsData.map((data, index) =>
+                billsData.length > 0 ? (
+                    billsData.map((data, index) =>
                         <Bill
                             key={index}
                             data={data}

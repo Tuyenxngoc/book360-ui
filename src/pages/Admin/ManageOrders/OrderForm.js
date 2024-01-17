@@ -21,7 +21,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave } from '@fortawesome/free-regular-svg-icons';
 import { faArrowLeft, faClipboard } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
-import { getBillInfo, getBillsByCustomerId } from '~/services/billService';
+import { getBillInfo, getBills } from '~/services/billService';
 import Product from '~/components/Product';
 import MoneyDisplay from '~/components/MoneyDisplay';
 

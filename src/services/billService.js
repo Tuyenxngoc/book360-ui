@@ -8,8 +8,13 @@ export const buyAgain = (billId) => {
     return axiosPrivate.patch(`bill/buy-again/${billId}`);
 }
 
-export const getBillsByCustomerId = () => {
-    const url = 'bill/get-bills';
+export const getBills = (status) => {
+    const url = `bill/get-bills?billStatus=${status}`;
+    return axiosPrivate.get(url);
+};
+
+export const getCountBills = () => {
+    const url = 'bill/get-count-bills';
     return axiosPrivate.get(url);
 };
 
@@ -17,10 +22,6 @@ export const getBillInfo = (billId) => {
     const url = `bill/get-bill-infor/${billId}`;
     return axiosPrivate.get(url);
 };
-
-export const getCountBills = () => {
-    return axiosPrivate.get('bill/get-count-bill');
-}
 
 export const getAllBills = (paramsString) => {
     return axiosPrivate.get(`bill/get-all-bills?${paramsString}`);
