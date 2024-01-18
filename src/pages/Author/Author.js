@@ -1,30 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import queryString from 'query-string';
-import httpRequest from '~/utils/httpRequest';
-import ProductList from '~/components/ProductList';
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import ProductList from "~/components/ProductList";
+import { getProductByAuthorId } from "~/services/productService";
 
-function SearchResults() {
-    const location = useLocation();
-    const queryParams = queryString.parse(location.search);
-    const keyword = queryParams.keyword || '';
-    const sortBy = queryParams.sortBy || 'createdDate';
+function Author() {
+
+    const { authorId } = useParams();
 
     const [data, setData] = useState({});
     const [filters, setFilters] = useState({
-        sortBy,
+        sortBy: 'createdDate',
         isAscending: false,
         pageNum: 1,
         pageSize: 10,
     })
-
-    useEffect(() => {
-        const paramsString = queryString.stringify({ ...filters, keyword });
-        httpRequest
-            .get(`product/find-products?${paramsString}`)
-            .then((response) => setData(response.data.data))
-            .catch((error) => console.error(error));
-    }, [filters, keyword]);
 
     const handlePageChange = (pageNumber) => {
         setFilters((prevFilters) => ({ ...prevFilters, pageNum: pageNumber }));
@@ -38,6 +28,16 @@ function SearchResults() {
         }));
     };
 
+    useEffect(() => {
+        getProductByAuthorId(authorId)
+            .then((response) => {
+                setData(response.data.data);
+            })
+            .catch((error) => {
+                toast.error('Đã có lỗi sảy ra, vui lòng thử lại sau');
+            });
+    }, [authorId]);
+
     return (
         <ProductList
             currentPage='Kết quả tìm kiếm'
@@ -50,4 +50,4 @@ function SearchResults() {
     );
 }
 
-export default SearchResults;
+export default Author;

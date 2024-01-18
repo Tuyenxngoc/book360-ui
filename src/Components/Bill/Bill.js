@@ -65,27 +65,19 @@ function Bill({ data, handleCancelOrder, handleBuyAgain }) {
                     Thành tiền:&nbsp;<strong><MoneyDisplay amount={data.totalAmount} /></strong>
                 </div>
 
-                {data.status === "Chờ xử lý" ? (
-                    <div className={cx('button')}>
-                        <Button onClick={hanldeButtonBuyAgainClick} variant='contained' disabled>Chờ</Button>
-                    </div>
-                ) : (
-                    data.status !== "Đang giao hàng" && (
-                        <div className={cx('button')}>
-                            <Button onClick={hanldeButtonBuyAgainClick} variant='contained'>Mua lại</Button>
-                        </div>
-                    )
-                )}
-
+                <div className={cx('button')}>
+                    <Button onClick={hanldeButtonBuyAgainClick} variant='contained'>Mua lại</Button>
+                </div>
+                <div className={cx('button')}>
+                    <Button onClick={hanldeButtonBuyAgainClick} variant='contained' disabled>Chờ</Button>
+                </div>
                 <div className={cx('button')}>
                     <Button onClick={hanldeButtonCancelClick} variant='outlined'>Liên hệ</Button>
                 </div>
+                <div className={cx('button')}>
+                    <Button onClick={hanldeButtonCancelClick} variant='outlined'>Hủy đơn hàng</Button>
+                </div>
 
-                {data.status === "Chờ xử lý" && (
-                    <div className={cx('button')}>
-                        <Button onClick={hanldeButtonCancelClick} variant='outlined'>Hủy đơn hàng</Button>
-                    </div>
-                )}
             </div>
         </div>
     );
@@ -93,15 +85,23 @@ function Bill({ data, handleCancelOrder, handleBuyAgain }) {
 
 Bill.propTypes = {
     data: PropTypes.shape({
-        customer: PropTypes.shape({
-            name: PropTypes.string.isRequired,
-        }).isRequired,
+        consigneeName: PropTypes.string.isRequired,
         createdDate: PropTypes.string.isRequired,
         status: PropTypes.string.isRequired,
-        billDetail: PropTypes.arrayOf(PropTypes.shape({
-            product: PropTypes.object.isRequired,
+        billDetails: PropTypes.arrayOf(PropTypes.shape({
+            product: PropTypes.shape({
+                productId: PropTypes.string.isRequired,
+                image: PropTypes.string.isRequired,
+                name: PropTypes.string.isRequired,
+                price: PropTypes.number.isRequired,
+                discount: PropTypes.number.isRequired,
+            }).isRequired,
+            quantity: PropTypes.number.isRequired,
         })).isRequired,
+        totalAmount: PropTypes.number.isRequired,
     }).isRequired,
+    handleCancelOrder: PropTypes.func.isRequired,
+    handleBuyAgain: PropTypes.func.isRequired,
 };
 
 export default Bill;

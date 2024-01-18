@@ -273,7 +273,7 @@ function BookDetails() {
                                                 <li>{`ISBN: ${bookData.isbn}`}</li>
                                                 <li>Tác giả:
                                                     {bookData.authors.map((author, index) => {
-                                                        return <Link key={index} to={`author/${author.id}`}>{author.fullName}</Link>
+                                                        return <Link key={index} to={`/author/${author.id}`}>{author.fullName}</Link>
                                                     })}
                                                 </li>
                                                 <li>Đối tượng: </li>

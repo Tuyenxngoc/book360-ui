@@ -1,4 +1,4 @@
-import { axiosPrivate } from "~/utils/httpRequest";
+import httpRequest, { axiosPrivate } from "~/utils/httpRequest";
 
 export const getAllProducts = (paramsString) => {
     return axiosPrivate.get(`product/get-products-admin?${paramsString}`);
@@ -6,6 +6,10 @@ export const getAllProducts = (paramsString) => {
 
 export const getCountProducts = () => {
     return axiosPrivate.get('product/get-quantity');
+}
+
+export const getProductByAuthorId = (authorId) => {
+    return httpRequest.get(`product/get-products-by-authorId/${authorId}`);
 }
 
 export const createProduct = (id, { name, price, description, images, discount, author, size, quantity, cate_id }) => {

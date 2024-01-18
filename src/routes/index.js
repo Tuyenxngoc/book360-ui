@@ -7,6 +7,7 @@ import Home from '~/pages/Home';
 import BookDetails from '~/pages/BookDetails';
 import Checkouts from '~/pages/Checkouts';
 import SearchResults from '~/pages/SearchResults/SearchResults';
+import Author from '~/pages/Author';
 import Category from '~/pages/Category';
 import Cart from '~/pages/Cart';
 import Login from '~/pages/Login';
@@ -42,6 +43,7 @@ const publicRoutes = [
     { path: routes.home, component: Home },
     { path: routes.bookDetails, component: BookDetails },
     { path: routes.searchResults, component: SearchResults },
+    { path: routes.getProductByAuthor, component: Author },
     { path: routes.category, component: Category },
     { path: routes.login, component: Login, layout: HeaderOnly },
     { path: routes.register, component: Register, layout: HeaderOnly },

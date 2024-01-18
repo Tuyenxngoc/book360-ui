@@ -7,6 +7,7 @@ const routes = {
     register: '/register',
     forgotPassword: '/forgot-password',
     searchResults: '/search',
+    getProductByAuthor: '/author/:authorId',
     //Private routes
     checkouts: '/checkouts',
     cart: '/cart',
