@@ -1,7 +1,7 @@
 import httpRequest, { axiosPrivate } from "~/utils/httpRequest";
 
 export const getAllProducts = (paramsString) => {
-    return axiosPrivate.get(`product/get-products-admin?${paramsString}`);
+    return axiosPrivate.get(`product/get-all-products?${paramsString}`);
 }
 
 export const getCountProducts = () => {

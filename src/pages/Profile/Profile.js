@@ -239,7 +239,7 @@ function Profile() {
                             </div>
                             <Button size='small' onClick={handleSelectInput} variant='outlined'>Chọn ảnh</Button>
                             <div className={cx('file-description')}>
-                                <div>Dụng lượng file tối đa 1 MB</div>
+                                <div>Dụng lượng file tối đa 2 MB</div>
                                 <div>Định dạng: .JPG, .JPEG, .PNG</div>
                             </div>
                         </div>

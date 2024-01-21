@@ -7,11 +7,12 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import Style from './ManageCategories.module.scss';
 import classNames from 'classnames/bind';
 
-import { getAllCategories } from '~/services/categoryService';
+import { getAllCategories, getCategories } from '~/services/categoryService';
 import TableCategories from './TableCategories';
 import { useNavigate } from 'react-router-dom';
 import { routes } from '~/config';
 import { toast } from 'react-toastify';
+import queryString from 'query-string';
 
 const cx = classNames.bind(Style);
 
@@ -19,10 +20,25 @@ function CategoriesDashboard() {
 
     const navigate = useNavigate();
     const [dataCategories, setDataCategories] = useState([]);
+    const [meta, setMeta] = useState({});
+
+    const [filters, setFilters] = useState({
+        keyword: '',
+        searchBy: '',
+        sortBy: 'createdDate',
+        isAscending: false,
+        pageNum: 0,
+        pageSize: 10,
+    })
 
     const fetchListCategory = () => {
-        getAllCategories()
-            .then((response) => { setDataCategories(response.data.data) })
+        const paramsString = queryString.stringify({ ...filters, pageNum: filters.pageNum + 1 });
+        getAllCategories(paramsString)
+            .then((response) => {
+                const { items, meta } = response.data.data;
+                setDataCategories(items);
+                setMeta(meta);
+            })
             .catch((error) => {
                 toast.error('Đã có lỗi xảy ra khi lấy dữ liệu danh mục');
             });
@@ -30,22 +46,27 @@ function CategoriesDashboard() {
 
     useEffect(() => {
         fetchListCategory();
-    }, [])
-
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [filters])
 
     const handleCreateCategory = () => {
         navigate(routes.createCategory);
     };
 
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
+    const handleChangePage = (_, newPage) => {
+        setFilters({ ...filters, pageNum: newPage });
     };
 
     const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
+        setFilters({ ...filters, pageNum: 0, pageSize: parseInt(event.target.value, 10) })
+    };
+
+    const handleSortChange = (newSortBy, newIsAscending = false) => {
+        setFilters((prevFilters) => ({
+            ...prevFilters,
+            sortBy: newSortBy,
+            isAscending: newIsAscending,
+        }));
     };
 
     return (
@@ -69,10 +90,10 @@ function CategoriesDashboard() {
                             <TablePagination
                                 className={cx('table-pagination')}
                                 component='div'
-                                count={dataCategories.length}
-                                page={page}
+                                count={meta.totalElements || 100}
+                                page={filters.pageNum}
                                 onPageChange={handleChangePage}
-                                rowsPerPage={rowsPerPage}
+                                rowsPerPage={meta.pageSize || 10}
                                 onRowsPerPageChange={handleChangeRowsPerPage}
                             />
                         </div>

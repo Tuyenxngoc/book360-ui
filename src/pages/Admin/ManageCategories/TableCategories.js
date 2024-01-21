@@ -55,6 +55,7 @@ function TableCategories({ listCategory, fetchListCategory }) {
                         <th></th>
                         <th scope="col">Hình ảnh</th>
                         <th scope="col">Tên danh mục</th>
+                        <th scope="col">Tổng sản phẩm</th>
                         <th scope="col">Thao tác</th>
                     </tr>
                 </thead>
@@ -80,6 +81,7 @@ function TableCategories({ listCategory, fetchListCategory }) {
                                         </div>
                                     </td>
                                     <td align='left'>{item.name}</td>
+                                    <td align='left'>{item.totalProducts}</td>
                                     <td align='left'>
                                         <div className={cx('table-action')}>
                                             <Button
@@ -91,15 +93,17 @@ function TableCategories({ listCategory, fetchListCategory }) {
                                             >
                                                 <FontAwesomeIcon icon={faEdit} />
                                             </Button>
-                                            <Button
-                                                size='small'
-                                                variant='contained'
-                                                color='error'
-                                                onClick={() => handleClickBtnDelete(item.id)}
-                                                sx={{ minWidth: 35, height: 35, ml: 1 }}
-                                            >
-                                                <FontAwesomeIcon icon={faRemove} />
-                                            </Button>
+                                            {item.totalProducts === 0 &&
+                                                <Button
+                                                    size='small'
+                                                    variant='contained'
+                                                    color='error'
+                                                    onClick={() => handleClickBtnDelete(item.id)}
+                                                    sx={{ minWidth: 35, height: 35, ml: 1 }}
+                                                >
+                                                    <FontAwesomeIcon icon={faRemove} />
+                                                </Button>
+                                            }
                                         </div>
                                     </td>
                                 </tr>

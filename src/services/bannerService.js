@@ -4,12 +4,12 @@ export const getBanner = (bannerId) => {
     return axiosPrivate.get(`banner/get-banner/${bannerId}`);
 }
 
-export const getBanners = (paramsString) => {
-    return httpRequest.get(`banner/get-banners?${paramsString}`);
+export const getAllBanners = (paramsString) => {
+    return axiosPrivate.get(`banner/get-all-banners?${paramsString}`);
 }
 
-export const getAllBanners = () => {
-    return httpRequest.get('banner/get-all-banners');
+export const getBanners = () => {
+    return httpRequest.get('banner/get-banners');
 }
 
 export const createBanner = (bannerId, values) => {

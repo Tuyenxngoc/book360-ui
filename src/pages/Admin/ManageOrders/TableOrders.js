@@ -13,16 +13,18 @@ import { useNavigate } from 'react-router-dom';
 const cx = classNames.bind(Style);
 
 const billStatus = [
-    { status: 'Chờ xử lý', color: 'warning' },
-    { status: 'Đang giao hàng', color: 'warning' },
-    { status: 'Đặt hàng thành công', color: 'success' },
+    { status: 'Chờ xác nhận', color: 'warning' },
+    { status: 'Chờ lấy hàng', color: 'warning' },
+    { status: 'Đang giao', color: 'success' },
     { status: 'Đã giao', color: 'success' },
     { status: 'Đã hủy', color: 'error' },
+    { status: 'Trả hàng/Hoàn tiền', color: 'success' },
+    { status: 'Giao không thành công', color: 'error' },
 ]
 
 function getChipByStatus(order, handleUpdateStatus) {
-    const { status } = order;
-    const config = billStatus.find(item => item.status === status);
+    const { orderStatus } = order;
+    const config = billStatus.find(item => item.status === orderStatus);
     const handleDelete = () => {
         handleUpdateStatus(order);
     }

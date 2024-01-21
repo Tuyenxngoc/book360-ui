@@ -102,7 +102,7 @@ function CategoryForm() {
 
     const handleSubmit = (values) => {
         setLoading(true);
-        createCategory(categoryId || -1, values)
+        createCategory(categoryId || null, values)
             .then(() => {
                 navigate(routes.viewCategory, { replace: true });
                 toast.success('Thành công');

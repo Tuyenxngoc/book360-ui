@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 import Bill from '~/components/Bill';
-import { cancelOrder, getBills, getCountBills } from '~/services/billService';
+import { cancelOrder, getBills, getCountBillByStatus, getCountBills } from '~/services/billService';
 import { Tab, Tabs } from '@mui/material';
 
 import Style from './Purchase.module.scss';
@@ -41,7 +41,7 @@ function Purchase() {
     }, []);
 
     useEffect(() => {
-        getCountBills()
+        getCountBillByStatus()
             .then((response) => {
                 const { unpaid, toShip, shipping, completed, cancelled, refund } = response.data.data;
                 setCoutBills({

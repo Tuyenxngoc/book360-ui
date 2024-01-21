@@ -11,7 +11,7 @@ import { Skeleton } from '@mui/material';
 //Style
 import Style from './ProductCategory.module.scss'
 import classNames from 'classnames/bind';
-import { getAllCategories } from '~/services/categoryService';
+import { getCategories } from '~/services/categoryService';
 
 const cx = classNames.bind(Style);
 
@@ -24,7 +24,7 @@ function ProductCategory({ children }) {
     const [listCategory, setListCategory] = useState();
 
     useEffect(() => {
-        getAllCategories()
+        getCategories()
             .then((response) => setListCategory(response.data.data))
             .catch((error) => console.error(error));
     }, []);

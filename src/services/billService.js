@@ -13,6 +13,11 @@ export const getBills = (status) => {
     return axiosPrivate.get(url);
 };
 
+export const getCountBillByStatus = () => {
+    const url = 'bill/get-count-bills-by-status';
+    return axiosPrivate.get(url);
+};
+
 export const getCountBills = () => {
     const url = 'bill/get-count-bills';
     return axiosPrivate.get(url);
