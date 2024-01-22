@@ -27,12 +27,12 @@ function CategoriesDashboard() {
         searchBy: '',
         sortBy: 'createdDate',
         isAscending: false,
-        pageNum: 0,
+        pageNum: 1,
         pageSize: 10,
     })
 
     const fetchListCategory = () => {
-        const paramsString = queryString.stringify({ ...filters, pageNum: filters.pageNum + 1 });
+        const paramsString = queryString.stringify(filters);
         getAllCategories(paramsString)
             .then((response) => {
                 const { items, meta } = response.data.data;
@@ -54,7 +54,7 @@ function CategoriesDashboard() {
     };
 
     const handleChangePage = (_, newPage) => {
-        setFilters({ ...filters, pageNum: newPage });
+        setFilters({ ...filters, pageNum: newPage + 1 });
     };
 
     const handleChangeRowsPerPage = (event) => {
@@ -91,7 +91,7 @@ function CategoriesDashboard() {
                                 className={cx('table-pagination')}
                                 component='div'
                                 count={meta.totalElements || 100}
-                                page={filters.pageNum}
+                                page={filters.pageNum - 1}
                                 onPageChange={handleChangePage}
                                 rowsPerPage={meta.pageSize || 10}
                                 onRowsPerPageChange={handleChangeRowsPerPage}

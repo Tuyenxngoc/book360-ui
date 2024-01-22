@@ -45,6 +45,8 @@ const validationSchema = yup.object({
         .min(3, "Tên danh mục tối thiểu 3 kí tự")
         .max(120, "Tên danh mục tối đa 120 kí tự")
         .required('Tên danh mục là bắt buộc'),
+    image: yup.string()
+        .required('Vui lòng tải lên một hình ảnh'),
 });
 
 function CategoryForm() {
@@ -145,7 +147,7 @@ function CategoryForm() {
                                 </div>
                             </div>
                             <div className={cx('form-group')}>
-                                <label className={cx('form-label')} htmlFor='inputUrl'>Hình ảnh</label>
+                                <label className={cx('form-label')} htmlFor='inputUrl'><span>*</span>Hình ảnh</label>
                                 <div className={cx('form-input')}>
                                     <Dragger {...props}>
                                         <p className='ant-upload-drag-icon'>
