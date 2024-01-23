@@ -28,16 +28,16 @@ function ProductsDashboard() {
         keyword: '',
         sortBy: 'createdDate',
         isAscending: false,
-        pageNum: 0,
+        pageNum: 1,
         pageSize: 10,
     })
 
-    const handleChangePage = (event, newPage) => {
-        setFilters({ ...filters, pageNum: newPage });
+    const handleChangePage = (_, newPage) => {
+        setFilters({ ...filters, pageNum: newPage + 1 });
     };
 
     const handleChangeRowsPerPage = (event) => {
-        setFilters({ ...filters, pageNum: 0, pageSize: parseInt(event.target.value, 10) })
+        setFilters({ ...filters, pageNum: 1, pageSize: parseInt(event.target.value, 10) })
     };
 
     const handleSortChange = (newSortBy, newIsAscending = false) => {
@@ -49,7 +49,7 @@ function ProductsDashboard() {
     };
 
     const fetchListProduct = () => {
-        const paramsString = queryString.stringify({ ...filters, pageNum: filters.pageNum + 1 });
+        const paramsString = queryString.stringify(filters);
         getAllProducts(paramsString)
             .then((response) => {
                 const { items, meta } = response.data.data;
@@ -171,7 +171,7 @@ function ProductsDashboard() {
                                 className={cx('table-pagination')}
                                 component='div'
                                 count={meta.totalElements || 100}
-                                page={filters.pageNum}
+                                page={filters.pageNum - 1}
                                 onPageChange={handleChangePage}
                                 rowsPerPage={meta.pageSize || 10}
                                 onRowsPerPageChange={handleChangeRowsPerPage}

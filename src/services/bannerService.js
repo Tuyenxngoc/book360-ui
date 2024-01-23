@@ -1,25 +1,26 @@
 import httpRequest, { axiosPrivate } from "~/utils/httpRequest";
 
+export const getAllBanners = () => {
+    return httpRequest.get('banner/all');
+}
+
+
 export const getBanner = (bannerId) => {
-    return axiosPrivate.get(`banner/get-banner/${bannerId}`);
+    return axiosPrivate.get(`admin/banner/${bannerId}`);
 }
 
-export const getAllBanners = (paramsString) => {
-    return axiosPrivate.get(`banner/get-all-banners?${paramsString}`);
+export const getBanners = (params) => {
+    return axiosPrivate.get(`admin/banner/get?${params}`);
 }
 
-export const getBanners = () => {
-    return httpRequest.get('banner/get-banners');
-}
-
-export const createBanner = (bannerId, values) => {
+export const createBanner = (id, values) => {
     const banner = {
-        id: bannerId,
+        id,
         ...values,
     }
-    return axiosPrivate.post('banner/create-banner', banner);
+    return axiosPrivate.post('admin/banner/create', banner);
 }
 
 export const deleteBanner = (bannerId) => {
-    return axiosPrivate.delete(`banner/delete-banner/${bannerId}`);
+    return axiosPrivate.delete(`admin/banner/delete/${bannerId}`);
 }

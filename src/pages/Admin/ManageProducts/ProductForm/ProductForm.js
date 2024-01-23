@@ -5,7 +5,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import Style from './ProductForm.module.scss';
 import classNames from 'classnames/bind';
 
-import { getCategories } from '~/services/categoryService';
+import { getAllCategories } from '~/services/categoryService';
 import images from '~/assets';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -83,6 +83,7 @@ const defaultValue = {
     quantity: '',
     cate_id: 0,
 }
+
 function ProductForm() {
 
     const navigate = useNavigate();
@@ -124,7 +125,7 @@ function ProductForm() {
     }, [productId]);
 
     useEffect(() => {
-        getCategories()
+        getAllCategories()
             .then((response) => { setCategories(response.data.data) })
             .catch((error) => { console.log(error); });
     }, []);

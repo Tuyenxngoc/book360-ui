@@ -87,9 +87,9 @@ function TableOrders({ listOrder, fetchListOrder }) {
                         listOrder.map((item, index) => {
                             return (
                                 <tr key={`table-orders-${index}`}>
-                                    <td>{item.customer?.name}</td>
+                                    <td>{item.consigneeName}</td>
                                     <td>
-                                        <span className='price'> <MoneyDisplay amount={item.total} /></span>
+                                        <span className='price'> <MoneyDisplay amount={item.totalAmount} /></span>
                                         <div className={cx('payment-method')}>Thanh toán khi nhận hàng</div>
                                     </td>
                                     <td><DateTimeDisplay datetime={item.createdDate} /></td>

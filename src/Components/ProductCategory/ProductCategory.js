@@ -25,7 +25,10 @@ function ProductCategory({ children }) {
 
     useEffect(() => {
         getCategories()
-            .then((response) => setListCategory(response.data.data))
+            .then((response) => {
+                const { items } = response.data.data;
+                setListCategory(items);
+            })
             .catch((error) => console.error(error));
     }, []);
 

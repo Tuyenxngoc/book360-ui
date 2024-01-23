@@ -1,8 +1,8 @@
 export const API_URL = process.env.REACT_APP_BASE_URL;
 
 export const ROLES = {
-    'User': "ROLE_USER",
-    'Admin': "ROLE_ADMIN",
+    'User': 'ROLE_USER',
+    'Admin': 'ROLE_ADMIN',
 }
 
 export const orderStatus = [
@@ -11,23 +11,31 @@ export const orderStatus = [
         key: '',
     },
     {
-        label: 'Chờ xử lý',
-        key: "to_pay",
+        label: 'Chờ xác nhận',
+        key: 'unpaid',
     },
     {
-        label: 'Đang giao hàng',
-        key: "to_receive",
+        label: 'Chờ lấy hàng',
+        key: 'to_ship',
     },
     {
-        label: 'Đặt hàng thành công',
-        key: "ordered",
+        label: 'Đang giao',
+        key: 'shipping',
     },
     {
         label: 'Đã giao',
-        key: "completed",
+        key: 'completed',
     },
     {
         label: 'Đã hủy',
-        key: "canceled",
+        key: 'cancelled',
+    },
+    {
+        label: 'Trả hàng/Hoàn tiền',
+        key: 'refund',
+    },
+    {
+        label: 'Giao không thành công',
+        key: 'delivery_failed',
     }
 ]

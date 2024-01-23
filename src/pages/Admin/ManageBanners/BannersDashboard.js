@@ -26,12 +26,12 @@ function BannersDashboard() {
         keyword: '',
         sortBy: '',
         isAscending: false,
-        pageNum: 0,
+        pageNum: 1,
         pageSize: 10,
     })
 
     const fetchListBanner = () => {
-        const paramsString = queryString.stringify({ ...filters, pageNum: filters.pageNum + 1 });
+        const paramsString = queryString.stringify(filters);
         getBanners(paramsString)
             .then((response) => {
                 const { items, meta } = response.data.data;
@@ -48,12 +48,12 @@ function BannersDashboard() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filters])
 
-    const handleChangePage = (event, newPage) => {
-        setFilters({ ...filters, pageNum: newPage });
+    const handleChangePage = (_, newPage) => {
+        setFilters({ ...filters, pageNum: newPage + 1 });
     };
 
     const handleChangeRowsPerPage = (event) => {
-        setFilters({ ...filters, pageNum: 0, pageSize: parseInt(event.target.value, 10) })
+        setFilters({ ...filters, pageNum: 1, pageSize: parseInt(event.target.value, 10) })
     };
 
     const handleCreateBanner = () => {
@@ -82,7 +82,7 @@ function BannersDashboard() {
                                 className={cx('table-pagination')}
                                 component="div"
                                 count={meta.totalElements || 100}
-                                page={filters.pageNum}
+                                page={filters.pageNum - 1}
                                 onPageChange={handleChangePage}
                                 rowsPerPage={meta.pageSize || 10}
                                 onRowsPerPageChange={handleChangeRowsPerPage}

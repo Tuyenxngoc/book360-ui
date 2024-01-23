@@ -21,17 +21,17 @@ function TableProducts({ listProduct, fetchListProduct }) {
     const [showModalDeleteProduct, setShowModalDeleteProduct] = useState(false);
     const [productIdSelect, setProductIdSelect] = useState();
 
-    const handleClickBtnUpdate = (productId) => {
-        navigate(`/admin/product/${productId}`);
+    const handleClickBtnUpdate = (id) => {
+        navigate(`/admin/product/${id}`);
     }
 
-    const handleClickViewProduct = (productId) => {
-        navigate(`/product/${productId}`);
+    const handleClickViewProduct = (id) => {
+        navigate(`/product/${id}`);
     }
 
-    const handleClickBtnDelete = (productId) => {
+    const handleClickBtnDelete = (id) => {
         setShowModalDeleteProduct(true);
-        setProductIdSelect(productId);
+        setProductIdSelect(id);
     }
 
     const handleDeleteProduct = () => {
@@ -81,17 +81,17 @@ function TableProducts({ listProduct, fetchListProduct }) {
                                             </div>
                                         </div>
                                     </td>
-                                    <td>{item.category?.name}</td>
-                                    <td>{item.quantity}</td>
+                                    <td>{item.category.name}</td>
+                                    <td>{item.stockQuantity}</td>
                                     <td><MoneyDisplay amount={item.price} /></td>
                                     <td>{item.discount}%</td>
-                                    <td>{item.selled}</td>
+                                    <td>{item.soldQuantity}</td>
                                     <td>
                                         <Button
                                             size='small'
                                             variant='contained'
                                             color='success'
-                                            onClick={() => handleClickViewProduct(item.productId)}
+                                            onClick={() => handleClickViewProduct(item.id)}
                                             sx={{ minWidth: 35, height: 35 }}
                                         >
                                             <FontAwesomeIcon icon={faEye} />
@@ -100,7 +100,7 @@ function TableProducts({ listProduct, fetchListProduct }) {
                                             size='small'
                                             variant='contained'
                                             color='info'
-                                            onClick={() => handleClickBtnUpdate(item.productId)}
+                                            onClick={() => handleClickBtnUpdate(item.id)}
                                             sx={{ minWidth: 35, height: 35, mx: 1 }}
                                         >
                                             <FontAwesomeIcon icon={faEdit} />
@@ -109,7 +109,7 @@ function TableProducts({ listProduct, fetchListProduct }) {
                                             size='small'
                                             variant='contained'
                                             color='error'
-                                            onClick={() => handleClickBtnDelete(item.productId)}
+                                            onClick={() => handleClickBtnDelete(item.id)}
                                             sx={{ minWidth: 35, height: 35 }}
                                         >
                                             <FontAwesomeIcon icon={faRemove} />

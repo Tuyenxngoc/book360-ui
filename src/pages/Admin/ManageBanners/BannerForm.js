@@ -102,7 +102,7 @@ function BannerForm() {
 
     const handleSubmit = (values) => {
         setLoading(true);
-        createBanner(bannerId || -1, values)
+        createBanner(bannerId || null, values)
             .then(() => {
                 navigate(routes.viewBanner, { replace: true });
                 toast.success('Thành công');

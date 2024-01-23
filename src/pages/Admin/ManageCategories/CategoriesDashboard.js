@@ -7,7 +7,7 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import Style from './ManageCategories.module.scss';
 import classNames from 'classnames/bind';
 
-import { getAllCategories, getCategories } from '~/services/categoryService';
+import { getCategoriesForAdmin } from '~/services/categoryService';
 import TableCategories from './TableCategories';
 import { useNavigate } from 'react-router-dom';
 import { routes } from '~/config';
@@ -33,7 +33,7 @@ function CategoriesDashboard() {
 
     const fetchListCategory = () => {
         const paramsString = queryString.stringify(filters);
-        getAllCategories(paramsString)
+        getCategoriesForAdmin(paramsString)
             .then((response) => {
                 const { items, meta } = response.data.data;
                 setDataCategories(items);
@@ -58,7 +58,7 @@ function CategoriesDashboard() {
     };
 
     const handleChangeRowsPerPage = (event) => {
-        setFilters({ ...filters, pageNum: 0, pageSize: parseInt(event.target.value, 10) })
+        setFilters({ ...filters, pageNum: 1, pageSize: parseInt(event.target.value, 10) })
     };
 
     const handleSortChange = (newSortBy, newIsAscending = false) => {
