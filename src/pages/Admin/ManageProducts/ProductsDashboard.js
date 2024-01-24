@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import queryString from 'query-string';
 
-import { getAllProducts } from '~/services/productService';
+import { getProductsForAdmin } from '~/services/productService';
 
 import TableProducts from './TableProducts';
 import SortProduct from '~/components/SortProduct';
@@ -50,7 +50,7 @@ function ProductsDashboard() {
 
     const fetchListProduct = () => {
         const paramsString = queryString.stringify(filters);
-        getAllProducts(paramsString)
+        getProductsForAdmin(paramsString)
             .then((response) => {
                 const { items, meta } = response.data.data;
                 setDataProducts(items);

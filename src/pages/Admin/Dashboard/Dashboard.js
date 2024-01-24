@@ -5,7 +5,7 @@ import Style from './Dashboard.module.scss';
 import classNames from "classnames/bind";
 import { useEffect, useState } from "react";
 import { getCountCustomer } from "~/services/customerService";
-import { getCountProducts } from "~/services/productService";
+import { getStockQuantity } from "~/services/productService";
 import { getTodo, getCountBills } from "~/services/billService";
 import { Link } from "react-router-dom";
 import { Avatar } from "@mui/material";
@@ -207,7 +207,7 @@ function Dashboard() {
                 setCountCustomer(response.data.data)
             })
             .catch((error) => { console.log(error); })
-        getCountProducts()
+        getStockQuantity()
             .then((response) => {
                 setCountProducts(response.data.data)
             })

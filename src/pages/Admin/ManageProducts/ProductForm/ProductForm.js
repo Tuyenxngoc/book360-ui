@@ -15,7 +15,7 @@ import * as yup from 'yup';
 import { useFormik } from 'formik';
 
 import { uploadImage } from '~/services/customerService';
-import { createProduct, getDetailProduct } from '~/services/productService';
+import { createProduct, getProductDetails } from '~/services/productService';
 
 import { FormHelperText } from '@mui/material';
 import { Input, Select } from 'antd';
@@ -102,7 +102,7 @@ function ProductForm() {
 
     useEffect(() => {
         if (productId) {
-            getDetailProduct(productId)
+            getProductDetails(productId)
                 .then((response) => {
                     const { name, price, description, images, discount, author, size, quantity, category } = response.data.data;
                     formik.setValues({

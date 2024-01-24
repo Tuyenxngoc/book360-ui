@@ -1,47 +1,50 @@
 import httpRequest, { axiosPrivate } from "~/utils/httpRequest";
 
-export const getAllProducts = (paramsString) => {
-    return axiosPrivate.get(`product/get-all-products?${paramsString}`);
+export const getProductSameAuthor = (productId) => {
+    return httpRequest.get(`product/same-author/${productId}`);
 }
 
-export const getCountProducts = () => {
-    return axiosPrivate.get('product/get-quantity');
+export const getProducts = (params) => {
+    return httpRequest.get(`product/get?${params}`);
+}
+
+export const findProducts = (params) => {
+    return httpRequest.get(`product/find?${params}`);
+}
+
+export const getProductDetails = (productId) => {
+    return httpRequest.get(`product/detail/${productId}`);
+}
+
+export const getProductByCategoryId = (categoryId) => {
+    return httpRequest.get(`product/category/${categoryId}`);
 }
 
 export const getProductByAuthorId = (authorId) => {
-    return httpRequest.get(`product/get-products-by-authorId/${authorId}`);
+    return httpRequest.get(`product/author/${authorId}`);
 }
 
-export const createProduct = (id, { name, price, description, images, discount, author, size, quantity, cate_id }) => {
+
+export const getProduct = (productId) => {
+    return axiosPrivate.get(`admin/product/${productId}`);
+}
+
+export const getProductsForAdmin = (params) => {
+    return axiosPrivate.get(`admin/product/get?${params}`);
+}
+
+export const getStockQuantity = () => {
+    return axiosPrivate.get('admin/product/stock-quantity');
+}
+
+export const createProduct = (id, values) => {
     const product = {
         id,
-        name,
-        price: Number(price),
-        description,
-        images,
-        discount: Number(discount),
-        author,
-        size,
-        quantity: Number(quantity),
-        cate_id: Number(cate_id)
+        ...values,
     }
-    return axiosPrivate.post('product/create-product', product);
-}
-
-export const updateProduct = (productId, values) => {
-    return axiosPrivate.put(`product/update-product/${productId}`, values,
-        {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        }
-    );
+    return axiosPrivate.post('admin/product/create', product);
 }
 
 export const deleteProduct = (productId) => {
-    return axiosPrivate.delete(`product/delete-product/${productId}`);
-}
-
-export const getDetailProduct = (productId) => {
-    return axiosPrivate.get(`product/get-product-detail/${productId}`);
+    return axiosPrivate.delete(`admin/product/delete/${productId}`);
 }
