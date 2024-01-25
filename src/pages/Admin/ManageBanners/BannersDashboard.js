@@ -31,8 +31,8 @@ function BannersDashboard() {
     })
 
     const fetchListBanner = () => {
-        const paramsString = queryString.stringify(filters);
-        getBanners(paramsString)
+        const params = queryString.stringify(filters);
+        getBanners(params)
             .then((response) => {
                 const { items, meta } = response.data.data;
                 setDataBanners(items);

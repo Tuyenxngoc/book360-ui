@@ -35,8 +35,8 @@ function UsersDashboard() {
     };
 
     const fetchListUser = () => {
-        const paramsString = queryString.stringify(filters);
-        getAllCustomer(paramsString)
+        const params = queryString.stringify(filters);
+        getAllCustomer(params)
             .then((response) => {
                 const { items, meta } = response.data.data;
                 setDataUsers(items);

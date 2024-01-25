@@ -18,14 +18,6 @@ function SearchResults() {
         pageSize: 10,
     })
 
-    useEffect(() => {
-        const paramsString = queryString.stringify({ ...filters, keyword });
-        httpRequest
-            .get(`product/find-products?${paramsString}`)
-            .then((response) => setData(response.data.data))
-            .catch((error) => console.error(error));
-    }, [filters, keyword]);
-
     const handlePageChange = (pageNumber) => {
         setFilters((prevFilters) => ({ ...prevFilters, pageNum: pageNumber }));
     };
@@ -37,6 +29,14 @@ function SearchResults() {
             isAscending: newIsAscending,
         }));
     };
+
+    useEffect(() => {
+        const params = queryString.stringify({ ...filters, keyword });
+        httpRequest
+            .get(`product/find-products?${params}`)
+            .then((response) => setData(response.data.data))
+            .catch((error) => console.error(error));
+    }, [filters, keyword]);
 
     return (
         <ProductList

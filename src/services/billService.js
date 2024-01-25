@@ -28,18 +28,18 @@ export const getBillInfo = (billId) => {
     return axiosPrivate.get(url);
 };
 
-export const getAllBills = (paramsString) => {
-    return axiosPrivate.get(`bill/get-all-bills?${paramsString}`);
+export const getAllBills = (params) => {
+    return axiosPrivate.get(`bill/get-all-bills?${params}`);
 }
 
-export const getStatistic = (paramsString) => {
-    return axiosPrivate.get(`bill/get-statistic?${paramsString}`, {
+export const getStatistic = (params) => {
+    return axiosPrivate.get(`bill/get-statistic?${params}`, {
         responseType: 'blob',
     });
 }
 
-export const updateBillStatus = (billId, paramsString) => {
-    return axiosPrivate.put(`bill/update-status/${billId}?${paramsString}`);
+export const updateBillStatus = (billId, params) => {
+    return axiosPrivate.put(`bill/update-status/${billId}?${params}`);
 }
 
 export const getTodo = () => {

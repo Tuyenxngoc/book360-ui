@@ -67,8 +67,8 @@ function UpdateStatusDialog({ open, setOpen, dataOrder, fetchListOrder }) {
     function handleSubmit(values) {
         const item = ORDER_STATUSES.find(r => r.label === dataOrder.status);
         if (values.status !== item?.key) {
-            const paramsString = queryString.stringify({ newStatus: values.status });
-            updateBillStatus(dataOrder.id || -1, paramsString)
+            const params = queryString.stringify({ newStatus: values.status });
+            updateBillStatus(dataOrder.id || -1, params)
                 .then(response => {
                     fetchListOrder();
                     toast.success('Cập nhật thành công');

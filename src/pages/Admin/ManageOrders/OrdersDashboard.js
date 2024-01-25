@@ -105,8 +105,8 @@ function OrdersDashboard() {
     };
 
     const fetchListOrder = () => {
-        const paramsString = queryString.stringify({ ...filters, pageNum: filters.pageNum, status: type });
-        getAllBills(paramsString)
+        const params = queryString.stringify({ ...filters, pageNum: filters.pageNum, status: type });
+        getAllBills(params)
             .then((response) => {
                 const { items, meta } = response.data.data;
                 setMeta(meta);
@@ -123,11 +123,11 @@ function OrdersDashboard() {
     }, [filters, type]);
 
     const handleGetStatistic = () => {
-        const paramsString = queryString.stringify({
+        const params = queryString.stringify({
             timeStart: defaultDateRange.start,
             timeEnd: defaultDateRange.end,
         });
-        getStatistic(paramsString)
+        getStatistic(params)
             .then((response) => {
                 const formattedStart = defaultDateRange.start.replace(/-/g, '');
                 const formattedEnd = defaultDateRange.end.replace(/-/g, '');

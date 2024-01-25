@@ -12,8 +12,8 @@ export const getCustomer = (userId) => {
     return axiosPrivate.get(`customer/get-by-user/${userId}`);
 }
 
-export const getAllCustomer = (paramsString) => {
-    return axiosPrivate.get(`customer/get-customers?${paramsString}`);
+export const getAllCustomer = (params) => {
+    return axiosPrivate.get(`customer/get-customers?${params}`);
 }
 
 export const getCountCustomer = () => {

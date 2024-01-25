@@ -32,8 +32,8 @@ function CategoriesDashboard() {
     })
 
     const fetchListCategory = () => {
-        const paramsString = queryString.stringify(filters);
-        getCategoriesForAdmin(paramsString)
+        const params = queryString.stringify(filters);
+        getCategoriesForAdmin(params)
             .then((response) => {
                 const { items, meta } = response.data.data;
                 setDataCategories(items);
@@ -59,14 +59,6 @@ function CategoriesDashboard() {
 
     const handleChangeRowsPerPage = (event) => {
         setFilters({ ...filters, pageNum: 1, pageSize: parseInt(event.target.value, 10) })
-    };
-
-    const handleSortChange = (newSortBy, newIsAscending = false) => {
-        setFilters((prevFilters) => ({
-            ...prevFilters,
-            sortBy: newSortBy,
-            isAscending: newIsAscending,
-        }));
     };
 
     return (
