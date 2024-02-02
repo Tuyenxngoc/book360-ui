@@ -1,5 +1,6 @@
 import { createTheme } from '@mui/material';
 import { viVN } from '@mui/material/locale';
+import viVnAntd from 'antd/lib/locale/vi_VN';
 
 const theme = createTheme(
     {
@@ -15,11 +16,14 @@ const theme = createTheme(
     viVN,
 );
 
-const themeAntd = {
-    token: {
-        colorPrimary: '#00afef',
+const antdConfig = {
+    theme: {
+        token: {
+            colorPrimary: '#00afef',
+        },
     },
+    locale: viVnAntd
 }
 
-export { themeAntd };
+export { antdConfig };
 export default theme;

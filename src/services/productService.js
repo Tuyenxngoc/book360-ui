@@ -1,7 +1,7 @@
 import httpRequest, { axiosPrivate } from "~/utils/httpRequest";
 
-export const getProductSameAuthor = (productId) => {
-    return httpRequest.get(`product/same-author/${productId}`);
+export const getProductSameAuthor = (productId, params) => {
+    return httpRequest.get(`product/same-author/${productId}?${params}`);
 }
 
 export const getProducts = (params) => {
@@ -16,8 +16,8 @@ export const getProductDetails = (productId) => {
     return httpRequest.get(`product/detail/${productId}`);
 }
 
-export const getProductByCategoryId = (categoryId) => {
-    return httpRequest.get(`product/category/${categoryId}`);
+export const getProductByCategoryId = (categoryId, params) => {
+    return httpRequest.get(`product/category/${categoryId}?${params}`);
 }
 
 export const getProductByAuthorId = (authorId) => {
@@ -42,7 +42,7 @@ export const createProduct = (id, values) => {
         id,
         ...values,
     }
-    return axiosPrivate.post('admin/product/create', product);
+    return axiosPrivate.put('admin/product/create', product);
 }
 
 export const deleteProduct = (productId) => {

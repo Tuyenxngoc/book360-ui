@@ -14,6 +14,7 @@ import classNames from 'classnames/bind';
 //Icon
 import { Skeleton, Typography } from '@mui/material';
 import CustomArrows from '../CustomArrows';
+import { getProduct, getProducts } from '~/services/productService';
 
 const cx = classNames.bind(Style);
 
@@ -56,8 +57,7 @@ function HomeProduct({ title, showProductByCategory = false, apiUrl, moreLink })
     const [productData, setProductData] = useState();
 
     useEffect(() => {
-        httpRequest
-            .get(apiUrl)
+        getProducts()
             .then((response) => setProductData(response.data.data.items))
             .catch((error) => console.error(error));
     }, [apiUrl]);

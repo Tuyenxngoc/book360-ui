@@ -1,16 +1,15 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { ConfigProvider, DatePicker, Input, Select, Space, Tabs } from 'antd';
+import { DatePicker, Input, Select, Space, Tabs } from 'antd';
 import { Button, TablePagination } from '@mui/material';
 import { getAllBills, getStatistic } from '~/services/billService';
-import { orderStatus } from '~/config/contans';
+import { billStatus } from '~/config/contans';
 import { toast } from 'react-toastify';
 import { saveAs } from 'file-saver';
 import TableOrders from './TableOrders';
 import queryString from 'query-string';
 import Style from './MagageOrders.module.scss';
 import classNames from 'classnames/bind';
-import viVN from 'antd/lib/locale/vi_VN';
 import dayjs from 'dayjs';
 
 const { RangePicker } = DatePicker;
@@ -96,16 +95,8 @@ function OrdersDashboard() {
         setFilters({ ...filters, pageNum: 1, pageSize: parseInt(event.target.value, 10) })
     };
 
-    const handleSortChange = (newSortBy, newIsAscending = false) => {
-        setFilters((prevFilters) => ({
-            ...prevFilters,
-            sortBy: newSortBy,
-            isAscending: newIsAscending,
-        }));
-    };
-
     const fetchListOrder = () => {
-        const params = queryString.stringify({ ...filters, pageNum: filters.pageNum, status: type });
+        const params = queryString.stringify({ ...filters, pageNum: filters.pageNum, billStatus: type });
         getAllBills(params)
             .then((response) => {
                 const { items, meta } = response.data.data;
@@ -153,7 +144,7 @@ function OrdersDashboard() {
                         <div className={cx('order-list-tab')}>
                             <Tabs
                                 activeKey={type}
-                                items={orderStatus}
+                                items={billStatus}
                                 onChange={handleChangeOrderStatus}
                                 size='large'
                             />
@@ -163,13 +154,11 @@ function OrdersDashboard() {
                                 <div className='col-12'>
                                     <div className={cx('date-range-picker')}>
                                         <div className='me-2'>Ngày đặt hàng</div>
-                                        <ConfigProvider locale={viVN}>
-                                            <RangePicker
-                                                onChange={handleDateRangeChange}
-                                                defaultValue={[dayjs(defaultDateRange.start, dateFormat), dayjs(defaultDateRange.end, dateFormat)]}
-                                                format={dateFormat}
-                                            />
-                                        </ConfigProvider>
+                                        <RangePicker
+                                            onChange={handleDateRangeChange}
+                                            defaultValue={[dayjs(defaultDateRange.start, dateFormat), dayjs(defaultDateRange.end, dateFormat)]}
+                                            format={dateFormat}
+                                        />
                                         <Button
                                             variant='outlined'
                                             size='small'
@@ -183,12 +172,10 @@ function OrdersDashboard() {
                                 </div>
                                 <div className='col-12'>
                                     <div className={cx('search-section')}>
-                                        <ConfigProvider locale={viVN}>
-                                            <Space.Compact style={{ flex: 1 }}>
-                                                <Select defaultValue='Mã đơn hàng' onChange={handleSelectChange} options={options} style={{ minWidth: '190px' }} />
-                                                <Input allowClear={true} placeholder={`Nhập ${typeSearch}`} />
-                                            </Space.Compact>
-                                        </ConfigProvider>
+                                        <Space.Compact style={{ flex: 1 }}>
+                                            <Select defaultValue='Mã đơn hàng' onChange={handleSelectChange} options={options} style={{ minWidth: '190px' }} />
+                                            <Input allowClear={true} placeholder={`Nhập ${typeSearch}`} />
+                                        </Space.Compact>
                                         <Button variant='contained' size='small' sx={{ mx: 1 }} color='primary'>Tìm kiếm</Button>
                                         <Button variant='outlined' size='small' color='primary'>Đặt lại</Button>
                                     </div>

@@ -23,8 +23,7 @@ const billStatus = [
 ]
 
 function getChipByStatus(order, handleUpdateStatus) {
-    const { orderStatus } = order;
-    const config = billStatus.find(item => item.status === orderStatus);
+    const config = billStatus.find(item => item.status === order.billStatus);
     const handleDelete = () => {
         handleUpdateStatus(order);
     }

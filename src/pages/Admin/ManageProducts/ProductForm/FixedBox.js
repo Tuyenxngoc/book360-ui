@@ -31,7 +31,7 @@ function FixedBox({ handleSubmit, loading }) {
     }, []);
 
     const handleClose = () => {
-        navigate('/admin/products', { replace: true });
+        navigate('/admin/product', { replace: true });
     }
 
     return (

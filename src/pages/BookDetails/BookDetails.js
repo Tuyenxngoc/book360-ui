@@ -24,6 +24,7 @@ import images from '~/assets';
 import { Button, CircularProgress, Skeleton } from '@mui/material';
 import Slider from 'react-slick';
 import CustomArrows from '~/components/CustomArrows';
+import { getProductDetails, getProductSameAuthor } from '~/services/productService';
 
 const cx = classNames.bind(Style);
 
@@ -79,8 +80,8 @@ function BookDetails() {
                 window.scrollTo(0, 0);
 
                 const [productDetailResponse, sameAuthorBooksResponse] = await Promise.all([
-                    httpRequest.get(`product/get-product-detail/${id}`),
-                    httpRequest.get(`product/get-products-same-author/${id}?pageNum=0&pageSize=5`)
+                    getProductDetails(id),
+                    getProductSameAuthor(id, 'pageSize=5')
                 ]);
 
                 setBookData(productDetailResponse.data.data);
@@ -209,7 +210,7 @@ function BookDetails() {
                                                     {bookData.images.length > 1 ? (
                                                         <Slider {...settingsNav} slidesToShow={Math.min(3, bookData.images.length - 1)} asNavFor={mainSlider} ref={(slider) => setNavSlider(slider)}>
                                                             {bookData.images.map((image, index) => (
-                                                                <img key={index} src={image.image} alt={bookData.name} />
+                                                                <img key={index} src={image.url} alt={bookData.name} />
                                                             ))}
                                                         </Slider>
                                                     ) : (
@@ -223,7 +224,7 @@ function BookDetails() {
                                                     {bookData.images.length > 1 ? (
                                                         <Slider {...settingsMain} asNavFor={navSlider} ref={(slider) => setMainSlider(slider)}>
                                                             {bookData.images.map((image, index) => (
-                                                                <img key={index} src={image.image} alt={bookData.name} />
+                                                                <img key={index} src={image.url} alt={bookData.name} />
                                                             ))}
                                                         </Slider>
                                                     ) : (

@@ -1,0 +1,28 @@
+.dropdown-container {
+    padding: 0 8px 4px;
+}
+
+.input-container {
+    display: flex;
+    align-items: center;
+}
+
+.input {
+    width: 100%;
+    margin-right: 8px;
+}
+
+.button {
+    min-width: 24px;
+    width: 24px;
+    height: 24px;
+}
+
+.add-item {
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    line-height: 24px;
+    width: 100%;
+    color: var(--primary);
+}

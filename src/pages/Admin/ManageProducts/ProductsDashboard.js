@@ -18,7 +18,7 @@ import { toast } from 'react-toastify';
 
 import * as yup from 'yup';
 import { useFormik } from 'formik';
-import { Input, Select } from 'antd';
+import { Input, Select, Space } from 'antd';
 import { getAllCategories } from '~/services/categoryService';
 
 const cx = classNames.bind(Style);
@@ -31,9 +31,44 @@ function inputProps(isError) {
     }
 }
 
+const options = [
+    {
+        value: 'name',
+        label: 'Tên sản phẩm',
+    },
+    {
+        value: 'price',
+        label: 'Giá sản phẩm',
+    },
+    {
+        value: 'discount',
+        label: 'Giảm giá',
+    },
+    {
+        value: 'isbn',
+        label: 'Mã số sách quốc tế',
+    },
+    {
+        value: 'publisher',
+        label: 'Nhà xuất bản',
+    },
+    {
+        value: 'language',
+        label: 'Ngôn ngữ',
+    },
+    {
+        value: 'format',
+        label: 'Định dạng bìa',
+    },
+    {
+        value: 'size',
+        label: 'Kích thước',
+    },
+];
+
 const defaultValue = {
     keyword: '',
-    searchBy: '',
+    searchBy: options[0].value,
     sellerStockMax: '',
     sellerStockMin: '',
     soldMax: '',
@@ -44,12 +79,24 @@ const defaultValue = {
 const validationSchema = yup.object().shape({
     keyword: yup.string(),
     searchBy: yup.string(),
-    sellerStockMin: yup.number(),
-    sellerStockMax: yup.number()
-        .min(yup.ref('sellerStockMin'), 'Số lượng tối đa phải lớn hơn hoặc bằng Số lượng tối thiểu'),
-    soldMin: yup.number(),
-    soldMax: yup.number()
-        .min(yup.ref('soldMin'), 'Doanh số tối đa phải lớn hơn hoặc bằng Doanh số tối thiểu'),
+
+    sellerStockMin: yup.number().typeError('Số lượng tối thiểu phải là một số')
+        .integer('Số lượng sản phẩm phải là số nguyên'),
+
+    sellerStockMax: yup.number().typeError('Số lượng tối đa phải là một số')
+        .integer('Số lượng sản phẩm phải là số nguyên')
+        .when('sellerStockMin', (sellerStockMin, schema) => {
+            return sellerStockMin ? schema.min(sellerStockMin, 'Số lượng tối đa phải lớn hơn hoặc bằng Số lượng tối thiểu') : schema;
+        }),
+
+    soldMin: yup.number().typeError('Doanh số tối thiểu phải là một số')
+        .integer('Doanh số sản phẩm phải là số nguyên'),
+
+    soldMax: yup.number().typeError('Doanh số tối đa phải là một số')
+        .integer('Doanh số sản phẩm phải là số nguyên')
+        .when('soldMin', (soldMin, schema) => {
+            return soldMin ? schema.min(soldMin, 'Doanh số tối đa phải lớn hơn hoặc bằng Doanh số tối thiểu') : schema;
+        }),
 });
 
 function ProductsDashboard() {
@@ -123,50 +170,67 @@ function ProductsDashboard() {
                                 <div className='row'>
                                     <div className='col-6'>
                                         <div className={cx('form-group')}>
-                                            <label className={cx('form-label')} htmlFor='inputKeyword'>Tên sản phẩm</label>
                                             <div className={cx('form-input')}>
-                                                <Input
-                                                    allowClear
-                                                    size='small'
-                                                    id='inputKeyword'
-                                                    name='keyword'
-                                                    placeholder='Vui lòng nhập vào'
-                                                    value={formik.values.keyword}
-                                                    onChange={formik.handleChange}
-                                                    onBlur={formik.handleBlur}
-                                                    {...inputProps(formik.touched.keyword && Boolean(formik.errors.keyword))}
-                                                />
-                                                {formik.touched.keyword && formik.errors.keyword && (
-                                                    <FormHelperText error>{formik.errors.keyword}</FormHelperText>
-                                                )}
+                                                <Space.Compact style={{ flex: 1 }}>
+                                                    <Select
+                                                        id='searchBy'
+                                                        name='searchBy'
+                                                        placeholder='Vui lòng chọn'
+                                                        style={{ minWidth: '190px' }}
+                                                        value={formik.values.searchBy}
+                                                        onChange={(value) => formik.setFieldValue('searchBy', value)}
+                                                        onBlur={formik.handleBlur}
+                                                        options={options}
+                                                        {...inputProps(formik.touched.searchBy && Boolean(formik.errors.searchBy))}
+                                                    />
+                                                    <Input
+                                                        allowClear
+                                                        size='small'
+                                                        id='inputKeyword'
+                                                        name='keyword'
+                                                        placeholder='Vui lòng nhập vào'
+                                                        value={formik.values.keyword}
+                                                        onChange={formik.handleChange}
+                                                        onBlur={formik.handleBlur}
+                                                        {...inputProps(formik.touched.keyword && Boolean(formik.errors.keyword))}
+                                                    />
+                                                </Space.Compact>
                                             </div>
                                         </div>
                                         <div className={cx('form-group')}>
                                             <label className={cx('form-label')} htmlFor='inputQuantityMin'>Kho hàng</label>
-                                            <div className={cx('form-input')}>
-                                                <Input
-                                                    allowClear
-                                                    size='small'
-                                                    id='inputQuantityMin'
-                                                    name='sellerStockMin'
-                                                    placeholder='Tối thiểu'
-                                                    value={formik.values.sellerStockMin}
-                                                    onChange={formik.handleChange}
-                                                    onBlur={formik.handleBlur}
-                                                    {...inputProps(formik.touched.sellerStockMin && Boolean(formik.errors.sellerStockMin))}
-                                                />
-                                                <span className={cx('interim-line')}>-</span>
-                                                <Input
-                                                    allowClear
-                                                    size='small'
-                                                    id='inputQuantityMax'
-                                                    name='sellerStockMax'
-                                                    placeholder='Tối đa'
-                                                    value={formik.values.sellerStockMax}
-                                                    onChange={formik.handleChange}
-                                                    onBlur={formik.handleBlur}
-                                                    {...inputProps(formik.touched.sellerStockMax && Boolean(formik.errors.sellerStockMax))}
-                                                />
+                                            <div style={{ width: '100%' }}>
+                                                <div className={cx('form-input')}>
+                                                    <Input
+                                                        allowClear
+                                                        size='small'
+                                                        id='inputQuantityMin'
+                                                        name='sellerStockMin'
+                                                        placeholder='Tối thiểu'
+                                                        value={formik.values.sellerStockMin}
+                                                        onChange={formik.handleChange}
+                                                        onBlur={formik.handleBlur}
+                                                        {...inputProps(formik.touched.sellerStockMin && Boolean(formik.errors.sellerStockMin))}
+                                                    />
+                                                    <span className={cx('interim-line')}>-</span>
+                                                    <Input
+                                                        allowClear
+                                                        size='small'
+                                                        id='inputQuantityMax'
+                                                        name='sellerStockMax'
+                                                        placeholder='Tối đa'
+                                                        value={formik.values.sellerStockMax}
+                                                        onChange={formik.handleChange}
+                                                        onBlur={formik.handleBlur}
+                                                        {...inputProps(formik.touched.sellerStockMax && Boolean(formik.errors.sellerStockMax))}
+                                                    />
+                                                </div>
+                                                {formik.touched.sellerStockMin && formik.errors.sellerStockMin && (
+                                                    <FormHelperText error>{formik.errors.sellerStockMin}</FormHelperText>
+                                                )}
+                                                {formik.touched.sellerStockMax && formik.errors.sellerStockMax && (
+                                                    <FormHelperText error>{formik.errors.sellerStockMax}</FormHelperText>
+                                                )}
                                             </div>
                                         </div>
                                     </div>
@@ -193,30 +257,38 @@ function ProductsDashboard() {
                                         </div>
                                         <div className={cx('form-group')}>
                                             <label className={cx('form-label')} htmlFor='inputSoldMin'>Doanh số</label>
-                                            <div className={cx('form-input')}>
-                                                <Input
-                                                    allowClear
-                                                    size='small'
-                                                    id='inputSoldMin'
-                                                    name='soldMin'
-                                                    placeholder='Tối thiểu'
-                                                    value={formik.values.soldMin}
-                                                    onChange={formik.handleChange}
-                                                    onBlur={formik.handleBlur}
-                                                    {...inputProps(formik.touched.soldMin && Boolean(formik.errors.soldMin))}
-                                                />
-                                                <span className={cx('interim-line')}>-</span>
-                                                <Input
-                                                    allowClear
-                                                    size='small'
-                                                    id='inputSoldMax'
-                                                    name='soldMax'
-                                                    placeholder='Tối thiểu'
-                                                    value={formik.values.soldMax}
-                                                    onChange={formik.handleChange}
-                                                    onBlur={formik.handleBlur}
-                                                    {...inputProps(formik.touched.soldMax && Boolean(formik.errors.soldMax))}
-                                                />
+                                            <div style={{ width: '100%' }}>
+                                                <div className={cx('form-input')}>
+                                                    <Input
+                                                        allowClear
+                                                        size='small'
+                                                        id='inputSoldMin'
+                                                        name='soldMin'
+                                                        placeholder='Tối thiểu'
+                                                        value={formik.values.soldMin}
+                                                        onChange={formik.handleChange}
+                                                        onBlur={formik.handleBlur}
+                                                        {...inputProps(formik.touched.soldMin && Boolean(formik.errors.soldMin))}
+                                                    />
+                                                    <span className={cx('interim-line')}>-</span>
+                                                    <Input
+                                                        allowClear
+                                                        size='small'
+                                                        id='inputSoldMax'
+                                                        name='soldMax'
+                                                        placeholder='Tối thiểu'
+                                                        value={formik.values.soldMax}
+                                                        onChange={formik.handleChange}
+                                                        onBlur={formik.handleBlur}
+                                                        {...inputProps(formik.touched.soldMax && Boolean(formik.errors.soldMax))}
+                                                    />
+                                                </div>
+                                                {formik.touched.soldMin && formik.errors.soldMin && (
+                                                    <FormHelperText error>{formik.errors.soldMin}</FormHelperText>
+                                                )}
+                                                {formik.touched.soldMax && formik.errors.soldMax && (
+                                                    <FormHelperText error>{formik.errors.soldMax}</FormHelperText>
+                                                )}
                                             </div>
                                         </div>
                                     </div>

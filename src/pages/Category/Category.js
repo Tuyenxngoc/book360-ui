@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import httpRequest from "~/utils/httpRequest";
 import queryString from "query-string";
 import ProductList from "~/components/ProductList";
+import { getProductByCategoryId } from "~/services/productService";
 
 function Category({ keyword = '', sortBy = 'createdDate', isAscending = false }) {
     const { id } = useParams();
@@ -17,8 +18,7 @@ function Category({ keyword = '', sortBy = 'createdDate', isAscending = false })
     //Đọc dữ liệu
     useEffect(() => {
         const params = queryString.stringify(filters);
-        httpRequest
-            .get(`product/get-products-by-categoryId/${id}?${params}`)
+        getProductByCategoryId(id, params)
             .then((response) => { setData(response.data.data) })
             .catch((error) => console.error(error));
     }, [filters, id]);

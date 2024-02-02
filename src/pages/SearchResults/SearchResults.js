@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import queryString from 'query-string';
 import httpRequest from '~/utils/httpRequest';
 import ProductList from '~/components/ProductList';
+import { findProducts } from '~/services/productService';
 
 function SearchResults() {
     const location = useLocation();
@@ -32,8 +33,7 @@ function SearchResults() {
 
     useEffect(() => {
         const params = queryString.stringify({ ...filters, keyword });
-        httpRequest
-            .get(`product/find-products?${params}`)
+        findProducts(params)
             .then((response) => setData(response.data.data))
             .catch((error) => console.error(error));
     }, [filters, keyword]);

@@ -10,7 +10,7 @@ import { CartProvider } from './contexts/CartContext';
 
 import { ConfigProvider } from 'antd';
 import { ThemeProvider } from '@mui/material/styles';
-import theme, { themeAntd } from './contexts/Theme';
+import theme, { antdConfig } from './contexts/Theme';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -19,7 +19,7 @@ root.render(
       <AuthProvider>
         <CartProvider>
           <ThemeProvider theme={theme}>
-            <ConfigProvider theme={themeAntd}>
+            <ConfigProvider {...antdConfig}>
               <App />
             </ConfigProvider>
           </ThemeProvider>
