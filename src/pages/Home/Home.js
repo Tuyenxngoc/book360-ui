@@ -8,38 +8,42 @@ function Home() {
             <ProductCategory>{<Slide></Slide>}</ProductCategory>
             <HomeProduct
                 title={'ƯU ĐÃI'}
-                apiUrl={'product/get-products?sortBy=discount'}
+                sortBy={'discount'}
                 moreLink={'/search?sortBy=discount'}
             />
             <HomeProduct
                 title={'SÁCH MỚI'}
-                apiUrl={'product/get-products?sortBy=createdDate'}
+                sortBy={'createdDate'}
                 moreLink={'/search?sortBy=createdDate'}
             />
             <HomeProduct
                 title={'SÁCH BÁN CHẠY'}
-                apiUrl={'product/get-products?sortBy=selled'}
-                moreLink={'/search?sortBy=selled'}
+                sortBy={'soldQuantity'}
+                moreLink={'/search?sortBy=soldQuantity'}
             />
             <HomeProduct
                 showProductByCategory={true}
-                apiUrl={'product/get-products-by-categoryId/1'}
+                categoryId={3}
+                sortBy={'createdDate'}
                 moreLink={'/category/3'}
             />
             <HomeProduct
                 showProductByCategory={true}
-                apiUrl={'product/get-products-by-categoryId/1'}
+                categoryId={4}
+                sortBy={'createdDate'}
+                moreLink={'/category/4'}
+            />
+            <HomeProduct
+                showProductByCategory={true}
+                categoryId={5}
+                sortBy={'createdDate'}
                 moreLink={'/category/5'}
             />
             <HomeProduct
                 showProductByCategory={true}
-                apiUrl={'product/get-products-by-categoryId/1'}
+                categoryId={6}
+                sortBy={'createdDate'}
                 moreLink={'/category/6'}
-            />
-            <HomeProduct
-                showProductByCategory={true}
-                apiUrl={'product/get-products-by-categoryId/1'}
-                moreLink={'/category/20'}
             />
         </main>
     );

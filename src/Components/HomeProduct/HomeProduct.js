@@ -1,20 +1,16 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-//Component
-import httpRequest from '~/utils/httpRequest';
 import Product from '~/components/Product/Product';
-//Slider
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Slider from 'react-slick';
-//Style
 import Style from './HomeProduct.module.scss'
 import classNames from 'classnames/bind';
-//Icon
 import { Skeleton, Typography } from '@mui/material';
 import CustomArrows from '../CustomArrows';
-import { getProduct, getProducts } from '~/services/productService';
+import { getProductByCategoryId, getProducts } from '~/services/productService';
+import queryString from 'query-string';
 
 const cx = classNames.bind(Style);
 
@@ -27,52 +23,36 @@ const settings = {
     initialSlide: 0,
     nextArrow: <CustomArrows color='secondary' isNextArrow />,
     prevArrow: <CustomArrows color='secondary' />,
-    responsive: [
-        {
-            breakpoint: 1024,
-            settings: {
-                slidesToShow: 4,
-                slidesToScroll: 1,
-            }
-        },
-        {
-            breakpoint: 600,
-            settings: {
-                slidesToShow: 3,
-                slidesToScroll: 1,
-            }
-        },
-        {
-            breakpoint: 480,
-            settings: {
-                slidesToShow: 1,
-                slidesToScroll: 1
-            }
-        }
-    ]
 };
 
-function HomeProduct({ title, showProductByCategory = false, apiUrl, moreLink }) {
+function HomeProduct({ title, showProductByCategory = false, categoryId, moreLink, sortBy }) {
 
-    const [productData, setProductData] = useState();
+    const [productsData, setProductsData] = useState();
 
     useEffect(() => {
-        getProducts()
-            .then((response) => setProductData(response.data.data.items))
-            .catch((error) => console.error(error));
-    }, [apiUrl]);
+        const fetchData = async () => {
+            try {
+                const params = queryString.stringify({ sortBy });
+                const response = showProductByCategory
+                    ? await getProductByCategoryId(categoryId, params)
+                    : await getProducts(params);
+                setProductsData(response.data.data.items);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        fetchData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <div className='home-product'>
             {showProductByCategory &&
                 <div className={cx('banner-home-pro')}>
                     <Link className={cx('banner-home-pro-link')} to={moreLink}>
-                        {productData ? (
-                            productData[0] && productData[0].category && productData[0].category.image ? (
-                                <img src={productData[0].category.image} alt='home-banner' />
-                            ) : (
-                                <></>
-                            )
+                        {productsData ? (
+                            productsData[0]?.category?.image && (<img src={productsData[0].category.image} alt='home-banner' />)
                         ) : (
                             <Skeleton animation='wave' variant='rectangular' height={120} />
                         )}
@@ -84,9 +64,9 @@ function HomeProduct({ title, showProductByCategory = false, apiUrl, moreLink })
                     <div className='row'>
                         <div className='col-12'>
                             <div className={cx('section-title')}>
-                                {productData ? (
+                                {productsData ? (
                                     showProductByCategory ? (
-                                        <h2>{productData[0]?.category?.name}</h2>
+                                        <h2>{productsData[0]?.category?.name}</h2>
                                     ) : (
                                         <h2>{title}</h2>
                                     )
@@ -99,7 +79,7 @@ function HomeProduct({ title, showProductByCategory = false, apiUrl, moreLink })
                         </div>
                         <div className='col-12'>
                             <Slider {...settings}>
-                                {(productData ? productData : Array.from(new Array(10))).map((product, index) => (
+                                {(productsData ? productsData : Array.from({ length: 10 })).map((product, index) => (
                                     <div key={index} className='px-2 mt-2'>
                                         <Product data={product}></Product>
                                     </div>
@@ -108,7 +88,7 @@ function HomeProduct({ title, showProductByCategory = false, apiUrl, moreLink })
                         </div>
                         <div className='col-12'>
                             <div className={cx('more-link')}>
-                                {productData ? (
+                                {productsData ? (
                                     <Link to={moreLink}>Xem thêm &gt;&gt;</Link>
                                 ) : (
                                     <Typography component='div' style={{ display: 'flex', justifyContent: 'right', alignItems: 'center' }}>
@@ -127,8 +107,9 @@ function HomeProduct({ title, showProductByCategory = false, apiUrl, moreLink })
 HomeProduct.propTypes = {
     title: PropTypes.string,
     showProductByCategory: PropTypes.bool,
-    apiUrl: PropTypes.string.isRequired,
-    moreLink: PropTypes.string.isRequired
+    categoryId: PropTypes.number,
+    moreLink: PropTypes.string.isRequired,
+    sortBy: PropTypes.string.isRequired,
 }
 
 export default HomeProduct;

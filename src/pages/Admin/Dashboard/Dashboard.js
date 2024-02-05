@@ -1,15 +1,14 @@
 import { DollarCircleOutlined, ShoppingCartOutlined, ShoppingOutlined, UserOutlined } from "@ant-design/icons";
-import { Button, Space } from "antd";
+import { Space } from "antd";
 import DashBoardCard from "~/components/AdminDashBoardCard";
 import Style from './Dashboard.module.scss';
 import classNames from "classnames/bind";
 import { useEffect, useState } from "react";
 import { getCountCustomer } from "~/services/customerService";
 import { getStockQuantity } from "~/services/productService";
-import { getTodo, getCountBills } from "~/services/billService";
+import { getCountBill } from "~/services/billService";
 import { Link } from "react-router-dom";
 import { Avatar } from "@mui/material";
-import queryString from "query-string";
 const cx = classNames.bind(Style);
 
 const dataUser = [
@@ -212,17 +211,9 @@ function Dashboard() {
                 setCountProducts(response.data.data)
             })
             .catch((error) => { console.log(error); })
-        getCountBills()
+        getCountBill()
             .then((response) => {
                 setCountBills(response.data.data)
-            })
-            .catch((error) => { console.log(error); })
-    }, []);
-
-    useEffect(() => {
-        getTodo()
-            .then((response) => {
-                setTodos(response.data.data);
             })
             .catch((error) => { console.log(error); })
     }, []);

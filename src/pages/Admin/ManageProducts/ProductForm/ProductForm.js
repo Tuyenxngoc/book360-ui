@@ -14,7 +14,7 @@ import { faEye, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 
-import { uploadImage } from '~/services/customerService';
+import { uploadImage, uploadImages } from '~/services/customerService';
 import { createProduct, getProduct } from '~/services/productService';
 import { getAllBookSet } from '~/services/bookSetService';
 import { getAllAuthors } from '~/services/authorService';
@@ -186,23 +186,26 @@ function ProductForm() {
     const handleImageChange = async (e) => {
         const files = e.target.files;
         if (files) {
-            if (files.length <= 9) {
-                setCountImagesLoad(files.length);
-                const newImages = [];
-                try {
-                    await Promise.all(Array.from(files).map(async (file) => {
-                        const response = await uploadImage(file);
-                        newImages.push(response.data.data);
-                    }));
-                    formik.setFieldValue('imageURLs', [...formik.values.imageURLs, ...newImages]);
-                    message.success('Tải tập tin thành công.');
-                    setCountImagesLoad(0);
-                } catch (error) {
-                    console.error(error);
-                }
-            } else {
-                toast.error('Bạn chỉ có thể tải lên không quá 9 file');
+            if (countImagesLoad > 0) {
+                toast.error("Vui lòng chờ cho quá trình tải ảnh hoàn tất.");
+                return;
             }
+            if (files.length > 9) {
+                toast.error('Bạn chỉ có thể tải lên không quá 9 file');
+                return;
+            }
+
+            setCountImagesLoad(files.length);
+            try {
+                const response = await uploadImages(files);
+                formik.setFieldValue('imageURLs', [...formik.values.imageURLs, ...response.data.data]);
+                message.success('Tải tập tin thành công.');
+            } catch (error) {
+                console.error(error);
+                message.error('Tải tập tin thất bại.');
+            }
+
+            setCountImagesLoad(0);
             e.target.value = null;
         }
     };

@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { axiosPrivate } from "~/utils/httpRequest";
 
 import Breadcrumb from "~/components/Breadcrumb";
 
@@ -14,6 +13,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import MoneyDisplay from "~/components/MoneyDisplay";
 import { toast } from "react-toastify";
 import useCart from "~/hooks/useCart";
+import { getProductsFromCart } from "~/services/cartService";
 
 const cx = classNames.bind(Style);
 
@@ -30,7 +30,7 @@ function Cart() {
 
     const fetchCartItems = async () => {
         try {
-            const response = await axiosPrivate.get('cart/get-products');
+            const response = await getProductsFromCart()
             setCartItems(response.data.data);
         } catch (error) {
             console.error(error);

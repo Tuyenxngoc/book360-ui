@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { DatePicker, Input, Select, Space, Tabs } from 'antd';
 import { Button, TablePagination } from '@mui/material';
-import { getAllBills, getStatistic } from '~/services/billService';
 import { billStatus } from '~/config/contans';
 import { toast } from 'react-toastify';
 import { saveAs } from 'file-saver';
@@ -97,15 +96,15 @@ function OrdersDashboard() {
 
     const fetchListOrder = () => {
         const params = queryString.stringify({ ...filters, pageNum: filters.pageNum, billStatus: type });
-        getAllBills(params)
-            .then((response) => {
-                const { items, meta } = response.data.data;
-                setMeta(meta);
-                setDataOrders(items);
-            })
-            .catch((error) => {
-                toast.error('Đã có lỗi xảy ra khi lấy dữ liệu đơn hàng');
-            })
+        // getAllBills(params)
+        //     .then((response) => {
+        //         const { items, meta } = response.data.data;
+        //         setMeta(meta);
+        //         setDataOrders(items);
+        //     })
+        //     .catch((error) => {
+        //         toast.error('Đã có lỗi xảy ra khi lấy dữ liệu đơn hàng');
+        //     })
     }
 
     useEffect(() => {
@@ -118,17 +117,17 @@ function OrdersDashboard() {
             timeStart: defaultDateRange.start,
             timeEnd: defaultDateRange.end,
         });
-        getStatistic(params)
-            .then((response) => {
-                const formattedStart = defaultDateRange.start.replace(/-/g, '');
-                const formattedEnd = defaultDateRange.end.replace(/-/g, '');
-                const filename = `Order.all.${formattedStart}_${formattedEnd}.xlsx`;
+        // getStatistic(params)
+        //     .then((response) => {
+        //         const formattedStart = defaultDateRange.start.replace(/-/g, '');
+        //         const formattedEnd = defaultDateRange.end.replace(/-/g, '');
+        //         const filename = `Order.all.${formattedStart}_${formattedEnd}.xlsx`;
 
-                saveAs(response.data, filename);
-            })
-            .catch((error) => {
-                toast.error('Đã có lỗi xảy ra khi lấy dữ liệu đơn hàng');
-            })
+        //         saveAs(response.data, filename);
+        //     })
+        //     .catch((error) => {
+        //         toast.error('Đã có lỗi xảy ra khi lấy dữ liệu đơn hàng');
+        //     })
     }
 
     const handleDateRangeChange = (dates) => {

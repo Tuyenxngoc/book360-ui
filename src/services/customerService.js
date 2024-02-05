@@ -21,10 +21,16 @@ export const getCountCustomer = () => {
 }
 
 export const uploadImage = (file) => {
-    const formData = new FormData();
-    formData.append('file', file);
+    uploadImages(file);
+}
 
-    return axiosPrivate.post(`customer/upload-image`, formData, {
+export const uploadImages = (files) => {
+    const formData = new FormData();
+    for (let i = 0; i < files.length; i++) {
+        formData.append('files', files[i]);
+    }
+
+    return axiosPrivate.post('admin/customer/upload-images', formData, {
         headers: {
             'Content-Type': 'multipart/form-data',
         },

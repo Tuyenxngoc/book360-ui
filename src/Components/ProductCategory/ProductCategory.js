@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 //Icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faBook } from '@fortawesome/free-solid-svg-icons';
+import { faAngleRight, faBars, faBook } from '@fortawesome/free-solid-svg-icons';
 import { Skeleton } from '@mui/material';
 
 //Style
@@ -24,7 +24,7 @@ function ProductCategory({ children }) {
     const [listCategory, setListCategory] = useState();
 
     useEffect(() => {
-        getCategories()
+        getCategories('pageSize=7')
             .then((response) => {
                 const { items } = response.data.data;
                 setListCategory(items);
@@ -44,27 +44,43 @@ function ProductCategory({ children }) {
                                     Danh mục sản phẩm
                                 </h2>
                                 <ul className={cx('list')}>
-                                    {listCategory.map((item, index) => {
-                                        if (index > 7) {
-                                            return null;
-                                        }
-                                        return (
-                                            <li key={item.id} className={cx('item')}>
-                                                <Link to={`category/${item.id}`}>
-                                                    <FontAwesomeIcon icon={faBook} />
-                                                    <span>{item.name.toUpperCase()}</span>
-                                                </Link>
-                                            </li>
-                                        )
-                                    })}
-
                                     <li className={cx('item')}>
                                         <Link to={`/search?keyword=`}>
                                             <FontAwesomeIcon icon={faBook} />
                                             <span>Tất cả sản phẩm</span>
                                         </Link>
                                     </li>
-
+                                    {listCategory.map((item, index) => (
+                                        <li key={index} className={cx('item')}>
+                                            <Link to={`category/${item.id}`}>
+                                                <FontAwesomeIcon icon={faBook} />
+                                                <span>{item.name.toUpperCase()}</span>
+                                            </Link>
+                                        </li>
+                                    ))}
+                                    <li className={cx('item', 'sup-item')}>
+                                        <Link>
+                                            <FontAwesomeIcon icon={faBook} />
+                                            <span>Độ tuổi <FontAwesomeIcon icon={faAngleRight} /></span>
+                                        </Link>
+                                        <ul className={cx('sub-item')}>
+                                            <li className={cx('item')}>
+                                                <Link to={'/search?keyword=y'}>Nhà trẻ, Mẫu giáo (0-5 tuổi)</Link>
+                                            </li>
+                                            <li className={cx('item')}>
+                                                <Link to={'/search?keyword=y'}>Nhi đồng (6-10 tuổi)</Link>
+                                            </li>
+                                            <li className={cx('item')}>
+                                                <Link to={'/search?keyword=y'}> Thiếu niên (11-15 tuổi)</Link>
+                                            </li>
+                                            <li className={cx('item')}>
+                                                <Link to={'/search?keyword=y'}>Tuổi mới lớn (16-18 tuổi)</Link>
+                                            </li>
+                                            <li className={cx('item')}>
+                                                <Link to={'/search?keyword=y'}>Tuổi trưởng thành (Trên 18 tuổi)</Link>
+                                            </li>
+                                        </ul>
+                                    </li>
                                 </ul>
                             </div>
                         ) : (

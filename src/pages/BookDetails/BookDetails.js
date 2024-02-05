@@ -2,9 +2,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 
-// External libraries
-import httpRequest from '~/utils/httpRequest';
-
 // Styles
 import Style from './BookDetails.module.scss';
 import classNames from 'classnames/bind';
@@ -14,7 +11,7 @@ import MoneyDisplay from '~/components/MoneyDisplay';
 import HomeProduct from '~/components/HomeProduct';
 import Breadcrumbs from '~/components/Breadcrumb/Breadcrumb';
 
-import { addProductToCart } from '~/services/apiRequest';
+import { addProductToCart } from '~/services/cartService';
 import useAuth from '~/hooks/useAuth';
 import { toast } from 'react-toastify';
 import Product from '~/components/Product';
@@ -25,6 +22,7 @@ import { Button, CircularProgress, Skeleton } from '@mui/material';
 import Slider from 'react-slick';
 import CustomArrows from '~/components/CustomArrows';
 import { getProductDetails, getProductSameAuthor } from '~/services/productService';
+import InputNumber from '~/components/InputNumber';
 
 const cx = classNames.bind(Style);
 
@@ -55,6 +53,7 @@ const calculateDiscountedPrice = (price, discount) => {
     return discount > 0 ? price - (price * discount / 100) : price;
 };
 
+
 function BookDetails() {
     const { id } = useParams();
 
@@ -72,6 +71,7 @@ function BookDetails() {
 
     const [isSend, setIsSend] = useState(false);
     const [isFavorite, setIsFavorite] = useState(false);
+
     const [quantity, setQuantity] = useState(1);
 
     useEffect(() => {
@@ -138,7 +138,15 @@ function BookDetails() {
                     toast.success('Thêm vào giỏ hàng thành công');
                 })
                 .catch((error) => {
-                    toast.error('Đã có lỗi sảy ra, vui lòng thử lại sau');
+                    let message = '';
+                    if (!error?.response) {
+                        message = ('Máy chủ không phản hồi');
+                    } else if (error.response?.data) {
+                        message = error.response.data.message;
+                    } else {
+                        message = ('Đã có lỗi sảy ra, vui lòng thử lại sau');
+                    }
+                    toast.error(message);
                 });
         } else {
             navigate('/login', { replace: true, state: { from: location } });
@@ -152,7 +160,15 @@ function BookDetails() {
                     navigate('/cart', { state: { productIdSelect: [bookData.productId] } });
                 })
                 .catch((error) => {
-                    toast.error('Đã có lỗi sảy ra, vui lòng thử lại sau');
+                    let message = '';
+                    if (!error?.response) {
+                        message = ('Máy chủ không phản hồi');
+                    } else if (error.response?.data) {
+                        message = error.response.data.message;
+                    } else {
+                        message = ('Đã có lỗi sảy ra, vui lòng thử lại sau');
+                    }
+                    toast.error(message);
                 });
 
         } else {
@@ -166,25 +182,6 @@ function BookDetails() {
         }
         return 0;
     }, [bookData]);
-
-    const maxQuantity = 10;
-
-    const increaseQuantity = () => {
-        if (quantity < maxQuantity) {
-            setQuantity(quantity + 1);
-        }
-    };
-    const decreaseQuantity = () => {
-        if (quantity > 1) {
-            setQuantity(quantity - 1);
-        }
-    };
-    const handleQuantityChange = (event) => {
-        const newQuantity = parseInt(event.target.value, 10);
-        if (!isNaN(newQuantity) && newQuantity >= 1 && newQuantity <= maxQuantity) {
-            setQuantity(newQuantity);
-        }
-    };
 
     return (
         <>
@@ -269,78 +266,120 @@ function BookDetails() {
                                             </div>
                                         </div>
 
-                                        <div className={cx('pro-short-desc')}>
-                                            <ul>
-                                                <li>{`ISBN: ${bookData.isbn}`}</li>
-                                                <li>Tác giả:
-                                                    {bookData.authors.map((author, index) => {
-                                                        return <Link key={index} to={`/author/${author.id}`}>{author.fullName}</Link>
-                                                    })}
-                                                </li>
-                                                <li>Đối tượng: </li>
-                                                <li>Khuôn Khổ: {bookData.size}</li>
-                                                <li>Số trang: {bookData.pageCount}</li>
-                                                <li>Định dạng: {bookData.format}</li>
-                                                <li>Trọng lượng: {bookData.weight} gram</li>
-                                            </ul>
-                                        </div>
-
-                                        <div className={cx('pro-rating')}>
-                                            <div className={cx('pro-selled')}>
-                                                {`Đã bán: ${bookData.soldQuantity}`}
-                                            </div>
-                                        </div>
-
-                                        <div className={cx('product-quantity')}>
-                                            <span>Chọn số lượng: </span>
-                                            <div className={cx('qty-addcart')}>
-                                                <button
-                                                    className={cx('btn', 'decrease')}
-                                                    onClick={decreaseQuantity}
-                                                >
-                                                    -
-                                                </button>
-                                                <input
-                                                    value={quantity}
-                                                    onChange={handleQuantityChange}
-                                                    className={cx('input')}
-                                                    type='text' />
-                                                <button
-                                                    className={cx('btn', 'increase')}
-                                                    onClick={increaseQuantity}
-                                                >
-                                                    +
-                                                </button>
-                                            </div>
-                                            <div className={cx('quantity')}>
-                                                {bookData.stockQuantity > 0 ? `Còn ${bookData.stockQuantity} sản phẩm` : 'Tạm hết hàng'}
-                                            </div>
-                                        </div>
-
-                                        {bookData.stockQuantity !== 0 &&
-                                            <div className='product-actions'>
-                                                <div className='row'>
-                                                    <div className='col'>
-                                                        <Button
-                                                            variant='contained'
-                                                            fullWidth
-                                                            onClick={handleAddProductToCart}
-                                                        >
-                                                            Thêm vào giỏ hàng
-                                                        </Button>
-                                                    </div>
-                                                    <div className='col'>
-                                                        <Button
-                                                            variant='contained'
-                                                            fullWidth
-                                                            onClick={handleBuyNow}
-                                                        >
-                                                            Mua ngay
-                                                        </Button>
+                                        <div className='containerd'>
+                                            <div className='row g-0'>
+                                                <div className='col-5'>
+                                                    <div className={cx('pro-short-desc')}>
+                                                        <ul>
+                                                            <li>
+                                                                <span> ISBN: </span>
+                                                                <strong>{bookData.isbn}</strong>
+                                                            </li>
+                                                            <li>
+                                                                <div className='row g-0'>
+                                                                    <div className='col-3'>
+                                                                        <span> Tác giả: </span>
+                                                                    </div>
+                                                                    <div className='col-9'>
+                                                                        {bookData.authors.map((author, index) =>
+                                                                            <div className='mb-1' key={index}>
+                                                                                <Link to={`/author/${author.id}`}>{author.fullName}</Link>
+                                                                            </div>
+                                                                        )}
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                            <li>
+                                                                <div className='row g-0'>
+                                                                    <div className='col-3'>
+                                                                        <span> Đối tượng: </span>
+                                                                    </div>
+                                                                    <div className='col-9'>
+                                                                        {bookData.ageClassifications.map((item, index) =>
+                                                                            <div className='mb-1' key={index}>
+                                                                                <Link to={`/author/${item.key}`}>{item.label}</Link>
+                                                                            </div>
+                                                                        )}
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                            <li>
+                                                                <span> Khuôn Khổ: </span>
+                                                                {bookData.size}
+                                                                <span> cm </span>
+                                                            </li>
+                                                            <li>
+                                                                <span> Số trang: </span>
+                                                                {bookData.pageCount}
+                                                            </li>
+                                                            <li>
+                                                                <span> Định dạng: </span>
+                                                                {bookData.coverType}
+                                                            </li>
+                                                            <li>
+                                                                <span> Trọng lượng: </span>
+                                                                {bookData.weight}
+                                                                <span> gram </span>
+                                                            </li>
+                                                            <li>
+                                                                <span> Bộ sách: </span>
+                                                                <Link to={`/${bookData.bookSet.id}`}>{bookData.bookSet.name}</Link>
+                                                            </li>
+                                                        </ul>
                                                     </div>
                                                 </div>
+                                                <div className='col-7'>
+                                                    <div className={cx('pro-rating')}>
+                                                        <div className={cx('pro-selled')}>
+                                                            {`Đã bán: ${bookData.soldQuantity}`}
+                                                        </div>
+                                                    </div>
+
+                                                    <div className={cx('product-quantity')}>
+                                                        <span>Chọn số lượng: </span>
+                                                        <InputNumber
+                                                            maxQuantity={bookData.stockQuantity}
+                                                            setQuantity={setQuantity}
+                                                        />
+                                                        <div className={cx('quantity')}>
+                                                            {`Còn ${bookData.stockQuantity} sản phẩm`}
+                                                        </div>
+                                                    </div>
+
+                                                    {bookData.stockQuantity !== 0 ?
+                                                        <div className='product-actions'>
+                                                            <div className='row g-2'>
+                                                                <div className='col-12'>
+                                                                    <Button
+                                                                        variant='contained'
+                                                                        fullWidth
+                                                                        onClick={handleAddProductToCart}
+                                                                    >
+                                                                        Thêm vào giỏ hàng
+                                                                    </Button>
+                                                                </div>
+                                                                <div className='col-12'>
+                                                                    <Button
+                                                                        variant='contained'
+                                                                        onClick={handleBuyNow}
+                                                                        sx={{ width: '50%' }}
+                                                                    >
+                                                                        Mua ngay
+                                                                    </Button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        :
+                                                        <Button
+                                                            variant='contained'
+                                                            fullWidth
+                                                        >
+                                                            TẠM HẾT HÀNG
+                                                        </Button>
+                                                    }
+                                                </div>
                                             </div>
-                                        }
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -349,7 +388,7 @@ function BookDetails() {
 
                     <div className='container'>
                         <div className='row'>
-                            <div className='col-8'>
+                            <div className='col'>
                                 <div className={cx('product-description-wrapper')}>
                                     <h2 className={cx('tile')}>Mô tả sản phẩm</h2>
                                     <div
@@ -364,10 +403,19 @@ function BookDetails() {
                                         <h2 className={cx('tile')}>Sách cùng tác giả</h2>
                                         <div className='row'>
                                             {sameAuthorBookData.map((data, index) => (
-                                                <div key={index} className='col'>
+                                                <div key={index} className='col-12'>
                                                     <Product data={data} small ></Product>
                                                 </div>
                                             ))}
+                                            {bookData && (
+                                                <div className='col-12 text-center'>
+                                                    <Button
+                                                        onClick={() => { navigate(`/author/${bookData.authors[0]?.id}`); }}
+                                                    >
+                                                        Xem thêm
+                                                    </Button>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
@@ -410,23 +458,37 @@ function BookDetails() {
                                                 <Skeleton animation="wave" variant="rectangular" width='50%' height={20} />
                                             </div>
                                         </div>
-                                        <div className={cx('pro-short-desc')}>
-                                            <Skeleton className='mb-1' animation="wave" variant="rectangular" width='40%' height={20} />
-                                            <Skeleton className='mb-1' animation="wave" variant="rectangular" width='40%' height={20} />
-                                        </div>
-                                        <div className={cx('pro-rating')}>
-                                            <Skeleton animation="wave" variant="rectangular" width='20%' height={20} />
-                                        </div>
-                                        <div className={cx('product-quantity')}>
-                                            <Skeleton animation="wave" variant="rectangular" width='60%' height={40} />
-                                        </div>
-                                        <div className='product-actions'>
-                                            <div className='row'>
-                                                <div className='col'>
-                                                    <Skeleton animation="wave" variant="rounded" width='100%' height={40} />
+                                        <div className='containerd'>
+                                            <div className='row g-0'>
+                                                <div className='col-5'>
+                                                    <div className={cx('pro-short-desc')}>
+                                                        <Skeleton className='mb-1' animation="wave" variant="rectangular" width='80%' height={20} />
+                                                        <Skeleton className='mb-1' animation="wave" variant="rectangular" width='75%' height={20} />
+                                                        <Skeleton className='mb-1' animation="wave" variant="rectangular" width='85%' height={20} />
+                                                        <Skeleton className='mb-1' animation="wave" variant="rectangular" width='70%' height={20} />
+                                                        <Skeleton className='mb-1' animation="wave" variant="rectangular" width='60%' height={20} />
+                                                        <Skeleton className='mb-1' animation="wave" variant="rectangular" width='60%' height={20} />
+                                                    </div>
                                                 </div>
-                                                <div className='col'>
-                                                    <Skeleton animation="wave" variant="rounded" width='100%' height={40} />
+                                                <div className='col-7'>
+                                                    <div className={cx('pro-rating')}>
+                                                        <Skeleton animation="wave" variant="rectangular" width='20%' height={20} />
+                                                    </div>
+
+                                                    <div className={cx('product-quantity')}>
+                                                        <Skeleton animation="wave" variant="rectangular" width='60%' height={40} />
+                                                    </div>
+
+                                                    <div className='product-actions'>
+                                                        <div className='row g-2'>
+                                                            <div className='col-12'>
+                                                                <Skeleton animation="wave" variant="rounded" width='100%' height={40} />
+                                                            </div>
+                                                            <div className='col-12'>
+                                                                <Skeleton animation="wave" variant="rounded" width='50%' height={40} />
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -467,6 +529,9 @@ function BookDetails() {
                                                 </div>
                                             </div>
                                         ))}
+                                        <div className='col-12 d-flex justify-content-center'>
+                                            <Skeleton animation="wave" variant="rounded" width='30%' height={30} />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -475,7 +540,16 @@ function BookDetails() {
                 </>
             )
             }
-            <HomeProduct title={'SÁCH MỚI'} apiUrl={'product/get-products?sortBy=createdDate'} moreLink={'/search'}></HomeProduct>
+            <HomeProduct
+                title={'ƯU ĐÃI'}
+                sortBy={'discount'}
+                moreLink={'/search?sortBy=discount'}
+            />
+            <HomeProduct
+                title={'SÁCH MỚI'}
+                sortBy={'createdDate'}
+                moreLink={'/search?sortBy=createdDate'}
+            />
         </>
     )
 }

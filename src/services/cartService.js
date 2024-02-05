@@ -1,21 +1,22 @@
 import { axiosPrivate } from "~/utils/httpRequest"
 
-export const updateCartDetail = (valus) => {
-    return axiosPrivate.put('cart/product/update', valus);
-}
-
-export const addProductToCart = (valus) => {
-    return axiosPrivate.post('cart/product/add', valus);
-}
-
-export const getTotalProductFromCart = () => {
+export const getTotalProducts = () => {
     return axiosPrivate.get('cart/product/total');
-}
+};
 
-export const getProductFromCart = () => {
+export const addProductToCart = (productId, quantity) => {
+    const data = { productId, quantity }
+    return axiosPrivate.post('cart/product/add', data);
+};
+
+export const getProductsFromCart = () => {
     return axiosPrivate.get('cart/product/get');
-}
+};
+
+export const updateCartDetail = (values) => {
+    return axiosPrivate.put('cart/product/update', values);
+};
 
 export const deleteProductFromCart = (productId) => {
-    return axiosPrivate.get(`cart/product/delete/${productId}`);
-}
+    return axiosPrivate.delete(`cart/product/delete/${productId}`);
+};

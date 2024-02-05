@@ -87,7 +87,20 @@ function DropdownRender({ menu, field, setFieldValue, options, customValues, set
 DropdownRender.propTypes = {
     menu: PropTypes.node.isRequired,
     field: PropTypes.string.isRequired,
-    formik: PropTypes.object.isRequired,
+    setFieldValue: PropTypes.func.isRequired,
+    options: PropTypes.arrayOf(
+        PropTypes.shape({
+            value: PropTypes.string.isRequired,
+            label: PropTypes.string.isRequired,
+        })
+    ).isRequired,
+    customValues: PropTypes.arrayOf(
+        PropTypes.shape({
+            value: PropTypes.string.isRequired,
+            label: PropTypes.string.isRequired,
+        })
+    ).isRequired,
+    setCustomValues: PropTypes.func.isRequired,
 };
 
 export default DropdownRender;

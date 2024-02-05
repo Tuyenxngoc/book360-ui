@@ -21,7 +21,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave } from '@fortawesome/free-regular-svg-icons';
 import { faArrowLeft, faClipboard } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
-import { getBillInfo, getBills } from '~/services/billService';
+import { getBills } from '~/services/billService';
 import Product from '~/components/Product';
 import MoneyDisplay from '~/components/MoneyDisplay';
 
@@ -37,11 +37,11 @@ function OrderForm() {
 
     useEffect(() => {
         if (orderId) {
-            getBillInfo(orderId)
-                .then((response) => {
-                    setData(response.data.data);
-                })
-                .catch((error) => { console.log(error); })
+            // getBillInfo(orderId)
+            //     .then((response) => {
+            //         setData(response.data.data);
+            //     })
+            //     .catch((error) => { console.log(error); })
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [orderId]);
