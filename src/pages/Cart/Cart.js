@@ -5,15 +5,13 @@ import Breadcrumb from "~/components/Breadcrumb";
 import { Button, Checkbox } from "@mui/material";
 import CartItem from "~/components/CartItem";
 
-import { removeCartItems, updatedCartItems } from "~/services/apiRequest";
-
 import Style from './Cart.module.scss';
 import classNames from "classnames/bind";
 import { useLocation, useNavigate } from "react-router-dom";
 import MoneyDisplay from "~/components/MoneyDisplay";
 import { toast } from "react-toastify";
 import useCart from "~/hooks/useCart";
-import { getProductsFromCart } from "~/services/cartService";
+import { deleteProductFromCart, getProductsFromCart, updateCartDetail } from "~/services/cartService";
 
 const cx = classNames.bind(Style);
 
@@ -53,18 +51,18 @@ function Cart() {
         setTotalPrice(totalPrice);
     }, [cartItems, checked]);
 
-    const handleUpdateQuantity = (productId, newQuantity, setIsUpdate) => {
+    const handleUpdateQuantity = (productId, newQuantity, setIsUpdate, setQuantity) => {
         setIsUpdate(true);
-        updatedCartItems(productId, newQuantity)
+        updateCartDetail(productId, newQuantity)
             .then((response) => {
-                updateTotalProducts();
                 const newCartItems = cartItems.map((item) =>
                     item.productId === productId ? { ...item, quantity: newQuantity } : item
                 );
                 setCartItems(newCartItems);
+                setQuantity(newQuantity);
+                updateTotalProducts();
             })
             .catch((error) => {
-                console.error(error);
             })
             .finally(() => {
                 setIsUpdate(false);
@@ -72,7 +70,7 @@ function Cart() {
     };
 
     const handleDeleteProduct = (productId) => {
-        removeCartItems(productId)
+        deleteProductFromCart(productId)
             .then((response) => {
                 updateTotalProducts();
                 setCartItems(cartItems.filter(item => item.productId !== productId))
@@ -101,7 +99,7 @@ function Cart() {
 
     function handleSubmit() {
         if (checked.length === 0) {
-            toast.warn("Vui lòng chọn sản phẩm để thanh toán")
+            toast.info("Vui lòng chọn sản phẩm để thanh toán")
             return;
         }
         const outputArray = checked.map((productId) => {

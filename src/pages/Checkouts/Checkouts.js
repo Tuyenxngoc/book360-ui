@@ -130,7 +130,7 @@ function Checkouts() {
             phoneNumber: customer.phoneNumber,
             email: customer.email,
             shippingAddress: customer.address,
-            paymentMethod: 'cod',
+            paymentMethod: 'CASH',
             note: '',
             listProductId: listProducts.map(item => item.productId)
         })

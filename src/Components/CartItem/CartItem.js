@@ -8,6 +8,8 @@ import MoneyDisplay from '~/components/MoneyDisplay';
 
 import Style from './CartItem.module.scss';
 import classNames from 'classnames/bind';
+import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const cx = classNames.bind(Style);
 
@@ -17,16 +19,16 @@ function CartItem({ data: product, onUpdateQuantity, onDeleteProduct, checked, o
     const [isUpdate, setIsUpdate] = useState(false);
 
     const handleIncrement = () => {
-        const newQuantity = quantity + 1;
-        setQuantity(newQuantity);
-        onUpdateQuantity(product.productId, newQuantity, setIsUpdate);
+        if (quantity < 100) {
+            const newQuantity = quantity + 1;
+            onUpdateQuantity(product.productId, newQuantity, setIsUpdate, setQuantity);
+        }
     };
 
     const handleDecrement = () => {
         if (quantity > 1) {
             const newQuantity = quantity - 1;
-            setQuantity(newQuantity);
-            onUpdateQuantity(product.productId, newQuantity, setIsUpdate);
+            onUpdateQuantity(product.productId, newQuantity, setIsUpdate, setQuantity);
         }
     };
 
@@ -37,10 +39,6 @@ function CartItem({ data: product, onUpdateQuantity, onDeleteProduct, checked, o
     const handleRemoveItem = () => {
         onDeleteProduct(product.productId);
     }
-
-    const handleQuantityChange = (e) => {
-        setQuantity(e.target.value);
-    };
 
     const calculateDiscountedPrice = () => {
         return product.discount > 0
@@ -70,15 +68,18 @@ function CartItem({ data: product, onUpdateQuantity, onDeleteProduct, checked, o
             </td>
             <td className={cx('quantity-control-cell')}>
                 <div className={cx('quantity-control')}>
-                    <button className={cx('quantity-button')} onClick={handleDecrement} disabled={isUpdate}>-</button>
+                    <button className={cx('quantity-button')} onClick={handleDecrement} disabled={isUpdate}>
+                        <FontAwesomeIcon icon={faMinus} />
+                    </button>
                     <input
                         className={cx('quantity-input')}
                         type='text'
                         value={quantity}
-                        disabled={isUpdate}
-                        onChange={handleQuantityChange}
+                        disabled
                     />
-                    <button className={cx('quantity-button')} onClick={handleIncrement} disabled={isUpdate}>+</button>
+                    <button className={cx('quantity-button')} onClick={handleIncrement} disabled={isUpdate}>
+                        <FontAwesomeIcon icon={faPlus} />
+                    </button>
                 </div>
             </td>
             <td className={cx('total-price-cell')}>

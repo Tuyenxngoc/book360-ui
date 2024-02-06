@@ -13,8 +13,9 @@ export const getProductsFromCart = () => {
     return axiosPrivate.get('cart/product/get');
 };
 
-export const updateCartDetail = (values) => {
-    return axiosPrivate.put('cart/product/update', values);
+export const updateCartDetail = (productId, quantity) => {
+    const data = { productId, quantity };
+    return axiosPrivate.put('cart/product/update', data);
 };
 
 export const deleteProductFromCart = (productId) => {
