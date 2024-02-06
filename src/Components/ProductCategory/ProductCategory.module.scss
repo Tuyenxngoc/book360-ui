@@ -32,7 +32,7 @@
     margin: 0px;
     border-bottom: 1px solid #e6e6e6;
 
-    a {
+    .item-link {
         display: block;
         padding: 10px 15px;
         background: #ffffff;
@@ -49,6 +49,12 @@
 
 .sup-item {
     position: relative;
+
+    .item-link {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
 
     .sub-item {
         display: none;

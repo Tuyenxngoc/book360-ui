@@ -45,39 +45,68 @@ function ProductCategory({ children }) {
                                 </h2>
                                 <ul className={cx('list')}>
                                     <li className={cx('item')}>
-                                        <Link to={`/search?keyword=`}>
+                                        <Link className={cx('item-link')} to={`/search?keyword=`}>
                                             <FontAwesomeIcon icon={faBook} />
                                             <span>Tất cả sản phẩm</span>
                                         </Link>
                                     </li>
                                     {listCategory.map((item, index) => (
                                         <li key={index} className={cx('item')}>
-                                            <Link to={`category/${item.id}`}>
+                                            <Link className={cx('item-link')} to={`category/${item.id}`}>
                                                 <FontAwesomeIcon icon={faBook} />
                                                 <span>{item.name.toUpperCase()}</span>
                                             </Link>
                                         </li>
                                     ))}
                                     <li className={cx('item', 'sup-item')}>
-                                        <Link>
-                                            <FontAwesomeIcon icon={faBook} />
-                                            <span>Độ tuổi <FontAwesomeIcon icon={faAngleRight} /></span>
-                                        </Link>
+                                        <div className={cx('item-link', 'd-flex', 'justify-content-between')}>
+                                            <div>
+                                                <FontAwesomeIcon icon={faBook} />
+                                                <span>Độ tuổi</span>
+                                            </div>
+                                            <FontAwesomeIcon icon={faAngleRight} />
+                                        </div>
+
                                         <ul className={cx('sub-item')}>
                                             <li className={cx('item')}>
-                                                <Link to={'/search?keyword=y'}>Nhà trẻ, Mẫu giáo (0-5 tuổi)</Link>
+                                                <Link
+                                                    className={cx('item-link')}
+                                                    to={'/search?keyword=y'}
+                                                >
+                                                    Nhà trẻ, Mẫu giáo (0-5 tuổi)
+                                                </Link>
                                             </li>
                                             <li className={cx('item')}>
-                                                <Link to={'/search?keyword=y'}>Nhi đồng (6-10 tuổi)</Link>
+                                                <Link
+                                                    className={cx('item-link')}
+                                                    to={'/search?keyword=y'}
+                                                >
+                                                    Nhi đồng (6-10 tuổi)
+                                                </Link>
                                             </li>
                                             <li className={cx('item')}>
-                                                <Link to={'/search?keyword=y'}> Thiếu niên (11-15 tuổi)</Link>
+                                                <Link
+                                                    className={cx('item-link')}
+                                                    to={'/search?keyword=y'}
+                                                >
+                                                    Thiếu niên (11-15 tuổi)
+                                                </Link>
                                             </li>
                                             <li className={cx('item')}>
-                                                <Link to={'/search?keyword=y'}>Tuổi mới lớn (16-18 tuổi)</Link>
+                                                <Link
+                                                    className={cx('item-link')}
+                                                    to={'/search?keyword=y'}
+                                                >
+                                                    Tuổi mới lớn (16-18 tuổi)
+                                                </Link>
                                             </li>
                                             <li className={cx('item')}>
-                                                <Link to={'/search?keyword=y'}>Tuổi trưởng thành (Trên 18 tuổi)</Link>
+                                                <Link
+                                                    className={cx('item-link')}
+                                                    to={'/search?keyword=y'}
+                                                >
+                                                    Tuổi trưởng thành (Trên 18 tuổi)
+                                                </Link>
                                             </li>
                                         </ul>
                                     </li>

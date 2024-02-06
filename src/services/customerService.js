@@ -67,3 +67,13 @@ export const removeFavoriteProduct = (productId) => {
     return axiosPrivate.delete(`customer/favorite-products/${productId}`);
 }
 
+export const uploadAvatar = (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return axiosPrivate.post('customer/upload-avatar', formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    });
+}

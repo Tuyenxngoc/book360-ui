@@ -1,5 +1,5 @@
 import { axiosPrivate } from "~/utils/httpRequest";
 
-export const getCurrentUser = () => {
+export const getCurrentUserLogin = () => {
     return axiosPrivate.get('user/current');
 }

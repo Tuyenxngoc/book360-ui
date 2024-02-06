@@ -8,7 +8,7 @@ export const refreshToken = (values) => {
     return axiosPrivate.post('auth/refresh-token', values);
 }
 
-export const logout = () => {
+export const logoutToken = () => {
     return axiosPrivate.post('auth/logout');
 }
 

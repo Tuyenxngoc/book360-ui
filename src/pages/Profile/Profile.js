@@ -9,15 +9,15 @@ import { useRef } from 'react';
 
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { updateCustomer, uploadImage } from '~/services/customerService';
+import { updateCustomer, uploadAvatar } from '~/services/customerService';
 import { useState } from 'react';
 
-import { toast } from 'react-toastify';
 import { LoadingButton } from '@mui/lab';
 import ShowDialog from '../Address/ShowDialog';
+import { message } from 'antd';
 
 const validationSchema = yup.object({
-    name: yup.string()
+    fullName: yup.string()
         .max(25, 'Họ và tên không dài quá 25 ký tự.')
         .required('Vui lòng nhập họ tên'),
 
@@ -44,10 +44,11 @@ function Profile() {
 
     const formik = useFormik({
         initialValues: {
-            name: customer.nickName || '',
+            fullName: customer.nickName || '',
             address: customer.address || '',
             phoneNumber: customer.phoneNumber || '',
-            avatar: customer.avatar || '',
+            dob: "2024-02-06",
+            gender: "MALE"
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
@@ -68,14 +69,15 @@ function Profile() {
                 file.size <= 1024 * 1024 // 1MB
             ) {
                 setIsLoadingImage(true);
-                uploadImage(file)
+                uploadAvatar(file)
                     .then((response) => {
-                        formik.setFieldValue('avatar', response.data.data);
+                        updateCustomerInfo();
+                        message.success('Thay đổi ảnh đại diện thành công.');
                     })
-                    .catch((error) => { console.log(error); })
+                    .catch((error) => { message.error('Đã có lỗi xảy ra, vui lòng thử lại sau.') })
                     .finally(() => { setIsLoadingImage(false); });
             } else {
-                toast.warn('Vui lòng chọn file JPEG hoặc PNG có dung lượng tối đa 1MB.');
+                message.info('Vui lòng chọn file JPEG hoặc PNG có dung lượng tối đa 1MB.');
             }
         }
     };
@@ -151,13 +153,13 @@ function Profile() {
                                 <TextField
                                     fullWidth
                                     size='small'
-                                    id='name'
-                                    name='name'
-                                    value={formik.values.name}
+                                    id='fullName'
+                                    name='fullName'
+                                    value={formik.values.fullName}
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
-                                    error={formik.touched.name && Boolean(formik.errors.name)}
-                                    helperText={formik.touched.name && formik.errors.name}
+                                    error={formik.touched.fullName && Boolean(formik.errors.fullName)}
+                                    helperText={formik.touched.fullName && formik.errors.fullName}
                                 />
                             </div>
                             <div className={cx('form-group')}>
@@ -229,8 +231,8 @@ function Profile() {
                                         isLoadingImage
                                             ? (images.loading)
                                             : (
-                                                (formik.values.avatar)
-                                                    ? (formik.values.avatar)
+                                                (customer.avatar)
+                                                    ? (customer.avatar)
                                                     : (images.userDefault))
                                     }
                                     sx={{ width: 100, height: 100, cursor: 'pointer' }}

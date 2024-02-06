@@ -4,9 +4,9 @@ import { useEffect } from 'react';
 import { createContext, useState } from 'react';
 import { toast } from 'react-toastify';
 import Loading from '~/components/Loading';
-import { getCurrentUserLogin } from '~/services/apiRequest';
 import { logoutToken } from '~/services/authService';
 import localStorageKeys, { getItem, removeItem, setItem } from '~/services/localStorageService';
+import { getCurrentUserLogin } from '~/services/userService';
 
 const AuthContext = createContext();
 
@@ -46,7 +46,17 @@ const AuthProvider = ({ children }) => {
             }
             const response = await getCurrentUserLogin();
             if (response.status === 200) {
-                const { username, nickName, roleName, email, phoneNumber, address, avatar, gender, dob } = response.data.data;
+                const {
+                    username,
+                    nickName,
+                    roleName,
+                    email,
+                    phoneNumber,
+                    address,
+                    avatar,
+                    gender,
+                    dob
+                } = response.data.data;
                 setAuthData({
                     isAuthenticated: true,
                     customer: {
@@ -74,7 +84,6 @@ const AuthProvider = ({ children }) => {
     const updateCustomerInfo = () => {
         validateToken();
     };
-
 
     const login = ({ accessToken, refreshToken }) => {
         setItem(localStorageKeys.ACCESS_TOKEN, accessToken);

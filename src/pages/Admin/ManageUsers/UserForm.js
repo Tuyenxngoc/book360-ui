@@ -1,3 +1,7 @@
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
 import Style from './ManageUsers.module.scss';
 import classNames from 'classnames/bind';
 
@@ -5,17 +9,16 @@ import { Input, Upload, message } from 'antd';
 
 import * as yup from 'yup';
 import { useFormik } from 'formik';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useEffect, useRef, useState } from 'react';
-import { createCustomer, customerUpload } from '~/services/customerService';
+
+import { createCustomer, customerUpload, getCustomer } from '~/services/customerService';
+
 import { routes } from '~/config';
-import { toast } from 'react-toastify';
-import { Avatar, Button, FormHelperText } from '@mui/material';
 import AlertDialog from '~/components/AlertDialog';
+
+import { Avatar, Button, FormHelperText } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faSave } from '@fortawesome/free-solid-svg-icons';
 import { LoadingButton } from '@mui/lab';
-import { getCustomer } from '~/services/apiRequest';
 
 const cx = classNames.bind(Style);
 
