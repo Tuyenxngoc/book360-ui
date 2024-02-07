@@ -4,8 +4,8 @@ export const saveOrder = (values) => {
     return axiosPrivate.post('bill/save-order', values);
 }
 
-export const cancelOrder = (billId) => {
-    return axiosPrivate.patch(`bill/cancel-order/${billId}`);
+export const cancelOrder = (billId, params) => {
+    return axiosPrivate.patch(`bill/cancel-order/${billId}?${params}`);
 }
 
 export const getBills = (params) => {
