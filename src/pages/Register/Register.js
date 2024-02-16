@@ -1,4 +1,4 @@
-import { TextField } from '@mui/material';
+import { FormControl, IconButton, Input, InputAdornment, InputLabel, TextField } from '@mui/material';
 import { useFormik } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
@@ -10,8 +10,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
 import httpRequest from '~/utils/httpRequest';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { LoadingButton } from '@mui/lab';
+import { register } from '~/services/authService';
+import queryString from 'query-string';
+import { EyeInvisibleOutlined, EyeOutlined } from '@ant-design/icons';
 
 const cx = classNames.bind(Style);
 
@@ -42,18 +45,30 @@ const validationSchema = yup.object({
 
 function Register() {
 
-    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false);
+    const [position, setPosition] = useState({});
+    const [showPassword, setShowPassword] = useState(false);
+    const [showRepeatPassword, setShowRepeatPassword] = useState(false);
+
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+    const handleClickShowRepeatPassword = () => setShowRepeatPassword((show) => !show);
+    const handleMouseDownPassword = (event) => event.preventDefault();
 
     const handleRegister = async (values) => {
         setIsLoading(true);
         try {
-            const response = await httpRequest.post('/auth/register', values);
+            const params = queryString.stringify({
+                latitude: position.latitude,
+                longitude: position.longitude
+            });
+            const response = await register(values, params);
             if (response.status === 200) {
                 toast.success('Đăng ký thành công');
                 navigate('/login');
             }
         } catch (error) {
+            console.log(error);
             let message = '';
             if (!error?.response) {
                 message = 'Máy chủ không phản hồi';
@@ -82,6 +97,34 @@ function Register() {
             handleRegister(values);
         },
     });
+
+    const getCurrentLocation = async () => {
+        try {
+            if (!navigator.geolocation) {
+                throw new Error('Geolocation is not supported by this browser.');
+            }
+
+            const position = await new Promise((resolve, reject) => {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const { latitude, longitude } = position.coords;
+                        resolve({ latitude, longitude });
+                    },
+                    (error) => {
+                        reject(error);
+                    }
+                );
+            });
+
+            setPosition(position);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        getCurrentLocation();
+    }, []);
 
     return (
         <div>
@@ -130,35 +173,63 @@ function Register() {
                                         ? formik.errors.email
                                         : '(*) Hóa đơn VAT khi mua hàng sẽ được gửi qua email này'}
                                 </p>
-                                <TextField
+                                <FormControl
                                     fullWidth
                                     variant='standard'
-                                    id='password'
-                                    name='password'
-                                    label='Nhập mật khẩu'
-                                    type='password'
-                                    value={formik.values.password}
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
                                     error={formik.touched.password && Boolean(formik.errors.password)}
-                                />
+                                >
+                                    <InputLabel htmlFor='password'>Nhập mật khẩu</InputLabel>
+                                    <Input
+                                        id='password'
+                                        name='password'
+                                        type={showPassword ? 'text' : 'password'}
+                                        value={formik.values.password}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        endAdornment={
+                                            <InputAdornment position='end'>
+                                                <IconButton
+                                                    aria-label='toggle password visibility'
+                                                    onClick={handleClickShowPassword}
+                                                    onMouseDown={handleMouseDownPassword}
+                                                >
+                                                    {showPassword ? <EyeInvisibleOutlined /> : <EyeOutlined />}
+                                                </IconButton>
+                                            </InputAdornment>
+                                        }
+                                    />
+                                </FormControl>
                                 <p className={cx('message', (formik.touched.password && formik.errors.password) && 'error')}>
                                     {(formik.touched.password && formik.errors.password)
                                         ? formik.errors.password
                                         : '(*) Mật khẩu tối thiểu 6 ký tự, ít nhất một chữ cái, ít nhất một chữ số'}
                                 </p>
-                                <TextField
+                                <FormControl
                                     fullWidth
                                     variant='standard'
-                                    id='repeatPassword'
-                                    name='repeatPassword'
-                                    label='Nhập lại mật khẩu'
-                                    type='password'
-                                    value={formik.values.repeatPassword}
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
                                     error={formik.touched.repeatPassword && Boolean(formik.errors.repeatPassword)}
-                                />
+                                >
+                                    <InputLabel htmlFor='repeatPassword'>Nhập lại mật khẩu</InputLabel>
+                                    <Input
+                                        id='repeatPassword'
+                                        name='repeatPassword'
+                                        type={showRepeatPassword ? 'text' : 'password'}
+                                        value={formik.values.repeatPassword}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        endAdornment={
+                                            <InputAdornment position='end'>
+                                                <IconButton
+                                                    aria-label='toggle repeat password visibility'
+                                                    onClick={handleClickShowRepeatPassword}
+                                                    onMouseDown={handleMouseDownPassword}
+                                                >
+                                                    {showRepeatPassword ? <EyeInvisibleOutlined /> : <EyeOutlined />}
+                                                </IconButton>
+                                            </InputAdornment>
+                                        }
+                                    />
+                                </FormControl>
                                 <p className={cx('message', (formik.touched.repeatPassword && formik.errors.repeatPassword) && 'error')}>
                                     {formik.touched.repeatPassword && formik.errors.repeatPassword}
                                     &emsp;

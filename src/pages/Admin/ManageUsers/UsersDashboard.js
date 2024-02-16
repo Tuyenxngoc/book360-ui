@@ -101,7 +101,7 @@ function UsersDashboard() {
                             <TablePagination
                                 className={cx('table-pagination')}
                                 component='div'
-                                count={meta.totalElements || 100}
+                                count={meta.totalElements || 1}
                                 page={filters.pageNum}
                                 onPageChange={handleChangePage}
                                 rowsPerPage={meta.pageSize || 10}

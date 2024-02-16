@@ -1,25 +1,25 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { Button, TablePagination } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
-import Style from './ManageCategories.module.scss';
+import Style from './ManageAuthors.module.scss';
 import classNames from 'classnames/bind';
 
-import { getCategoriesForAdmin } from '~/services/categoryService';
-import TableCategories from './TableCategories';
-import { useNavigate } from 'react-router-dom';
+import TableAuthors from './TableAuthors';
 import { routes } from '~/config';
 import { toast } from 'react-toastify';
 import queryString from 'query-string';
+import { getAuthors } from '~/services/authorService';
 
 const cx = classNames.bind(Style);
 
-function CategoriesDashboard() {
+function AuthorsDashboard() {
 
     const navigate = useNavigate();
-    const [dataCategories, setDataCategories] = useState([]);
+    const [dataAuthors, setDataAuthors] = useState([]);
     const [meta, setMeta] = useState({});
 
     const [filters, setFilters] = useState({
@@ -31,26 +31,26 @@ function CategoriesDashboard() {
         pageSize: 10,
     })
 
-    const fetchListCategory = () => {
+    const fetchListAuthor = () => {
         const params = queryString.stringify(filters);
-        getCategoriesForAdmin(params)
+        getAuthors(params)
             .then((response) => {
                 const { items, meta } = response.data.data;
-                setDataCategories(items);
+                setDataAuthors(items);
                 setMeta(meta);
             })
             .catch((error) => {
-                toast.error('Đã có lỗi xảy ra khi lấy dữ liệu danh mục');
+                toast.error('Đã có lỗi xảy ra khi lấy dữ liệu tác giả');
             });
     }
 
     useEffect(() => {
-        fetchListCategory();
+        fetchListAuthor();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filters])
 
-    const handleCreateCategory = () => {
-        navigate(routes.createCategory);
+    const handleCreateAuthor = () => {
+        navigate(routes.createAuthor);
     };
 
     const handleChangePage = (_, newPage) => {
@@ -67,18 +67,18 @@ function CategoriesDashboard() {
                 <div className='col-10'>
                     <div className={cx('list-main')}>
                         <div className={cx('header')}>
-                            <div className={cx('title')}>{dataCategories.length} Danh mục</div>
+                            <div className={cx('title')}>{dataAuthors.length} Tác giả</div>
                             <Button
                                 size='small'
                                 variant='contained'
                                 startIcon={<FontAwesomeIcon icon={faPlus} />}
-                                onClick={handleCreateCategory}
+                                onClick={handleCreateAuthor}
                             >
                                 Thêm mới
                             </Button>
                         </div>
                         <div className='content'>
-                            <TableCategories listCategory={dataCategories} fetchListCategory={fetchListCategory} />
+                            <TableAuthors listAuthor={dataAuthors} fetchListAuthor={fetchListAuthor} />
                             <TablePagination
                                 className={cx('table-pagination')}
                                 component='div'
@@ -96,4 +96,4 @@ function CategoriesDashboard() {
     );
 }
 
-export default CategoriesDashboard;
+export default AuthorsDashboard;

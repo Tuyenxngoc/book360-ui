@@ -25,6 +25,7 @@ import Dashboard from '~/pages/Admin/Dashboard';
 import Forbidden from '~/pages/Forbidden';
 
 import OrdersDashboard from '~/pages/Admin/ManageOrders/OrdersDashboard';
+import OrderForm from '~/pages/Admin/ManageOrders/OrderForm';
 
 import ProductsDashboard from '~/pages/Admin/ManageProducts/ProductsDashboard';
 import ProductForm from '~/pages/Admin/ManageProducts/ProductForm';
@@ -37,7 +38,14 @@ import CategoryForm from '~/pages/Admin/ManageCategories/CategoryForm';
 
 import UsersDashboard from '~/pages/Admin/ManageUsers/UsersDashboard';
 import UserForm from '~/pages/Admin/ManageUsers/UserForm';
-import OrderForm from '~/pages/Admin/ManageOrders/OrderForm';
+
+import AuthorsDashboard from '~/pages/Admin/ManageAuthors/AuthorsDashboard';
+import AuthorForm from '~/pages/Admin/ManageAuthors/AuthorForm';
+import AuthorDetail from '~/pages/Admin/ManageAuthors/AuthorDetail';
+
+import BookSetsDashboard from '~/pages/Admin/ManageBookSets/BookSetsDashboard';
+import BookSetForm from '~/pages/Admin/ManageBookSets/BookSetForm';
+import BookSetDetail from '~/pages/Admin/ManageBookSets/BookSetDetail';
 
 const publicRoutes = [
     { path: routes.home, component: Home },
@@ -69,24 +77,34 @@ const privateRoutes = [
 const adminRoutes = [
     { path: routes.adminDashboard, component: Dashboard, layout: AdminLayout },
 
-    { path: routes.viewUser, component: UsersDashboard, layout: AdminLayout },
+    { path: routes.viewUsers, component: UsersDashboard, layout: AdminLayout },
     { path: routes.createUser, component: UserForm, layout: AdminLayout },
     { path: routes.updateUser, component: UserForm, layout: AdminLayout },
 
-    { path: routes.viewProduct, component: ProductsDashboard, layout: AdminLayout },
+    { path: routes.viewProducts, component: ProductsDashboard, layout: AdminLayout },
     { path: routes.createProduct, component: ProductForm, layout: AdminLayout },
     { path: routes.updateProduct, component: ProductForm, layout: AdminLayout },
 
-    { path: routes.viewOder, component: OrdersDashboard, layout: AdminLayout },
+    { path: routes.viewOders, component: OrdersDashboard, layout: AdminLayout },
     { path: routes.updateOder, component: OrderForm, layout: AdminLayout },
 
-    { path: routes.viewCategory, component: CategoriesDashboard, layout: AdminLayout },
+    { path: routes.viewCategorys, component: CategoriesDashboard, layout: AdminLayout },
     { path: routes.createCategory, component: CategoryForm, layout: AdminLayout },
     { path: routes.updateCategory, component: CategoryForm, layout: AdminLayout },
 
-    { path: routes.viewBanner, component: BannersDashboard, layout: AdminLayout },
+    { path: routes.viewBanners, component: BannersDashboard, layout: AdminLayout },
     { path: routes.createBanner, component: BannerForm, layout: AdminLayout },
     { path: routes.updateBanner, component: BannerForm, layout: AdminLayout },
+
+    { path: routes.viewAuthors, component: AuthorsDashboard, layout: AdminLayout },
+    { path: routes.viewAuthor, component: AuthorDetail, layout: AdminLayout },
+    { path: routes.createAuthor, component: AuthorForm, layout: AdminLayout },
+    { path: routes.updateAuthor, component: AuthorForm, layout: AdminLayout },
+
+    { path: routes.viewBookSets, component: BookSetsDashboard, layout: AdminLayout },
+    { path: routes.viewBookSet, component: BookSetDetail, layout: AdminLayout },
+    { path: routes.createBookSet, component: BookSetForm, layout: AdminLayout },
+    { path: routes.updateBookSet, component: BookSetForm, layout: AdminLayout },
 ]
 
 export { publicRoutes, privateRoutes, adminRoutes } 

@@ -104,7 +104,7 @@ function UserForm() {
         setLoading(true);
         createCustomer(values)
             .then(() => {
-                navigate(routes.viewUser, { replace: true });
+                navigate(routes.viewUsers, { replace: true });
                 toast.success('Thành công');
             })
             .catch((error) => { console.log(error); })
@@ -112,7 +112,7 @@ function UserForm() {
     }
 
     const handleClose = () => {
-        navigate(routes.viewUser, { replace: true });
+        navigate(routes.viewUsers, { replace: true });
     }
 
     const handleChange = (info) => {

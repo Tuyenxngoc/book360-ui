@@ -12,8 +12,16 @@ export const getBookSet = (bookSetId) => {
     return axiosPrivate.get(`admin/book-set/${bookSetId}`);
 }
 
-export const createBookSet = (values) => {
-    return axiosPrivate.put('admin/book-set/create', values);
+export const getBookSetDetail = (bookSetId) => {
+    return axiosPrivate.get(`admin/book-set/detail/${bookSetId}`);
+}
+
+export const createBookSet = (id, values) => {
+    const data = {
+        id,
+        ...values
+    }
+    return axiosPrivate.put('admin/book-set/create', data);
 }
 
 export const deleteBookSet = (bookSetId) => {

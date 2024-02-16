@@ -1,11 +1,11 @@
-import { axiosPrivate } from "~/utils/httpRequest";
+import httpRequest, { axiosPrivate } from "~/utils/httpRequest";
 
 export const register = (values, params) => {
-    return axiosPrivate.post(`auth/register?${params}`, values);
+    return httpRequest.post(`auth/register?${params}`, values);
 }
 
 export const refreshToken = (values) => {
-    return axiosPrivate.post('auth/refresh-token', values);
+    return httpRequest.post('auth/refresh-token', values);
 }
 
 export const logoutToken = () => {
@@ -13,11 +13,11 @@ export const logoutToken = () => {
 }
 
 export const login = (values) => {
-    return axiosPrivate.post('auth/login', values);
+    return httpRequest.post('auth/login', values);
 }
 
 export const forgetPassword = (values) => {
-    return axiosPrivate.post('auth/forget-password', values);
+    return httpRequest.post('auth/forget-password', values);
 }
 
 export const changePassword = (values) => {

@@ -10,6 +10,7 @@ import queryString from 'query-string';
 import Style from './MagageOrders.module.scss';
 import classNames from 'classnames/bind';
 import dayjs from 'dayjs';
+import { getBillsForAdmin, getStatistic } from '~/services/billService';
 
 const { RangePicker } = DatePicker;
 
@@ -96,15 +97,15 @@ function OrdersDashboard() {
 
     const fetchListOrder = () => {
         const params = queryString.stringify({ ...filters, pageNum: filters.pageNum, billStatus: type });
-        // getAllBills(params)
-        //     .then((response) => {
-        //         const { items, meta } = response.data.data;
-        //         setMeta(meta);
-        //         setDataOrders(items);
-        //     })
-        //     .catch((error) => {
-        //         toast.error('Đã có lỗi xảy ra khi lấy dữ liệu đơn hàng');
-        //     })
+        getBillsForAdmin(params)
+            .then((response) => {
+                const { items, meta } = response.data.data;
+                setMeta(meta);
+                setDataOrders(items);
+            })
+            .catch((error) => {
+                toast.error('Đã có lỗi xảy ra khi lấy dữ liệu đơn hàng');
+            })
     }
 
     useEffect(() => {
@@ -117,23 +118,27 @@ function OrdersDashboard() {
             timeStart: defaultDateRange.start,
             timeEnd: defaultDateRange.end,
         });
-        // getStatistic(params)
-        //     .then((response) => {
-        //         const formattedStart = defaultDateRange.start.replace(/-/g, '');
-        //         const formattedEnd = defaultDateRange.end.replace(/-/g, '');
-        //         const filename = `Order.all.${formattedStart}_${formattedEnd}.xlsx`;
+        getStatistic(params)
+            .then((response) => {
+                const formattedStart = defaultDateRange.start.replace(/-/g, '');
+                const formattedEnd = defaultDateRange.end.replace(/-/g, '');
+                const filename = `Order.all.${formattedStart}_${formattedEnd}.xlsx`;
 
-        //         saveAs(response.data, filename);
-        //     })
-        //     .catch((error) => {
-        //         toast.error('Đã có lỗi xảy ra khi lấy dữ liệu đơn hàng');
-        //     })
+                saveAs(response.data, filename);
+            })
+            .catch((error) => {
+                toast.error('Đã có lỗi xảy ra khi lấy dữ liệu đơn hàng');
+            })
     }
 
     const handleDateRangeChange = (dates) => {
         defaultDateRange.start = dates[0].format(dateF);
         defaultDateRange.end = dates[1].format(dateF);
     };
+
+    const handleFillerBill = () => {
+
+    }
 
     return (
         <div className='container my-3'>
@@ -175,7 +180,7 @@ function OrdersDashboard() {
                                             <Select defaultValue='Mã đơn hàng' onChange={handleSelectChange} options={options} style={{ minWidth: '190px' }} />
                                             <Input allowClear={true} placeholder={`Nhập ${typeSearch}`} />
                                         </Space.Compact>
-                                        <Button variant='contained' size='small' sx={{ mx: 1 }} color='primary'>Tìm kiếm</Button>
+                                        <Button variant='contained' size='small' sx={{ mx: 1 }} color='primary' onClick={handleFillerBill}>Tìm kiếm</Button>
                                         <Button variant='outlined' size='small' color='primary'>Đặt lại</Button>
                                     </div>
                                 </div>
@@ -191,7 +196,7 @@ function OrdersDashboard() {
                                 <TablePagination
                                     className={cx('table-pagination')}
                                     component='div'
-                                    count={meta.totalElements || 100}
+                                    count={meta.totalElements || 1}
                                     page={filters.pageNum - 1}
                                     onPageChange={handleChangePage}
                                     rowsPerPage={meta.pageSize || 10}

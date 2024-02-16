@@ -1,58 +1,49 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 
-import { customerUpload } from '~/services/customerService';
 import { routes } from '~/config';
 
-import Style from './ManageCategories.module.scss';
+import Style from './ManageBookSets.module.scss';
 import classNames from 'classnames/bind';
 
+import { createBookSet, getBookSet } from '~/services/bookSetService';
+import AlertDialog from '~/components/AlertDialog';
+
 import { Input } from 'antd';
-import { message, Upload } from 'antd';
-import { InboxOutlined } from '@ant-design/icons';
+
 import { Button, FormHelperText } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-import AlertDialog from '~/components/AlertDialog';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave } from '@fortawesome/free-regular-svg-icons';
-import { faArrowLeft, faTrashCan } from '@fortawesome/free-solid-svg-icons';
-import { toast } from 'react-toastify';
-import { createCategory, getCategory } from '~/services/categoryService';
-
-const { Dragger } = Upload;
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 const cx = classNames.bind(Style);
 
 function inputProps(isError, message) {
     if (isError) {
-        return {
-            status: 'error',
-            placeholder: message,
-        };
+        return { status: 'error', placeholder: message, };
     }
 }
 
 const defaultValue = {
-    image: '',
-    name: '',
+    name: ''
 }
 
 const validationSchema = yup.object({
     name: yup.string()
-        .min(3, "Tên danh mục tối thiểu 3 kí tự")
-        .max(120, "Tên danh mục tối đa 120 kí tự")
-        .required('Tên danh mục là bắt buộc'),
-    image: yup.string()
-        .required('Vui lòng tải lên một hình ảnh'),
+        .min(3, 'Tên bộ sách tối thiểu 3 kí tự')
+        .max(120, 'Tên bộ sách tối đa 120 kí tự')
+        .required('Tên bộ sách là bắt buộc'),
 });
 
-function CategoryForm() {
+function BookSetForm() {
 
     const navigate = useNavigate();
-    const { categoryId } = useParams();
+    const { bookSetId } = useParams();
     const [loading, setLoading] = useState(false);
     const [showDialog, setShowDialog] = useState(false);
 
@@ -65,13 +56,12 @@ function CategoryForm() {
     });
 
     useEffect(() => {
-        if (categoryId) {
-            getCategory(categoryId)
+        if (bookSetId) {
+            getBookSet(bookSetId)
                 .then((response) => {
-                    const { image, name } = response.data.data;
+                    const { name } = response.data.data;
                     formik.setValues({
-                        image,
-                        name,
+                        name
                     })
                 })
                 .catch((error) => { console.log(error); })
@@ -79,34 +69,13 @@ function CategoryForm() {
             formik.setValues(defaultValue);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [categoryId]);
-
-    const props = {
-        name: 'file',
-        multiple: false,
-        maxCount: 1,
-        customRequest: customerUpload,
-        onChange(info) {
-            const { status } = info.file;
-            if (status !== 'uploading') {
-                formik.setFieldValue('image', info.file.response[0]);
-            }
-            if (status === 'done') {
-                message.success(`${info.file.name} tải tập tin thành công.`);
-            } else if (status === 'error') {
-                message.error(`${info.file.name} tải tập tin thất bại.`);
-            }
-        },
-        onDrop(e) {
-            console.log('Dropped files', e.dataTransfer.files);
-        },
-    };
+    }, [bookSetId]);
 
     const handleSubmit = (values) => {
         setLoading(true);
-        createCategory(categoryId || null, values)
+        createBookSet(bookSetId || null, values)
             .then(() => {
-                navigate(routes.viewCategorys, { replace: true });
+                navigate(routes.viewBookSets, { replace: true });
                 toast.success('Thành công');
             })
             .catch((error) => {
@@ -120,11 +89,7 @@ function CategoryForm() {
     }
 
     const handleClose = () => {
-        navigate(routes.viewCategorys, { replace: true });
-    }
-
-    const handleRemoveImage = () => {
-        formik.setFieldValue('image', '');
+        navigate(routes.viewBookSets, { replace: true });
     }
 
     return (
@@ -137,10 +102,9 @@ function CategoryForm() {
                                 Thông tin cơ bản
                             </div>
                         </div>
-
                         <div className='panel-content'>
                             <div className={cx('form-group')}>
-                                <label className={cx('form-label')} htmlFor='inputName'><span>*</span>Tên danh mục</label>
+                                <label className={cx('form-label')} htmlFor='inputName'><span>*</span>Tên bộ sách</label>
                                 <div className={cx('form-input')}>
                                     <Input
                                         id='inputName'
@@ -155,36 +119,6 @@ function CategoryForm() {
                                     {formik.touched.name && formik.errors.name && (
                                         <FormHelperText error>{formik.errors.name}</FormHelperText>
                                     )}
-                                </div>
-                            </div>
-
-                            <div className={cx('form-group')}>
-                                <label className={cx('form-label')} htmlFor='inputImage'><span>*</span>Hình ảnh</label>
-                                <div className={cx('form-input')}>
-                                    {formik.values.image ? (
-                                        <div className={cx('form-upload-image')} >
-                                            <img className={cx('image-upload')} src={formik.values.image} alt='' />
-                                            <div className={cx('image-tools')}>
-                                                <button onClick={() => handleRemoveImage()} className={cx('delete-image')}>
-                                                    <FontAwesomeIcon icon={faTrashCan} />
-                                                </button>
-                                            </div>
-                                        </div>
-                                    ) : (
-                                        <>
-                                            <Dragger {...props}>
-                                                <p className='ant-upload-drag-icon'>
-                                                    <InboxOutlined />
-                                                </p>
-                                                <p className='ant-upload-text'>Nhấp hoặc kéo tệp vào khu vực này để tải lên</p>
-                                                <p className='ant-upload-hint'>Kích thước đề xuất [1920, 7750]</p>
-                                            </Dragger>
-                                            {formik.touched.image && formik.errors.image && (
-                                                <FormHelperText error>{formik.errors.image}</FormHelperText>
-                                            )}
-                                        </>
-                                    )
-                                    }
                                 </div>
                             </div>
 
@@ -222,4 +156,4 @@ function CategoryForm() {
     );
 }
 
-export default CategoryForm;
+export default BookSetForm;

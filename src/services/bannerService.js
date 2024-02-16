@@ -18,7 +18,7 @@ export const createBanner = (id, values) => {
         id,
         ...values,
     }
-    return axiosPrivate.post('admin/banner/create', banner);
+    return axiosPrivate.put('admin/banner/create', banner);
 }
 
 export const deleteBanner = (bannerId) => {

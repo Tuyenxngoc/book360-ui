@@ -20,17 +20,19 @@ function getItem(label, key, icon, children, type) {
 }
 const items = [
     getItem('Trang chủ', routes.adminDashboard, <HomeOutlined />),
-    getItem('Quản lý khách hàng', routes.viewUser, <UserOutlined />),
+    getItem('Quản lý khách hàng', routes.viewUsers, <UserOutlined />),
     getItem('Quản lý sản phẩm', 'product', <DollarOutlined />, [
-        getItem('Tất cả sản phẩm', routes.viewProduct),
+        getItem('Tất cả sản phẩm', routes.viewProducts),
         getItem('Thêm sản phẩm', routes.createProduct),
     ]),
     getItem('Quản lý đơn hàng', 'order', <ShoppingCartOutlined />, [
-        getItem('Tất cả', routes.viewOder),
-        getItem('Đơn hủy', `${routes.viewOder}?type=canceled`),
+        getItem('Tất cả', routes.viewOders),
+        getItem('Đơn hủy', `${routes.viewOders}?type=CANCELLED`),
     ]),
-    getItem('Quản lý banner', routes.viewBanner, <BoldOutlined />),
-    getItem('Quản lý danh mục', routes.viewCategory, <OrderedListOutlined />),
+    getItem('Quản lý banner', routes.viewBanners, <BoldOutlined />),
+    getItem('Quản lý danh mục', routes.viewCategorys, <OrderedListOutlined />),
+    getItem('Quản lý tác giả', routes.viewAuthors, <OrderedListOutlined />),
+    getItem('Quản lý bộ sách', routes.viewBookSets, <OrderedListOutlined />),
 ];
 
 function AdminSideBar() {

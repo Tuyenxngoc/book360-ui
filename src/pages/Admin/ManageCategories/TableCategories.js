@@ -1,15 +1,18 @@
 import PropTypes from 'prop-types';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import { Button } from '@mui/material';
+
 import Style from './ManageCategories.module.scss';
 import classNames from 'classnames/bind';
-import { useState } from 'react';
+
 import AlertDialog from '~/components/AlertDialog';
 import { deleteCategory } from '~/services/categoryService';
-import { toast } from 'react-toastify';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faRemove, faUpDownLeftRight } from '@fortawesome/free-solid-svg-icons';
-import { useNavigate } from 'react-router-dom';
 
 const cx = classNames.bind(Style);
 
@@ -49,14 +52,13 @@ function TableCategories({ listCategory, fetchListCategory }) {
                 description={'Bạn có chắc muốn xóa danh mục này? Lưu ý: Sau khi xóa, bạn không thể hoàn tác hay khôi phục danh mục.'}
                 handleSubmit={handleDeleteCategory}
             />
-            <table className="table table-striped table-bordered" style={{ verticalAlign: 'middle' }}>
+            <table className='table table-striped table-bordered' style={{ verticalAlign: 'middle' }}>
                 <thead>
                     <tr>
                         <th></th>
-                        <th scope="col">Hình ảnh</th>
-                        <th scope="col">Tên danh mục</th>
-                        <th scope="col">Tổng sản phẩm</th>
-                        <th scope="col">Thao tác</th>
+                        <th scope='col'>Hình ảnh</th>
+                        <th scope='col'>Tên danh mục</th>
+                        <th scope='col'>Thao tác</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -66,7 +68,7 @@ function TableCategories({ listCategory, fetchListCategory }) {
                                 <tr key={`table-categorys-${index}`}>
                                     <td align='center' style={{ padding: 0, width: '80px' }}>
                                         <div className={cx('preview-image')}>
-                                            <a href={item.image} alt='preview image' target='_blank' rel="noreferrer">
+                                            <a href={item.image} alt='preview image' target='_blank' rel='noreferrer'>
                                                 <FontAwesomeIcon icon={faUpDownLeftRight} />
                                             </a>
                                         </div>
@@ -81,7 +83,6 @@ function TableCategories({ listCategory, fetchListCategory }) {
                                         </div>
                                     </td>
                                     <td align='left'>{item.name}</td>
-                                    <td align='left'>{item.totalProducts}</td>
                                     <td align='left'>
                                         <div className={cx('table-action')}>
                                             <Button
@@ -93,17 +94,15 @@ function TableCategories({ listCategory, fetchListCategory }) {
                                             >
                                                 <FontAwesomeIcon icon={faEdit} />
                                             </Button>
-                                            {item.totalProducts === 0 &&
-                                                <Button
-                                                    size='small'
-                                                    variant='contained'
-                                                    color='error'
-                                                    onClick={() => handleClickBtnDelete(item.id)}
-                                                    sx={{ minWidth: 35, height: 35, ml: 1 }}
-                                                >
-                                                    <FontAwesomeIcon icon={faRemove} />
-                                                </Button>
-                                            }
+                                            <Button
+                                                size='small'
+                                                variant='contained'
+                                                color='error'
+                                                onClick={() => handleClickBtnDelete(item.id)}
+                                                sx={{ minWidth: 35, height: 35, ml: 1 }}
+                                            >
+                                                <FontAwesomeIcon icon={faRemove} />
+                                            </Button>
                                         </div>
                                     </td>
                                 </tr>
@@ -111,7 +110,7 @@ function TableCategories({ listCategory, fetchListCategory }) {
                         })}
                     {listCategory && listCategory.length === 0
                         && <tr>
-                            <td colSpan="4">Not found data</td>
+                            <td colSpan='5'>Chưa có dữ liệu</td>
                         </tr>
                     }
                 </tbody>

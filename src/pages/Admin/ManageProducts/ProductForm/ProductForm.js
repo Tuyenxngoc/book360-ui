@@ -14,7 +14,7 @@ import { faEye, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 
-import { uploadImage, uploadImages } from '~/services/customerService';
+import { uploadImages } from '~/services/customerService';
 import { createProduct, getProduct } from '~/services/productService';
 import { getAllBookSet } from '~/services/bookSetService';
 import { getAllAuthors } from '~/services/authorService';

@@ -1,14 +1,19 @@
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+
+import { Avatar } from "@mui/material";
 import { DollarCircleOutlined, ShoppingCartOutlined, ShoppingOutlined, UserOutlined } from "@ant-design/icons";
 import { Space } from "antd";
+
 import DashBoardCard from "~/components/AdminDashBoardCard";
+
 import Style from './Dashboard.module.scss';
 import classNames from "classnames/bind";
-import { useEffect, useState } from "react";
-import { getCountCustomer } from "~/services/customerService";
+
+import { getCountCustomer, getTodos } from "~/services/customerService";
 import { getStockQuantity } from "~/services/productService";
 import { getCountBill } from "~/services/billService";
-import { Link } from "react-router-dom";
-import { Avatar } from "@mui/material";
+
 const cx = classNames.bind(Style);
 
 const dataUser = [
@@ -150,7 +155,7 @@ const TODO = [
     { lable: 'Chờ xác nhận', link: '/admin/order?type=to_pay', key: 'waitForConfirmationCount' },
     { lable: 'Chờ lấy hàng', link: '/admin/order?type=to_receive', key: 'waitForDeliveryCount' },
     { lable: 'Đã xử lý', link: '/admin/order?type=ordered', key: 'deliveringCount' },
-    { lable: 'Đơn hủy', link: '/admin/order?type=canceled', key: 'cancelledCount' },
+    { lable: 'Đơn hủy', link: '/admin/order?type=CANCELLED', key: 'cancelledCount' },
     { lable: 'Sản phẩm hết hàng', link: '/admin/product', key: 'productSoldOut' },
 ]
 
@@ -201,21 +206,25 @@ function Dashboard() {
     const [todos, setTodos] = useState({});
 
     useEffect(() => {
-        getCountCustomer()
-            .then((response) => {
-                setCountCustomer(response.data.data)
-            })
-            .catch((error) => { console.log(error); })
-        getStockQuantity()
-            .then((response) => {
-                setCountProducts(response.data.data)
-            })
-            .catch((error) => { console.log(error); })
-        getCountBill()
-            .then((response) => {
-                setCountBills(response.data.data)
-            })
-            .catch((error) => { console.log(error); })
+        const fetchData = async () => {
+            try {
+                const [customerResponse, productsResponse, billsResponse, todosResponse] = await Promise.all([
+                    getCountCustomer(),
+                    getStockQuantity(),
+                    getCountBill(),
+                    getTodos()
+                ]);
+
+                setCountCustomer(customerResponse.data.data);
+                setCountProducts(productsResponse.data.data);
+                setCountBills(billsResponse.data.data);
+                setTodos(todosResponse.data.data);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        fetchData();
     }, []);
 
     return (

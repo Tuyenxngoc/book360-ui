@@ -1,58 +1,64 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 
-import { customerUpload } from '~/services/customerService';
 import { routes } from '~/config';
 
-import Style from './ManageCategories.module.scss';
+import Style from './ManageAuthors.module.scss';
 import classNames from 'classnames/bind';
 
-import { Input } from 'antd';
-import { message, Upload } from 'antd';
-import { InboxOutlined } from '@ant-design/icons';
+import { createAuthor, getAuthor } from '~/services/authorService';
+import AlertDialog from '~/components/AlertDialog';
+
+import { Input, Upload, message } from 'antd';
+
 import { Button, FormHelperText } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-import AlertDialog from '~/components/AlertDialog';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave } from '@fortawesome/free-regular-svg-icons';
 import { faArrowLeft, faTrashCan } from '@fortawesome/free-solid-svg-icons';
-import { toast } from 'react-toastify';
-import { createCategory, getCategory } from '~/services/categoryService';
+import { InboxOutlined } from '@ant-design/icons';
+import { customerUpload } from '~/services/customerService';
 
+const { TextArea } = Input;
 const { Dragger } = Upload;
+
 
 const cx = classNames.bind(Style);
 
 function inputProps(isError, message) {
     if (isError) {
-        return {
-            status: 'error',
-            placeholder: message,
-        };
+        return { status: 'error', placeholder: message, };
     }
 }
 
 const defaultValue = {
-    image: '',
-    name: '',
+    fullName: '',
+    biography: '',
+    avatar: ''
 }
 
 const validationSchema = yup.object({
-    name: yup.string()
-        .min(3, "Tên danh mục tối thiểu 3 kí tự")
-        .max(120, "Tên danh mục tối đa 120 kí tự")
-        .required('Tên danh mục là bắt buộc'),
-    image: yup.string()
-        .required('Vui lòng tải lên một hình ảnh'),
+    fullName: yup.string()
+        .min(3, 'Tên tác giả tối thiểu 3 kí tự')
+        .max(120, 'Tên tác giả tối đa 120 kí tự')
+        .required('Tên tác giả là bắt buộc'),
+
+    biography: yup.string().trim().nullable()
+        .min(10, 'Mô tả tiểu sử quá ngắn. Vui lòng nhập ít nhất 10 kí tự.')
+        .max(3000, 'Mô tả tiểu sử quá dài. Vui lòng nhập tối đa 3000 kí tự.'),
+
+    avatar: yup.string().trim().nullable()
+        .url('Vui lòng nhập một URL hợp lệ'),
 });
 
-function CategoryForm() {
+function AuthorForm() {
 
     const navigate = useNavigate();
-    const { categoryId } = useParams();
+    const { authorId } = useParams();
     const [loading, setLoading] = useState(false);
     const [showDialog, setShowDialog] = useState(false);
 
@@ -65,13 +71,14 @@ function CategoryForm() {
     });
 
     useEffect(() => {
-        if (categoryId) {
-            getCategory(categoryId)
+        if (authorId) {
+            getAuthor(authorId)
                 .then((response) => {
-                    const { image, name } = response.data.data;
+                    const { fullName, biography, avatar } = response.data.data;
                     formik.setValues({
-                        image,
-                        name,
+                        fullName,
+                        biography,
+                        avatar
                     })
                 })
                 .catch((error) => { console.log(error); })
@@ -79,7 +86,7 @@ function CategoryForm() {
             formik.setValues(defaultValue);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [categoryId]);
+    }, [authorId]);
 
     const props = {
         name: 'file',
@@ -89,7 +96,7 @@ function CategoryForm() {
         onChange(info) {
             const { status } = info.file;
             if (status !== 'uploading') {
-                formik.setFieldValue('image', info.file.response[0]);
+                formik.setFieldValue('avatar', info.file.response[0]);
             }
             if (status === 'done') {
                 message.success(`${info.file.name} tải tập tin thành công.`);
@@ -104,9 +111,9 @@ function CategoryForm() {
 
     const handleSubmit = (values) => {
         setLoading(true);
-        createCategory(categoryId || null, values)
+        createAuthor(authorId || null, values)
             .then(() => {
-                navigate(routes.viewCategorys, { replace: true });
+                navigate(routes.viewAuthors, { replace: true });
                 toast.success('Thành công');
             })
             .catch((error) => {
@@ -120,11 +127,11 @@ function CategoryForm() {
     }
 
     const handleClose = () => {
-        navigate(routes.viewCategorys, { replace: true });
+        navigate(routes.viewAuthors, { replace: true });
     }
 
     const handleRemoveImage = () => {
-        formik.setFieldValue('image', '');
+        formik.setFieldValue('avatar', '');
     }
 
     return (
@@ -137,33 +144,52 @@ function CategoryForm() {
                                 Thông tin cơ bản
                             </div>
                         </div>
-
                         <div className='panel-content'>
                             <div className={cx('form-group')}>
-                                <label className={cx('form-label')} htmlFor='inputName'><span>*</span>Tên danh mục</label>
+                                <label className={cx('form-label')} htmlFor='inputFullName'><span>*</span>Tên tác giả</label>
                                 <div className={cx('form-input')}>
                                     <Input
-                                        id='inputName'
-                                        name='name'
+                                        id='inputFullName'
+                                        name='fullName'
                                         size='large'
                                         placeholder='Vui lòng nhập vào'
-                                        value={formik.values.name}
+                                        value={formik.values.fullName}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
-                                        {...inputProps(formik.touched.name && Boolean(formik.errors.name))}
+                                        {...inputProps(formik.touched.fullName && Boolean(formik.errors.fullName))}
                                     />
-                                    {formik.touched.name && formik.errors.name && (
-                                        <FormHelperText error>{formik.errors.name}</FormHelperText>
+                                    {formik.touched.fullName && formik.errors.fullName && (
+                                        <FormHelperText error>{formik.errors.fullName}</FormHelperText>
                                     )}
                                 </div>
                             </div>
 
                             <div className={cx('form-group')}>
-                                <label className={cx('form-label')} htmlFor='inputImage'><span>*</span>Hình ảnh</label>
+                                <label className={cx('form-label')} htmlFor='formControlTextarea'>Tiểu sử</label>
                                 <div className={cx('form-input')}>
-                                    {formik.values.image ? (
+                                    <TextArea
+                                        id='formControlTextarea'
+                                        name='biography'
+                                        showCount
+                                        maxLength={3000}
+                                        value={formik.values.biography}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        {...inputProps(formik.touched.biography && Boolean(formik.errors.biography))}
+                                        style={{ height: 100, resize: 'none', }}
+                                    />
+                                    {formik.touched.biography && formik.errors.biography && (
+                                        <FormHelperText error>{formik.errors.biography}</FormHelperText>
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className={cx('form-group')}>
+                                <label className={cx('form-label')} htmlFor='inputAvatar'>Hình ảnh</label>
+                                <div className={cx('form-input')}>
+                                    {formik.values.avatar ? (
                                         <div className={cx('form-upload-image')} >
-                                            <img className={cx('image-upload')} src={formik.values.image} alt='' />
+                                            <img className={cx('image-upload')} src={formik.values.avatar} alt='' />
                                             <div className={cx('image-tools')}>
                                                 <button onClick={() => handleRemoveImage()} className={cx('delete-image')}>
                                                     <FontAwesomeIcon icon={faTrashCan} />
@@ -177,10 +203,10 @@ function CategoryForm() {
                                                     <InboxOutlined />
                                                 </p>
                                                 <p className='ant-upload-text'>Nhấp hoặc kéo tệp vào khu vực này để tải lên</p>
-                                                <p className='ant-upload-hint'>Kích thước đề xuất [1920, 7750]</p>
+                                                <p className='ant-upload-hint'>Kích thước đề xuất [200, 200]</p>
                                             </Dragger>
-                                            {formik.touched.image && formik.errors.image && (
-                                                <FormHelperText error>{formik.errors.image}</FormHelperText>
+                                            {formik.touched.avatar && formik.errors.avatar && (
+                                                <FormHelperText error>{formik.errors.avatar}</FormHelperText>
                                             )}
                                         </>
                                     )
@@ -222,4 +248,4 @@ function CategoryForm() {
     );
 }
 
-export default CategoryForm;
+export default AuthorForm;

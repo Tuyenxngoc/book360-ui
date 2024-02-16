@@ -1,37 +1,42 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import MoneyDisplay from '~/components/MoneyDisplay';
+import DateTimeDisplay from '~/components/DateTimeDisplay';
 
 import Style from './MagageOrders.module.scss';
 import classNames from 'classnames/bind';
+
 import { Button, Chip } from '@mui/material';
-import DateTimeDisplay from '~/components/DateTimeDisplay';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faEye, faPen } from '@fortawesome/free-solid-svg-icons';
-import { useState } from 'react';
 import UpdateStatusDialog from './UpdateStatusDialog';
-import { useNavigate } from 'react-router-dom';
 
 const cx = classNames.bind(Style);
 
 const billStatus = [
-    { status: 'Chờ xác nhận', color: 'warning' },
-    { status: 'Chờ lấy hàng', color: 'warning' },
-    { status: 'Đang giao', color: 'success' },
-    { status: 'Đã giao', color: 'success' },
-    { status: 'Đã hủy', color: 'error' },
-    { status: 'Trả hàng/Hoàn tiền', color: 'success' },
-    { status: 'Giao không thành công', color: 'error' },
+    { label: 'Chờ xác nhận', status: 'WAIT_FOR_CONFIRMATION', color: 'warning' },
+    { label: 'Chờ lấy hàng', status: 'WAIT_FOR_DELIVERY', color: 'warning' },
+    { label: 'Đang giao', status: 'DELIVERING', color: 'warning' },
+    { label: 'Đã giao', status: 'DELIVERED', color: 'success' },
+    { label: 'Đã hủy', status: 'CANCELLED', color: 'error' },
+    { label: 'Trả hàng/Hoàn tiền', status: 'REFUND', color: 'warning' },
+    { label: 'Giao không thành công', status: 'DELIVERY_FAILED', color: 'error' },
 ]
 
 function getChipByStatus(order, handleUpdateStatus) {
+
     const config = billStatus.find(item => item.status === order.billStatus);
+
     const handleDelete = () => {
         handleUpdateStatus(order);
     }
+
     return (
         <Chip
             size='small'
             color={config.color}
-            label={config.status}
+            label={config.label}
             clickable={true}
             onClick={handleDelete}
             onDelete={handleDelete}

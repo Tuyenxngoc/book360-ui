@@ -27,6 +27,6 @@ const images = {
     share: require('~/assets/images/share.svg').default,
     uploadImage: require('~/assets/images/upload_image.svg').default,
     plus: require('~/assets/images/plus.svg').default,
-
+    imageDefault: require('~/assets/images/img_default.webp'),
 }
 export default images;

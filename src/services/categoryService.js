@@ -24,7 +24,7 @@ export const createCategory = (id, value) => {
     };
     const url = 'admin/category/create';
 
-    return axiosPrivate.post(url, category);
+    return axiosPrivate.put(url, category);
 }
 
 export const deleteCategory = (categoryId) => {

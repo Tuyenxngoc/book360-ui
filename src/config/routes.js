@@ -22,28 +22,40 @@ const routes = {
     adminDashboard: '/admin',
 
     //Manage user routes
-    viewUser: '/admin/user',
+    viewUsers: '/admin/user',
     createUser: '/admin/user/create',
     updateUser: '/admin/user/:userId',
 
     //Manage products routes
-    viewProduct: '/admin/product',
+    viewProducts: '/admin/product',
     createProduct: '/admin/product/create',
     updateProduct: '/admin/product/:productId',
 
     //Manage orders routes
-    viewOder: '/admin/order',
+    viewOders: '/admin/order',
     updateOder: '/admin/order/:orderId',
 
     //Manage categories routes
-    viewCategory: '/admin/category',
+    viewCategorys: '/admin/category',
     createCategory: '/admin/category/create',
     updateCategory: '/admin/category/:categoryId',
 
     //Manage banners routes
-    viewBanner: '/admin/banner',
+    viewBanners: '/admin/banner',
     createBanner: '/admin/banner/create',
     updateBanner: '/admin/banner/:bannerId',
+
+    //Manage author routes
+    viewAuthors: '/admin/author',
+    viewAuthor: '/admin/author/:authorId',
+    createAuthor: '/admin/author/create',
+    updateAuthor: '/admin/author/update/:authorId',
+
+    //Manage bookset routes
+    viewBookSets: '/admin/book-set',
+    viewBookSet: '/admin/book-set/:bookSetId',
+    createBookSet: '/admin/book-set/create',
+    updateBookSet: '/admin/book-set/update/:bookSetId',
 
     accessDenied: '/access-denied',
     notFound: '*',

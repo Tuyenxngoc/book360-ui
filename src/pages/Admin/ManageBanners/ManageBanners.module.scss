@@ -97,6 +97,11 @@
         display: flex;
         justify-content: flex-start;
         align-items: center;
+
+        .image-upload {
+            width: 100%;
+            object-fit: contain;
+        }
     }
 }
 

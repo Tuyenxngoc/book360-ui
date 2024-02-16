@@ -41,7 +41,7 @@
     }
 }
 
-.image-category {
+.image-bookSet {
     height: 50px;
     line-height: 50px;
     user-select: none;
@@ -57,7 +57,7 @@
     align-items: center;
 }
 
-//Dialog
+//Form
 .panel-wrapper {
     background-color: white;
     padding: 24px;
@@ -96,17 +96,6 @@
 
     .form-input {
         width: 100%;
-    }
-
-    .form-upload-image {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-
-        .image-upload {
-            width: 100%;
-            object-fit: contain;
-        }
     }
 }
 

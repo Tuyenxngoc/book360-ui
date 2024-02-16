@@ -36,3 +36,7 @@ export const getBillsForAdmin = (params) => {
 export const getCountBill = () => {
     return axiosPrivate.get('admin/bill/count');
 }
+
+export const getStatistic = () => {
+    return axiosPrivate.get('admin/bill/count');
+}

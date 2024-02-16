@@ -17,11 +17,7 @@ export const getAllCustomer = (params) => {
 }
 
 export const getCountCustomer = () => {
-    return axiosPrivate.get('customer/get-count-customer');
-}
-
-export const uploadImage = (file) => {
-    uploadImages(file);
+    return axiosPrivate.get('admin/customer/count');
 }
 
 export const uploadImages = (files) => {
@@ -39,16 +35,15 @@ export const uploadImages = (files) => {
 
 export const customerUpload = async ({ file, onSuccess, onError }) => {
     try {
-        const response = await uploadImage(file);
+        const response = await uploadImages([file]);
         onSuccess(response.data.data, file);
     } catch (error) {
         onError(error);
     }
 };
 
-export const updateCustomer = (customerId, { name, phonenumber, address, avatar }) => {
-    const customerInfo = { name, phonenumber, address, avatar };
-    return axiosPrivate.put(`customer/${customerId}`, customerInfo);
+export const updateCustomer = (values) => {
+    return axiosPrivate.put('customer/update', values);
 }
 
 export const getFavoriteProducts = () => {
@@ -76,4 +71,8 @@ export const uploadAvatar = (file) => {
             'Content-Type': 'multipart/form-data',
         },
     });
+}
+
+export const getTodos = () => {
+    return axiosPrivate.get('admin/customer/get-todo');
 }

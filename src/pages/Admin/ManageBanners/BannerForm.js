@@ -19,7 +19,7 @@ import { LoadingButton } from '@mui/lab';
 import AlertDialog from '~/components/AlertDialog';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave } from '@fortawesome/free-regular-svg-icons';
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
 
 const { Dragger } = Upload;
@@ -69,7 +69,7 @@ function BannerForm() {
         onChange(info) {
             const { status } = info.file;
             if (status !== 'uploading') {
-                formik.setFieldValue('image', info.file.response);
+                formik.setFieldValue('image', info.file.response[0]);
             }
             if (status === 'done') {
                 message.success(`${info.file.name} tải tập tin thành công.`);
@@ -104,7 +104,7 @@ function BannerForm() {
         setLoading(true);
         createBanner(bannerId || null, values)
             .then(() => {
-                navigate(routes.viewBanner, { replace: true });
+                navigate(routes.viewBanners, { replace: true });
                 toast.success('Thành công');
             })
             .catch((error) => { toast.error('Có lỗi xảy ra') })
@@ -112,7 +112,11 @@ function BannerForm() {
     }
 
     const handleClose = () => {
-        navigate(routes.viewBanner, { replace: true });
+        navigate(routes.viewBanners, { replace: true });
+    }
+
+    const handleRemoveImage = () => {
+        formik.setFieldValue('image', '');
     }
 
     return (
@@ -165,15 +169,28 @@ function BannerForm() {
                             <div className={cx('form-group')}>
                                 <label className={cx('form-label')} htmlFor='inputUrl'><span>*</span>Hình ảnh</label>
                                 <div className={cx('form-input')}>
-                                    <Dragger {...props}>
-                                        <p className='ant-upload-drag-icon'>
-                                            <InboxOutlined />
-                                        </p>
-                                        <p className='ant-upload-text'>Nhấp hoặc kéo tệp vào khu vực này để tải lên</p>
-                                        <p className='ant-upload-hint'>Kích thước đề xuất [1920, 7750]</p>
-                                    </Dragger>
-                                    {formik.touched.image && formik.errors.image && (
-                                        <FormHelperText error>{formik.errors.image}</FormHelperText>
+                                    {formik.values.image ? (
+                                        <div className={cx('form-upload-image')} >
+                                            <img className={cx('image-upload')} src={formik.values.image} alt='' />
+                                            <div className={cx('image-tools')}>
+                                                <button onClick={() => handleRemoveImage()} className={cx('delete-image')}>
+                                                    <FontAwesomeIcon icon={faTrashCan} />
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <>
+                                            <Dragger {...props}>
+                                                <p className='ant-upload-drag-icon'>
+                                                    <InboxOutlined />
+                                                </p>
+                                                <p className='ant-upload-text'>Nhấp hoặc kéo tệp vào khu vực này để tải lên</p>
+                                                <p className='ant-upload-hint'>Kích thước đề xuất [1920, 7750]</p>
+                                            </Dragger>
+                                            {formik.touched.image && formik.errors.image && (
+                                                <FormHelperText error>{formik.errors.image}</FormHelperText>
+                                            )}
+                                        </>
                                     )}
                                 </div>
                             </div>

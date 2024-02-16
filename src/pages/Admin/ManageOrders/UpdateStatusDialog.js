@@ -27,12 +27,14 @@ function inputProps(isError) {
     }
 }
 
-const ORDER_STATUSES = [
-    { label: 'Chờ xử lý', key: 'to_pay', },
-    { label: 'Đang giao hàng', key: 'to_receive', },
-    { label: 'Đặt hàng thành công', key: 'ordered', },
-    { label: 'Đã giao', key: 'completed', },
-    { label: 'Đã hủy', key: 'canceled', }
+const billStatus = [
+    { label: 'Chờ xác nhận', value: 'WAIT_FOR_CONFIRMATION' },
+    { label: 'Chờ lấy hàng', value: 'WAIT_FOR_DELIVERY' },
+    { label: 'Đang giao', value: 'DELIVERING' },
+    { label: 'Đã giao', value: 'DELIVERED' },
+    { label: 'Đã hủy', value: 'CANCELLED' },
+    { label: 'Trả hàng/Hoàn tiền', value: 'REFUND' },
+    { label: 'Giao không thành công', value: 'DELIVERY_FAILED' },
 ]
 
 const validationSchema = yup.object({
@@ -53,8 +55,8 @@ function UpdateStatusDialog({ open, setOpen, dataOrder, fetchListOrder }) {
         if (open) {
             formik.handleReset();
             if (dataOrder) {
-                const type = ORDER_STATUSES.find(r => r.label === dataOrder.status);
-                formik.setValues({ status: type?.key || '' });
+                const type = billStatus.find(r => r.value === dataOrder.billStatus);
+                formik.setValues({ status: type?.value || '' });
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -65,10 +67,9 @@ function UpdateStatusDialog({ open, setOpen, dataOrder, fetchListOrder }) {
     };
 
     function handleSubmit(values) {
-        const item = ORDER_STATUSES.find(r => r.label === dataOrder.status);
-        if (values.status !== item?.key) {
-            const params = queryString.stringify({ newStatus: values.status });
-            updateBillStatus(dataOrder.id || -1, params)
+        const item = billStatus.find(r => r.value === dataOrder.billStatus);
+        if (values.status !== item?.value) {
+            updateBillStatus(dataOrder.id, values.status)
                 .then(response => {
                     fetchListOrder();
                     toast.success('Cập nhật thành công');
@@ -98,7 +99,7 @@ function UpdateStatusDialog({ open, setOpen, dataOrder, fetchListOrder }) {
                                     value={formik.values.status || null}
                                     onChange={(value) => formik.setFieldValue('status', value)}
                                     onBlur={formik.handleBlur}
-                                    options={ORDER_STATUSES.map(item => ({ value: item.key, label: item.label, }))}
+                                    options={billStatus}
                                     {...inputProps(formik.touched.status && Boolean(formik.errors.status))}
                                 />
                                 {formik.touched.status && formik.errors.status && (

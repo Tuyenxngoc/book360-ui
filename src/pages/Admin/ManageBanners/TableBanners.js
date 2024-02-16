@@ -111,7 +111,7 @@ function TableBanners({ listBanners, fetchListBanner }) {
                         })
                     ) : (
                         <tr>
-                            <td colSpan="4">
+                            <td colSpan="5">
                                 <div className={cx('no-result')}>
                                     <div className={cx('icon')} />
                                     <div className={cx('text')}>Chưa có dữ liệu</div>
