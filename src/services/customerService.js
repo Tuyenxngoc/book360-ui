@@ -1,23 +1,18 @@
 import { axiosPrivate } from "~/utils/httpRequest";
 
-export const createCustomer = (values) => {
-    return axiosPrivate.post('auth/admin-register', values);
+export const updateCustomer = (values) => {
+    return axiosPrivate.put('customer/update', values);
 }
 
-export const deleteCustomer = (customerId) => {
-    return axiosPrivate.delete(`customer/${customerId}`);
-}
+export const uploadAvatar = (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
 
-export const getCustomer = (userId) => {
-    return axiosPrivate.get(`customer/get-by-user/${userId}`);
-}
-
-export const getAllCustomer = (params) => {
-    return axiosPrivate.get(`customer/get-customers?${params}`);
-}
-
-export const getCountCustomer = () => {
-    return axiosPrivate.get('admin/customer/count');
+    return axiosPrivate.post('customer/upload-avatar', formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    });
 }
 
 export const uploadImages = (files) => {
@@ -42,14 +37,6 @@ export const customerUpload = async ({ file, onSuccess, onError }) => {
     }
 };
 
-export const updateCustomer = (values) => {
-    return axiosPrivate.put('customer/update', values);
-}
-
-export const getFavoriteProducts = () => {
-    return axiosPrivate.get(`customer/favorite-products`);
-}
-
 export const checkFavoriteProduct = (productId) => {
     return axiosPrivate.get(`customer/favorite-products/${productId}`);
 }
@@ -62,15 +49,29 @@ export const removeFavoriteProduct = (productId) => {
     return axiosPrivate.delete(`customer/favorite-products/${productId}`);
 }
 
-export const uploadAvatar = (file) => {
-    const formData = new FormData();
-    formData.append('file', file);
+export const getFavoriteProducts = () => {
+    return axiosPrivate.get(`customer/favorite-products`);
+}
 
-    return axiosPrivate.post('customer/upload-avatar', formData, {
-        headers: {
-            'Content-Type': 'multipart/form-data',
-        },
-    });
+export const createCustomer = (values) => {
+    return axiosPrivate.post('admin/customer/create', values);
+}
+
+
+export const deleteCustomer = (customerId) => {
+    return axiosPrivate.delete(`customer/${customerId}`);
+}
+
+export const getCustomer = (customerId) => {
+    return axiosPrivate.get(`admin/customer/${customerId}`);
+}
+
+export const getCustomers = (params) => {
+    return axiosPrivate.get(`admin/customer/get?${params}`);
+}
+
+export const getCountCustomer = () => {
+    return axiosPrivate.get('admin/customer/count');
 }
 
 export const getTodos = () => {

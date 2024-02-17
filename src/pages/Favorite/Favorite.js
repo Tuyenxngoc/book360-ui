@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 
-import useAuth from '~/hooks/useAuth';
 import Product from '~/components/Product';
 import { getFavoriteProducts } from '~/services/customerService';
 

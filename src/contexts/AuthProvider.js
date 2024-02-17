@@ -14,11 +14,10 @@ const defaultAuth = {
     isAuthenticated: false,
     customer: {
         username: '',
-        nickName: '',
+        fullName: '',
         roleName: '',
         email: '',
         phoneNumber: '',
-        address: '',
         avatar: '',
         gender: '',
         dob: ''
@@ -48,11 +47,10 @@ const AuthProvider = ({ children }) => {
             if (response.status === 200) {
                 const {
                     username,
-                    nickName,
+                    fullName,
                     roleName,
                     email,
                     phoneNumber,
-                    address,
                     avatar,
                     gender,
                     dob
@@ -61,11 +59,10 @@ const AuthProvider = ({ children }) => {
                     isAuthenticated: true,
                     customer: {
                         username,
-                        nickName,
+                        fullName,
                         roleName,
                         email,
                         phoneNumber,
-                        address,
                         avatar,
                         gender,
                         dob

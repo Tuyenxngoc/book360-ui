@@ -1,19 +1,21 @@
-import { FormControl, IconButton, Input, InputAdornment, InputLabel, TextField } from '@mui/material';
-import { useFormik } from 'formik';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
+import { LoadingButton } from '@mui/lab';
+import { FormControl, IconButton, Input, InputAdornment, InputLabel, TextField } from '@mui/material';
+
 import * as yup from 'yup';
+import { useFormik } from 'formik';
 
 import Style from './Register.module.scss';
 import classNames from 'classnames/bind';
+
 import images from '~/assets';
+import { register } from '~/services/authService';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-import { toast } from 'react-toastify';
-import httpRequest from '~/utils/httpRequest';
-import { useEffect, useState } from 'react';
-import { LoadingButton } from '@mui/lab';
-import { register } from '~/services/authService';
-import queryString from 'query-string';
 import { EyeInvisibleOutlined, EyeOutlined } from '@ant-design/icons';
 
 const cx = classNames.bind(Style);
@@ -47,7 +49,7 @@ function Register() {
 
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
-    const [position, setPosition] = useState({});
+
     const [showPassword, setShowPassword] = useState(false);
     const [showRepeatPassword, setShowRepeatPassword] = useState(false);
 
@@ -58,11 +60,7 @@ function Register() {
     const handleRegister = async (values) => {
         setIsLoading(true);
         try {
-            const params = queryString.stringify({
-                latitude: position.latitude,
-                longitude: position.longitude
-            });
-            const response = await register(values, params);
+            const response = await register(values);
             if (response.status === 200) {
                 toast.success('Đăng ký thành công');
                 navigate('/login');
@@ -97,34 +95,6 @@ function Register() {
             handleRegister(values);
         },
     });
-
-    const getCurrentLocation = async () => {
-        try {
-            if (!navigator.geolocation) {
-                throw new Error('Geolocation is not supported by this browser.');
-            }
-
-            const position = await new Promise((resolve, reject) => {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        const { latitude, longitude } = position.coords;
-                        resolve({ latitude, longitude });
-                    },
-                    (error) => {
-                        reject(error);
-                    }
-                );
-            });
-
-            setPosition(position);
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    useEffect(() => {
-        getCurrentLocation();
-    }, []);
 
     return (
         <div>

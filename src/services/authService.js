@@ -1,7 +1,7 @@
 import httpRequest, { axiosPrivate } from "~/utils/httpRequest";
 
-export const register = (values, params) => {
-    return httpRequest.post(`auth/register?${params}`, values);
+export const register = (values) => {
+    return httpRequest.post('auth/register', values);
 }
 
 export const refreshToken = (values) => {

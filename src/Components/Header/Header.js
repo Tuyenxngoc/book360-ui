@@ -111,7 +111,7 @@ function Header() {
                                             <Avatar alt='avt' src={customer.avatar || images.userDefault} sx={{ width: 24, height: 24 }} />
                                         }
                                     >
-                                        {customer.nickName || customer.username || 'user'}
+                                        {customer.fullName || customer.username || 'user'}
                                     </Button>
 
                                     <ul className={cx('user-menu')}>

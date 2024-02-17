@@ -12,6 +12,7 @@
 .title {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     font-size: 16px;
     font-weight: 500;
     color: #000;
@@ -43,6 +44,35 @@
     .form-input {
         width: 100%;
     }
+}
+
+//Address
+.current-address {
+    padding-left: 12px;
+    padding-top: 12px;
+
+    .header {
+        color: #828282;
+        margin-bottom: 4px;
+
+        span:first-child {
+            font-weight: 500;
+            color: #030303;
+        }
+    }
+
+    .address-container {
+        display: flex;
+        align-items: center;
+        color: #828282;
+    }
+}
+
+.change-address {
+    background-color: white;
+    color: var(--primary);
+    margin-left: 14px;
+    font-size: 14px;
 }
 
 //Payment

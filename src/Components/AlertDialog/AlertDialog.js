@@ -18,11 +18,15 @@ function AlertDialog({ open, setOpen, title, description, handleSubmit }) {
             open={open}
             onClose={handleClose}
             fullWidth
-            maxWidth={'xs'}
+            maxWidth='xs'
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
         >
-            <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
+            <DialogTitle
+                id="alert-dialog-title"
+                sx={{ fontSize: '18px', fontWeight: 400 }}
+            >{title}
+            </DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">{description}</DialogContentText>
             </DialogContent>
@@ -38,7 +42,7 @@ AlertDialog.propTypes = {
     open: PropTypes.bool.isRequired,
     setOpen: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
+    description: PropTypes.string,
     handleSubmit: PropTypes.func.isRequired,
 };
 

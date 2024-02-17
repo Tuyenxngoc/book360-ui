@@ -276,7 +276,7 @@ function ProductsDashboard() {
                                                         size='small'
                                                         id='inputSoldMax'
                                                         name='soldMax'
-                                                        placeholder='Tối thiểu'
+                                                        placeholder='Tối đa'
                                                         value={formik.values.soldMax}
                                                         onChange={formik.handleChange}
                                                         onBlur={formik.handleBlur}

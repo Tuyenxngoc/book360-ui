@@ -13,7 +13,7 @@ import { updateCustomer, uploadAvatar } from '~/services/customerService';
 import { useState } from 'react';
 
 import { LoadingButton } from '@mui/lab';
-import ShowDialog from '../Address/ShowDialog';
+import ShowDialog from '../Address/DialogCreateAddress';
 import { message } from 'antd';
 
 const validationSchema = yup.object({
@@ -25,7 +25,7 @@ const validationSchema = yup.object({
         .required('Vui lòng nhập địa chỉ'),
 
     phoneNumber: yup.string()
-        .matches(/^(?:\+84|0)(?:1[2689]|9[0-9]|3[2-9]|5[6-9]|7[0-9])(?:\d{7}|\d{8})$/, 'Phải là số điện thoại hợp lệ')
+        .matches(/^(?:\+84|0)(?:1[2689]|9[0-9]|3[2-9]|5[6-9]|7[0-9])(?:\d{7}|\d{8})$/, 'Số điện thoại không hợp lệ')
         .required('Số điện thoại là bắt buộc'),
 });
 
@@ -44,7 +44,7 @@ function Profile() {
 
     const formik = useFormik({
         initialValues: {
-            fullName: customer.nickName || '',
+            fullName: customer.fullName || '',
             address: customer.address || '',
             phoneNumber: customer.phoneNumber || '',
             dob: "2024-02-06",

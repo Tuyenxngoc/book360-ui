@@ -1,6 +1,6 @@
 import { Avatar } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faKey, faBell, faClipboard, faHeart, faUser, faPen } from "@fortawesome/free-solid-svg-icons";
+import { faKey, faBell, faClipboard, faHeart, faUser, faPen, faLocationDot } from "@fortawesome/free-solid-svg-icons";
 
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
@@ -39,7 +39,7 @@ function SideBar() {
                     <Avatar alt="user" src={customer.avatar || images.userDefault} sx={{ width: 50, height: 50 }} />
                 </div>
                 <div className={cx('info')}>
-                    <p>{customer.nickName}</p>
+                    <p>{customer.fullName}</p>
                     <Link to="/profile">
                         <FontAwesomeIcon icon={faPen} />
                         <span>Chỉnh sửa tài khoản</span>
@@ -58,6 +58,12 @@ function SideBar() {
                                 <Link to='/profile' className={cx('panelLink', { 'active': isLinkActive('/profile') })}>
                                     <span className={cx('icon')}><FontAwesomeIcon icon={faUser} /></span>
                                     Hồ sơ
+                                </Link>
+                            </li>
+                            <li className={cx('panelItem')}>
+                                <Link to='/address' className={cx('panelLink', { 'active': isLinkActive('/address') })}>
+                                    <span className={cx('icon')}><FontAwesomeIcon icon={faLocationDot} /></span>
+                                    Địa chỉ
                                 </Link>
                             </li>
                             <li className={cx('panelItem')}>

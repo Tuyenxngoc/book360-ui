@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getAllCustomer } from '~/services/customerService';
+import { getCustomers } from '~/services/customerService';
 
 import Style from './ManageUsers.module.scss';
 import classNames from 'classnames/bind';
@@ -36,7 +36,7 @@ function UsersDashboard() {
 
     const fetchListUser = () => {
         const params = queryString.stringify(filters);
-        getAllCustomer(params)
+        getCustomers(params)
             .then((response) => {
                 const { items, meta } = response.data.data;
                 setDataUsers(items);

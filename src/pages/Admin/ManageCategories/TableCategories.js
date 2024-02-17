@@ -38,8 +38,12 @@ function TableCategories({ listCategory, fetchListCategory }) {
                 fetchListCategory();
                 toast.success('Xoá thành công');
             })
-            .catch(() => {
-                toast.error('Có lỗi sảy ra');
+            .catch((error) => {
+                if (error?.response?.data.message) {
+                    toast.error(error.response.data.message);
+                } else {
+                    toast.error('Có lỗi sảy ra');
+                }
             })
     }
 
