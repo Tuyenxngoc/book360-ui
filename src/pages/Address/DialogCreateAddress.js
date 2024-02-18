@@ -26,13 +26,18 @@ const validationSchema = yup.object({
         .matches(/^(?:\+84|0)(?:1[2689]|9[0-9]|3[2-9]|5[6-9]|7[0-9])(?:\d{7}|\d{8})$/, 'Số điện thoại không hợp lệ')
         .required('Số điện thoại là bắt buộc'),
 
-    fullAddress: yup.string().trim()
-        .required('Địa chỉ là bắt buộc'),
+    state: yup.string().trim()
+        .required('Trường này là bắt buộc'),
 
-    detailedAddress: yup.string().trim()
+    district: yup.string().trim()
+        .required('Trường này là bắt buộc'),
+
+    ward: yup.string().trim()
+        .required('Trường này là bắt buộc'),
+
+    street: yup.string().trim()
         .min(5, 'Địa chỉ quá ngắn. Địa chỉ phải có 5 ký tự trở lên')
-        .required('Địa chỉ cụ thể là bắt buộc'),
-
+        .required('Trường này là bắt buộc'),
 });
 
 function defaultFunction() { }
@@ -43,9 +48,8 @@ function DialogCreateAddress({
     addressId,
     onClose = defaultFunction,
     onSuccess = defaultFunction,
-    title,
     titleDescription,
-    defaultAddress = false,
+    isDefaultAddress = false,
 }) {
 
     const [isLoading, setIsLoading] = useState(false);
@@ -54,12 +58,14 @@ function DialogCreateAddress({
         initialValues: {
             fullName: '',
             phoneNumber: '',
-            fullAddress: '',
-            detailedAddress: '',
+            state: '',
+            district: '',
+            ward: '',
+            street: '',
             latitude: '',
             longitude: '',
             type: 'HOME',
-            defaultAddress,
+            isDefaultAddress,
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
@@ -96,20 +102,26 @@ function DialogCreateAddress({
                     const {
                         fullName,
                         phoneNumber,
-                        addressName,
+                        state,
+                        district,
+                        ward,
+                        street,
                         type,
-                        defaultAddress,
+                        isDefaultAddress,
                         latitude,
                         longitude,
                     } = response.data.data;
                     formik.setValues({
                         fullName,
                         phoneNumber,
-                        fullAddress: addressName,
-                        type,
-                        defaultAddress,
+                        state,
+                        district,
+                        ward,
+                        street,
                         latitude,
                         longitude,
+                        type,
+                        isDefaultAddress,
                     })
                 })
                 .catch((error) => {
@@ -134,7 +146,7 @@ function DialogCreateAddress({
             aria-labelledby='alert-dialog-title'
         >
             <DialogTitle id='alert-dialog-title'>
-                <div className={cx('title')}>{title}</div>
+                <div className={cx('title')}>{addressId ? 'Cập nhật địa chỉ' : 'Địa chỉ mới'}</div>
                 {titleDescription && <div className={cx('title-description')}>{titleDescription}</div>}
             </DialogTitle>
             <DialogContent>
@@ -173,31 +185,63 @@ function DialogCreateAddress({
                             </div>
                         </div>
                         <div className='col-12'>
-                            <TextField
-                                fullWidth
-                                size='small'
-                                label='Tỉnh/ Thành phố, Quận/Huyện, Phường/Xã'
-                                id='fullAddress'
-                                name='fullAddress'
-                                value={formik.values.fullAddress}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                error={formik.touched.fullAddress && Boolean(formik.errors.fullAddress)}
-                                helperText={formik.touched.fullAddress && formik.errors.fullAddress}
-                            />
+                            <div className='row gx-2'>
+                                <div className='col-4'>
+                                    <TextField
+                                        fullWidth
+                                        size='small'
+                                        label='Tỉnh/ Thành phố'
+                                        id='state'
+                                        name='state'
+                                        value={formik.values.state}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        error={formik.touched.state && Boolean(formik.errors.state)}
+                                        helperText={formik.touched.state && formik.errors.state}
+                                    />
+                                </div>
+                                <div className='col-4'>
+                                    <TextField
+                                        fullWidth
+                                        size='small'
+                                        label='Quận/Huyện'
+                                        id='district'
+                                        name='district'
+                                        value={formik.values.district}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        error={formik.touched.district && Boolean(formik.errors.district)}
+                                        helperText={formik.touched.district && formik.errors.district}
+                                    />
+                                </div>
+                                <div className='col-4'>
+                                    <TextField
+                                        fullWidth
+                                        size='small'
+                                        label='Phường/Xã'
+                                        id='ward'
+                                        name='ward'
+                                        value={formik.values.ward}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        error={formik.touched.ward && Boolean(formik.errors.ward)}
+                                        helperText={formik.touched.ward && formik.errors.ward}
+                                    />
+                                </div>
+                            </div>
                         </div>
                         <div className='col-12'>
                             <TextField
                                 fullWidth
                                 label='Địa chỉ cụ thể'
-                                id='detailedAddress'
-                                name='detailedAddress'
+                                id='street'
+                                name='street'
                                 size='small'
-                                value={formik.values.detailedAddress}
+                                value={formik.values.street}
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
-                                error={formik.touched.detailedAddress && Boolean(formik.errors.detailedAddress)}
-                                helperText={formik.touched.detailedAddress && formik.errors.detailedAddress}
+                                error={formik.touched.street && Boolean(formik.errors.street)}
+                                helperText={formik.touched.street && formik.errors.street}
                             />
                         </div>
                         <div className='col-12'>
@@ -224,10 +268,11 @@ function DialogCreateAddress({
                         </div>
                         <div className='col-12'>
                             <Checkbox
-                                checked={formik.values.defaultAddress}
-                                onChange={(event) => formik.setFieldValue('defaultAddress', event.target.checked)}
+                                id='isDefaultAddress'
+                                checked={formik.values.isDefaultAddress}
+                                onChange={(event) => formik.setFieldValue('isDefaultAddress', event.target.checked)}
                             />
-                            <span>Đặt làm địa chỉ mặc định</span>
+                            <label htmlFor='isDefaultAddress' >Đặt làm địa chỉ mặc định</label>
                         </div>
                     </div>
                 </div>
@@ -260,7 +305,6 @@ DialogCreateAddress.propTypes = {
     setOpen: PropTypes.func.isRequired,
     onClose: PropTypes.func,
     onSuccess: PropTypes.func,
-    title: PropTypes.string.isRequired,
     titleDescription: PropTypes.string,
 };
 

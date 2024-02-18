@@ -22,11 +22,7 @@ export const saveLocationCustomer = (addressId, values) => {
     const data = {
         addressId,
         ...values,
-        addressName: values.fullAddress + values.detailedAddress,
     }
-
-    delete data.fullAddress;
-    delete data.detailedAddress;
 
     return axiosPrivate.put('address/create', data);
 }

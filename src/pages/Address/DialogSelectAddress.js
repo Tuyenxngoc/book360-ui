@@ -1,10 +1,13 @@
+import { useEffect, useState } from 'react';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Button, Chip, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, Radio, RadioGroup } from '@mui/material';
+
 //Style
 import Style from './Address.module.scss';
 import classNames from 'classnames/bind';
-import { useEffect, useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+
 import DialogCreateAddress from './DialogCreateAddress';
 
 const cx = classNames.bind(Style);
@@ -23,7 +26,9 @@ function DialogSelectAddress({
 }) {
 
     const [value, setValue] = useState(null);
+
     const [isOpenDialogCreateAddress, setIsOpenDialogCreateAddress] = useState(false);
+
     const [addressSelect, setAddressSelect] = useState(null);
 
     const handleBtnCancelClick = () => {
@@ -72,7 +77,6 @@ function DialogSelectAddress({
                 onClose={handleCloseDialogCreateAddress}
                 onSuccess={handleCreateAddressSuccess}
                 addressId={addressSelect}
-                title={addressSelect ? 'Cập nhật địa chỉ' : 'Địa chỉ mới'}
             />
             <Dialog
                 open={open}
@@ -110,8 +114,8 @@ function DialogSelectAddress({
                                             </div>
                                         </div>
                                         <div>
-                                            <div>{address.addressName}</div>
-                                            {address.defaultAddress && <Chip label='Mặc định' color='primary' size='small' sx={{ mr: 1 }} />}
+                                            <div>{address.fullAddress}</div>
+                                            {address.isDefaultAddress && <Chip label='Mặc định' color='primary' size='small' sx={{ mr: 1 }} />}
                                         </div>
                                     </div>
                                 }

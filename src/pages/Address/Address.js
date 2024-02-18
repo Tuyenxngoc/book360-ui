@@ -121,7 +121,7 @@ function Address() {
                                         <span>{address.fullName}</span>
                                         <div>
                                             <Button size='small' onClick={() => handleClickBtnUpdate(address.id)}>Cập nhật</Button>
-                                            {address.defaultAddress || (
+                                            {address.isDefaultAddress || (
                                                 <Button size='small' onClick={() => handleClickBtnDelete(address.id)}>Xóa</Button>
                                             )}
                                         </div>
@@ -134,7 +134,7 @@ function Address() {
                                         <Button
                                             variant='outlined'
                                             size='small'
-                                            disabled={address.defaultAddress}
+                                            disabled={address.isDefaultAddress}
                                             onClick={() => handleSetDefaultAddress(address.id)}
                                         >
                                             Thiết lập mặc định
@@ -147,7 +147,7 @@ function Address() {
                                 </div>
 
                                 <div className='col-12'>
-                                    {address.defaultAddress && (
+                                    {address.isDefaultAddress && (
                                         <span className={cx('default-address')}>Mặc định</span>
                                     )}
                                 </div>

@@ -16,7 +16,6 @@ import { Input, Radio } from 'antd';
 
 //component
 import images from '~/assets';
-import useAuth from '~/hooks/useAuth';
 import Breadcrumb from '~/components/Breadcrumb';
 import MoneyDisplay from '~/components/MoneyDisplay';
 
@@ -37,8 +36,8 @@ const DELIVERY_FEE = 30000;
 
 const defaultValue = {
     addressDetailId: null,
-    paymentMethod: "CASH",
-    note: "",
+    paymentMethod: 'CASH',
+    note: '',
     listProductId: []
 }
 
@@ -78,8 +77,6 @@ const PAYMENT_METHODS = [
 
 function Checkouts() {
 
-    const { isAuthenticated } = useAuth();
-
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -94,7 +91,7 @@ function Checkouts() {
     const [paymentMethods, setPaymentMethods] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
 
-    const [addressList, setAddressList] = useState(null);
+    const [addressList, setAddressList] = useState([]);
     const [addressSelect, setAddressSelect] = useState(null);
 
     const formik = useFormik({
@@ -164,7 +161,7 @@ function Checkouts() {
     }, [listProducts]);
 
     useEffect(() => {
-        if (isAuthenticated && addressList && addressList.length === 0) {
+        if (addressList.length === 0) {
             setOpenAlertDialog(true);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -175,7 +172,7 @@ function Checkouts() {
     };
 
     const handleChangeAddress = (addressDetailId) => {
-        formik.setFieldValue("addressDetailId", addressDetailId)
+        formik.setFieldValue('addressDetailId', addressDetailId)
         const newAddressSelect = addressList.find(address => address.id === Number(addressDetailId))
         if (newAddressSelect) {
             setAddressSelect(newAddressSelect);
@@ -204,33 +201,31 @@ function Checkouts() {
                 onSuccess={fetchListAddress}
                 title={'Địa chỉ mới'}
                 titleDescription={'Để đặt hàng, vui lòng thêm địa chỉ nhận hàng'}
-                defaultAddress={addressList && addressList.length === 0}
+                isDefaultAddress={addressList.length === 0}
             />
             <div className='container'>
                 <div className='row g-3'>
                     <div className='col-7'>
                         <div className='row g-3'>
                             <div className='col-12'>
-                                {isAuthenticated && addressList && addressList.length > 0 ? (
-                                    <div className={cx('wrapper')}>
-                                        <div className={cx('title')}>
-                                            <div className='left'>
-                                                <span className={cx('icon')}><FontAwesomeIcon icon={faLocationDot} /></span>
-                                                <span>Địa chỉ nhận hàng</span>
-                                            </div>
-                                            {addressList && addressList.length > 0 &&
-                                                <div className='right'>
-                                                    <button
-                                                        className={cx('change-address')}
-                                                        onClick={() => setIsOpenDialogSelectAddress(true)}
-                                                    >
-                                                        Thay đổi
-                                                        <FontAwesomeIcon icon={faCaretRight} />
-                                                    </button>
-                                                </div>
-                                            }
+                                <div className={cx('wrapper')}>
+                                    <div className={cx('title')}>
+                                        <div className='left'>
+                                            <span className={cx('icon')}><FontAwesomeIcon icon={faLocationDot} /></span>
+                                            <span>Địa chỉ nhận hàng</span>
                                         </div>
-                                        <div className={cx('inner')}>
+                                        <div className='right'>
+                                            <button
+                                                className={cx('change-address')}
+                                                onClick={() => setIsOpenDialogSelectAddress(true)}
+                                            >
+                                                Thay đổi
+                                                <FontAwesomeIcon icon={faCaretRight} />
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div className={cx('inner')}>
+                                        {addressList.length > 0 ? (
                                             <div className={cx('current-address')}>
                                                 <div className={cx('header')}>
                                                     <span>{addressSelect.fullName}</span>
@@ -238,15 +233,15 @@ function Checkouts() {
                                                     <span>{addressSelect.phoneNumber}</span>
                                                 </div>
                                                 <div className={cx('address-container')}>
-                                                    {addressSelect.defaultAddress && <Chip label='Mặc định' color='primary' size='small' sx={{ mr: 1 }} />}
-                                                    <div>{addressSelect.addressName}</div>
+                                                    {addressSelect.isDefaultAddress && <Chip label='Mặc định' color='primary' size='small' sx={{ mr: 1 }} />}
+                                                    <div>{addressSelect.fullAddress}</div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        ) : (
+                                            <div className='pt-2'>Vui lòng thêm địa chỉ để tiếp tục</div>
+                                        )}
                                     </div>
-                                ) : (
-                                    <></>
-                                )}
+                                </div>
                             </div>
                             <div className='col-12'>
                                 <div className={cx('wrapper')}>
