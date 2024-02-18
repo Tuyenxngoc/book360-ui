@@ -19,7 +19,6 @@ import images from '~/assets';
 import Breadcrumb from '~/components/Breadcrumb';
 import MoneyDisplay from '~/components/MoneyDisplay';
 
-
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 
@@ -33,13 +32,6 @@ const cx = classNames.bind(Style);
 const { TextArea } = Input;
 
 const DELIVERY_FEE = 30000;
-
-const defaultValue = {
-    addressDetailId: null,
-    paymentMethod: 'CASH',
-    note: '',
-    listProductId: []
-}
 
 const validationSchema = yup.object({
     addressDetailId: yup.number(),
@@ -84,18 +76,26 @@ function Checkouts() {
         return location.state?.listProducts || [];
     }, [location.state]);
 
-    const [openAlertDialog, setOpenAlertDialog] = useState(false);
+    const totalPrice = useMemo(() => {
+        return listProducts.reduce((sum, product) => {
+            return sum + product.quantity * (product.price * (100 - product.discount) / 100);
+        }, 0);
+    }, [listProducts]);
+
+    const [isOpenDialogCreateAddress, setIsOpenDialogCreateAddress] = useState(false);
     const [isOpenDialogSelectAddress, setIsOpenDialogSelectAddress] = useState(false);
-
-    const [totalPrice, setTotalPrice] = useState(0);
-    const [paymentMethods, setPaymentMethods] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
-
-    const [addressList, setAddressList] = useState([]);
+    const [paymentMethods, setPaymentMethods] = useState(1);
+    const [addressList, setAddressList] = useState(null);
     const [addressSelect, setAddressSelect] = useState(null);
 
     const formik = useFormik({
-        initialValues: defaultValue,
+        initialValues: {
+            addressDetailId: null,
+            paymentMethod: 'CASH',
+            note: '',
+            listProductId: listProducts.map(item => item.productId)
+        },
         validationSchema: validationSchema,
         onSubmit: (values) => {
             handleSubmit(values);
@@ -118,55 +118,6 @@ function Checkouts() {
         setPaymentMethods(e.target.value);
     };
 
-    const fetchListAddress = () => {
-        getAddresses()
-            .then((response) => {
-                const addresses = response.data.data;
-                setAddressList(addresses);
-                if (addresses.length > 0) {
-                    const addressDefault = addresses[0];
-                    setAddressSelect(addressDefault)
-                    formik.setFieldValue('addressDetailId', addressDefault.id);
-                }
-            })
-            .catch((error) => {
-                toast.error('Đã có lỗi sảy ra, vui lòng thử lại sau');
-            })
-    }
-    useEffect(() => {
-        fetchListAddress();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    useEffect(() => {
-        formik.setValues((values) => ({
-            ...values,
-            listProductId: listProducts.map(item => item.productId)
-        }))
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [listProducts]);
-
-    useEffect(() => {
-        const totalPrice = listProducts.reduce((sum, product) => {
-            return sum + product.quantity * (product.price * (100 - product.discount) / 100);
-        }, 0);
-        setTotalPrice(totalPrice);
-    }, [listProducts]);
-
-    useEffect(() => {
-        if (listProducts.length === 0) {
-            navigate('/', { replace: true });
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [listProducts]);
-
-    useEffect(() => {
-        if (addressList.length === 0) {
-            setOpenAlertDialog(true);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [addressList]);
-
     const handleCloseDialog = () => {
         navigate('/cart', { replace: true, state: { productIdSelect: formik.values.listProductId } });
     };
@@ -179,6 +130,41 @@ function Checkouts() {
         }
     };
 
+    const fetchListAddress = () => {
+        getAddresses()
+            .then((response) => {
+                const addresses = response.data.data;
+                setAddressList(addresses);
+                if (addresses.length > 0) {
+                    const addressDefault = addresses[0];
+                    setAddressSelect(addressDefault)
+                    formik.setFieldValue('addressDetailId', addressDefault.id);
+                }
+            })
+            .catch((error) => {
+                toast.error('Đã có lỗi sảy ra khi lấy dữ liệu địa chỉ, vui lòng thử lại sau');
+            })
+    }
+
+    useEffect(() => {
+        fetchListAddress();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    useEffect(() => {
+        if (listProducts.length === 0) {
+            navigate('/', { replace: true });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [listProducts]);
+
+    useEffect(() => {
+        if (addressList && addressList.length === 0) {
+            setIsOpenDialogCreateAddress(true);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [addressList]);
+
     return (
         <>
             <Breadcrumb
@@ -188,20 +174,19 @@ function Checkouts() {
             <DialogSelectAddress
                 open={isOpenDialogSelectAddress}
                 setOpen={setIsOpenDialogSelectAddress}
-                addressList={addressList}
+                addressList={addressList || []}
                 defaultValue={formik.values.addressDetailId}
                 title={'Địa Chỉ Của Tôi'}
                 onSubmit={handleChangeAddress}
                 fetchListAddress={fetchListAddress}
             />
             <DialogCreateAddress
-                open={openAlertDialog}
-                setOpen={setOpenAlertDialog}
+                open={isOpenDialogCreateAddress}
+                setOpen={setIsOpenDialogCreateAddress}
                 onClose={handleCloseDialog}
                 onSuccess={fetchListAddress}
                 title={'Địa chỉ mới'}
                 titleDescription={'Để đặt hàng, vui lòng thêm địa chỉ nhận hàng'}
-                isDefaultAddress={addressList.length === 0}
             />
             <div className='container'>
                 <div className='row g-3'>
@@ -225,7 +210,7 @@ function Checkouts() {
                                         </div>
                                     </div>
                                     <div className={cx('inner')}>
-                                        {addressList.length > 0 ? (
+                                        {addressList && addressList.length > 0 ? (
                                             <div className={cx('current-address')}>
                                                 <div className={cx('header')}>
                                                     <span>{addressSelect.fullName}</span>

@@ -49,7 +49,6 @@ function DialogCreateAddress({
     onClose = defaultFunction,
     onSuccess = defaultFunction,
     titleDescription,
-    isDefaultAddress = false,
 }) {
 
     const [isLoading, setIsLoading] = useState(false);
@@ -65,7 +64,7 @@ function DialogCreateAddress({
             latitude: '',
             longitude: '',
             type: 'HOME',
-            isDefaultAddress,
+            isDefaultAddress: false,
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {

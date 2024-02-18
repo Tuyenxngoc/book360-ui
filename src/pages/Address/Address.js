@@ -6,7 +6,7 @@ import classNames from 'classnames/bind';
 
 import { deleteAddress, getAddresses, setDefaultAddress } from '~/services/addressService';
 
-import { Button } from '@mui/material';
+import { Button, Chip } from '@mui/material';
 
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -97,7 +97,7 @@ function Address() {
 
             <div className='row pt-4'>
                 <div className='col-12'>
-                    <span>Bạn có thể tạo tối đa 5 địa chỉ</span>
+                    <div className='pb-4'>Bạn có thể tạo tối đa 5 địa chỉ</div>
                 </div>
                 <div className='col-12'>
                     <AlertDialog
@@ -130,7 +130,7 @@ function Address() {
 
                                 <div className='col-12'>
                                     <div className='d-flex justify-content-between align-items-center'>
-                                        <span>{address.addressName}</span>
+                                        <span>{address.fullAddress}</span>
                                         <Button
                                             variant='outlined'
                                             size='small'
@@ -148,7 +148,7 @@ function Address() {
 
                                 <div className='col-12'>
                                     {address.isDefaultAddress && (
-                                        <span className={cx('default-address')}>Mặc định</span>
+                                        <Chip label='Mặc định' color='primary' size='small' />
                                     )}
                                 </div>
                             </div>

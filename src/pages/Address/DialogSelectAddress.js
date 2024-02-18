@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 import { useEffect, useState } from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -26,9 +28,7 @@ function DialogSelectAddress({
 }) {
 
     const [value, setValue] = useState(null);
-
     const [isOpenDialogCreateAddress, setIsOpenDialogCreateAddress] = useState(false);
-
     const [addressSelect, setAddressSelect] = useState(null);
 
     const handleBtnCancelClick = () => {
@@ -45,14 +45,14 @@ function DialogSelectAddress({
     };
 
     const handleClickBtnCreate = () => {
-        setOpen(false);
         setIsOpenDialogCreateAddress(true);
+        setOpen(false);
         setAddressSelect(null);
     }
 
     const handleClickBtnUpdate = (id) => {
-        setOpen(false);
         setIsOpenDialogCreateAddress(true);
+        setOpen(false);
         setAddressSelect(id);
     }
 
@@ -95,7 +95,7 @@ function DialogSelectAddress({
                         value={value}
                         onChange={handleChange}
                     >
-                        {addressList && addressList.length > 0 && addressList.map((address) => (
+                        {addressList.map((address) => (
                             <FormControlLabel
                                 sx={{ mr: 0 }}
                                 value={address.id}
@@ -122,7 +122,7 @@ function DialogSelectAddress({
                             />
                         ))}
                     </RadioGroup>
-                    {addressList && addressList.length < 5 && (
+                    {addressList.length < 5 && (
                         <Button
                             variant='outlined'
                             size='small'
@@ -152,5 +152,16 @@ function DialogSelectAddress({
         </>
     );
 }
+
+DialogSelectAddress.propTypes = {
+    open: PropTypes.bool.isRequired,
+    setOpen: PropTypes.func.isRequired,
+    addressList: PropTypes.array.isRequired,
+    defaultValue: PropTypes.number,
+    title: PropTypes.string.isRequired,
+    titleDescription: PropTypes.string,
+    onSubmit: PropTypes.func,
+    fetchListAddress: PropTypes.func,
+};
 
 export default DialogSelectAddress;
