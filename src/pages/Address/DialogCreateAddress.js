@@ -43,6 +43,7 @@ function DialogCreateAddress({
     addressId,
     onClose = defaultFunction,
     onSuccess = defaultFunction,
+    title,
     titleDescription,
     defaultAddress = false,
 }) {
@@ -87,36 +88,6 @@ function DialogCreateAddress({
             })
             .finally(() => { setIsLoading(false); });
     }
-
-    const getCurrentLocation = async () => {
-        try {
-            if (!navigator.geolocation) {
-                throw new Error('Geolocation is not supported by this browser.');
-            }
-
-            const position = await new Promise((resolve, reject) => {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        const { latitude, longitude } = position.coords;
-                        resolve({ latitude, longitude });
-                    },
-                    (error) => {
-                        reject(error);
-                    }
-                );
-            });
-
-            formik.setFieldValue('latitude', position.latitude);
-            formik.setFieldValue('longitude', position.longitude);
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    useEffect(() => {
-        getCurrentLocation();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     useEffect(() => {
         if (addressId) {
@@ -163,7 +134,7 @@ function DialogCreateAddress({
             aria-labelledby='alert-dialog-title'
         >
             <DialogTitle id='alert-dialog-title'>
-                <div className={cx('title')}>Địa chỉ mới</div>
+                <div className={cx('title')}>{title}</div>
                 {titleDescription && <div className={cx('title-description')}>{titleDescription}</div>}
             </DialogTitle>
             <DialogContent>
@@ -289,6 +260,7 @@ DialogCreateAddress.propTypes = {
     setOpen: PropTypes.func.isRequired,
     onClose: PropTypes.func,
     onSuccess: PropTypes.func,
+    title: PropTypes.string.isRequired,
     titleDescription: PropTypes.string,
 };
 

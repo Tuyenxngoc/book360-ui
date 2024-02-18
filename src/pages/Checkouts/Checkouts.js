@@ -1,28 +1,34 @@
 //react
 import { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
 //Style
 import Style from './Checkouts.module.scss';
 import classNames from 'classnames/bind';
+
 //mui ui
 import { Chip, FormHelperText } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCaretRight, faClipboardCheck, faCreditCard, faLocationDot, faUserPen } from '@fortawesome/free-solid-svg-icons';
+import { faCaretRight, faClipboardCheck, faCreditCard, faLocationDot } from '@fortawesome/free-solid-svg-icons';
+import { Input, Radio } from 'antd';
+
 //component
 import images from '~/assets';
 import useAuth from '~/hooks/useAuth';
 import Breadcrumb from '~/components/Breadcrumb';
 import MoneyDisplay from '~/components/MoneyDisplay';
 
-import { toast } from 'react-toastify';
 
 import * as yup from 'yup';
 import { useFormik } from 'formik';
-import { Input, Radio } from 'antd';
+
 import { saveOrder } from '~/services/billService';
-import { LoadingButton } from '@mui/lab';
 import { getAddresses } from '~/services/addressService';
+
 import DialogCreateAddress from '../Address/DialogCreateAddress';
+import DialogSelectAddress from '../Address/DialogSelectAddress';
 
 const cx = classNames.bind(Style);
 const { TextArea } = Input;
@@ -30,24 +36,15 @@ const { TextArea } = Input;
 const DELIVERY_FEE = 30000;
 
 const defaultValue = {
-    consigneeName: '',
-    phoneNumber: '',
-    email: '',
-    shippingAddress: '',
-    paymentMethod: '',
-    note: '',
-    listProductId: [],
+    addressDetailId: null,
+    paymentMethod: "CASH",
+    note: "",
+    listProductId: []
 }
 
 const validationSchema = yup.object({
-    consigneeName: yup.string()
-        .required('Họ tên người nhận không được để trống'),
-    phoneNumber: yup.string()
-        .required('Số điện thoại không được để trống'),
-    email: yup.string()
-        .email('Địa chỉ email không hợp lệ').required('Email không được để trống'),
-    shippingAddress: yup.string()
-        .required('Địa chỉ không được để trống'),
+    addressDetailId: yup.number(),
+    paymentMethod: yup.string(),
     note: yup.string()
         .max(30, 'Ghi chú tối đa 30 kí tự'),
     listProductId: yup.array()
@@ -55,9 +52,7 @@ const validationSchema = yup.object({
 });
 
 function inputProps(isError) {
-    if (isError) {
-        return { status: 'error' };
-    }
+    if (isError) { return { status: 'error' }; }
 }
 
 const PAYMENT_METHODS = [
@@ -83,7 +78,8 @@ const PAYMENT_METHODS = [
 
 function Checkouts() {
 
-    const { isAuthenticated, customer } = useAuth();
+    const { isAuthenticated } = useAuth();
+
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -92,14 +88,14 @@ function Checkouts() {
     }, [location.state]);
 
     const [openAlertDialog, setOpenAlertDialog] = useState(false);
+    const [isOpenDialogSelectAddress, setIsOpenDialogSelectAddress] = useState(false);
 
     const [totalPrice, setTotalPrice] = useState(0);
     const [paymentMethods, setPaymentMethods] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
 
     const [addressList, setAddressList] = useState(null);
-    const [defaultAddress, setDefaultAddress] = useState({});
-
+    const [addressSelect, setAddressSelect] = useState(null);
 
     const formik = useFormik({
         initialValues: defaultValue,
@@ -121,37 +117,35 @@ function Checkouts() {
             .finally(() => { setIsLoading(false); });
     }
 
-    const handleClickOpen = () => {
-        setOpenAlertDialog(true);
-    };
-
     const onChangePaymentMethods = (e) => {
         setPaymentMethods(e.target.value);
     };
 
-    useEffect(() => {
+    const fetchListAddress = () => {
         getAddresses()
             .then((response) => {
                 const addresses = response.data.data;
                 setAddressList(addresses);
-                setDefaultAddress(addresses.find((address) => address.defaultAddress));
+                if (addresses.length > 0) {
+                    const addressDefault = addresses[0];
+                    setAddressSelect(addressDefault)
+                    formik.setFieldValue('addressDetailId', addressDefault.id);
+                }
             })
             .catch((error) => {
                 toast.error('Đã có lỗi sảy ra, vui lòng thử lại sau');
             })
+    }
+    useEffect(() => {
+        fetchListAddress();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
-        formik.setValues({
-            consigneeName: customer.fullName,
-            phoneNumber: customer.phoneNumber,
-            email: customer.email,
-            shippingAddress: customer.address,
-            paymentMethod: 'CASH',
-            note: '',
+        formik.setValues((values) => ({
+            ...values,
             listProductId: listProducts.map(item => item.productId)
-        })
+        }))
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [listProducts]);
 
@@ -177,27 +171,47 @@ function Checkouts() {
     }, [addressList]);
 
     const handleCloseDialog = () => {
-        navigate('/cart', { replace: true });
+        navigate('/cart', { replace: true, state: { productIdSelect: formik.values.listProductId } });
+    };
+
+    const handleChangeAddress = (addressDetailId) => {
+        formik.setFieldValue("addressDetailId", addressDetailId)
+        const newAddressSelect = addressList.find(address => address.id === Number(addressDetailId))
+        if (newAddressSelect) {
+            setAddressSelect(newAddressSelect);
+        }
     };
 
     return (
         <>
+            <Breadcrumb
+                breadcrumbs={[{ url: '/cart', label: 'Giỏ hàng của bạn' }]}
+                currentPage={'Thanh toán'}
+            />
+            <DialogSelectAddress
+                open={isOpenDialogSelectAddress}
+                setOpen={setIsOpenDialogSelectAddress}
+                addressList={addressList}
+                defaultValue={formik.values.addressDetailId}
+                title={'Địa Chỉ Của Tôi'}
+                onSubmit={handleChangeAddress}
+                fetchListAddress={fetchListAddress}
+            />
             <DialogCreateAddress
                 open={openAlertDialog}
                 setOpen={setOpenAlertDialog}
                 onClose={handleCloseDialog}
+                onSuccess={fetchListAddress}
+                title={'Địa chỉ mới'}
                 titleDescription={'Để đặt hàng, vui lòng thêm địa chỉ nhận hàng'}
-            />
-            <Breadcrumb
-                breadcrumbs={[{ url: '/cart', label: 'Giỏ hàng của bạn' }]}
-                currentPage={'Thanh toán'}
+                defaultAddress={addressList && addressList.length === 0}
             />
             <div className='container'>
                 <div className='row g-3'>
                     <div className='col-7'>
                         <div className='row g-3'>
                             <div className='col-12'>
-                                {isAuthenticated && defaultAddress ? (
+                                {isAuthenticated && addressList && addressList.length > 0 ? (
                                     <div className={cx('wrapper')}>
                                         <div className={cx('title')}>
                                             <div className='left'>
@@ -206,26 +220,32 @@ function Checkouts() {
                                             </div>
                                             {addressList && addressList.length > 0 &&
                                                 <div className='right'>
-                                                    <button className={cx('change-address')}>Thay đổi <FontAwesomeIcon icon={faCaretRight} /></button>
+                                                    <button
+                                                        className={cx('change-address')}
+                                                        onClick={() => setIsOpenDialogSelectAddress(true)}
+                                                    >
+                                                        Thay đổi
+                                                        <FontAwesomeIcon icon={faCaretRight} />
+                                                    </button>
                                                 </div>
                                             }
                                         </div>
                                         <div className={cx('inner')}>
                                             <div className={cx('current-address')}>
                                                 <div className={cx('header')}>
-                                                    <span>{defaultAddress.fullName}</span>
+                                                    <span>{addressSelect.fullName}</span>
                                                     <span> | </span>
-                                                    <span>{defaultAddress.phoneNumber}dasdasda</span>
+                                                    <span>{addressSelect.phoneNumber}</span>
                                                 </div>
                                                 <div className={cx('address-container')}>
-                                                    {defaultAddress.defaultAddress && <Chip label='Mặc định' color='primary' size='small' sx={{ mr: 1 }} />}
-                                                    <div>{defaultAddress.addressName}</div>
+                                                    {addressSelect.defaultAddress && <Chip label='Mặc định' color='primary' size='small' sx={{ mr: 1 }} />}
+                                                    <div>{addressSelect.addressName}</div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 ) : (
-                                    customerInfo(formik, handleClickOpen)
+                                    <></>
                                 )}
                             </div>
                             <div className='col-12'>
@@ -347,94 +367,6 @@ function Checkouts() {
             </div>
         </>
     );
-}
-
-function customerInfo(formik, handleClickOpen) {
-    return (
-        <div className={cx('wrapper')}>
-            <div className={cx('title')}>
-                <div className='left'>
-                    <span className={cx('icon')}><FontAwesomeIcon icon={faUserPen} /></span>
-                    <span> Thông tin khách hàng</span>
-                </div>
-            </div>
-            <div className={cx('inner')}>
-                <div className={cx('form-group')}>
-                    <label htmlFor='input-consigneeName'>HỌ TÊN NGƯỜI NHẬN</label>
-                    <div className={cx('form-input')}>
-                        <Input
-                            id='input-consigneeName'
-                            name='consigneeName'
-                            size='large'
-                            placeholder='Họ tên người nhận'
-                            value={formik.values.consigneeName}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            {...inputProps(formik.touched.consigneeName && Boolean(formik.errors.consigneeName))}
-                        />
-                        {formik.touched.consigneeName && formik.errors.consigneeName && (
-                            <FormHelperText error>{formik.errors.consigneeName}</FormHelperText>
-                        )}
-                    </div>
-                </div>
-                <div className={cx('form-group')}>
-                    <label htmlFor='input-phone-number'>SỐ ĐIỆN THOẠI</label>
-                    <div className={cx('form-input')}>
-                        <Input
-                            id='input-phone-number'
-                            name='phoneNumber'
-                            size='large'
-                            placeholder='Số điện thoại liên hệ khi giao hàng'
-                            value={formik.values.phoneNumber}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            {...inputProps(formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber))}
-                        />
-                        {formik.touched.phoneNumber && formik.errors.phoneNumber && (
-                            <FormHelperText error>{formik.errors.phoneNumber}</FormHelperText>
-                        )}
-                    </div>
-                </div>
-                <div className={cx('form-group')}>
-                    <label htmlFor='input-email'>EMAIL</label>
-                    <div className={cx('form-input')}>
-                        <Input
-                            id='input-email'
-                            name='email'
-                            size='large'
-                            placeholder='Email nhận đơn hàng'
-                            value={formik.values.email}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            {...inputProps(formik.touched.email && Boolean(formik.errors.email))}
-                        />
-                        {formik.touched.email && formik.errors.email && (
-                            <FormHelperText error>{formik.errors.email}</FormHelperText>
-                        )}
-                    </div>
-                </div>
-                <div className={cx('form-group')}>
-                    <label htmlFor='input-shippingAddress'>ĐỊA CHỈ</label>
-                    <div className={cx('form-input')}>
-                        <Input
-                            id='input-shippingAddress'
-                            name='shippingAddress'
-                            size='large'
-                            placeholder='Nhập số nhà, tên đường'
-                            value={formik.values.shippingAddress}
-                            onClick={handleClickOpen}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            {...inputProps(formik.touched.shippingAddress && Boolean(formik.errors.shippingAddress))}
-                        />
-                        {formik.touched.shippingAddress && formik.errors.shippingAddress && (
-                            <FormHelperText error>{formik.errors.shippingAddress}</FormHelperText>
-                        )}
-                    </div>
-                </div>
-            </div>
-        </div>
-    )
 }
 
 export default Checkouts;

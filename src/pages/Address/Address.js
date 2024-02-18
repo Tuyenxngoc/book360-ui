@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import Style from './Address.module.scss';
-import classNames from "classnames/bind";
+import classNames from 'classnames/bind';
 
 import { deleteAddress, getAddresses, setDefaultAddress } from '~/services/addressService';
 
@@ -79,8 +79,8 @@ function Address() {
 
     return (
         <div className={cx('main-content')}>
-            <div className="row">
-                <div className="col-12">
+            <div className='row'>
+                <div className='col-12'>
                     <div className={cx('header')}>
                         <h3 className={cx('title')}>Địa chỉ của tôi</h3>
                         <Button
@@ -95,11 +95,11 @@ function Address() {
                 </div>
             </div>
 
-            <div className="row pt-4">
-                <div className="col-12">
+            <div className='row pt-4'>
+                <div className='col-12'>
                     <span>Bạn có thể tạo tối đa 5 địa chỉ</span>
                 </div>
-                <div className="col-12">
+                <div className='col-12'>
                     <AlertDialog
                         open={showDialogDelete}
                         setOpen={setShowDialogDelete}
@@ -111,9 +111,10 @@ function Address() {
                         setOpen={setShowDialogCreate}
                         addressId={addressSelect}
                         onSuccess={handleCreateSuccess}
+                        title={addressSelect ? 'Cập nhật địa chỉ' : 'Địa chỉ mới'}
                     />
                     {addressList.map((address, index) => (
-                        <div key={index} className={cx("address-container", 'container')}>
+                        <div key={index} className={cx('address-container', 'container')}>
                             <div className='row'>
                                 <div className='col-12'>
                                     <div className='d-flex justify-content-between align-items-center'>
