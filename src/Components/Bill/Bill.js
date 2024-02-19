@@ -28,7 +28,7 @@ function Bill({ data: billData, handleCancelOrder, handleBuyAgain }) {
 
             <div className={cx('header')}>
                 <div className={cx('header-item')}>
-                    <div>Người nhận: {billData.consigneeName}</div>
+                    <div>Người nhận: {billData.shippingName}</div>
                     <div>Ngày đặt: <DateTimeDisplay datetime={billData.createdDate} /></div>
                 </div>
                 <div className={cx('header-item')}>
@@ -69,7 +69,7 @@ function Bill({ data: billData, handleCancelOrder, handleBuyAgain }) {
 
             <div className={cx('action')}>
                 <div className={cx('total-price')}>
-                    Thành tiền:&nbsp;<strong><MoneyDisplay amount={billData.totalAmount} /></strong>
+                    Thành tiền:&nbsp;<strong><MoneyDisplay amount={billData.totalPrice} /></strong>
                 </div>
 
                 {buttonsToShow.map((button, index) => (
@@ -91,7 +91,7 @@ function Bill({ data: billData, handleCancelOrder, handleBuyAgain }) {
 
 Bill.propTypes = {
     data: PropTypes.shape({
-        consigneeName: PropTypes.string.isRequired,
+        shippingName: PropTypes.string.isRequired,
         createdDate: PropTypes.string.isRequired,
         billStatus: PropTypes.string.isRequired,
         billDetails: PropTypes.arrayOf(PropTypes.shape({
@@ -104,7 +104,7 @@ Bill.propTypes = {
             }).isRequired,
             quantity: PropTypes.number.isRequired,
         })).isRequired,
-        totalAmount: PropTypes.number.isRequired,
+        totalPrice: PropTypes.number.isRequired,
     }).isRequired,
     handleCancelOrder: PropTypes.func.isRequired,
     handleBuyAgain: PropTypes.func.isRequired,

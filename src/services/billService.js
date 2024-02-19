@@ -40,3 +40,7 @@ export const getCountBill = () => {
 export const getStatistic = () => {
     return axiosPrivate.get('admin/bill/count');
 }
+
+export const getKeyMetrics = () => {
+    return axiosPrivate.get('admin/bill/key-metrics');
+}

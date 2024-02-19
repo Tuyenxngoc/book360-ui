@@ -46,6 +46,7 @@ import AuthorDetail from '~/pages/Admin/ManageAuthors/AuthorDetail';
 import BookSetsDashboard from '~/pages/Admin/ManageBookSets/BookSetsDashboard';
 import BookSetForm from '~/pages/Admin/ManageBookSets/BookSetForm';
 import BookSetDetail from '~/pages/Admin/ManageBookSets/BookSetDetail';
+import OrderDetail from '~/pages/Admin/ManageOrders/OrderDetail';
 
 const publicRoutes = [
     { path: routes.home, component: Home },
@@ -86,6 +87,7 @@ const adminRoutes = [
     { path: routes.updateProduct, component: ProductForm, layout: AdminLayout },
 
     { path: routes.viewOders, component: OrdersDashboard, layout: AdminLayout },
+    { path: routes.viewOder, component: OrderDetail, layout: AdminLayout },
     { path: routes.updateOder, component: OrderForm, layout: AdminLayout },
 
     { path: routes.viewCategorys, component: CategoriesDashboard, layout: AdminLayout },

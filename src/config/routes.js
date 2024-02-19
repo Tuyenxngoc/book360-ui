@@ -33,6 +33,7 @@ const routes = {
 
     //Manage orders routes
     viewOders: '/admin/order',
+    viewOder: '/admin/order/:orderId',
     updateOder: '/admin/order/:orderId',
 
     //Manage categories routes

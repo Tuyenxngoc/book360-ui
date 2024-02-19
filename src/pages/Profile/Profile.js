@@ -1,4 +1,4 @@
-import { Avatar, Button, Dialog, DialogContent, TextField } from '@mui/material';
+import { Avatar, Button, Dialog, DialogContent, FormControlLabel, Radio, RadioGroup, TextField } from '@mui/material';
 import images from '~/assets';
 
 import Style from './Profile.module.scss';
@@ -14,7 +14,7 @@ import { useState } from 'react';
 
 import { LoadingButton } from '@mui/lab';
 import ShowDialog from '../Address/DialogCreateAddress';
-import { message } from 'antd';
+import { DatePicker, message } from 'antd';
 
 const validationSchema = yup.object({
     fullName: yup.string()
@@ -47,8 +47,8 @@ function Profile() {
             fullName: customer.fullName || '',
             address: customer.address || '',
             phoneNumber: customer.phoneNumber || '',
-            dob: "2024-02-06",
-            gender: "MALE"
+            dob: '2024-02-06',
+            gender: 'MALE'
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
@@ -105,6 +105,10 @@ function Profile() {
         setOpen(false);
     };
 
+    const onChangeDob = (date, dateString) => {
+        console.log(date, dateString);
+    };
+
     return (
         <>
             <Dialog
@@ -149,7 +153,7 @@ function Profile() {
                                 />
                             </div>
                             <div className={cx('form-group')}>
-                                <label>Tên</label>
+                                <label htmlFor='fullName'>Tên</label>
                                 <TextField
                                     fullWidth
                                     size='small'
@@ -172,7 +176,7 @@ function Profile() {
                                 />
                             </div>
                             <div className={cx('form-group')}>
-                                <label>Số điện thoại</label>
+                                <label htmlFor='phoneNumber'>Số điện thoại</label>
                                 <TextField
                                     fullWidth
                                     size='small'
@@ -186,19 +190,20 @@ function Profile() {
                                 />
                             </div>
                             <div className={cx('form-group')}>
-                                <label>Địa chỉ</label>
-                                <TextField
-                                    fullWidth
-                                    size='small'
-                                    id='address'
-                                    name='address'
-                                    value={formik.values.address}
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
-                                    onClick={handleClickOpen}
-                                    error={formik.touched.address && Boolean(formik.errors.address)}
-                                    helperText={formik.touched.address && formik.errors.address}
-                                />
+                                <label>Giới tính</label>
+                                <RadioGroup
+                                    row
+                                    defaultValue='MALE'
+                                    name='radio-buttons-group'
+                                >
+                                    <FormControlLabel value='MALE' control={<Radio />} label='Nam' />
+                                    <FormControlLabel value='FEMALE' control={<Radio />} label='Nữ' />
+                                    <FormControlLabel value='OTHER' control={<Radio />} label='Khác' />
+                                </RadioGroup>
+                            </div>
+                            <div className={cx('form-group')}>
+                                <label>Ngày sinh</label>
+                                <DatePicker size='large' onChange={onChangeDob} style={{ width: '100%' }} />
                             </div>
                             <div className={cx('form-group')}>
                                 <label></label>

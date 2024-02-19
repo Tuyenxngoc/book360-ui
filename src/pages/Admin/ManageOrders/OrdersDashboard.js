@@ -21,11 +21,11 @@ const cx = classNames.bind(Style);
 
 const options = [
     {
-        value: 'billId',
+        value: 'id',
         label: 'Mã đơn hàng',
     },
     {
-        value: 'nameCustomer',
+        value: 'customerName',
         label: 'Tên người mua',
     },
     {
@@ -36,7 +36,7 @@ const options = [
 
 const defaultFilters = {
     keyword: '',
-    searchBy: '',
+    searchBy: options[0].value,
     sortBy: 'createdDate',
     isAscending: false,
     pageNum: 1,
@@ -83,12 +83,12 @@ function OrdersDashboard() {
         setType(queryParams.type || '');
     }, [queryParams]);
 
-    const handleSelectChange = (value, option) => {
+    const handleSelectFilterChange = (value, option) => {
         setTypeSearch(option.label);
     };
 
     const handleChangePage = (event, newPage) => {
-        setFilters({ ...filters, pageNum: newPage });
+        setFilters({ ...filters, pageNum: newPage + 1 });
     };
 
     const handleChangeRowsPerPage = (event) => {
@@ -96,7 +96,7 @@ function OrdersDashboard() {
     };
 
     const fetchListOrder = () => {
-        const params = queryString.stringify({ ...filters, pageNum: filters.pageNum, billStatus: type });
+        const params = queryString.stringify({ ...filters, billStatus: type });
         getBillsForAdmin(params)
             .then((response) => {
                 const { items, meta } = response.data.data;
@@ -177,7 +177,7 @@ function OrdersDashboard() {
                                 <div className='col-12'>
                                     <div className={cx('search-section')}>
                                         <Space.Compact style={{ flex: 1 }}>
-                                            <Select defaultValue='Mã đơn hàng' onChange={handleSelectChange} options={options} style={{ minWidth: '190px' }} />
+                                            <Select defaultValue='Mã đơn hàng' onChange={handleSelectFilterChange} options={options} style={{ minWidth: '190px' }} />
                                             <Input allowClear={true} placeholder={`Nhập ${typeSearch}`} />
                                         </Space.Compact>
                                         <Button variant='contained' size='small' sx={{ mx: 1 }} color='primary' onClick={handleFillerBill}>Tìm kiếm</Button>
