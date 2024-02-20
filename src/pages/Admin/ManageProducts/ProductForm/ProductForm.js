@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
+import 'react-quill/dist/quill.snow.css';
 import Style from './ProductForm.module.scss';
 import classNames from 'classnames/bind';
 
@@ -26,7 +27,7 @@ import FixedBox from './FixedBox';
 import DropdownRender from '~/components/DropdownRender';
 import { ages, coverTypes, publishers, sizes } from '~/config/contans';
 
-const { TextArea } = Input;
+import ReactQuill from 'react-quill';
 
 const cx = classNames.bind(Style);
 
@@ -125,6 +126,8 @@ function ProductForm() {
     const [customPublishers, setCustomPublishers] = useState([]);
     const [customCoverTypes, setCustomCoverTypes] = useState([]);
 
+    const reactQuillRef = useRef(null);
+
     const formik = useFormik({
         initialValues: defaultValue,
         validationSchema: validationSchema,
@@ -132,6 +135,76 @@ function ProductForm() {
             handleSubmit(values);
         },
     });
+
+    const imageHandler = useCallback(() => {
+        const input = document.createElement('input');
+        input.setAttribute('type', 'file');
+        input.setAttribute('accept', 'image/*');
+        input.click();
+        input.onchange = async () => {
+            if (input !== null && input.files !== null) {
+                const file = input.files[0];
+                const loadingMessage = message.loading({ content: 'Đang tải ảnh lên...', duration: 0 });
+                try {
+                    const response = await uploadImages([file]);
+                    const quill = reactQuillRef.current;
+                    if (quill && response.data) {
+                        const range = quill.getEditorSelection();
+                        range && quill.getEditor().insertEmbed(range.index, 'image', response.data.data[0]);
+                        message.success({ content: 'Tải ảnh thành công!', duration: 2 });
+                    }
+                } catch (error) {
+                    message.error({ content: 'Đã xảy ra lỗi khi tải ảnh lên.', duration: 2 });
+                } finally {
+                    if (loadingMessage) {
+                        loadingMessage();
+                    }
+                }
+            }
+        };
+    }, []);
+
+    const modules = {
+        toolbar: {
+            container: [
+                [{ 'font': [] }],
+                [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                [{ 'size': ['huge', 'large', false, 'small'] }],  // custom dropdown
+                ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+                [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+                ['blockquote', 'code-block'],
+                ['link', 'image', 'formula'],
+                [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'list': 'check' }],
+                [{ 'align': [] }],
+                [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
+                [{ 'script': 'sub' }, { 'script': 'super' }],      // superscript/subscript
+                [{ 'direction': 'rtl' }],                         // text direction
+
+                ['clean']                                         // remove formatting button
+            ],
+            handlers: {
+                image: imageHandler,
+            },
+        },
+        clipboard: {
+            matchVisual: false,
+        },
+    };
+
+    const formats = [
+        'font',
+        'header',
+        'size',
+        'bold', 'italic', 'underline', 'strike',
+        'color', 'background',
+        'blockquote', 'code-block',
+        'link', 'image', 'formula',
+        'list', 'bullet', 'check',
+        'align',
+        'indent',
+        'script',
+        'direction'
+    ];
 
     useEffect(() => {
         if (productId) {
@@ -187,7 +260,7 @@ function ProductForm() {
         const files = e.target.files;
         if (files) {
             if (countImagesLoad > 0) {
-                toast.error("Vui lòng chờ cho quá trình tải ảnh hoàn tất.");
+                toast.error('Vui lòng chờ cho quá trình tải ảnh hoàn tất.');
                 return;
             }
             if (files.length > 9) {
@@ -375,16 +448,15 @@ function ProductForm() {
                             <div className={cx('form-group')}>
                                 <label className={cx('form-label')} htmlFor='formControlTextarea'><span>*</span>Mô tả sản phẩm</label>
                                 <div className={cx('form-input')}>
-                                    <TextArea
+                                    <ReactQuill
                                         id='formControlTextarea'
-                                        name='description'
-                                        showCount
-                                        maxLength={3000}
+                                        ref={reactQuillRef}
+                                        theme='snow'
+                                        modules={modules}
+                                        formats={formats}
                                         value={formik.values.description}
-                                        onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
-                                        {...inputProps(formik.touched.description && Boolean(formik.errors.description))}
-                                        style={{ height: 200, resize: 'none', }}
+                                        onChange={(value) => formik.setFieldValue('description', value)}
+                                        onBlur={() => formik.setFieldTouched('description', true)}
                                     />
                                     {formik.touched.description && formik.errors.description && (
                                         <FormHelperText error>{formik.errors.description}</FormHelperText>

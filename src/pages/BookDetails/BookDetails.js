@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 
 // Styles
+import 'react-quill/dist/quill.snow.css';
 import Style from './BookDetails.module.scss';
 import classNames from 'classnames/bind';
 
@@ -321,10 +322,12 @@ function BookDetails() {
                                                                 {bookData.weight}
                                                                 <span> gram </span>
                                                             </li>
-                                                            <li>
-                                                                <span> Bộ sách: </span>
-                                                                <Link to={`/${bookData.bookSet.id}`}>{bookData.bookSet.name}</Link>
-                                                            </li>
+                                                            {bookData.bookSet &&
+                                                                <li>
+                                                                    <span> Bộ sách: </span>
+                                                                    <Link to={`/${bookData.bookSet.id}`}>{bookData.bookSet.name}</Link>
+                                                                </li>
+                                                            }
                                                         </ul>
                                                     </div>
                                                 </div>
