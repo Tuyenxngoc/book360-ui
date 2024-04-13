@@ -38,6 +38,8 @@ import CategoryForm from '~/pages/Admin/ManageCategories/CategoryForm';
 
 import UsersDashboard from '~/pages/Admin/ManageUsers/UsersDashboard';
 import UserForm from '~/pages/Admin/ManageUsers/UserForm';
+import AdminChat from '~/pages/Admin/AdminChat';
+import Chattt from '~/pages/Admin/AdminChat/Chattt';
 
 import AuthorsDashboard from '~/pages/Admin/ManageAuthors/AuthorsDashboard';
 import AuthorForm from '~/pages/Admin/ManageAuthors/AuthorForm';
@@ -81,6 +83,8 @@ const adminRoutes = [
     { path: routes.viewUsers, component: UsersDashboard, layout: AdminLayout },
     { path: routes.createUser, component: UserForm, layout: AdminLayout },
     { path: routes.updateUser, component: UserForm, layout: AdminLayout },
+    { path: routes.viewMessages, component: AdminChat, layout: AdminLayout },
+    { path: routes.viewMessage, component: Chattt, layout: AdminLayout },
 
     { path: routes.viewProducts, component: ProductsDashboard, layout: AdminLayout },
     { path: routes.createProduct, component: ProductForm, layout: AdminLayout },

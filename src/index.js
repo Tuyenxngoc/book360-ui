@@ -14,7 +14,7 @@ import theme, { antdConfig } from './contexts/Theme';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <GlobalStyles>
       <AuthProvider>
         <CartProvider>
@@ -26,7 +26,7 @@ root.render(
         </CartProvider>
       </AuthProvider>
     </GlobalStyles>
-  </React.StrictMode>
+  // </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

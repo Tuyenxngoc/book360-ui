@@ -20,7 +20,11 @@ function getItem(label, key, icon, children, type) {
 }
 const items = [
     getItem('Trang chủ', routes.adminDashboard, <HomeOutlined />),
-    getItem('Quản lý khách hàng', routes.viewUsers, <UserOutlined />),
+    getItem('Quản lý khách hàng', "user", <UserOutlined />, [
+        getItem('Tất cả khách hàng', routes.viewUsers),
+        getItem('Thêm khách hàng', routes.createUser),
+        getItem('Tin nhắn', routes.viewMessages),
+    ]),
     getItem('Quản lý sản phẩm', 'product', <DollarOutlined />, [
         getItem('Tất cả sản phẩm', routes.viewProducts),
         getItem('Thêm sản phẩm', routes.createProduct),

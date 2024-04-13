@@ -25,6 +25,8 @@ const routes = {
     viewUsers: '/admin/user',
     createUser: '/admin/user/create',
     updateUser: '/admin/user/:userId',
+    viewMessages: '/admin/user/messages',
+    viewMessage: '/admin/user/messages/:userId',
 
     //Manage products routes
     viewProducts: '/admin/product',

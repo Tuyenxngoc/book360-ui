@@ -1,10 +1,11 @@
 import ProductCategory from '~/components/ProductCategory';
 import HomeProduct from '~/components/HomeProduct';
 import Slide from '~/components/Slider';
+import Chat from '~/components/Chat';
 
 function Home() {
     return (
-        <main className='Home'>
+        <main>
             <ProductCategory>{<Slide></Slide>}</ProductCategory>
             <HomeProduct
                 title={'ƯU ĐÃI'}
@@ -45,6 +46,8 @@ function Home() {
                 sortBy={'createdDate'}
                 moreLink={'/category/6'}
             />
+
+            <Chat />
         </main>
     );
 }

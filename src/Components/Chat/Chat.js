@@ -1,96 +1,73 @@
-import React, { useState, useEffect } from 'react';
-import {
-    TextField,
-    IconButton,
-    List,
-    ListItem,
-    ListItemText,
-    ListItemAvatar,
-    Avatar,
-    Typography,
-} from '@mui/material';
+import { useState, useEffect } from 'react';
+import { Button, TextField } from '@mui/material';
 import Stomp from 'stompjs';
 import SockJS from 'sockjs-client';
+import useAuth from '~/hooks/useAuth';
+import { getMessages } from '~/services/chatService';
 
 function Chat() {
-    const [messages, setMessages] = useState([]);
-    const [message, setMessage] = useState('');
-    const [nickname, setNickname] = useState('');
+    const { customer } = useAuth();
     const [stompClient, setStompClient] = useState(null);
+    const [message, setMessage] = useState('');
+    const [messages, setMessages] = useState([]);
 
     useEffect(() => {
-        const socket = new SockJS('/ws');
+        getMessages()
+            .then((response) => {
+                setMessages(response.data.data)
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }, []);
+
+    useEffect(() => {
+        const socket = new SockJS('http://localhost:8080/chat-websocket');
         const client = Stomp.over(socket);
 
         client.connect({}, () => {
-            client.subscribe('/topic/messages', (message) => {
-                const receivedMessage = JSON.parse(message.body);
-                setMessages((prevMessages) => [...prevMessages, receivedMessage]);
-            });
+            client.subscribe(`/user/${customer.username}/queue/messages`, onMessageReceived);
         });
 
         setStompClient(client);
 
-        // return () => {
-        //     client.disconnect();
-        // };
+        return () => {
+            client.disconnect();
+        };
     }, []);
 
-    const handleNicknameChange = (event) => {
-        setNickname(event.target.value);
+    function onMessageReceived(message) {
+        const receivedMessage = JSON.parse(message.body);
+        setMessages((prevMessages) => [...prevMessages, receivedMessage]);
+    }
+
+    const sendMessage = () => {
+        if (message.trim()) {
+            const chatMessage = {
+                content: message,
+                senderName: customer.username,
+            };
+            stompClient.send('/app/chat', {}, JSON.stringify(chatMessage));
+            setMessage('');
+        }
     };
 
     const handleMessageChange = (event) => {
         setMessage(event.target.value);
     };
 
-    const sendMessage = () => {
-        if (message.trim()) {
-            const chatMessage = {
-                nickname,
-                content: message,
-            };
-
-            stompClient.send('/app/chat', {}, JSON.stringify(chatMessage));
-            setMessage('');
-        }
-    };
-
     return (
         <div>
-            <List>
-                {messages.map((msg, index) => (
-                    <ListItem key={index}>
-                        <ListItemAvatar>
-                            <Avatar>{msg.nickname.charAt(0)}</Avatar>
-                        </ListItemAvatar>
-                        <ListItemText
-                            primary={
-                                <Typography variant="subtitle1">{msg.nickname}</Typography>
-                            }
-                            secondary={msg.content}
-                        />
-                    </ListItem>
-                ))}
-            </List>
-
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-                <TextField
-                    placeholder="Enter your nickname"
-                    value={nickname}
-                    onChange={handleNicknameChange}
-                    autoFocus
-                />
-                <TextField
-                    placeholder="Type a message"
-                    value={message}
-                    onChange={handleMessageChange}
-                    fullWidth
-                />
-                <IconButton onClick={sendMessage} disabled={!message.trim()}>
-                    send
-                </IconButton>
-            </div>
+            {messages.map((msg, index) => (
+                <div key={index}>{msg.content}</div>
+            ))}
+            <TextField
+                value={message}
+                onChange={handleMessageChange}
+            />
+            <Button onClick={sendMessage} disabled={!message.trim()}>
+                send {customer.username}
+            </Button>
         </div>
     );
 };
