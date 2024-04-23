@@ -216,7 +216,7 @@ function Dashboard() {
     const [countBills, setCountBills] = useState(0);
 
     const [todos, setTodos] = useState({});
-    const [data, setData] = useState([]);
+    const [data, setData] = useState({});
 
     useEffect(() => {
         const fetchData = async () => {
@@ -382,7 +382,7 @@ function Dashboard() {
                                                         <div className='col-6'>
                                                             <div className={cx('item-box')}>
                                                                 <div className={cx('item-title')}> Doanh số </div>
-                                                                <div className={cx('item-number')}> <MoneyDisplay amount={data.sales} /> </div>
+                                                                <div className={cx('item-number')}> <MoneyDisplay amount={data.sales || 0} /> </div>
                                                                 <div className={cx('item-increase')}> Vs hôm qua {formatNumberWithPercent(data.salesPctDiff)}</div>
                                                             </div>
                                                         </div>

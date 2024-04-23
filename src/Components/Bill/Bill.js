@@ -69,7 +69,7 @@ function Bill({ data: billData, handleCancelOrder, handleBuyAgain }) {
 
             <div className={cx('action')}>
                 <div className={cx('total-price')}>
-                    Thành tiền:&nbsp;<strong><MoneyDisplay amount={billData.totalPrice} /></strong>
+                    Thành tiền:&nbsp;<strong><MoneyDisplay amount={billData.totalAmount} /></strong>
                 </div>
 
                 {buttonsToShow.map((button, index) => (
@@ -104,7 +104,7 @@ Bill.propTypes = {
             }).isRequired,
             quantity: PropTypes.number.isRequired,
         })).isRequired,
-        totalPrice: PropTypes.number.isRequired,
+        totalAmount: PropTypes.number.isRequired,
     }).isRequired,
     handleCancelOrder: PropTypes.func.isRequired,
     handleBuyAgain: PropTypes.func.isRequired,

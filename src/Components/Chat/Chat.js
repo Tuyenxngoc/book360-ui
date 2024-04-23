@@ -65,9 +65,7 @@ function Chat() {
                 value={message}
                 onChange={handleMessageChange}
             />
-            <Button onClick={sendMessage} disabled={!message.trim()}>
-                send {customer.username}
-            </Button>
+            <Button onClick={sendMessage} disabled={!message.trim()}>send</Button>
         </div>
     );
 };

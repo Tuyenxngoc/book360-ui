@@ -19,8 +19,8 @@ function AdminChat() {
 
     return (
         <div>
-            {listUser.map((user) => (
-                <Link to={user.fullName}>{user.fullName}</Link>
+            {listUser.map((user, i) => (
+                <Link key={i} to={user.fullName}>{user.fullName}</Link>
             ))}
         </div>
     );
