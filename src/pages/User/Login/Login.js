@@ -73,9 +73,9 @@ function Login() {
         } catch (error) {
             let message = '';
             if (!error?.response) {
-                message = ('Máy chủ không phản hồi');
+                message = 'Máy chủ không phản hồi';
             } else {
-                message = ('Thông tin đăng nhập không đúng');
+                message = 'Thông tin đăng nhập không đúng';
             }
             toast.error(message);
         } finally {
@@ -85,44 +85,46 @@ function Login() {
 
     return (
         <main className={cx('main')}>
-            <div className='container'>
-                <div className='row justify-content-center'>
-                    <div className='col-6'>
+            <div className="container">
+                <div className="row justify-content-center">
+                    <div className="col-6">
                         <div className={cx('title')}>Đăng nhập Book360</div>
                         <div className={cx('image')}>
-                            <img src={images.logo} alt='logo' />
+                            <img src={images.logo} alt="logo" />
                         </div>
                         <form onSubmit={formik.handleSubmit}>
                             <TextField
                                 fullWidth
-                                variant='standard'
-                                id='usernameOrEmail'
-                                name='usernameOrEmail'
-                                label='Nhập tên tài khoản/email'
+                                variant="standard"
+                                id="usernameOrEmail"
+                                name="usernameOrEmail"
+                                label="Nhập tên tài khoản/email"
                                 value={formik.values.usernameOrEmail}
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
                                 error={formik.touched.usernameOrEmail && Boolean(formik.errors.usernameOrEmail)}
                             />
-                            <p className={cx('error-message')}>{formik.touched.usernameOrEmail && formik.errors.usernameOrEmail}&emsp;</p>
+                            <p className={cx('error-message')}>
+                                {formik.touched.usernameOrEmail && formik.errors.usernameOrEmail}&emsp;
+                            </p>
 
                             <FormControl
                                 fullWidth
-                                variant='standard'
+                                variant="standard"
                                 error={formik.touched.password && Boolean(formik.errors.password)}
                             >
-                                <InputLabel htmlFor='password'>Nhập mật khẩu</InputLabel>
+                                <InputLabel htmlFor="password">Nhập mật khẩu</InputLabel>
                                 <Input
-                                    id='password'
-                                    name='password'
+                                    id="password"
+                                    name="password"
                                     type={showPassword ? 'text' : 'password'}
                                     value={formik.values.password}
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                     endAdornment={
-                                        <InputAdornment position='end'>
+                                        <InputAdornment position="end">
                                             <IconButton
-                                                aria-label='toggle password visibility'
+                                                aria-label="toggle password visibility"
                                                 onClick={handleClickShowPassword}
                                                 onMouseDown={handleMouseDownPassword}
                                             >
@@ -132,27 +134,23 @@ function Login() {
                                     }
                                 />
                             </FormControl>
-                            <p className={cx('error-message')}>{formik.touched.password && formik.errors.password}&emsp;</p>
+                            <p className={cx('error-message')}>
+                                {formik.touched.password && formik.errors.password}&emsp;
+                            </p>
 
                             <div className={cx('forget-pass')}>
-                                <Link to='/forgot-password'>Quên mật khẩu?</Link>
+                                <Link to="/forgot-password">Quên mật khẩu?</Link>
                             </div>
 
                             <div className={cx('login-btn')}>
-                                <LoadingButton
-                                    type='submit'
-                                    loading={isLoading}
-                                    variant='contained'
-                                    fullWidth
-                                >
+                                <LoadingButton type="submit" loading={isLoading} variant="contained" fullWidth>
                                     <span>Đăng nhập</span>
                                 </LoadingButton>
                             </div>
-
                         </form>
                         <div className={cx('login-question')}>
                             <p>Bạn chưa có tài khoản? </p>
-                            <Link to='/register'>Đăng ký ngay</Link>
+                            <Link to="/register">Đăng ký ngay</Link>
                         </div>
                     </div>
                 </div>

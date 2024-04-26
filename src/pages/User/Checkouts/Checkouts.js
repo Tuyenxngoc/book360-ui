@@ -36,14 +36,14 @@ const DELIVERY_FEE = 30000;
 const validationSchema = yup.object({
     addressDetailId: yup.number(),
     paymentMethod: yup.string(),
-    note: yup.string()
-        .max(30, 'Ghi chú tối đa 30 kí tự'),
-    listProductId: yup.array()
-        .min(1, 'Danh sách sản phẩm không được để trống'),
+    note: yup.string().max(30, 'Ghi chú tối đa 30 kí tự'),
+    listProductId: yup.array().min(1, 'Danh sách sản phẩm không được để trống'),
 });
 
 function inputProps(isError) {
-    if (isError) { return { status: 'error' }; }
+    if (isError) {
+        return { status: 'error' };
+    }
 }
 
 const PAYMENT_METHODS = [
@@ -64,11 +64,10 @@ const PAYMENT_METHODS = [
         label: 'Ví Zalopay bằng QRCode',
         img: images.payment[2],
         alt: 'zalo',
-    }
-]
+    },
+];
 
 function Checkouts() {
-
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -78,7 +77,7 @@ function Checkouts() {
 
     const totalPrice = useMemo(() => {
         return listProducts.reduce((sum, product) => {
-            return sum + product.quantity * (product.price * (100 - product.discount) / 100);
+            return sum + product.quantity * ((product.price * (100 - product.discount)) / 100);
         }, 0);
     }, [listProducts]);
 
@@ -94,7 +93,7 @@ function Checkouts() {
             addressDetailId: null,
             paymentMethod: 'CASH',
             note: '',
-            listProductId: listProducts.map(item => item.productId)
+            listProductId: listProducts.map((item) => item.productId),
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
@@ -111,8 +110,10 @@ function Checkouts() {
             .catch((error) => {
                 toast.error('Đã có lỗi sảy ra, vui lòng thử lại sau');
             })
-            .finally(() => { setIsLoading(false); });
-    }
+            .finally(() => {
+                setIsLoading(false);
+            });
+    };
 
     const onChangePaymentMethods = (e) => {
         setPaymentMethods(e.target.value);
@@ -123,8 +124,8 @@ function Checkouts() {
     };
 
     const handleChangeAddress = (addressDetailId) => {
-        formik.setFieldValue('addressDetailId', addressDetailId)
-        const newAddressSelect = addressList.find(address => address.id === Number(addressDetailId))
+        formik.setFieldValue('addressDetailId', addressDetailId);
+        const newAddressSelect = addressList.find((address) => address.id === Number(addressDetailId));
         if (newAddressSelect) {
             setAddressSelect(newAddressSelect);
         }
@@ -137,14 +138,14 @@ function Checkouts() {
                 setAddressList(addresses);
                 if (addresses.length > 0) {
                     const addressDefault = addresses[0];
-                    setAddressSelect(addressDefault)
+                    setAddressSelect(addressDefault);
                     formik.setFieldValue('addressDetailId', addressDefault.id);
                 }
             })
             .catch((error) => {
                 toast.error('Đã có lỗi sảy ra khi lấy dữ liệu địa chỉ, vui lòng thử lại sau');
-            })
-    }
+            });
+    };
 
     useEffect(() => {
         fetchListAddress();
@@ -167,10 +168,7 @@ function Checkouts() {
 
     return (
         <>
-            <Breadcrumb
-                breadcrumbs={[{ url: '/cart', label: 'Giỏ hàng của bạn' }]}
-                currentPage={'Thanh toán'}
-            />
+            <Breadcrumb breadcrumbs={[{ url: '/cart', label: 'Giỏ hàng của bạn' }]} currentPage={'Thanh toán'} />
             <DialogSelectAddress
                 open={isOpenDialogSelectAddress}
                 setOpen={setIsOpenDialogSelectAddress}
@@ -188,18 +186,20 @@ function Checkouts() {
                 title={'Địa chỉ mới'}
                 titleDescription={'Để đặt hàng, vui lòng thêm địa chỉ nhận hàng'}
             />
-            <div className='container'>
-                <div className='row g-3'>
-                    <div className='col-7'>
-                        <div className='row g-3'>
-                            <div className='col-12'>
+            <div className="container">
+                <div className="row g-3">
+                    <div className="col-7">
+                        <div className="row g-3">
+                            <div className="col-12">
                                 <div className={cx('wrapper')}>
                                     <div className={cx('title')}>
-                                        <div className='left'>
-                                            <span className={cx('icon')}><FontAwesomeIcon icon={faLocationDot} /></span>
+                                        <div className="left">
+                                            <span className={cx('icon')}>
+                                                <FontAwesomeIcon icon={faLocationDot} />
+                                            </span>
                                             <span>Địa chỉ nhận hàng</span>
                                         </div>
-                                        <div className='right'>
+                                        <div className="right">
                                             <button
                                                 className={cx('change-address')}
                                                 onClick={() => setIsOpenDialogSelectAddress(true)}
@@ -218,35 +218,60 @@ function Checkouts() {
                                                     <span>{addressSelect.phoneNumber}</span>
                                                 </div>
                                                 <div className={cx('address-container')}>
-                                                    {addressSelect.isDefaultAddress && <Chip label='Mặc định' color='primary' size='small' sx={{ mr: 1 }} />}
+                                                    {addressSelect.isDefaultAddress && (
+                                                        <Chip
+                                                            label="Mặc định"
+                                                            color="primary"
+                                                            size="small"
+                                                            sx={{ mr: 1 }}
+                                                        />
+                                                    )}
                                                     <div>{addressSelect.fullAddress}</div>
                                                 </div>
                                             </div>
                                         ) : (
-                                            <div className='pt-2'>Vui lòng thêm địa chỉ để tiếp tục</div>
+                                            <div className="pt-2">Vui lòng thêm địa chỉ để tiếp tục</div>
                                         )}
                                     </div>
                                 </div>
                             </div>
-                            <div className='col-12'>
+                            <div className="col-12">
                                 <div className={cx('wrapper')}>
                                     <div className={cx('title')}>
-                                        <div className='left'>
-                                            <span className={cx('icon')}><FontAwesomeIcon icon={faCreditCard} /></span>
+                                        <div className="left">
+                                            <span className={cx('icon')}>
+                                                <FontAwesomeIcon icon={faCreditCard} />
+                                            </span>
                                             <span>Phương thức thanh toán</span>
                                         </div>
                                     </div>
                                     <div className={cx('inner')}>
-                                        <Radio.Group onChange={onChangePaymentMethods} value={paymentMethods} style={{ width: '100%' }}>
+                                        <Radio.Group
+                                            onChange={onChangePaymentMethods}
+                                            value={paymentMethods}
+                                            style={{ width: '100%' }}
+                                        >
                                             {PAYMENT_METHODS.map((item, index) => {
                                                 return (
-                                                    <div key={index} className={cx('payment-item', paymentMethods !== item.value ? 'disabled' : '')}>
+                                                    <div
+                                                        key={index}
+                                                        className={cx(
+                                                            'payment-item',
+                                                            paymentMethods !== item.value ? 'disabled' : '',
+                                                        )}
+                                                    >
                                                         <Radio value={item.value} style={{ width: '100%' }}>
-                                                            <img className={cx('payment-item-img')} src={item.img} alt={item.alt} />
-                                                            <span className={cx('payment-item-text')}>{item.label}</span>
+                                                            <img
+                                                                className={cx('payment-item-img')}
+                                                                src={item.img}
+                                                                alt={item.alt}
+                                                            />
+                                                            <span className={cx('payment-item-text')}>
+                                                                {item.label}
+                                                            </span>
                                                         </Radio>
                                                     </div>
-                                                )
+                                                );
                                             })}
                                         </Radio.Group>
                                     </div>
@@ -254,50 +279,57 @@ function Checkouts() {
                             </div>
                         </div>
                     </div>
-                    <div className='col-5'>
-                        <div className='row g-3'>
-                            <div className='col-12'>
+                    <div className="col-5">
+                        <div className="row g-3">
+                            <div className="col-12">
                                 <div className={cx('wrapper')}>
                                     <div className={cx('title')}>
-                                        <div className='left'>
-                                            <span className={cx('icon')}><FontAwesomeIcon icon={faClipboardCheck} /></span>
+                                        <div className="left">
+                                            <span className={cx('icon')}>
+                                                <FontAwesomeIcon icon={faClipboardCheck} />
+                                            </span>
                                             <span>Thông tin đơn hàng</span>
                                         </div>
                                     </div>
                                     <div className={cx('inner')}>
                                         {listProducts.map((product, index) => {
                                             return (
-                                                <div key={index} className={cx('product-item')} >
-                                                    <img className={cx('product-image')} src={product.image} alt={product.name} />
+                                                <div key={index} className={cx('product-item')}>
+                                                    <img
+                                                        className={cx('product-image')}
+                                                        src={product.image}
+                                                        alt={product.name}
+                                                    />
                                                     <div className={cx('product-description')}>
                                                         <span className={cx('product-name')}> {product.name}</span>
                                                         <div>
                                                             <span className={cx('discounted-price')}>
-                                                                <MoneyDisplay amount={product.price * (100 - product.discount) / 100} />
+                                                                <MoneyDisplay
+                                                                    amount={
+                                                                        (product.price * (100 - product.discount)) / 100
+                                                                    }
+                                                                />
                                                             </span>
                                                             <span className={cx('original-price')}>
                                                                 <MoneyDisplay amount={product.price} />
                                                             </span>
                                                         </div>
                                                     </div>
-                                                    <div className={cx('product-quantity')}>
-                                                        X
-                                                        {product.quantity}
-                                                    </div>
+                                                    <div className={cx('product-quantity')}>X{product.quantity}</div>
                                                 </div>
-                                            )
+                                            );
                                         })}
                                         <TextArea
-                                            id='note'
-                                            name='note'
+                                            id="note"
+                                            name="note"
                                             rows={3}
                                             maxLength={30}
-                                            placeholder='Thêm ghi chú'
+                                            placeholder="Thêm ghi chú"
                                             value={formik.values.note}
                                             onChange={formik.handleChange}
                                             onBlur={formik.handleBlur}
                                             {...inputProps(formik.touched.note && Boolean(formik.errors.note))}
-                                            style={{ resize: 'none', }}
+                                            style={{ resize: 'none' }}
                                         />
                                         {formik.touched.note && formik.errors.note && (
                                             <FormHelperText error>{formik.errors.note}</FormHelperText>
@@ -305,7 +337,7 @@ function Checkouts() {
                                     </div>
                                 </div>
                             </div>
-                            <div className='col-12'>
+                            <div className="col-12">
                                 <div className={cx('wrapper')}>
                                     <div className={cx('checkout')}>
                                         <div className={cx('bill-total-cost')}>
@@ -331,7 +363,7 @@ function Checkouts() {
                                             </div>
                                             <LoadingButton
                                                 fullWidth
-                                                variant='contained'
+                                                variant="contained"
                                                 loading={isLoading}
                                                 onClick={formik.handleSubmit}
                                             >

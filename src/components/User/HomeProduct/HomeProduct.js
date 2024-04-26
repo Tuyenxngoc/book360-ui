@@ -5,7 +5,7 @@ import Product from '~/components/Common/Product/Product';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Slider from 'react-slick';
-import Style from './HomeProduct.module.scss'
+import Style from './HomeProduct.module.scss';
 import classNames from 'classnames/bind';
 import { Skeleton, Typography } from '@mui/material';
 import CustomArrows from '../../Common/CustomArrows';
@@ -21,12 +21,11 @@ const settings = {
     slidesToShow: 6,
     slidesToScroll: 1,
     initialSlide: 0,
-    nextArrow: <CustomArrows color='secondary' isNextArrow />,
-    prevArrow: <CustomArrows color='secondary' />,
+    nextArrow: <CustomArrows color="secondary" isNextArrow />,
+    prevArrow: <CustomArrows color="secondary" />,
 };
 
 function HomeProduct({ title, showProductByCategory = false, categoryId, moreLink, sortBy }) {
-
     const [productsData, setProductsData] = useState();
 
     useEffect(() => {
@@ -47,22 +46,24 @@ function HomeProduct({ title, showProductByCategory = false, categoryId, moreLin
     }, []);
 
     return (
-        <div className='home-product'>
-            {showProductByCategory &&
+        <div>
+            {showProductByCategory && (
                 <div className={cx('banner-home-pro')}>
                     <Link className={cx('banner-home-pro-link')} to={moreLink}>
                         {productsData ? (
-                            productsData[0]?.category?.image && (<img src={productsData[0].category.image} alt='home-banner' />)
+                            productsData[0]?.category?.image && (
+                                <img src={productsData[0].category.image} alt="home-banner" />
+                            )
                         ) : (
-                            <Skeleton animation='wave' variant='rectangular' height={120} />
+                            <Skeleton animation="wave" variant="rectangular" height={120} />
                         )}
                     </Link>
                 </div>
-            }
-            <div className='container'>
+            )}
+            <div className="container">
                 <div className={cx('home-products')}>
-                    <div className='row'>
-                        <div className='col-12'>
+                    <div className="row">
+                        <div className="col-12">
                             <div className={cx('section-title')}>
                                 {productsData ? (
                                     showProductByCategory ? (
@@ -71,28 +72,35 @@ function HomeProduct({ title, showProductByCategory = false, categoryId, moreLin
                                         <h2>{title}</h2>
                                     )
                                 ) : (
-                                    <Typography component='div' variant='h3' style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                        <Skeleton animation='wave' width={200} />
+                                    <Typography
+                                        component="div"
+                                        variant="h3"
+                                        style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                                    >
+                                        <Skeleton animation="wave" width={200} />
                                     </Typography>
                                 )}
                             </div>
                         </div>
-                        <div className='col-12'>
+                        <div className="col-12">
                             <Slider {...settings}>
                                 {(productsData ? productsData : Array.from({ length: 10 })).map((product, index) => (
-                                    <div key={index} className='px-2 mt-2'>
+                                    <div key={index} className="px-2 mt-2">
                                         <Product data={product}></Product>
                                     </div>
                                 ))}
                             </Slider>
                         </div>
-                        <div className='col-12'>
+                        <div className="col-12">
                             <div className={cx('more-link')}>
                                 {productsData ? (
                                     <Link to={moreLink}>Xem thêm &gt;&gt;</Link>
                                 ) : (
-                                    <Typography component='div' style={{ display: 'flex', justifyContent: 'right', alignItems: 'center' }}>
-                                        <Skeleton animation='wave' width={100} />
+                                    <Typography
+                                        component="div"
+                                        style={{ display: 'flex', justifyContent: 'right', alignItems: 'center' }}
+                                    >
+                                        <Skeleton animation="wave" width={100} />
                                     </Typography>
                                 )}
                             </div>
@@ -110,6 +118,6 @@ HomeProduct.propTypes = {
     categoryId: PropTypes.number,
     moreLink: PropTypes.string.isRequired,
     sortBy: PropTypes.string.isRequired,
-}
+};
 
 export default HomeProduct;

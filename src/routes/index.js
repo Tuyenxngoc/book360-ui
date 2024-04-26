@@ -62,7 +62,7 @@ const publicRoutes = [
 
     { path: routes.notFound, component: NotFound, layout: HeaderOnly },
     { path: routes.accessDenied, component: Forbidden, layout: HeaderOnly },
-]
+];
 
 const privateRoutes = [
     { path: routes.cart, component: Cart },
@@ -74,8 +74,7 @@ const privateRoutes = [
     { path: routes.notification, component: Notification, layout: UserDashboard },
     { path: routes.purchaseOrder, component: Purchase, layout: UserDashboard },
     { path: routes.favorite, component: Favorite, layout: UserDashboard },
-
-]
+];
 
 const adminRoutes = [
     { path: routes.adminDashboard, component: Dashboard, layout: AdminLayout },
@@ -111,6 +110,6 @@ const adminRoutes = [
     { path: routes.viewBookSet, component: BookSetDetail, layout: AdminLayout },
     { path: routes.createBookSet, component: BookSetForm, layout: AdminLayout },
     { path: routes.updateBookSet, component: BookSetForm, layout: AdminLayout },
-]
+];
 
-export { publicRoutes, privateRoutes, adminRoutes } 
+export { publicRoutes, privateRoutes, adminRoutes };
