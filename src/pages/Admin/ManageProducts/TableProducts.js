@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import MoneyDisplay from '~/components/MoneyDisplay';
-import AlertDialog from '~/components/AlertDialog';
+import MoneyDisplay from '~/components/Common/MoneyDisplay';
+import AlertDialog from '~/components/Common/AlertDialog';
 
 import Style from './ManageProducts.module.scss';
 import classNames from 'classnames/bind';

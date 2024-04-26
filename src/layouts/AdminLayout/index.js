@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
-import AdminNavBar from '~/components/AdminNavBar';
+import AdminNavBar from '~/components/Admin/AdminNavBar';
 
-import AdminSideBar from '~/components/AdminSideBar';
+import AdminSideBar from '~/components/Admin/AdminSideBar';
 
 function AdminLayout({ children }) {
     return (

@@ -13,7 +13,7 @@ import { useFormik } from 'formik';
 import { createCustomer, customerUpload, getCustomer } from '~/services/customerService';
 
 import { routes } from '~/config';
-import AlertDialog from '~/components/AlertDialog';
+import AlertDialog from '~/components/Common/AlertDialog';
 
 import { Avatar, Button, FormHelperText } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

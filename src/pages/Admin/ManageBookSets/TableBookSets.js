@@ -8,7 +8,7 @@ import { Button } from '@mui/material';
 import Style from './ManageBookSets.module.scss';
 import classNames from 'classnames/bind';
 
-import AlertDialog from '~/components/AlertDialog';
+import AlertDialog from '~/components/Common/AlertDialog';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faEye, faRemove } from '@fortawesome/free-solid-svg-icons';

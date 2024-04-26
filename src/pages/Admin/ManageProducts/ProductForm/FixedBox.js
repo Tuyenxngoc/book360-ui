@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 import Style from './ProductForm.module.scss';
 import classNames from 'classnames/bind';
-import AlertDialog from '~/components/AlertDialog';
+import AlertDialog from '~/components/Common/AlertDialog';
 import { useNavigate } from 'react-router-dom';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { Button } from '@mui/material';

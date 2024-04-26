@@ -11,7 +11,7 @@ import Style from './ManageBookSets.module.scss';
 import classNames from 'classnames/bind';
 
 import { createBookSet, getBookSet } from '~/services/bookSetService';
-import AlertDialog from '~/components/AlertDialog';
+import AlertDialog from '~/components/Common/AlertDialog';
 
 import { Input } from 'antd';
 

@@ -8,7 +8,7 @@ import Style from './ManageBanners.module.scss';
 import classNames from 'classnames/bind';
 
 import { deleteBanner } from '~/services/bannerService';
-import AlertDialog from '~/components/AlertDialog';
+import AlertDialog from '~/components/Common/AlertDialog';
 
 import { Button } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

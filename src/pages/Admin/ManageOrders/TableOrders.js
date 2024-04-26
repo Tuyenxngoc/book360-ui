@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import MoneyDisplay from '~/components/MoneyDisplay';
-import DateTimeDisplay from '~/components/DateTimeDisplay';
+import MoneyDisplay from '~/components/Common/MoneyDisplay';
+import DateTimeDisplay from '~/components/Common/DateTimeDisplay';
 
 import Style from './MagageOrders.module.scss';
 import classNames from 'classnames/bind';

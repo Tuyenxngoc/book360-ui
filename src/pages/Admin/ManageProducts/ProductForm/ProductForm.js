@@ -24,7 +24,7 @@ import { FormHelperText } from '@mui/material';
 import { Input, Select, message } from 'antd';
 
 import FixedBox from './FixedBox';
-import DropdownRender from '~/components/DropdownRender';
+import DropdownRender from '~/components/Common/DropdownRender';
 import { ages, coverTypes, publishers, sizes } from '~/config/contans';
 
 import ReactQuill from 'react-quill';

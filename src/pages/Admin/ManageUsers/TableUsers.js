@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faEye, faRemove } from '@fortawesome/free-solid-svg-icons';
 import images from '~/assets';
 import { useState } from 'react';
-import AlertDialog from '~/components/AlertDialog';
+import AlertDialog from '~/components/Common/AlertDialog';
 import { toast } from 'react-toastify';
 import { deleteCustomer } from '~/services/customerService';
 

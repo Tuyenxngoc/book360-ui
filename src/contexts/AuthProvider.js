@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import { createContext, useState } from 'react';
 import { toast } from 'react-toastify';
-import Loading from '~/components/Loading';
+import Loading from '~/components/Common/Loading';
 import { logoutToken } from '~/services/authService';
 import localStorageKeys, { getItem, removeItem, setItem } from '~/services/localStorageService';
 import { getCurrentUserLogin } from '~/services/userService';

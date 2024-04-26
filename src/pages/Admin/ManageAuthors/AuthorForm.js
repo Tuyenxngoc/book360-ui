@@ -11,7 +11,7 @@ import Style from './ManageAuthors.module.scss';
 import classNames from 'classnames/bind';
 
 import { createAuthor, getAuthor } from '~/services/authorService';
-import AlertDialog from '~/components/AlertDialog';
+import AlertDialog from '~/components/Common/AlertDialog';
 
 import { Input, Upload, message } from 'antd';
 

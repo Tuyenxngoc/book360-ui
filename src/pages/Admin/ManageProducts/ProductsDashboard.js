@@ -9,7 +9,7 @@ import queryString from 'query-string';
 import { getProductsForAdmin } from '~/services/productService';
 
 import TableProducts from './TableProducts';
-import SortProduct from '~/components/SortProduct';
+import SortProduct from '~/components/Common/SortProduct';
 
 import Style from './ManageProducts.module.scss';
 import classNames from 'classnames/bind';

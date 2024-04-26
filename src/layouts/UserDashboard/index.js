@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 
-import Footer from '~/components/Footer';
-import Header from '~/components/Header';
-import SideBar from '~/components/SideBar';
+import Footer from '~/components/User/Footer';
+import Header from '~/components/User/Header';
+import SideBar from '~/components/Common/SideBar';
 
 function UserDashboard({ children }) {
     return (

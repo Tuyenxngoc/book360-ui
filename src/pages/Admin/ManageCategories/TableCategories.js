@@ -8,7 +8,7 @@ import { Button } from '@mui/material';
 import Style from './ManageCategories.module.scss';
 import classNames from 'classnames/bind';
 
-import AlertDialog from '~/components/AlertDialog';
+import AlertDialog from '~/components/Common/AlertDialog';
 import { deleteCategory } from '~/services/categoryService';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

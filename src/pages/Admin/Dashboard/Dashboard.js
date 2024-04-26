@@ -7,7 +7,7 @@ import { Space } from 'antd';
 
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
-import DashBoardCard from '~/components/AdminDashBoardCard';
+import DashBoardCard from '~/components/Admin/AdminDashBoardCard';
 
 import Style from './Dashboard.module.scss';
 import classNames from 'classnames/bind';
@@ -16,7 +16,7 @@ import { getCountCustomer, getTodos } from '~/services/customerService';
 import { getStockQuantity } from '~/services/productService';
 import { getCountBill, getKeyMetrics } from '~/services/billService';
 import { toast } from 'react-toastify';
-import MoneyDisplay from '~/components/MoneyDisplay';
+import MoneyDisplay from '~/components/Common/MoneyDisplay';
 
 const cx = classNames.bind(Style);
 

@@ -15,7 +15,7 @@ import { message, Upload } from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
 import { Button, FormHelperText } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-import AlertDialog from '~/components/AlertDialog';
+import AlertDialog from '~/components/Common/AlertDialog';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave } from '@fortawesome/free-regular-svg-icons';
 import { faArrowLeft, faTrashCan } from '@fortawesome/free-solid-svg-icons';
