@@ -29,7 +29,7 @@ const cx = classNames.bind(Style);
 function inputProps(isError) {
     if (isError) {
         return {
-            status: 'error'
+            status: 'error',
         };
     }
 }
@@ -38,7 +38,7 @@ const defaultValue = {
     image: '',
     url: '',
     viewOrder: 0,
-}
+};
 
 const validationSchema = yup.object({
     image: yup.string().required('Hình ảnh là bắt buộc'),
@@ -47,7 +47,6 @@ const validationSchema = yup.object({
 });
 
 function BannerForm() {
-
     const navigate = useNavigate();
     const { bannerId } = useParams();
     const [loading, setLoading] = useState(false);
@@ -91,9 +90,11 @@ function BannerForm() {
                         image,
                         url,
                         viewOrder,
-                    })
+                    });
                 })
-                .catch((error) => { console.log(error); })
+                .catch((error) => {
+                    console.log(error);
+                });
         } else {
             formik.setValues(defaultValue);
         }
@@ -107,37 +108,41 @@ function BannerForm() {
                 navigate(routes.viewBanners, { replace: true });
                 toast.success('Thành công');
             })
-            .catch((error) => { toast.error('Có lỗi xảy ra') })
-            .finally(() => { setLoading(false); });
-    }
+            .catch((error) => {
+                toast.error('Có lỗi xảy ra');
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    };
 
     const handleClose = () => {
         navigate(routes.viewBanners, { replace: true });
-    }
+    };
 
     const handleRemoveImage = () => {
         formik.setFieldValue('image', '');
-    }
+    };
 
     return (
-        <div className='container my-3'>
-            <div className='row justify-content-center'>
-                <div className='col-10'>
+        <div className="container my-3">
+            <div className="row justify-content-center">
+                <div className="col-10">
                     <div className={cx('panel-wrapper')}>
                         <div className={cx('panel-header')}>
-                            <div className={cx('panel-title')}>
-                                Thông tin cơ bản
-                            </div>
+                            <div className={cx('panel-title')}>Thông tin cơ bản</div>
                         </div>
-                        <div className='panel-content'>
+                        <div className="panel-content">
                             <div className={cx('form-group')}>
-                                <label className={cx('form-label')} htmlFor='inputUrl'><span>*</span>Liên kết</label>
+                                <label className={cx('form-label')} htmlFor="inputUrl">
+                                    <span>*</span>Liên kết
+                                </label>
                                 <div className={cx('form-input')}>
                                     <Input
-                                        id='inputUrl'
-                                        name='url'
-                                        size='large'
-                                        placeholder='Vui lòng nhập vào'
+                                        id="inputUrl"
+                                        name="url"
+                                        size="large"
+                                        placeholder="Vui lòng nhập vào"
                                         value={formik.values.url}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
@@ -149,13 +154,15 @@ function BannerForm() {
                                 </div>
                             </div>
                             <div className={cx('form-group')}>
-                                <label className={cx('form-label')} htmlFor='inputViewOrder'><span>*</span>Thứ tự hiển thị</label>
+                                <label className={cx('form-label')} htmlFor="inputViewOrder">
+                                    <span>*</span>Thứ tự hiển thị
+                                </label>
                                 <div className={cx('form-input')}>
                                     <Input
-                                        id='inputViewOrder'
-                                        name='viewOrder'
-                                        size='large'
-                                        placeholder='Vui lòng nhập vào'
+                                        id="inputViewOrder"
+                                        name="viewOrder"
+                                        size="large"
+                                        placeholder="Vui lòng nhập vào"
                                         value={formik.values.viewOrder}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
@@ -167,13 +174,18 @@ function BannerForm() {
                                 </div>
                             </div>
                             <div className={cx('form-group')}>
-                                <label className={cx('form-label')} htmlFor='inputUrl'><span>*</span>Hình ảnh</label>
+                                <label className={cx('form-label')} htmlFor="inputUrl">
+                                    <span>*</span>Hình ảnh
+                                </label>
                                 <div className={cx('form-input')}>
                                     {formik.values.image ? (
-                                        <div className={cx('form-upload-image')} >
-                                            <img className={cx('image-upload')} src={formik.values.image} alt='' />
+                                        <div className={cx('form-upload-image')}>
+                                            <img className={cx('image-upload')} src={formik.values.image} alt="" />
                                             <div className={cx('image-tools')}>
-                                                <button onClick={() => handleRemoveImage()} className={cx('delete-image')}>
+                                                <button
+                                                    onClick={() => handleRemoveImage()}
+                                                    className={cx('delete-image')}
+                                                >
                                                     <FontAwesomeIcon icon={faTrashCan} />
                                                 </button>
                                             </div>
@@ -181,11 +193,13 @@ function BannerForm() {
                                     ) : (
                                         <>
                                             <Dragger {...props}>
-                                                <p className='ant-upload-drag-icon'>
+                                                <p className="ant-upload-drag-icon">
                                                     <InboxOutlined />
                                                 </p>
-                                                <p className='ant-upload-text'>Nhấp hoặc kéo tệp vào khu vực này để tải lên</p>
-                                                <p className='ant-upload-hint'>Kích thước đề xuất [1920, 7750]</p>
+                                                <p className="ant-upload-text">
+                                                    Nhấp hoặc kéo tệp vào khu vực này để tải lên
+                                                </p>
+                                                <p className="ant-upload-hint">Kích thước đề xuất [1920, 7750]</p>
                                             </Dragger>
                                             {formik.touched.image && formik.errors.image && (
                                                 <FormHelperText error>{formik.errors.image}</FormHelperText>
@@ -204,7 +218,7 @@ function BannerForm() {
                                     handleSubmit={handleClose}
                                 />
                                 <Button
-                                    variant='outlined'
+                                    variant="outlined"
                                     startIcon={<FontAwesomeIcon icon={faArrowLeft} />}
                                     onClick={() => setShowDialog(true)}
                                     sx={{ height: 35 }}
@@ -213,7 +227,7 @@ function BannerForm() {
                                 </Button>
                                 <LoadingButton
                                     loading={loading}
-                                    variant='contained'
+                                    variant="contained"
                                     startIcon={<FontAwesomeIcon icon={faSave} />}
                                     onClick={formik.handleSubmit}
                                     sx={{ height: 35, marginLeft: '10px' }}

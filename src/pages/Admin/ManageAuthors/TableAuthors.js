@@ -17,7 +17,6 @@ import { deleteAuthor } from '~/services/authorService';
 const cx = classNames.bind(Style);
 
 function TableAuthors({ listAuthor, fetchListAuthor }) {
-
     const navigate = useNavigate();
 
     const [authorSelect, setAuthorSelect] = useState();
@@ -25,12 +24,12 @@ function TableAuthors({ listAuthor, fetchListAuthor }) {
 
     const handleClickBtnUpdate = (author) => {
         navigate(`/admin/author/update/${author.id}`);
-    }
+    };
 
     const handleClickBtnDelete = (authorId) => {
         setShowDialogDelete(true);
         setAuthorSelect(authorId);
-    }
+    };
 
     const handleDeleteAuthor = () => {
         deleteAuthor(authorSelect)
@@ -44,12 +43,12 @@ function TableAuthors({ listAuthor, fetchListAuthor }) {
                 } else {
                     toast.error('Có lỗi sảy ra');
                 }
-            })
-    }
+            });
+    };
 
     const handleClickViewAuthor = (id) => {
         navigate(`/admin/author/${id}`);
-    }
+    };
 
     return (
         <div>
@@ -57,65 +56,69 @@ function TableAuthors({ listAuthor, fetchListAuthor }) {
                 open={showDialogDelete}
                 setOpen={setShowDialogDelete}
                 title={'Xóa tác giả'}
-                description={'Bạn có chắc muốn xóa tác giả này? Lưu ý: Sau khi xóa, bạn không thể hoàn tác hay khôi phục.'}
+                description={
+                    'Bạn có chắc muốn xóa tác giả này? Lưu ý: Sau khi xóa, bạn không thể hoàn tác hay khôi phục.'
+                }
                 handleSubmit={handleDeleteAuthor}
             />
-            <table className='table table-striped table-bordered' style={{ verticalAlign: 'middle' }}>
+            <table className="table table-striped table-bordered" style={{ verticalAlign: 'middle' }}>
                 <thead>
                     <tr>
-                        <th scope='col'>Tên tác giả</th>
-                        <th scope='col'>Avavtar</th>
-                        <th scope='col'>Thao tác</th>
+                        <th scope="col">Tên tác giả</th>
+                        <th scope="col">Avavtar</th>
+                        <th scope="col">Thao tác</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {listAuthor.length > 0 ? (listAuthor.map((item, index) => (
-                        <tr key={`table-authors-${index}`}>
-                            <td align='left'>{item.fullName}</td>
-                            <td align='left'>
-                                <div className={cx('image-author')}>
-                                    {item.avatar ? (
-                                        <img src={item.avatar} alt={`author id ${item.id}`} />
-                                    ) : (
-                                        'Chưa có hình ảnh'
-                                    )}
-                                </div>
-                            </td>
-                            <td align='left'>
-                                <div className={cx('table-action')}>
-                                    <Button
-                                        size='small'
-                                        variant='contained'
-                                        color='success'
-                                        onClick={() => handleClickViewAuthor(item.id)}
-                                        sx={{ minWidth: 35, height: 35 }}
-                                    >
-                                        <FontAwesomeIcon icon={faEye} />
-                                    </Button>
-                                    <Button
-                                        size='small'
-                                        variant='contained'
-                                        color='primary'
-                                        onClick={() => handleClickBtnUpdate(item)}
-                                        sx={{ minWidth: 35, height: 35, mx: 1 }}
-                                    >
-                                        <FontAwesomeIcon icon={faEdit} />
-                                    </Button>
-                                    <Button
-                                        size='small'
-                                        variant='contained'
-                                        color='error'
-                                        onClick={() => handleClickBtnDelete(item.id)}
-                                        sx={{ minWidth: 35, height: 35 }}
-                                    >
-                                        <FontAwesomeIcon icon={faRemove} />
-                                    </Button>
-                                </div>
-                            </td>
-                        </tr>
-                    ))) : (
+                    {listAuthor.length > 0 ? (
+                        listAuthor.map((item, index) => (
+                            <tr key={`table-authors-${index}`}>
+                                <td align="left">{item.fullName}</td>
+                                <td align="left">
+                                    <div className={cx('image-author')}>
+                                        {item.avatar ? (
+                                            <img src={item.avatar} alt={`author id ${item.id}`} />
+                                        ) : (
+                                            'Chưa có hình ảnh'
+                                        )}
+                                    </div>
+                                </td>
+                                <td align="left">
+                                    <div className={cx('table-action')}>
+                                        <Button
+                                            size="small"
+                                            variant="contained"
+                                            color="success"
+                                            onClick={() => handleClickViewAuthor(item.id)}
+                                            sx={{ minWidth: 35, height: 35 }}
+                                        >
+                                            <FontAwesomeIcon icon={faEye} />
+                                        </Button>
+                                        <Button
+                                            size="small"
+                                            variant="contained"
+                                            color="primary"
+                                            onClick={() => handleClickBtnUpdate(item)}
+                                            sx={{ minWidth: 35, height: 35, mx: 1 }}
+                                        >
+                                            <FontAwesomeIcon icon={faEdit} />
+                                        </Button>
+                                        <Button
+                                            size="small"
+                                            variant="contained"
+                                            color="error"
+                                            onClick={() => handleClickBtnDelete(item.id)}
+                                            sx={{ minWidth: 35, height: 35 }}
+                                        >
+                                            <FontAwesomeIcon icon={faRemove} />
+                                        </Button>
+                                    </div>
+                                </td>
+                            </tr>
+                        ))
+                    ) : (
                         <tr>
-                            <td colSpan='4'>Chưa có dữ liệu</td>
+                            <td colSpan="4">Chưa có dữ liệu</td>
                         </tr>
                     )}
                 </tbody>

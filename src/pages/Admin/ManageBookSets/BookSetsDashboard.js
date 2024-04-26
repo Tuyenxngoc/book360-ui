@@ -17,7 +17,6 @@ import { getBookSets } from '~/services/bookSetService';
 const cx = classNames.bind(Style);
 
 function BookSetsDashboard() {
-
     const navigate = useNavigate();
     const [dataBookSets, setDataBookSets] = useState([]);
     const [meta, setMeta] = useState({});
@@ -29,7 +28,7 @@ function BookSetsDashboard() {
         isAscending: false,
         pageNum: 1,
         pageSize: 10,
-    })
+    });
 
     const fetchListBookSet = () => {
         const params = queryString.stringify(filters);
@@ -42,12 +41,12 @@ function BookSetsDashboard() {
             .catch(() => {
                 toast.error('Đã có lỗi xảy ra khi lấy dữ liệu bộ sách');
             });
-    }
+    };
 
     useEffect(() => {
         fetchListBookSet();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [filters])
+    }, [filters]);
 
     const handleCreateBookSet = () => {
         navigate(routes.createBookSet);
@@ -58,30 +57,30 @@ function BookSetsDashboard() {
     };
 
     const handleChangeRowsPerPage = (event) => {
-        setFilters({ ...filters, pageNum: 1, pageSize: parseInt(event.target.value, 10) })
+        setFilters({ ...filters, pageNum: 1, pageSize: parseInt(event.target.value, 10) });
     };
 
     return (
-        <div className='container my-3'>
-            <div className='row justify-content-center'>
-                <div className='col-10'>
+        <div className="container my-3">
+            <div className="row justify-content-center">
+                <div className="col-10">
                     <div className={cx('list-main')}>
                         <div className={cx('header')}>
                             <div className={cx('title')}>{dataBookSets.length} Bộ sách</div>
                             <Button
-                                size='small'
-                                variant='contained'
+                                size="small"
+                                variant="contained"
                                 startIcon={<FontAwesomeIcon icon={faPlus} />}
                                 onClick={handleCreateBookSet}
                             >
                                 Thêm mới
                             </Button>
                         </div>
-                        <div className='content'>
+                        <div className="content">
                             <TableBookSets listBookSet={dataBookSets} fetchListBookSet={fetchListBookSet} />
                             <TablePagination
                                 className={cx('table-pagination')}
-                                component='div'
+                                component="div"
                                 count={meta.totalElements || 1}
                                 page={filters.pageNum - 1}
                                 onPageChange={handleChangePage}

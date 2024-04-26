@@ -1,13 +1,13 @@
-import Slider from "react-slick";
+import Slider from 'react-slick';
 
 import Style from './Slider.module.scss';
-import classNames from "classnames/bind";
+import classNames from 'classnames/bind';
 
-import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { Skeleton } from "@mui/material";
-import CustomArrows from "../CustomArrows";
-import { getAllBanners } from "~/services/bannerService";
+import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Skeleton } from '@mui/material';
+import CustomArrows from '../CustomArrows';
+import { getAllBanners } from '~/services/bannerService';
 
 const cx = classNames.bind(Style);
 
@@ -23,7 +23,6 @@ const settings = {
 };
 
 function Slide() {
-
     const [bannerData, setBannerData] = useState();
 
     useEffect(() => {
@@ -31,7 +30,9 @@ function Slide() {
             .then((response) => {
                 setBannerData(response.data.data);
             })
-            .catch((error) => { console.log(error); })
+            .catch((error) => {
+                console.log(error);
+            });
     }, []);
 
     return (

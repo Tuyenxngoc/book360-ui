@@ -17,19 +17,18 @@ import { faEdit, faRemove, faUpDownLeftRight } from '@fortawesome/free-solid-svg
 const cx = classNames.bind(Style);
 
 function TableBanners({ listBanners, fetchListBanner }) {
-
     const navigate = useNavigate();
     const [bannerSelect, setBannerSelect] = useState();
     const [showDialogDelete, setShowDialogDelete] = useState(false);
 
     const handleClickBtnUpdate = (banner) => {
         navigate(`/admin/banner/${banner.id}`);
-    }
+    };
 
     const handleClickBtnDelete = (bannerId) => {
         setShowDialogDelete(true);
         setBannerSelect(bannerId);
-    }
+    };
 
     const handleDeleteBanner = () => {
         deleteBanner(bannerSelect)
@@ -39,8 +38,8 @@ function TableBanners({ listBanners, fetchListBanner }) {
             })
             .catch(() => {
                 toast.error('Có lỗi sảy ra');
-            })
-    }
+            });
+    };
 
     return (
         <>
@@ -48,7 +47,9 @@ function TableBanners({ listBanners, fetchListBanner }) {
                 open={showDialogDelete}
                 setOpen={setShowDialogDelete}
                 title={'Xóa banner'}
-                description={'Bạn có chắc muốn xóa banner này? Lưu ý: Sau khi xóa, bạn không thể hoàn tác hay khôi phục.'}
+                description={
+                    'Bạn có chắc muốn xóa banner này? Lưu ý: Sau khi xóa, bạn không thể hoàn tác hay khôi phục.'
+                }
                 handleSubmit={handleDeleteBanner}
             />
             <table className="table table-bordered table-striped" style={{ verticalAlign: 'middle' }}>
@@ -66,39 +67,39 @@ function TableBanners({ listBanners, fetchListBanner }) {
                         listBanners.map((item, index) => {
                             return (
                                 <tr key={`table-banners-${index}`}>
-                                    <td align='center' style={{ padding: 0, width: '80px' }}>
+                                    <td align="center" style={{ padding: 0, width: '80px' }}>
                                         <div className={cx('preview-image')}>
-                                            <a href={item.image} alt='preview image' target='_blank' rel="noreferrer">
+                                            <a href={item.image} alt="preview image" target="_blank" rel="noreferrer">
                                                 <FontAwesomeIcon icon={faUpDownLeftRight} />
                                             </a>
                                         </div>
                                     </td>
-                                    <td align='left'>
+                                    <td align="left">
                                         <div className={cx('banner-image')}>
                                             <img src={item.image} alt={item.name} />
                                         </div>
                                     </td>
-                                    <td align='left'>
+                                    <td align="left">
                                         <div className={cx('banner-view-order')}>{item.viewOrder}</div>
                                     </td>
-                                    <td align='left'>
+                                    <td align="left">
                                         <div className={cx('banner-url')}>{item.url}</div>
                                     </td>
-                                    <td align='left'>
-                                        <div className='banner-actions'>
+                                    <td align="left">
+                                        <div className="banner-actions">
                                             <Button
-                                                size='small'
-                                                variant='contained'
-                                                color='primary'
+                                                size="small"
+                                                variant="contained"
+                                                color="primary"
                                                 onClick={() => handleClickBtnUpdate(item)}
                                                 sx={{ minWidth: 35, height: 35 }}
                                             >
                                                 <FontAwesomeIcon icon={faEdit} />
                                             </Button>
                                             <Button
-                                                size='small'
-                                                variant='contained'
-                                                color='error'
+                                                size="small"
+                                                variant="contained"
+                                                color="error"
                                                 onClick={() => handleClickBtnDelete(item.id)}
                                                 sx={{ minWidth: 35, height: 35, ml: 1 }}
                                             >
@@ -107,7 +108,7 @@ function TableBanners({ listBanners, fetchListBanner }) {
                                         </div>
                                     </td>
                                 </tr>
-                            )
+                            );
                         })
                     ) : (
                         <tr>
@@ -130,7 +131,7 @@ TableBanners.propTypes = {
         PropTypes.shape({
             image: PropTypes.string,
             url: PropTypes.string,
-        })
+        }),
     ),
     fetchListBanner: PropTypes.func.isRequired,
 };

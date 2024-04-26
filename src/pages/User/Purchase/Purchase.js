@@ -24,7 +24,6 @@ const billStatus = [
 ];
 
 function Purchase() {
-
     const navigate = useNavigate();
     const [selectedTabIndex, setSelectedTabIndex] = useState(0);
     const [billsData, setBillsData] = useState([]);
@@ -67,8 +66,8 @@ function Purchase() {
             })
             .catch((error) => {
                 console.log(error);
-            })
-    }
+            });
+    };
 
     const handleBuyAgain = async ({ billDetails }) => {
         try {
@@ -87,7 +86,7 @@ function Purchase() {
             navigate('/cart', { replace: true });
             console.error('Đã xảy ra lỗi khi thêm sản phẩm vào giỏ hàng:', error);
         }
-    }
+    };
 
     const handleGetCountBill = (item) => {
         const count = item.count;
@@ -95,7 +94,7 @@ function Purchase() {
             return `(${count})`;
         }
         return '';
-    }
+    };
 
     useEffect(() => {
         fetchData();
@@ -116,30 +115,31 @@ function Purchase() {
                         label={
                             <div>
                                 <span>{item.label}</span>
-                                <span className={cx('count-bill')}>{item.isShowOrderCounts ? handleGetCountBill(item) : ''}</span>
-                            </div>}
+                                <span className={cx('count-bill')}>
+                                    {item.isShowOrderCounts ? handleGetCountBill(item) : ''}
+                                </span>
+                            </div>
+                        }
                     />
                 ))}
             </Tabs>
-            {
-                billsData.length > 0 ? (
-                    billsData.map((data, index) =>
-                        <Bill
-                            key={index}
-                            data={data}
-                            handleCancelOrder={handleCancelOrder}
-                            handleBuyAgain={handleBuyAgain}
-                        />)
-                ) : (
-                    <div className={cx('blank')}>
-                        <div className={cx('no-orders')}></div>
-                        <h2>Chưa có đơn hàng</h2>
-                    </div>
-                )
-            }
+            {billsData.length > 0 ? (
+                billsData.map((data, index) => (
+                    <Bill
+                        key={index}
+                        data={data}
+                        handleCancelOrder={handleCancelOrder}
+                        handleBuyAgain={handleBuyAgain}
+                    />
+                ))
+            ) : (
+                <div className={cx('blank')}>
+                    <div className={cx('no-orders')}></div>
+                    <h2>Chưa có đơn hàng</h2>
+                </div>
+            )}
         </>
     );
 }
 
 export default Purchase;
-

@@ -25,23 +25,23 @@ const cx = classNames.bind(Style);
 
 function inputProps(isError, message) {
     if (isError) {
-        return { status: 'error', placeholder: message, };
+        return { status: 'error', placeholder: message };
     }
 }
 
 const defaultValue = {
-    name: ''
-}
+    name: '',
+};
 
 const validationSchema = yup.object({
-    name: yup.string()
+    name: yup
+        .string()
         .min(3, 'Tên bộ sách tối thiểu 3 kí tự')
         .max(120, 'Tên bộ sách tối đa 120 kí tự')
         .required('Tên bộ sách là bắt buộc'),
 });
 
 function BookSetForm() {
-
     const navigate = useNavigate();
     const { bookSetId } = useParams();
     const [loading, setLoading] = useState(false);
@@ -61,10 +61,12 @@ function BookSetForm() {
                 .then((response) => {
                     const { name } = response.data.data;
                     formik.setValues({
-                        name
-                    })
+                        name,
+                    });
                 })
-                .catch((error) => { console.log(error); })
+                .catch((error) => {
+                    console.log(error);
+                });
         } else {
             formik.setValues(defaultValue);
         }
@@ -85,32 +87,34 @@ function BookSetForm() {
                     toast.error('Có lỗi xảy ra');
                 }
             })
-            .finally(() => { setLoading(false); });
-    }
+            .finally(() => {
+                setLoading(false);
+            });
+    };
 
     const handleClose = () => {
         navigate(routes.viewBookSets, { replace: true });
-    }
+    };
 
     return (
-        <div className='container my-3'>
-            <div className='row justify-content-center'>
-                <div className='col-10'>
+        <div className="container my-3">
+            <div className="row justify-content-center">
+                <div className="col-10">
                     <div className={cx('panel-wrapper')}>
                         <div className={cx('panel-header')}>
-                            <div className={cx('panel-title')}>
-                                Thông tin cơ bản
-                            </div>
+                            <div className={cx('panel-title')}>Thông tin cơ bản</div>
                         </div>
-                        <div className='panel-content'>
+                        <div className="panel-content">
                             <div className={cx('form-group')}>
-                                <label className={cx('form-label')} htmlFor='inputName'><span>*</span>Tên bộ sách</label>
+                                <label className={cx('form-label')} htmlFor="inputName">
+                                    <span>*</span>Tên bộ sách
+                                </label>
                                 <div className={cx('form-input')}>
                                     <Input
-                                        id='inputName'
-                                        name='name'
-                                        size='large'
-                                        placeholder='Vui lòng nhập vào'
+                                        id="inputName"
+                                        name="name"
+                                        size="large"
+                                        placeholder="Vui lòng nhập vào"
                                         value={formik.values.name}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
@@ -131,7 +135,7 @@ function BookSetForm() {
                                     handleSubmit={handleClose}
                                 />
                                 <Button
-                                    variant='outlined'
+                                    variant="outlined"
                                     startIcon={<FontAwesomeIcon icon={faArrowLeft} />}
                                     onClick={() => setShowDialog(true)}
                                     sx={{ height: 35 }}
@@ -140,7 +144,7 @@ function BookSetForm() {
                                 </Button>
                                 <LoadingButton
                                     loading={loading}
-                                    variant='contained'
+                                    variant="contained"
                                     startIcon={<FontAwesomeIcon icon={faSave} />}
                                     onClick={formik.handleSubmit}
                                     sx={{ height: 35, marginLeft: '10px' }}

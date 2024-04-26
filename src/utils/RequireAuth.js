@@ -9,15 +9,15 @@ function RequireAuth({ allowedRoles }) {
 
     if (isAuthenticated) {
         if (allowedRoles && allowedRoles.length > 0) {
-            const hasRequiredRole = allowedRoles.some(role => customer.roleName === role);
+            const hasRequiredRole = allowedRoles.some((role) => customer.roleName === role);
 
             if (!hasRequiredRole) {
-                return <Navigate to='/access-denied' />;
+                return <Navigate to="/access-denied" />;
             }
         }
         return <Outlet />;
     } else {
-        return <Navigate to='/login' state={{ from: location }} replace />
+        return <Navigate to="/login" state={{ from: location }} replace />;
     }
 }
 

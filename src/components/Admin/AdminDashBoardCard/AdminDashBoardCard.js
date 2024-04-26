@@ -11,17 +11,18 @@ const cx = classNames.bind(Style);
 function DashBoardCard({ icon, title, value, data }) {
     return (
         <Card className={cx('cart-content')}>
-            <Space direction='horizontal'>
+            <Space direction="horizontal">
                 {icon}
                 <Statistic title={title} value={value} />
-                <div style={{ width: '100px', height: '50px', }}>
-                    <ResponsiveContainer width='100%' height='100%'>
-                        <LineChart width={300} height={100} data={data}>\
+                <div style={{ width: '100px', height: '50px' }}>
+                    <ResponsiveContainer width="100%" height="100%">
+                        <LineChart width={300} height={100} data={data}>
+                            \
                             <Tooltip
                                 contentStyle={{ background: 'transparent', border: 'none' }}
                                 labelStyle={{ display: 'none' }}
                             />
-                            <Line type='monotone' dataKey='pv' stroke='#8884d8' strokeWidth={2} dot={false} />
+                            <Line type="monotone" dataKey="pv" stroke="#8884d8" strokeWidth={2} dot={false} />
                         </LineChart>
                     </ResponsiveContainer>
                 </div>

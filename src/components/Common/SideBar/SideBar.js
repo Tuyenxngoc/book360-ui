@@ -1,20 +1,19 @@
-import { Avatar } from "@mui/material";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faKey, faBell, faClipboard, faHeart, faUser, faPen, faLocationDot } from "@fortawesome/free-solid-svg-icons";
+import { Avatar } from '@mui/material';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faKey, faBell, faClipboard, faHeart, faUser, faPen, faLocationDot } from '@fortawesome/free-solid-svg-icons';
 
-import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
-import images from "~/assets";
-import useAuth from "~/hooks/useAuth";
+import images from '~/assets';
+import useAuth from '~/hooks/useAuth';
 
 import Style from './SideBar.module.scss';
-import classNames from "classnames/bind";
+import classNames from 'classnames/bind';
 
 const cx = classNames.bind(Style);
 
 function SideBar() {
-
     const location = useLocation();
     const { customer } = useAuth();
     const [isAccountPanelOpen, setAccountPanelOpen] = useState(true);
@@ -52,29 +51,40 @@ function SideBar() {
                     <strong>Quản lý tài khoản</strong>
                 </div>
                 {isAccountPanelOpen && (
-                    <div className={cx('panelContent', { 'open': isAccountPanelOpen })}>
+                    <div className={cx('panelContent', { open: isAccountPanelOpen })}>
                         <ul className={cx('panelList')}>
                             <li className={cx('panelItem')}>
-                                <Link to='/profile' className={cx('panelLink', { 'active': isLinkActive('/profile') })}>
-                                    <span className={cx('icon')}><FontAwesomeIcon icon={faUser} /></span>
+                                <Link to="/profile" className={cx('panelLink', { active: isLinkActive('/profile') })}>
+                                    <span className={cx('icon')}>
+                                        <FontAwesomeIcon icon={faUser} />
+                                    </span>
                                     Hồ sơ
                                 </Link>
                             </li>
                             <li className={cx('panelItem')}>
-                                <Link to='/address' className={cx('panelLink', { 'active': isLinkActive('/address') })}>
-                                    <span className={cx('icon')}><FontAwesomeIcon icon={faLocationDot} /></span>
+                                <Link to="/address" className={cx('panelLink', { active: isLinkActive('/address') })}>
+                                    <span className={cx('icon')}>
+                                        <FontAwesomeIcon icon={faLocationDot} />
+                                    </span>
                                     Địa chỉ
                                 </Link>
                             </li>
                             <li className={cx('panelItem')}>
-                                <Link to='/password' className={cx('panelLink', { 'active': isLinkActive('/password') })}>
-                                    <span className={cx('icon')}><FontAwesomeIcon icon={faKey} /></span>
+                                <Link to="/password" className={cx('panelLink', { active: isLinkActive('/password') })}>
+                                    <span className={cx('icon')}>
+                                        <FontAwesomeIcon icon={faKey} />
+                                    </span>
                                     Đổi mật khẩu
                                 </Link>
                             </li>
                             <li className={cx('panelItem')}>
-                                <Link to='/notification' className={cx('panelLink', { 'active': isLinkActive('/notification') })}>
-                                    <span className={cx('icon')}><FontAwesomeIcon icon={faBell} /></span>
+                                <Link
+                                    to="/notification"
+                                    className={cx('panelLink', { active: isLinkActive('/notification') })}
+                                >
+                                    <span className={cx('icon')}>
+                                        <FontAwesomeIcon icon={faBell} />
+                                    </span>
                                     Cài đặt thông báo
                                 </Link>
                             </li>
@@ -88,17 +98,21 @@ function SideBar() {
                     <strong>Quản lý giao dịch</strong>
                 </div>
                 {isTransactionPanelOpen && (
-                    <div className={cx('panelContent', { 'open': isTransactionPanelOpen })}>
+                    <div className={cx('panelContent', { open: isTransactionPanelOpen })}>
                         <ul className={cx('panelList')}>
                             <li className={cx('panelItem')}>
-                                <Link to='/purchase' className={cx('panelLink', { 'active': isLinkActive('/purchase') })}>
-                                    <span className={cx('icon')}><FontAwesomeIcon icon={faClipboard} /></span>
+                                <Link to="/purchase" className={cx('panelLink', { active: isLinkActive('/purchase') })}>
+                                    <span className={cx('icon')}>
+                                        <FontAwesomeIcon icon={faClipboard} />
+                                    </span>
                                     Đơn hàng
                                 </Link>
                             </li>
                             <li className={cx('panelItem')}>
-                                <Link to='/favorite' className={cx('panelLink', { 'active': isLinkActive('/favorite') })}>
-                                    <span className={cx('icon')}><FontAwesomeIcon icon={faHeart} /></span>
+                                <Link to="/favorite" className={cx('panelLink', { active: isLinkActive('/favorite') })}>
+                                    <span className={cx('icon')}>
+                                        <FontAwesomeIcon icon={faHeart} />
+                                    </span>
                                     Sản phẩm yêu thích
                                 </Link>
                             </li>

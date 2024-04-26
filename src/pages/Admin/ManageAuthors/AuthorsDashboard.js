@@ -17,7 +17,6 @@ import { getAuthors } from '~/services/authorService';
 const cx = classNames.bind(Style);
 
 function AuthorsDashboard() {
-
     const navigate = useNavigate();
     const [dataAuthors, setDataAuthors] = useState([]);
     const [meta, setMeta] = useState({});
@@ -29,7 +28,7 @@ function AuthorsDashboard() {
         isAscending: false,
         pageNum: 1,
         pageSize: 10,
-    })
+    });
 
     const fetchListAuthor = () => {
         const params = queryString.stringify(filters);
@@ -42,12 +41,12 @@ function AuthorsDashboard() {
             .catch((error) => {
                 toast.error('Đã có lỗi xảy ra khi lấy dữ liệu tác giả');
             });
-    }
+    };
 
     useEffect(() => {
         fetchListAuthor();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [filters])
+    }, [filters]);
 
     const handleCreateAuthor = () => {
         navigate(routes.createAuthor);
@@ -58,30 +57,30 @@ function AuthorsDashboard() {
     };
 
     const handleChangeRowsPerPage = (event) => {
-        setFilters({ ...filters, pageNum: 1, pageSize: parseInt(event.target.value, 10) })
+        setFilters({ ...filters, pageNum: 1, pageSize: parseInt(event.target.value, 10) });
     };
 
     return (
-        <div className='container my-3'>
-            <div className='row justify-content-center'>
-                <div className='col-10'>
+        <div className="container my-3">
+            <div className="row justify-content-center">
+                <div className="col-10">
                     <div className={cx('list-main')}>
                         <div className={cx('header')}>
                             <div className={cx('title')}>{dataAuthors.length} Tác giả</div>
                             <Button
-                                size='small'
-                                variant='contained'
+                                size="small"
+                                variant="contained"
                                 startIcon={<FontAwesomeIcon icon={faPlus} />}
                                 onClick={handleCreateAuthor}
                             >
                                 Thêm mới
                             </Button>
                         </div>
-                        <div className='content'>
+                        <div className="content">
                             <TableAuthors listAuthor={dataAuthors} fetchListAuthor={fetchListAuthor} />
                             <TablePagination
                                 className={cx('table-pagination')}
-                                component='div'
+                                component="div"
                                 count={meta.totalElements || 1}
                                 page={filters.pageNum - 1}
                                 onPageChange={handleChangePage}

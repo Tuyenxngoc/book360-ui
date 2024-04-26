@@ -1,5 +1,12 @@
 import { Menu } from 'antd';
-import { BoldOutlined, DollarOutlined, HomeOutlined, OrderedListOutlined, ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
+import {
+    BoldOutlined,
+    DollarOutlined,
+    HomeOutlined,
+    OrderedListOutlined,
+    ShoppingCartOutlined,
+    UserOutlined,
+} from '@ant-design/icons';
 import { useLocation, useNavigate } from 'react-router-dom';
 import images from '~/assets';
 
@@ -20,7 +27,7 @@ function getItem(label, key, icon, children, type) {
 }
 const items = [
     getItem('Trang chủ', routes.adminDashboard, <HomeOutlined />),
-    getItem('Quản lý khách hàng', "user", <UserOutlined />, [
+    getItem('Quản lý khách hàng', 'user', <UserOutlined />, [
         getItem('Tất cả khách hàng', routes.viewUsers),
         getItem('Thêm khách hàng', routes.createUser),
         getItem('Tin nhắn', routes.viewMessages),
@@ -51,22 +58,22 @@ function AdminSideBar() {
         } else {
             navigate(key);
         }
-    }
+    };
 
     return (
         <>
             <div className={cx('logo')}>
-                <img className={cx('image')} src={images.logo} alt='logo' />
+                <img className={cx('image')} src={images.logo} alt="logo" />
             </div>
             <Menu
                 onClick={handleMenuItemClick}
                 className={cx('menu')}
-                mode='inline'
+                mode="inline"
                 items={items}
-                selectedKeys={[(location.pathname + location.search) || '']}
+                selectedKeys={[location.pathname + location.search || '']}
             />
         </>
-    )
+    );
 }
 
 export default AdminSideBar;

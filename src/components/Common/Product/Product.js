@@ -1,15 +1,14 @@
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 // Style
-import style from './Product.module.scss'
-import classNames from "classnames/bind";
-import MoneyDisplay from "../MoneyDisplay";
-import { Skeleton } from "@mui/material";
+import style from './Product.module.scss';
+import classNames from 'classnames/bind';
+import MoneyDisplay from '../MoneyDisplay';
+import { Skeleton } from '@mui/material';
 
-const cx = classNames.bind(style)
+const cx = classNames.bind(style);
 
 function Product({ data, small = false }) {
-
     return (
         <div className={cx('product-item', { small })}>
             <div className={cx('product-img')}>
@@ -42,7 +41,9 @@ function Product({ data, small = false }) {
 
                             {data.discount > 0 && (
                                 <span className={cx('original-price')}>
-                                    <s><MoneyDisplay amount={data.price}></MoneyDisplay></s>
+                                    <s>
+                                        <MoneyDisplay amount={data.price}></MoneyDisplay>
+                                    </s>
                                 </span>
                             )}
                         </div>
@@ -53,7 +54,6 @@ function Product({ data, small = false }) {
                         <Skeleton animation="wave" width="60%" />
                     </>
                 )}
-
             </div>
         </div>
     );
@@ -67,7 +67,7 @@ Product.propTypes = {
         price: PropTypes.number.isRequired,
         discount: PropTypes.number.isRequired,
     }),
-    small: PropTypes.bool
+    small: PropTypes.bool,
 };
 
 export default Product;

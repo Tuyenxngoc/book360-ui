@@ -1,12 +1,15 @@
 import { Checkbox } from '@mui/material';
 import Style from './Notification.module.scss';
-import classNames from "classnames/bind";
+import classNames from 'classnames/bind';
 
 const cx = classNames.bind(Style);
 
 const notificationTypes = [
     { title: 'Email Thông báo', body: '' },
-    { title: 'Cập nhật đơn hàng', body: 'Thông báo khi có cập nhật về đơn hàng của tôi, bao gồm cả việc cập nhật thanh toán.' },
+    {
+        title: 'Cập nhật đơn hàng',
+        body: 'Thông báo khi có cập nhật về đơn hàng của tôi, bao gồm cả việc cập nhật thanh toán.',
+    },
     { title: 'Bản tin', body: 'Gửi tôi thông tin xu hướng, chương trình khuyến mãi & cập nhật mới nhất.' },
     { title: 'Nội dung cá nhân', body: 'Gửi tôi cập nhật cá nhân (ví dụ: quà sinh nhật)' },
 ];

@@ -30,7 +30,6 @@ const { Dragger } = Upload;
 const cx = classNames.bind(Style);
 
 function OrderForm() {
-
     const { orderId } = useParams();
     const [data, setData] = useState();
     const [showDialog, setShowDialog] = useState(false);
@@ -47,24 +46,22 @@ function OrderForm() {
     }, [orderId]);
 
     if (!data) {
-        return <></>
+        return <></>;
     }
 
     return (
-        <div className='container my-3'>
-            <div className='row justify-content-center gy-3'>
-                <div className='col-10'>
+        <div className="container my-3">
+            <div className="row justify-content-center gy-3">
+                <div className="col-10">
                     <div className={cx('panel-wrapper')}>
-                        <div className='panel-content'>
-                            {data.status}
-                        </div>
+                        <div className="panel-content">{data.status}</div>
                     </div>
                 </div>
 
-                <div className='col-10'>
+                <div className="col-10">
                     <div className={cx('panel-wrapper')}>
-                        <div className='panel-content'>
-                            Mã đơn hàng   {data.id}
+                        <div className="panel-content">
+                            Mã đơn hàng {data.id}
                             <br />
                             Địa chỉ nhận hàng {data.customer.address}
                             <br />
@@ -73,11 +70,11 @@ function OrderForm() {
                     </div>
                 </div>
 
-                <div className='col-10'>
+                <div className="col-10">
                     <div className={cx('panel-wrapper')}>
-                        <div className='panel-content'>
+                        <div className="panel-content">
                             <table className="table align-middle mb-0">
-                                <thead className='table-light'>
+                                <thead className="table-light">
                                     <tr>
                                         <th scope="col">STT</th>
                                         <th scope="col">Sản phẩm</th>
@@ -91,23 +88,28 @@ function OrderForm() {
                                         const { product, quantity } = item;
                                         return (
                                             <tr key={index}>
-                                                <th scope="row" align='center'>{index + 1}</th>
-                                                <td align='left'>
+                                                <th scope="row" align="center">
+                                                    {index + 1}
+                                                </th>
+                                                <td align="left">
                                                     <div className={cx('product-item')}>
                                                         <div className={cx('product-image')}>
-                                                            <img src={product.featuredImage} alt='featuredImage' />
+                                                            <img src={product.featuredImage} alt="featuredImage" />
                                                         </div>
-                                                        <div className='product-detail'>
+                                                        <div className="product-detail">
                                                             <div className={cx('product-name')}>{product.name}</div>
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td align='left'>
+                                                <td align="left">
                                                     <MoneyDisplay amount={product.price} />
                                                 </td>
-                                                <td align='left'>{quantity}</td>
-                                                <td align='right'>
-                                                    <MoneyDisplay amount={product.price} discountPercent={product.discount} />
+                                                <td align="left">{quantity}</td>
+                                                <td align="right">
+                                                    <MoneyDisplay
+                                                        amount={product.price}
+                                                        discountPercent={product.discount}
+                                                    />
                                                 </td>
                                             </tr>
                                         );
@@ -115,20 +117,26 @@ function OrderForm() {
                                 </tbody>
                                 <tfoot>
                                     <tr className={cx('footer')}>
-                                        <td align='right' colSpan='3'>Tổng tiền sản phẩm</td>
-                                        <td align='right' colSpan='2'>
+                                        <td align="right" colSpan="3">
+                                            Tổng tiền sản phẩm
+                                        </td>
+                                        <td align="right" colSpan="2">
                                             <MoneyDisplay amount={data.total} />
                                         </td>
                                     </tr>
                                     <tr className={cx('footer')}>
-                                        <td align='right' colSpan='3'>Phí vận chuyển</td>
-                                        <td align='right' colSpan='2'>
+                                        <td align="right" colSpan="3">
+                                            Phí vận chuyển
+                                        </td>
+                                        <td align="right" colSpan="2">
                                             <MoneyDisplay amount={data.feeShip} />
                                         </td>
                                     </tr>
                                     <tr className={cx('footer')}>
-                                        <td align='right' colSpan='3'>Doanh Thu Đơn Hàng</td>
-                                        <td align='right' colSpan='2'>
+                                        <td align="right" colSpan="3">
+                                            Doanh Thu Đơn Hàng
+                                        </td>
+                                        <td align="right" colSpan="2">
                                             <span className={cx('total-price')}>
                                                 <MoneyDisplay amount={data.total - data.feeShip} />
                                             </span>

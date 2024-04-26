@@ -51,16 +51,20 @@ const defaultValue = {
     price: null,
     discount: null,
     imageURLs: [],
-    authorIds: []
-}
+    authorIds: [],
+};
 
 const validationSchema = yup.object().shape({
-    name: yup.string().trim()
+    name: yup
+        .string()
+        .trim()
         .min(10, 'Tên sản phẩm của bạn quá ngắn. Vui lòng nhập ít nhất 10 kí tự.')
         .max(120, 'Tên sản phẩm của bạn quá dài. Vui lòng nhập tối đa 120 kí tự.')
         .required('Không được để trống ô'),
 
-    description: yup.string().trim()
+    description: yup
+        .string()
+        .trim()
         .min(10, 'Mô tả sản phẩm của bạn quá ngắn. Vui lòng nhập ít nhất 10 kí tự.')
         .max(3000, 'Mô tả sản phẩm của bạn quá dài. Vui lòng nhập tối đa 3000 kí tự.')
         .required('Không được để trống ô'),
@@ -75,45 +79,54 @@ const validationSchema = yup.object().shape({
 
     ageClassifications: yup.array().of(yup.string().trim()).nullable(),
 
-    weight: yup.number().typeError('Trọng lượng phải là một số').nullable()
-        .min(0, 'Trọng lượng sản phẩm không thể âm'),
+    weight: yup.number().typeError('Trọng lượng phải là một số').nullable().min(0, 'Trọng lượng sản phẩm không thể âm'),
 
-    pageCount: yup.number().typeError('Số trang phải là một số').nullable()
+    pageCount: yup
+        .number()
+        .typeError('Số trang phải là một số')
+        .nullable()
         .min(0, 'Số trang không thể âm')
         .integer('Số trang phải là số nguyên'),
 
-    categoryId: yup.number().typeError('Danh mục phải là một số')
-        .required('Vui lòng chọn danh mục sản phẩm'),
+    categoryId: yup.number().typeError('Danh mục phải là một số').required('Vui lòng chọn danh mục sản phẩm'),
 
     bookSetId: yup.number().typeError('Bộ sách phải là một số').nullable(),
 
-    stockQuantity: yup.number().typeError('Số lượng sản phẩm phải là một số')
+    stockQuantity: yup
+        .number()
+        .typeError('Số lượng sản phẩm phải là một số')
         .min(0, 'Số lượng sản phẩm không thể âm')
         .integer('Số lượng sản phẩm phải là số nguyên')
         .required('Không được để trống ô'),
 
-    price: yup.number().typeError('Giá sản phẩm phải là một số')
+    price: yup
+        .number()
+        .typeError('Giá sản phẩm phải là một số')
         .min(1, 'Giá sản phẩm phải lớn hơn 0')
         .required('Không được để trống ô'),
 
-    discount: yup.number().typeError('Giảm giá sản phẩm phải là một số')
+    discount: yup
+        .number()
+        .typeError('Giảm giá sản phẩm phải là một số')
         .min(0, 'Giảm giá không thể âm')
         .max(100, 'Giảm giá không thể lớn hơn 100')
         .required('Không được để trống ô'),
 
-    imageURLs: yup.array().of(yup.string().trim())
+    imageURLs: yup
+        .array()
+        .of(yup.string().trim())
         .min(1, 'Hình ảnh đã bị thiếu, hãy chắc chắn rằng sản phẩm này có ít nhất một hình đại diện.'),
 
-    authorIds: yup.array().of(yup.number())
-        .min(1, 'Tác giả đã bị thiếu'),
+    authorIds: yup.array().of(yup.number()).min(1, 'Tác giả đã bị thiếu'),
 });
 
 function inputProps(isError) {
-    if (isError) { return { status: 'error' }; }
+    if (isError) {
+        return { status: 'error' };
+    }
 }
 
 function ProductForm() {
-
     const navigate = useNavigate();
     const { productId } = useParams();
     const [authors, setAuthors] = useState([]);
@@ -167,20 +180,20 @@ function ProductForm() {
     const modules = {
         toolbar: {
             container: [
-                [{ 'font': [] }],
-                [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-                [{ 'size': ['huge', 'large', false, 'small'] }],  // custom dropdown
-                ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-                [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+                [{ font: [] }],
+                [{ header: [1, 2, 3, 4, 5, 6, false] }],
+                [{ size: ['huge', 'large', false, 'small'] }], // custom dropdown
+                ['bold', 'italic', 'underline', 'strike'], // toggled buttons
+                [{ color: [] }, { background: [] }], // dropdown with defaults from theme
                 ['blockquote', 'code-block'],
                 ['link', 'image', 'formula'],
-                [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'list': 'check' }],
-                [{ 'align': [] }],
-                [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
-                [{ 'script': 'sub' }, { 'script': 'super' }],      // superscript/subscript
-                [{ 'direction': 'rtl' }],                         // text direction
+                [{ list: 'ordered' }, { list: 'bullet' }, { list: 'check' }],
+                [{ align: [] }],
+                [{ indent: '-1' }, { indent: '+1' }], // outdent/indent
+                [{ script: 'sub' }, { script: 'super' }], // superscript/subscript
+                [{ direction: 'rtl' }], // text direction
 
-                ['clean']                                         // remove formatting button
+                ['clean'], // remove formatting button
             ],
             handlers: {
                 image: imageHandler,
@@ -195,15 +208,24 @@ function ProductForm() {
         'font',
         'header',
         'size',
-        'bold', 'italic', 'underline', 'strike',
-        'color', 'background',
-        'blockquote', 'code-block',
-        'link', 'image', 'formula',
-        'list', 'bullet', 'check',
+        'bold',
+        'italic',
+        'underline',
+        'strike',
+        'color',
+        'background',
+        'blockquote',
+        'code-block',
+        'link',
+        'image',
+        'formula',
+        'list',
+        'bullet',
+        'check',
         'align',
         'indent',
         'script',
-        'direction'
+        'direction',
     ];
 
     useEffect(() => {
@@ -243,13 +265,13 @@ function ProductForm() {
                         stockQuantity,
                         price,
                         discount,
-                        imageURLs: images.map(img => img.url),
-                        authorIds: authors.map(author => author.id)
-                    })
+                        imageURLs: images.map((img) => img.url),
+                        authorIds: authors.map((author) => author.id),
+                    });
                 })
                 .catch((error) => {
                     console.log(error);
-                })
+                });
         } else {
             formik.setValues(defaultValue);
         }
@@ -284,7 +306,7 @@ function ProductForm() {
     };
 
     const handleRemoveImage = (image) => {
-        const newImages = formik.values.imageURLs.filter(item => item !== image);
+        const newImages = formik.values.imageURLs.filter((item) => item !== image);
         formik.setFieldValue('imageURLs', newImages);
     };
 
@@ -295,9 +317,13 @@ function ProductForm() {
                 navigate('/admin/product', { replace: true });
                 toast.success('Thành công');
             })
-            .catch((error) => { toast.error('Đã có lỗi xảy ra khi lưu sản phẩm') })
-            .finally(() => { setLoading(false); });
-    }
+            .catch((error) => {
+                toast.error('Đã có lỗi xảy ra khi lưu sản phẩm');
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -305,12 +331,15 @@ function ProductForm() {
                 const [categoriesResponse, authorsResponse, bookSetsResponse] = await Promise.all([
                     getAllCategories(),
                     getAllAuthors(),
-                    getAllBookSet()
+                    getAllBookSet(),
                 ]);
 
-                const categoriesData = categoriesResponse.data.data.map(item => ({ value: item.id, label: item.name }));
-                const authorsData = authorsResponse.data.data.map(item => ({ value: item.id, label: item.fullName }));
-                const bookSetsData = bookSetsResponse.data.data.map(item => ({ value: item.id, label: item.name }));
+                const categoriesData = categoriesResponse.data.data.map((item) => ({
+                    value: item.id,
+                    label: item.name,
+                }));
+                const authorsData = authorsResponse.data.data.map((item) => ({ value: item.id, label: item.fullName }));
+                const bookSetsData = bookSetsResponse.data.data.map((item) => ({ value: item.id, label: item.name }));
 
                 setCategories(categoriesData);
                 setAuthors(authorsData);
@@ -341,18 +370,18 @@ function ProductForm() {
     }, []);
 
     return (
-        <div className='container mt-3'>
-            <div className='row gy-3 justify-content-center'>
-                <div className='col-10'>
+        <div className="container mt-3">
+            <div className="row gy-3 justify-content-center">
+                <div className="col-10">
                     <div className={cx('panel-wrapper')}>
                         <div className={cx('panel-header')}>
-                            <div className={cx('panel-title')}>
-                                Thông tin cơ bản
-                            </div>
+                            <div className={cx('panel-title')}>Thông tin cơ bản</div>
                         </div>
-                        <div className='panel-content'>
+                        <div className="panel-content">
                             <div className={cx('form-group')}>
-                                <label className={cx('form-label')}><span>*</span>Hình ảnh sản phẩm</label>
+                                <label className={cx('form-label')}>
+                                    <span>*</span>Hình ảnh sản phẩm
+                                </label>
                                 <div className={cx('form-input')}>
                                     <div className={cx('form-upload-image')}>
                                         {formik.values.imageURLs.map((image, index) => (
@@ -365,10 +394,13 @@ function ProductForm() {
                                                     </div>
                                                 )}
                                                 <div className={cx('image-tools')}>
-                                                    <Link to={image} target='_blank' className={cx('view-image')}>
+                                                    <Link to={image} target="_blank" className={cx('view-image')}>
                                                         <FontAwesomeIcon icon={faEye} />
                                                     </Link>
-                                                    <button onClick={() => handleRemoveImage(image)} className={cx('delete-image')}>
+                                                    <button
+                                                        onClick={() => handleRemoveImage(image)}
+                                                        className={cx('delete-image')}
+                                                    >
                                                         <FontAwesomeIcon icon={faTrashCan} />
                                                     </button>
                                                 </div>
@@ -380,41 +412,47 @@ function ProductForm() {
                                             </div>
                                         ))}
                                         {formik.values.imageURLs.length < 9 && (
-                                            <label htmlFor='uploadImage' className={cx('upload-wrapper')}>
+                                            <label htmlFor="uploadImage" className={cx('upload-wrapper')}>
                                                 <input
-                                                    id='uploadImage'
-                                                    type='file'
-                                                    name='file'
-                                                    accept='image/*'
+                                                    id="uploadImage"
+                                                    type="file"
+                                                    name="file"
+                                                    accept="image/*"
                                                     multiple
                                                     aspect={1}
                                                     className={cx('upload-input')}
                                                     onChange={handleImageChange}
                                                 />
                                                 <div className={cx('upload-content')}>
-                                                    <div className={cx('upload-content-icon')} >
-                                                        <img src={images.uploadImage} alt='upload img' />
+                                                    <div className={cx('upload-content-icon')}>
+                                                        <img src={images.uploadImage} alt="upload img" />
                                                     </div>
-                                                    <div className={cx('upload-content-text')} >Thêm hình ảnh ({formik.values.imageURLs.length}/9)</div>
+                                                    <div className={cx('upload-content-text')}>
+                                                        Thêm hình ảnh ({formik.values.imageURLs.length}/9)
+                                                    </div>
                                                 </div>
                                             </label>
                                         )}
                                     </div>
                                     {formik.touched.imageURLs && formik.errors.imageURLs && (
-                                        <FormHelperText style={{ display: 'inline-block' }} error>{formik.errors.imageURLs}</FormHelperText>
+                                        <FormHelperText style={{ display: 'inline-block' }} error>
+                                            {formik.errors.imageURLs}
+                                        </FormHelperText>
                                     )}
                                 </div>
                             </div>
                             <div className={cx('form-group')}>
-                                <label className={cx('form-label')} htmlFor='inputName'><span>*</span>Tên sản phẩm</label>
+                                <label className={cx('form-label')} htmlFor="inputName">
+                                    <span>*</span>Tên sản phẩm
+                                </label>
                                 <div className={cx('form-input')}>
                                     <Input
-                                        id='inputName'
-                                        name='name'
-                                        size='large'
+                                        id="inputName"
+                                        name="name"
+                                        size="large"
                                         showCount
                                         maxLength={120}
-                                        placeholder='Vui lòng nhập vào'
+                                        placeholder="Vui lòng nhập vào"
                                         value={formik.values.name}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
@@ -426,13 +464,15 @@ function ProductForm() {
                                 </div>
                             </div>
                             <div className={cx('form-group')}>
-                                <label className={cx('form-label')} htmlFor='categoryId'><span>*</span>Danh mục</label>
+                                <label className={cx('form-label')} htmlFor="categoryId">
+                                    <span>*</span>Danh mục
+                                </label>
                                 <div className={cx('form-input')}>
                                     <Select
-                                        id='categoryId'
-                                        name='categoryId'
-                                        size='large'
-                                        placeholder='Vui lòng chọn'
+                                        id="categoryId"
+                                        name="categoryId"
+                                        size="large"
+                                        placeholder="Vui lòng chọn"
                                         style={{ width: '100%' }}
                                         value={formik.values.categoryId || null}
                                         onChange={(value) => formik.setFieldValue('categoryId', value)}
@@ -446,12 +486,14 @@ function ProductForm() {
                                 </div>
                             </div>
                             <div className={cx('form-group')}>
-                                <label className={cx('form-label')} htmlFor='formControlTextarea'><span>*</span>Mô tả sản phẩm</label>
+                                <label className={cx('form-label')} htmlFor="formControlTextarea">
+                                    <span>*</span>Mô tả sản phẩm
+                                </label>
                                 <div className={cx('form-input')}>
                                     <ReactQuill
-                                        id='formControlTextarea'
+                                        id="formControlTextarea"
                                         ref={reactQuillRef}
-                                        theme='snow'
+                                        theme="snow"
                                         modules={modules}
                                         formats={formats}
                                         value={formik.values.description}
@@ -467,33 +509,35 @@ function ProductForm() {
                     </div>
                 </div>
 
-                <div className='col-10'>
+                <div className="col-10">
                     <div className={cx('panel-wrapper')}>
                         <div className={cx('panel-header')}>
-                            <div className={cx('panel-title')}>
-                                Thông tin chi tiết
-                            </div>
+                            <div className={cx('panel-title')}>Thông tin chi tiết</div>
                         </div>
-                        <div className='panel-content'>
-                            <div className='row'>
-                                <div className='col-6'>
+                        <div className="panel-content">
+                            <div className="row">
+                                <div className="col-6">
                                     <div className={cx('form-group')}>
-                                        <label className={cx('form-label')} htmlFor='inputAuthorIds'><span>*</span>Tác giả</label>
+                                        <label className={cx('form-label')} htmlFor="inputAuthorIds">
+                                            <span>*</span>Tác giả
+                                        </label>
                                         <div className={cx('form-input')}>
                                             <Select
                                                 allowClear
-                                                maxTagCount='responsive'
-                                                mode='multiple'
-                                                id='inputAuthorIds'
-                                                name='authorIds'
-                                                size='large'
-                                                placeholder='Vui lòng chọn'
+                                                maxTagCount="responsive"
+                                                mode="multiple"
+                                                id="inputAuthorIds"
+                                                name="authorIds"
+                                                size="large"
+                                                placeholder="Vui lòng chọn"
                                                 style={{ width: '100%' }}
                                                 value={formik.values.authorIds}
                                                 onChange={(value) => formik.setFieldValue('authorIds', value)}
                                                 onBlur={formik.handleBlur}
                                                 options={authors}
-                                                {...inputProps(formik.touched.authorIds && Boolean(formik.errors.authorIds))}
+                                                {...inputProps(
+                                                    formik.touched.authorIds && Boolean(formik.errors.authorIds),
+                                                )}
                                             />
                                             {formik.touched.authorIds && formik.errors.authorIds && (
                                                 <FormHelperText error>{formik.errors.authorIds}</FormHelperText>
@@ -501,43 +545,54 @@ function ProductForm() {
                                         </div>
                                     </div>
                                     <div className={cx('form-group')}>
-                                        <label className={cx('form-label')} htmlFor='inputageClassifications'>Độ tuổi</label>
+                                        <label className={cx('form-label')} htmlFor="inputageClassifications">
+                                            Độ tuổi
+                                        </label>
                                         <div className={cx('form-input')}>
                                             <Select
                                                 allowClear
-                                                maxTagCount='responsive'
-                                                mode='multiple'
-                                                id='inputageClassifications'
-                                                name='ageClassifications'
-                                                size='large'
-                                                placeholder='Vui lòng chọn'
+                                                maxTagCount="responsive"
+                                                mode="multiple"
+                                                id="inputageClassifications"
+                                                name="ageClassifications"
+                                                size="large"
+                                                placeholder="Vui lòng chọn"
                                                 style={{ width: '100%' }}
                                                 value={formik.values.ageClassifications}
                                                 onChange={(value) => formik.setFieldValue('ageClassifications', value)}
                                                 onBlur={formik.handleBlur}
                                                 options={ages}
-                                                {...inputProps(formik.touched.ageClassifications && Boolean(formik.errors.ageClassifications))}
+                                                {...inputProps(
+                                                    formik.touched.ageClassifications &&
+                                                        Boolean(formik.errors.ageClassifications),
+                                                )}
                                             />
                                             {formik.touched.ageClassifications && formik.errors.ageClassifications && (
-                                                <FormHelperText error>{formik.errors.ageClassifications}</FormHelperText>
+                                                <FormHelperText error>
+                                                    {formik.errors.ageClassifications}
+                                                </FormHelperText>
                                             )}
                                         </div>
                                     </div>
                                     <div className={cx('form-group')}>
-                                        <label className={cx('form-label')} htmlFor='selectBookSetId'>Bộ sách</label>
+                                        <label className={cx('form-label')} htmlFor="selectBookSetId">
+                                            Bộ sách
+                                        </label>
                                         <div className={cx('form-input')}>
                                             <Select
                                                 allowClear
-                                                id='selectBookSetId'
-                                                name='bookSetId'
-                                                size='large'
-                                                placeholder='Vui lòng chọn'
+                                                id="selectBookSetId"
+                                                name="bookSetId"
+                                                size="large"
+                                                placeholder="Vui lòng chọn"
                                                 style={{ width: '100%' }}
                                                 value={formik.values.bookSetId || null}
                                                 onChange={(value) => formik.setFieldValue('bookSetId', value)}
                                                 onBlur={formik.handleBlur}
                                                 options={bookSets}
-                                                {...inputProps(formik.touched.bookSetId && Boolean(formik.errors.bookSetId))}
+                                                {...inputProps(
+                                                    formik.touched.bookSetId && Boolean(formik.errors.bookSetId),
+                                                )}
                                             />
                                             {formik.touched.bookSetId && formik.errors.bookSetId && (
                                                 <FormHelperText error>{formik.errors.bookSetId}</FormHelperText>
@@ -545,14 +600,16 @@ function ProductForm() {
                                         </div>
                                     </div>
                                     <div className={cx('form-group')}>
-                                        <label className={cx('form-label')} htmlFor='selectSize'>Kích thước (cm)</label>
+                                        <label className={cx('form-label')} htmlFor="selectSize">
+                                            Kích thước (cm)
+                                        </label>
                                         <div className={cx('form-input')}>
                                             <Select
                                                 allowClear
-                                                id='selectSize'
+                                                id="selectSize"
                                                 name={sizeKey}
-                                                size='large'
-                                                placeholder='Vui lòng chọn'
+                                                size="large"
+                                                placeholder="Vui lòng chọn"
                                                 style={{ width: '100%' }}
                                                 value={formik.values.size}
                                                 onChange={(value) => formik.setFieldValue(sizeKey, value)}
@@ -560,19 +617,19 @@ function ProductForm() {
                                                 options={
                                                     customSizes.length > 0
                                                         ? [
-                                                            {
-                                                                label: 'Có sẵn',
-                                                                options: sizes,
-                                                            },
-                                                            {
-                                                                label: 'Tự điền',
-                                                                options: customSizes,
-                                                            },
-                                                        ]
+                                                              {
+                                                                  label: 'Có sẵn',
+                                                                  options: sizes,
+                                                              },
+                                                              {
+                                                                  label: 'Tự điền',
+                                                                  options: customSizes,
+                                                              },
+                                                          ]
                                                         : sizes
                                                 }
                                                 {...inputProps(formik.touched.size && Boolean(formik.errors.size))}
-                                                dropdownRender={(menu) =>
+                                                dropdownRender={(menu) => (
                                                     <DropdownRender
                                                         menu={menu}
                                                         field={sizeKey}
@@ -581,7 +638,7 @@ function ProductForm() {
                                                         customValues={customSizes}
                                                         setCustomValues={setCustomSizes}
                                                     />
-                                                }
+                                                )}
                                             />
                                             {formik.touched.size && formik.errors.size && (
                                                 <FormHelperText error>{formik.errors.size}</FormHelperText>
@@ -589,14 +646,16 @@ function ProductForm() {
                                         </div>
                                     </div>
                                     <div className={cx('form-group')}>
-                                        <label className={cx('form-label')} htmlFor='selectPublisher'>Nhà xuất bản</label>
+                                        <label className={cx('form-label')} htmlFor="selectPublisher">
+                                            Nhà xuất bản
+                                        </label>
                                         <div className={cx('form-input')}>
                                             <Select
                                                 allowClear
-                                                id='selectPublisher'
+                                                id="selectPublisher"
                                                 name={publisherKey}
-                                                size='large'
-                                                placeholder='Vui lòng chọn'
+                                                size="large"
+                                                placeholder="Vui lòng chọn"
                                                 style={{ width: '100%' }}
                                                 value={formik.values.publisher}
                                                 onChange={(value) => formik.setFieldValue(publisherKey, value)}
@@ -604,19 +663,21 @@ function ProductForm() {
                                                 options={
                                                     customPublishers.length > 0
                                                         ? [
-                                                            {
-                                                                label: 'Có sẵn',
-                                                                options: publishers,
-                                                            },
-                                                            {
-                                                                label: 'Tự điền',
-                                                                options: customPublishers,
-                                                            },
-                                                        ]
+                                                              {
+                                                                  label: 'Có sẵn',
+                                                                  options: publishers,
+                                                              },
+                                                              {
+                                                                  label: 'Tự điền',
+                                                                  options: customPublishers,
+                                                              },
+                                                          ]
                                                         : publishers
                                                 }
-                                                {...inputProps(formik.touched.publisher && Boolean(formik.errors.publisher))}
-                                                dropdownRender={(menu) =>
+                                                {...inputProps(
+                                                    formik.touched.publisher && Boolean(formik.errors.publisher),
+                                                )}
+                                                dropdownRender={(menu) => (
                                                     <DropdownRender
                                                         menu={menu}
                                                         field={publisherKey}
@@ -625,24 +686,25 @@ function ProductForm() {
                                                         customValues={customPublishers}
                                                         setCustomValues={setCustomPublishers}
                                                     />
-                                                }
+                                                )}
                                             />
                                             {formik.touched.publisher && formik.errors.publisher && (
                                                 <FormHelperText error>{formik.errors.publisher}</FormHelperText>
                                             )}
                                         </div>
                                     </div>
-
                                 </div>
-                                <div className='col-6'>
+                                <div className="col-6">
                                     <div className={cx('form-group')}>
-                                        <label className={cx('form-label')} htmlFor='inputIsbn'>Mã số sách quốc tế</label>
+                                        <label className={cx('form-label')} htmlFor="inputIsbn">
+                                            Mã số sách quốc tế
+                                        </label>
                                         <div className={cx('form-input')}>
                                             <Input
-                                                id='inputIsbn'
-                                                name='isbn'
-                                                size='large'
-                                                placeholder='Vui lòng điền vào'
+                                                id="inputIsbn"
+                                                name="isbn"
+                                                size="large"
+                                                placeholder="Vui lòng điền vào"
                                                 value={formik.values.isbn}
                                                 onChange={formik.handleChange}
                                                 onBlur={formik.handleBlur}
@@ -654,14 +716,16 @@ function ProductForm() {
                                         </div>
                                     </div>
                                     <div className={cx('form-group')}>
-                                        <label className={cx('form-label')} htmlFor='selectCoverType'>Loại bìa</label>
+                                        <label className={cx('form-label')} htmlFor="selectCoverType">
+                                            Loại bìa
+                                        </label>
                                         <div className={cx('form-input')}>
                                             <Select
                                                 allowClear
-                                                id='selectCoverType'
+                                                id="selectCoverType"
                                                 name={coverTypeKey}
-                                                size='large'
-                                                placeholder='Vui lòng chọn'
+                                                size="large"
+                                                placeholder="Vui lòng chọn"
                                                 style={{ width: '100%' }}
                                                 value={formik.values.coverType}
                                                 onChange={(value) => formik.setFieldValue(coverTypeKey, value)}
@@ -669,19 +733,21 @@ function ProductForm() {
                                                 options={
                                                     customCoverTypes.length > 0
                                                         ? [
-                                                            {
-                                                                label: 'Có sẵn',
-                                                                options: coverTypes,
-                                                            },
-                                                            {
-                                                                label: 'Tự điền',
-                                                                options: customCoverTypes,
-                                                            },
-                                                        ]
+                                                              {
+                                                                  label: 'Có sẵn',
+                                                                  options: coverTypes,
+                                                              },
+                                                              {
+                                                                  label: 'Tự điền',
+                                                                  options: customCoverTypes,
+                                                              },
+                                                          ]
                                                         : coverTypes
                                                 }
-                                                {...inputProps(formik.touched.coverType && Boolean(formik.errors.coverType))}
-                                                dropdownRender={(menu) =>
+                                                {...inputProps(
+                                                    formik.touched.coverType && Boolean(formik.errors.coverType),
+                                                )}
+                                                dropdownRender={(menu) => (
                                                     <DropdownRender
                                                         menu={menu}
                                                         field={coverTypeKey}
@@ -690,7 +756,7 @@ function ProductForm() {
                                                         customValues={customCoverTypes}
                                                         setCustomValues={setCustomCoverTypes}
                                                     />
-                                                }
+                                                )}
                                             />
                                             {formik.touched.coverType && formik.errors.coverType && (
                                                 <FormHelperText error>{formik.errors.coverType}</FormHelperText>
@@ -698,17 +764,21 @@ function ProductForm() {
                                         </div>
                                     </div>
                                     <div className={cx('form-group')}>
-                                        <label className={cx('form-label')} htmlFor='inputPageCount'>Số trang</label>
+                                        <label className={cx('form-label')} htmlFor="inputPageCount">
+                                            Số trang
+                                        </label>
                                         <div className={cx('form-input')}>
                                             <Input
-                                                id='inputPageCount'
-                                                name='pageCount'
-                                                size='large'
-                                                placeholder='Vui lòng điền vào'
+                                                id="inputPageCount"
+                                                name="pageCount"
+                                                size="large"
+                                                placeholder="Vui lòng điền vào"
                                                 value={formik.values.pageCount}
                                                 onChange={formik.handleChange}
                                                 onBlur={formik.handleBlur}
-                                                {...inputProps(formik.touched.pageCount && Boolean(formik.errors.pageCount))}
+                                                {...inputProps(
+                                                    formik.touched.pageCount && Boolean(formik.errors.pageCount),
+                                                )}
                                             />
                                             {formik.touched.pageCount && formik.errors.pageCount && (
                                                 <FormHelperText error>{formik.errors.pageCount}</FormHelperText>
@@ -716,13 +786,15 @@ function ProductForm() {
                                         </div>
                                     </div>
                                     <div className={cx('form-group')}>
-                                        <label className={cx('form-label')} htmlFor='inputBookWeight'>Trọng lượng (g)</label>
+                                        <label className={cx('form-label')} htmlFor="inputBookWeight">
+                                            Trọng lượng (g)
+                                        </label>
                                         <div className={cx('form-input')}>
                                             <Input
-                                                id='inputBookWeight'
-                                                name='weight'
-                                                size='large'
-                                                placeholder='Vui lòng điền vào'
+                                                id="inputBookWeight"
+                                                name="weight"
+                                                size="large"
+                                                placeholder="Vui lòng điền vào"
                                                 value={formik.values.weight}
                                                 onChange={formik.handleChange}
                                                 onBlur={formik.handleBlur}
@@ -739,22 +811,22 @@ function ProductForm() {
                     </div>
                 </div>
 
-                <div className='col-10'>
+                <div className="col-10">
                     <div className={cx('panel-wrapper')}>
                         <div className={cx('panel-header')}>
-                            <div className={cx('panel-title')}>
-                                Thông tin bán hàng
-                            </div>
+                            <div className={cx('panel-title')}>Thông tin bán hàng</div>
                         </div>
-                        <div className='panel-content'>
+                        <div className="panel-content">
                             <div className={cx('form-group')}>
-                                <label className={cx('form-label')} htmlFor='inputPrice'><span>*</span>Giá bán</label>
+                                <label className={cx('form-label')} htmlFor="inputPrice">
+                                    <span>*</span>Giá bán
+                                </label>
                                 <div className={cx('form-input')}>
                                     <Input
-                                        id='inputPrice'
-                                        name='price'
-                                        size='large'
-                                        placeholder='Vui lòng nhập vào'
+                                        id="inputPrice"
+                                        name="price"
+                                        size="large"
+                                        placeholder="Vui lòng nhập vào"
                                         value={formik.values.price}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
@@ -766,13 +838,15 @@ function ProductForm() {
                                 </div>
                             </div>
                             <div className={cx('form-group')}>
-                                <label className={cx('form-label')} htmlFor='inputDiscount'><span>*</span>Giảm giá %</label>
+                                <label className={cx('form-label')} htmlFor="inputDiscount">
+                                    <span>*</span>Giảm giá %
+                                </label>
                                 <div className={cx('form-input')}>
                                     <Input
-                                        id='inputDiscount'
-                                        name='discount'
-                                        size='large'
-                                        placeholder='Vui lòng nhập vào'
+                                        id="inputDiscount"
+                                        name="discount"
+                                        size="large"
+                                        placeholder="Vui lòng nhập vào"
                                         value={formik.values.discount}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
@@ -784,17 +858,21 @@ function ProductForm() {
                                 </div>
                             </div>
                             <div className={cx('form-group')}>
-                                <label className={cx('form-label')} htmlFor='inputStockQuantity'><span>*</span>Số lượng</label>
+                                <label className={cx('form-label')} htmlFor="inputStockQuantity">
+                                    <span>*</span>Số lượng
+                                </label>
                                 <div className={cx('form-input')}>
                                     <Input
-                                        id='inputStockQuantity'
-                                        name='stockQuantity'
-                                        size='large'
-                                        placeholder='Vui lòng nhập vào'
+                                        id="inputStockQuantity"
+                                        name="stockQuantity"
+                                        size="large"
+                                        placeholder="Vui lòng nhập vào"
                                         value={formik.values.stockQuantity}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
-                                        {...inputProps(formik.touched.stockQuantity && Boolean(formik.errors.stockQuantity))}
+                                        {...inputProps(
+                                            formik.touched.stockQuantity && Boolean(formik.errors.stockQuantity),
+                                        )}
                                     />
                                     {formik.touched.stockQuantity && formik.errors.stockQuantity && (
                                         <FormHelperText error>{formik.errors.stockQuantity}</FormHelperText>
@@ -805,7 +883,7 @@ function ProductForm() {
                     </div>
                 </div>
 
-                <div className='col-10 mt-0'>
+                <div className="col-10 mt-0">
                     <FixedBox handleSubmit={formik.handleSubmit} loading={loading} />
                 </div>
             </div>

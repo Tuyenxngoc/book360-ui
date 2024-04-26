@@ -12,10 +12,9 @@ function isInterger(str) {
     return /^\d+$/.test(str);
 }
 
-const defaultValue = '1'
+const defaultValue = '1';
 
 function InputNumber({ maxQuantity = 100, setQuantity, square = false }) {
-
     const [quantityString, setQuantityString] = useState(defaultValue);
 
     const increaseQuantity = () => {
@@ -64,7 +63,7 @@ function InputNumber({ maxQuantity = 100, setQuantity, square = false }) {
     return (
         <div className={cx('wrapper', { square })}>
             <button
-                className={cx('btn', 'decrease', { 'disable': quantityString === '' })}
+                className={cx('btn', 'decrease', { disable: quantityString === '' })}
                 onClick={decreaseQuantity}
                 disabled={quantityString === ''}
             >
@@ -76,10 +75,10 @@ function InputNumber({ maxQuantity = 100, setQuantity, square = false }) {
                 onChange={handleQuantityChange}
                 onBlur={handleQuantityBlur}
                 className={cx('input')}
-                type='text'
+                type="text"
             />
             <button
-                className={cx('btn', 'increase', { 'disable': quantityString === '' })}
+                className={cx('btn', 'increase', { disable: quantityString === '' })}
                 onClick={increaseQuantity}
                 disabled={quantityString === ''}
             >

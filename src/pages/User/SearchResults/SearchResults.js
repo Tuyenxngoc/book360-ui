@@ -17,7 +17,7 @@ function SearchResults() {
         isAscending: false,
         pageNum: 1,
         pageSize: 10,
-    })
+    });
 
     const handlePageChange = (pageNumber) => {
         setFilters((prevFilters) => ({ ...prevFilters, pageNum: pageNumber }));
@@ -40,7 +40,7 @@ function SearchResults() {
 
     return (
         <ProductList
-            currentPage='Kết quả tìm kiếm'
+            currentPage="Kết quả tìm kiếm"
             products={data.items}
             pagination={data.meta}
             filters={filters}

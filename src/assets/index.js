@@ -19,7 +19,6 @@ const images = {
         require('~/assets/images/momo.svg').default,
         require('~/assets/images/zalopay.svg').default,
         require('~/assets/images/shopeepay_new.svg').default,
-
     ],
     success: require('~/assets/images/success.svg').default,
     like: require('~/assets/images/like.svg').default,
@@ -28,5 +27,5 @@ const images = {
     uploadImage: require('~/assets/images/upload_image.svg').default,
     plus: require('~/assets/images/plus.svg').default,
     imageDefault: require('~/assets/images/img_default.webp'),
-}
+};
 export default images;

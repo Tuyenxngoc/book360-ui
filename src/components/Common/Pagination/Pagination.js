@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react';
 import PropTypes from 'prop-types';
 
-import classNames from "classnames/bind";
+import classNames from 'classnames/bind';
 import Style from './Pagination.module.scss';
 
 const cx = classNames.bind(Style);
@@ -21,26 +21,26 @@ function Pagination({ pagination, onPageChange }) {
     return (
         <nav className={cx('wrapper')}>
             <ul className={cx('pagination')}>
-                <PaginationItem onClick={() => handlePageChange(pageNum)}
-                    disabled={pageNum === 1}>&laquo;</PaginationItem>
+                <PaginationItem onClick={() => handlePageChange(pageNum)} disabled={pageNum === 1}>
+                    &laquo;
+                </PaginationItem>
                 {pageNumbers.map((number) => (
                     <PaginationItem
                         key={number}
                         onClick={() => {
                             if (number - 1 !== pageNum) {
-                                handlePageChange(number)
+                                handlePageChange(number);
                             }
-                        }
-                        }
+                        }}
                         disabled={pageNum === number - 1}
                         current={pageNum === number - 1}
                     >
                         {number}
                     </PaginationItem>
                 ))}
-                <PaginationItem
-                    onClick={() => handlePageChange(pageNum + 2)}
-                    disabled={pageNum === totalPages}>&raquo;</PaginationItem>
+                <PaginationItem onClick={() => handlePageChange(pageNum + 2)} disabled={pageNum === totalPages}>
+                    &raquo;
+                </PaginationItem>
             </ul>
         </nav>
     );

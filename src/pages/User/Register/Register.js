@@ -21,7 +21,8 @@ import { EyeInvisibleOutlined, EyeOutlined } from '@ant-design/icons';
 const cx = classNames.bind(Style);
 
 const validationSchema = yup.object({
-    username: yup.string()
+    username: yup
+        .string()
         .min(4, 'Tên tài khoản tối thiểu 4 kí tự')
         .max(16, 'Tên tài khoản tối đa 16 kí tự')
         .matches(/^[^\W_]+$/, 'Tên tài khoản không được chứa kí tự đặc biệt')
@@ -29,24 +30,23 @@ const validationSchema = yup.object({
         .matches(/^[a-z]/, 'Tên tài khoản phải bắt đầu bằng chữ cái')
         .required('Vui lòng nhập tên đăng nhập'),
 
-    email: yup.string()
-        .email('Định dạng email chưa đúng')
-        .required('Vui lòng nhập email'),
+    email: yup.string().email('Định dạng email chưa đúng').required('Vui lòng nhập email'),
 
-    password: yup.string()
+    password: yup
+        .string()
         .min(6, 'Mật khẩu tối thiểu 6 kí tự')
         .max(30, 'Mật khẩu tối đa 30 kí tự')
         .matches(/(?=.*[a-zA-Z])/, 'Mật khẩu phải chứa ít nhất một chữ cái')
         .matches(/(?=.*\d)/, 'Mật khẩu phải chứa ít nhất một số')
         .required('Vui lòng nhập mật khẩu'),
 
-    repeatPassword: yup.string()
+    repeatPassword: yup
+        .string()
         .oneOf([yup.ref('password'), null], 'Mật khẩu chưa khớp')
         .required('Vui lòng xác nhận lại mật khẩu'),
 });
 
 function Register() {
-
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
 
@@ -81,14 +81,14 @@ function Register() {
         } finally {
             setIsLoading(false);
         }
-    }
+    };
 
     const formik = useFormik({
         initialValues: {
             username: '',
             email: '',
             password: '',
-            repeatPassword: ''
+            repeatPassword: '',
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
@@ -99,67 +99,75 @@ function Register() {
     return (
         <div>
             <main className={cx('main')}>
-                <div className='container'>
-                    <div className='row justify-content-center'>
-                        <div className='col-6'>
+                <div className="container">
+                    <div className="row justify-content-center">
+                        <div className="col-6">
                             <div className={cx('navbar-container')}>
                                 <div className={cx('button-back')}>
-                                    <Link to='/login'> <FontAwesomeIcon icon={faArrowLeft} /></Link>
+                                    <Link to="/login">
+                                        {' '}
+                                        <FontAwesomeIcon icon={faArrowLeft} />
+                                    </Link>
                                 </div>
                                 <div className={cx('title')}>Đăng ký Book360</div>
                             </div>
                             <div className={cx('image')}>
-                                <img src={images.logo} alt='logo' />
+                                <img src={images.logo} alt="logo" />
                             </div>
                             <form onSubmit={formik.handleSubmit}>
                                 <TextField
                                     fullWidth
-                                    variant='standard'
-                                    id='username'
-                                    name='username'
-                                    label='Nhập tên tài khoản'
+                                    variant="standard"
+                                    id="username"
+                                    name="username"
+                                    label="Nhập tên tài khoản"
                                     value={formik.values.username}
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                     error={formik.touched.username && Boolean(formik.errors.username)}
                                 />
-                                <p className={cx('message', (formik.touched.username && formik.errors.username) && 'error')}>
+                                <p
+                                    className={cx(
+                                        'message',
+                                        formik.touched.username && formik.errors.username && 'error',
+                                    )}
+                                >
                                     {formik.touched.username && formik.errors.username}
                                     &emsp;
                                 </p>
                                 <TextField
                                     fullWidth
-                                    variant='standard'
-                                    id='email'
-                                    name='email'
-                                    label='Nhập email'
+                                    variant="standard"
+                                    id="email"
+                                    name="email"
+                                    label="Nhập email"
                                     value={formik.values.email}
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                     error={formik.touched.email && Boolean(formik.errors.email)}
                                 />
-                                <p className={cx('message', (formik.touched.email && formik.errors.email) && 'error')}>
-                                    {(formik.touched.email && formik.errors.email)
+                                <p className={cx('message', formik.touched.email && formik.errors.email && 'error')}>
+                                    {formik.touched.email && formik.errors.email
                                         ? formik.errors.email
                                         : '(*) Hóa đơn VAT khi mua hàng sẽ được gửi qua email này'}
                                 </p>
                                 <FormControl
                                     fullWidth
-                                    variant='standard'
+                                    variant="standard"
                                     error={formik.touched.password && Boolean(formik.errors.password)}
                                 >
-                                    <InputLabel htmlFor='password'>Nhập mật khẩu</InputLabel>
+                                    <InputLabel htmlFor="password">Nhập mật khẩu</InputLabel>
                                     <Input
-                                        id='password'
-                                        name='password'
+                                        id="password"
+                                        name="password"
                                         type={showPassword ? 'text' : 'password'}
                                         value={formik.values.password}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
                                         endAdornment={
-                                            <InputAdornment position='end'>
+                                            <InputAdornment position="end">
                                                 <IconButton
-                                                    aria-label='toggle password visibility'
+                                                    aria-label="toggle password visibility"
                                                     onClick={handleClickShowPassword}
                                                     onMouseDown={handleMouseDownPassword}
                                                 >
@@ -169,28 +177,33 @@ function Register() {
                                         }
                                     />
                                 </FormControl>
-                                <p className={cx('message', (formik.touched.password && formik.errors.password) && 'error')}>
-                                    {(formik.touched.password && formik.errors.password)
+                                <p
+                                    className={cx(
+                                        'message',
+                                        formik.touched.password && formik.errors.password && 'error',
+                                    )}
+                                >
+                                    {formik.touched.password && formik.errors.password
                                         ? formik.errors.password
                                         : '(*) Mật khẩu tối thiểu 6 ký tự, ít nhất một chữ cái, ít nhất một chữ số'}
                                 </p>
                                 <FormControl
                                     fullWidth
-                                    variant='standard'
+                                    variant="standard"
                                     error={formik.touched.repeatPassword && Boolean(formik.errors.repeatPassword)}
                                 >
-                                    <InputLabel htmlFor='repeatPassword'>Nhập lại mật khẩu</InputLabel>
+                                    <InputLabel htmlFor="repeatPassword">Nhập lại mật khẩu</InputLabel>
                                     <Input
-                                        id='repeatPassword'
-                                        name='repeatPassword'
+                                        id="repeatPassword"
+                                        name="repeatPassword"
                                         type={showRepeatPassword ? 'text' : 'password'}
                                         value={formik.values.repeatPassword}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
                                         endAdornment={
-                                            <InputAdornment position='end'>
+                                            <InputAdornment position="end">
                                                 <IconButton
-                                                    aria-label='toggle repeat password visibility'
+                                                    aria-label="toggle repeat password visibility"
                                                     onClick={handleClickShowRepeatPassword}
                                                     onMouseDown={handleMouseDownPassword}
                                                 >
@@ -200,24 +213,24 @@ function Register() {
                                         }
                                     />
                                 </FormControl>
-                                <p className={cx('message', (formik.touched.repeatPassword && formik.errors.repeatPassword) && 'error')}>
+                                <p
+                                    className={cx(
+                                        'message',
+                                        formik.touched.repeatPassword && formik.errors.repeatPassword && 'error',
+                                    )}
+                                >
                                     {formik.touched.repeatPassword && formik.errors.repeatPassword}
                                     &emsp;
                                 </p>
                                 <div className={cx('register-btn')}>
-                                    <LoadingButton
-                                        type='submit'
-                                        loading={isLoading}
-                                        variant='contained'
-                                        fullWidth
-                                    >
+                                    <LoadingButton type="submit" loading={isLoading} variant="contained" fullWidth>
                                         <span>Đăng ký</span>
                                     </LoadingButton>
                                 </div>
                             </form>
                             <div className={cx('register-question')}>
                                 <p>Bạn đã có tài khoản?</p>
-                                <Link to='/login'> Đăng nhập ngay</Link>
+                                <Link to="/login"> Đăng nhập ngay</Link>
                             </div>
                         </div>
                     </div>

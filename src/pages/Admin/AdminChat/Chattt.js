@@ -1,10 +1,9 @@
-import { useEffect } from "react";
-import { useParams } from "react-router-dom";
-import SockJS from "sockjs-client";
-import Stomp from "stompjs";
+import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import SockJS from 'sockjs-client';
+import Stomp from 'stompjs';
 
 function Chattt() {
-
     const { userId } = useParams();
 
     useEffect(() => {
@@ -24,10 +23,7 @@ function Chattt() {
         console.log(message);
     }
 
-
-    return (
-        <div>chat vl</div>
-    );
+    return <div>chat vl</div>;
 }
 
 export default Chattt;

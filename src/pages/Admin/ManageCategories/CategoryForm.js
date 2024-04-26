@@ -38,19 +38,18 @@ function inputProps(isError, message) {
 const defaultValue = {
     image: '',
     name: '',
-}
+};
 
 const validationSchema = yup.object({
-    name: yup.string()
-        .min(3, "Tên danh mục tối thiểu 3 kí tự")
-        .max(120, "Tên danh mục tối đa 120 kí tự")
+    name: yup
+        .string()
+        .min(3, 'Tên danh mục tối thiểu 3 kí tự')
+        .max(120, 'Tên danh mục tối đa 120 kí tự')
         .required('Tên danh mục là bắt buộc'),
-    image: yup.string()
-        .required('Vui lòng tải lên một hình ảnh'),
+    image: yup.string().required('Vui lòng tải lên một hình ảnh'),
 });
 
 function CategoryForm() {
-
     const navigate = useNavigate();
     const { categoryId } = useParams();
     const [loading, setLoading] = useState(false);
@@ -72,9 +71,11 @@ function CategoryForm() {
                     formik.setValues({
                         image,
                         name,
-                    })
+                    });
                 })
-                .catch((error) => { console.log(error); })
+                .catch((error) => {
+                    console.log(error);
+                });
         } else {
             formik.setValues(defaultValue);
         }
@@ -116,37 +117,39 @@ function CategoryForm() {
                     toast.error('Có lỗi xảy ra');
                 }
             })
-            .finally(() => { setLoading(false); });
-    }
+            .finally(() => {
+                setLoading(false);
+            });
+    };
 
     const handleClose = () => {
         navigate(routes.viewCategorys, { replace: true });
-    }
+    };
 
     const handleRemoveImage = () => {
         formik.setFieldValue('image', '');
-    }
+    };
 
     return (
-        <div className='container my-3'>
-            <div className='row justify-content-center'>
-                <div className='col-10'>
+        <div className="container my-3">
+            <div className="row justify-content-center">
+                <div className="col-10">
                     <div className={cx('panel-wrapper')}>
                         <div className={cx('panel-header')}>
-                            <div className={cx('panel-title')}>
-                                Thông tin cơ bản
-                            </div>
+                            <div className={cx('panel-title')}>Thông tin cơ bản</div>
                         </div>
 
-                        <div className='panel-content'>
+                        <div className="panel-content">
                             <div className={cx('form-group')}>
-                                <label className={cx('form-label')} htmlFor='inputName'><span>*</span>Tên danh mục</label>
+                                <label className={cx('form-label')} htmlFor="inputName">
+                                    <span>*</span>Tên danh mục
+                                </label>
                                 <div className={cx('form-input')}>
                                     <Input
-                                        id='inputName'
-                                        name='name'
-                                        size='large'
-                                        placeholder='Vui lòng nhập vào'
+                                        id="inputName"
+                                        name="name"
+                                        size="large"
+                                        placeholder="Vui lòng nhập vào"
                                         value={formik.values.name}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
@@ -159,13 +162,18 @@ function CategoryForm() {
                             </div>
 
                             <div className={cx('form-group')}>
-                                <label className={cx('form-label')} htmlFor='inputImage'><span>*</span>Hình ảnh</label>
+                                <label className={cx('form-label')} htmlFor="inputImage">
+                                    <span>*</span>Hình ảnh
+                                </label>
                                 <div className={cx('form-input')}>
                                     {formik.values.image ? (
-                                        <div className={cx('form-upload-image')} >
-                                            <img className={cx('image-upload')} src={formik.values.image} alt='' />
+                                        <div className={cx('form-upload-image')}>
+                                            <img className={cx('image-upload')} src={formik.values.image} alt="" />
                                             <div className={cx('image-tools')}>
-                                                <button onClick={() => handleRemoveImage()} className={cx('delete-image')}>
+                                                <button
+                                                    onClick={() => handleRemoveImage()}
+                                                    className={cx('delete-image')}
+                                                >
                                                     <FontAwesomeIcon icon={faTrashCan} />
                                                 </button>
                                             </div>
@@ -173,18 +181,19 @@ function CategoryForm() {
                                     ) : (
                                         <>
                                             <Dragger {...props}>
-                                                <p className='ant-upload-drag-icon'>
+                                                <p className="ant-upload-drag-icon">
                                                     <InboxOutlined />
                                                 </p>
-                                                <p className='ant-upload-text'>Nhấp hoặc kéo tệp vào khu vực này để tải lên</p>
-                                                <p className='ant-upload-hint'>Kích thước đề xuất [1920, 7750]</p>
+                                                <p className="ant-upload-text">
+                                                    Nhấp hoặc kéo tệp vào khu vực này để tải lên
+                                                </p>
+                                                <p className="ant-upload-hint">Kích thước đề xuất [1920, 7750]</p>
                                             </Dragger>
                                             {formik.touched.image && formik.errors.image && (
                                                 <FormHelperText error>{formik.errors.image}</FormHelperText>
                                             )}
                                         </>
-                                    )
-                                    }
+                                    )}
                                 </div>
                             </div>
 
@@ -197,7 +206,7 @@ function CategoryForm() {
                                     handleSubmit={handleClose}
                                 />
                                 <Button
-                                    variant='outlined'
+                                    variant="outlined"
                                     startIcon={<FontAwesomeIcon icon={faArrowLeft} />}
                                     onClick={() => setShowDialog(true)}
                                     sx={{ height: 35 }}
@@ -206,7 +215,7 @@ function CategoryForm() {
                                 </Button>
                                 <LoadingButton
                                     loading={loading}
-                                    variant='contained'
+                                    variant="contained"
                                     startIcon={<FontAwesomeIcon icon={faSave} />}
                                     onClick={formik.handleSubmit}
                                     sx={{ height: 35, marginLeft: '10px' }}

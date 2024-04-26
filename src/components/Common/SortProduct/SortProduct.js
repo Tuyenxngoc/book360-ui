@@ -6,7 +6,6 @@ import classNames from 'classnames/bind';
 const cx = classNames.bind(Style);
 
 const SortProduct = ({ handleSortChange, filters }) => {
-
     const handleSelectChange = (e) => {
         const selectedValue = e.target.value;
         const isAscending = e.target.options[e.target.selectedIndex].getAttribute('data-isascending');
@@ -29,13 +28,22 @@ const SortProduct = ({ handleSortChange, filters }) => {
                 Bán chạy
             </button>
             <select onChange={(e) => handleSelectChange(e)} className={cx('item', 'select')}>
-                <option data-isascending="false" value="">Tùy chọn</option>
-                <option data-isascending="true" value="name">Tên A-Z</option>
-                <option data-isascending="false" value="name">Tên Z-A</option>
-                <option data-isascending="true" value="price">Giá tăng dần</option>
-                <option data-isascending="false" value="price">Giá giảm dần</option>
+                <option data-isascending="false" value="">
+                    Tùy chọn
+                </option>
+                <option data-isascending="true" value="name">
+                    Tên A-Z
+                </option>
+                <option data-isascending="false" value="name">
+                    Tên Z-A
+                </option>
+                <option data-isascending="true" value="price">
+                    Giá tăng dần
+                </option>
+                <option data-isascending="false" value="price">
+                    Giá giảm dần
+                </option>
             </select>
-
         </div>
     );
 };

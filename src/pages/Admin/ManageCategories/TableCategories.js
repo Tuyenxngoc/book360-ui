@@ -17,7 +17,6 @@ import { faEdit, faRemove, faUpDownLeftRight } from '@fortawesome/free-solid-svg
 const cx = classNames.bind(Style);
 
 function TableCategories({ listCategory, fetchListCategory }) {
-
     const navigate = useNavigate();
 
     const [categorySelect, setCategorySelect] = useState();
@@ -25,12 +24,12 @@ function TableCategories({ listCategory, fetchListCategory }) {
 
     const handleClickBtnUpdate = (category) => {
         navigate(`/admin/category/${category.id}`);
-    }
+    };
 
     const handleClickBtnDelete = (categoryId) => {
         setShowDialogDelete(true);
         setCategorySelect(categoryId);
-    }
+    };
 
     const handleDeleteCategory = () => {
         deleteCategory(categorySelect)
@@ -44,8 +43,8 @@ function TableCategories({ listCategory, fetchListCategory }) {
                 } else {
                     toast.error('Có lỗi sảy ra');
                 }
-            })
-    }
+            });
+    };
 
     return (
         <div>
@@ -53,31 +52,34 @@ function TableCategories({ listCategory, fetchListCategory }) {
                 open={showDialogDelete}
                 setOpen={setShowDialogDelete}
                 title={'Xóa danh mục'}
-                description={'Bạn có chắc muốn xóa danh mục này? Lưu ý: Sau khi xóa, bạn không thể hoàn tác hay khôi phục danh mục.'}
+                description={
+                    'Bạn có chắc muốn xóa danh mục này? Lưu ý: Sau khi xóa, bạn không thể hoàn tác hay khôi phục danh mục.'
+                }
                 handleSubmit={handleDeleteCategory}
             />
-            <table className='table table-striped table-bordered' style={{ verticalAlign: 'middle' }}>
+            <table className="table table-striped table-bordered" style={{ verticalAlign: 'middle' }}>
                 <thead>
                     <tr>
                         <th></th>
-                        <th scope='col'>Hình ảnh</th>
-                        <th scope='col'>Tên danh mục</th>
-                        <th scope='col'>Thao tác</th>
+                        <th scope="col">Hình ảnh</th>
+                        <th scope="col">Tên danh mục</th>
+                        <th scope="col">Thao tác</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {listCategory && listCategory.length > 0 &&
+                    {listCategory &&
+                        listCategory.length > 0 &&
                         listCategory.map((item, index) => {
                             return (
                                 <tr key={`table-categorys-${index}`}>
-                                    <td align='center' style={{ padding: 0, width: '80px' }}>
+                                    <td align="center" style={{ padding: 0, width: '80px' }}>
                                         <div className={cx('preview-image')}>
-                                            <a href={item.image} alt='preview image' target='_blank' rel='noreferrer'>
+                                            <a href={item.image} alt="preview image" target="_blank" rel="noreferrer">
                                                 <FontAwesomeIcon icon={faUpDownLeftRight} />
                                             </a>
                                         </div>
                                     </td>
-                                    <td align='left'>
+                                    <td align="left">
                                         <div className={cx('image-category')}>
                                             {item.image ? (
                                                 <img src={item.image} alt={`category id ${item.id}`} />
@@ -86,22 +88,22 @@ function TableCategories({ listCategory, fetchListCategory }) {
                                             )}
                                         </div>
                                     </td>
-                                    <td align='left'>{item.name}</td>
-                                    <td align='left'>
+                                    <td align="left">{item.name}</td>
+                                    <td align="left">
                                         <div className={cx('table-action')}>
                                             <Button
-                                                size='small'
-                                                variant='contained'
-                                                color='primary'
+                                                size="small"
+                                                variant="contained"
+                                                color="primary"
                                                 onClick={() => handleClickBtnUpdate(item)}
                                                 sx={{ minWidth: 35, height: 35 }}
                                             >
                                                 <FontAwesomeIcon icon={faEdit} />
                                             </Button>
                                             <Button
-                                                size='small'
-                                                variant='contained'
-                                                color='error'
+                                                size="small"
+                                                variant="contained"
+                                                color="error"
                                                 onClick={() => handleClickBtnDelete(item.id)}
                                                 sx={{ minWidth: 35, height: 35, ml: 1 }}
                                             >
@@ -110,13 +112,13 @@ function TableCategories({ listCategory, fetchListCategory }) {
                                         </div>
                                     </td>
                                 </tr>
-                            )
+                            );
                         })}
-                    {listCategory && listCategory.length === 0
-                        && <tr>
-                            <td colSpan='5'>Chưa có dữ liệu</td>
+                    {listCategory && listCategory.length === 0 && (
+                        <tr>
+                            <td colSpan="5">Chưa có dữ liệu</td>
                         </tr>
-                    }
+                    )}
                 </tbody>
             </table>
         </div>

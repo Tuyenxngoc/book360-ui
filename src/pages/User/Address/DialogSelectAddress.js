@@ -4,7 +4,17 @@ import { useEffect, useState } from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { Button, Chip, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, Radio, RadioGroup } from '@mui/material';
+import {
+    Button,
+    Chip,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    FormControlLabel,
+    Radio,
+    RadioGroup,
+} from '@mui/material';
 
 //Style
 import Style from './Address.module.scss';
@@ -14,7 +24,7 @@ import DialogCreateAddress from './DialogCreateAddress';
 
 const cx = classNames.bind(Style);
 
-function defaultFunction() { }
+function defaultFunction() {}
 
 function DialogSelectAddress({
     open,
@@ -26,7 +36,6 @@ function DialogSelectAddress({
     onSubmit = defaultFunction,
     fetchListAddress = defaultFunction,
 }) {
-
     const [value, setValue] = useState(null);
     const [isOpenDialogCreateAddress, setIsOpenDialogCreateAddress] = useState(false);
     const [addressSelect, setAddressSelect] = useState(null);
@@ -48,25 +57,27 @@ function DialogSelectAddress({
         setIsOpenDialogCreateAddress(true);
         setOpen(false);
         setAddressSelect(null);
-    }
+    };
 
     const handleClickBtnUpdate = (id) => {
         setIsOpenDialogCreateAddress(true);
         setOpen(false);
         setAddressSelect(id);
-    }
+    };
 
     const handleCloseDialogCreateAddress = () => {
         setOpen(true);
-    }
+    };
 
     const handleCreateAddressSuccess = () => {
         setOpen(true);
         fetchListAddress();
-    }
+    };
 
     useEffect(() => {
-        if (defaultValue) { setValue(defaultValue); }
+        if (defaultValue) {
+            setValue(defaultValue);
+        }
     }, [defaultValue]);
 
     return (
@@ -78,23 +89,13 @@ function DialogSelectAddress({
                 onSuccess={handleCreateAddressSuccess}
                 addressId={addressSelect}
             />
-            <Dialog
-                open={open}
-                scroll='paper'
-                disableEscapeKeyDown
-                aria-labelledby='alert-dialog-title'
-            >
-                <DialogTitle id='alert-dialog-title'>
+            <Dialog open={open} scroll="paper" disableEscapeKeyDown aria-labelledby="alert-dialog-title">
+                <DialogTitle id="alert-dialog-title">
                     <div className={cx('title')}>{title}</div>
                     {titleDescription && <div className={cx('title-description')}>{titleDescription}</div>}
                 </DialogTitle>
                 <DialogContent dividers>
-                    <RadioGroup
-                        aria-label="address"
-                        name="address"
-                        value={value}
-                        onChange={handleChange}
-                    >
+                    <RadioGroup aria-label="address" name="address" value={value} onChange={handleChange}>
                         {addressList.map((address) => (
                             <FormControlLabel
                                 sx={{ mr: 0 }}
@@ -103,19 +104,23 @@ function DialogSelectAddress({
                                 control={<Radio />}
                                 label={
                                     <div>
-                                        <div className='d-flex justify-content-between align-items-center'>
+                                        <div className="d-flex justify-content-between align-items-center">
                                             <div>
                                                 <span>{address.fullName}</span>
                                                 <span> | </span>
                                                 <span>{address.phoneNumber}</span>
                                             </div>
                                             <div>
-                                                <Button onClick={() => handleClickBtnUpdate(address.id)}>Cập nhật</Button>
+                                                <Button onClick={() => handleClickBtnUpdate(address.id)}>
+                                                    Cập nhật
+                                                </Button>
                                             </div>
                                         </div>
                                         <div>
                                             <div>{address.fullAddress}</div>
-                                            {address.isDefaultAddress && <Chip label='Mặc định' color='primary' size='small' sx={{ mr: 1 }} />}
+                                            {address.isDefaultAddress && (
+                                                <Chip label="Mặc định" color="primary" size="small" sx={{ mr: 1 }} />
+                                            )}
                                         </div>
                                     </div>
                                 }
@@ -124,8 +129,8 @@ function DialogSelectAddress({
                     </RadioGroup>
                     {addressList.length < 5 && (
                         <Button
-                            variant='outlined'
-                            size='small'
+                            variant="outlined"
+                            size="small"
                             startIcon={<FontAwesomeIcon icon={faPlus} />}
                             onClick={handleClickBtnCreate}
                             sx={{ mt: 2 }}
@@ -135,16 +140,10 @@ function DialogSelectAddress({
                     )}
                 </DialogContent>
                 <DialogActions>
-                    <Button
-                        autoFocus
-                        onClick={handleBtnCancelClick}
-                    >
+                    <Button autoFocus onClick={handleBtnCancelClick}>
                         Hủy
                     </Button>
-                    <Button
-                        variant='contained'
-                        onClick={handleBtnOkClick}
-                    >
+                    <Button variant="contained" onClick={handleBtnOkClick}>
                         Xác nhận
                     </Button>
                 </DialogActions>

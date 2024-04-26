@@ -25,7 +25,7 @@ const cx = classNames.bind(Style);
 function inputProps(isError) {
     if (isError) {
         return {
-            status: 'error'
+            status: 'error',
         };
     }
 }
@@ -39,40 +39,32 @@ const defaultValue = {
     username: '',
     password: '',
     repeatPassword: '',
-    roleName: ''
-}
-
+    roleName: '',
+};
 
 const validationSchema = yup.object({
-    name: yup.string()
-        .required('Tên khách hàng là bắt buộc'),
+    name: yup.string().required('Tên khách hàng là bắt buộc'),
 
-    phoneNumber: yup.string()
-        .required('Số điện thoại là bắt buộc'),
+    phoneNumber: yup.string().required('Số điện thoại là bắt buộc'),
 
     avatar: yup.string(),
 
-    email: yup.string().email('Địa chỉ email không hợp lệ')
-        .required('Email là bắt buộc'),
+    email: yup.string().email('Địa chỉ email không hợp lệ').required('Email là bắt buộc'),
 
-    address: yup.string()
-        .required('Địa chỉ là bắt buộc'),
+    address: yup.string().required('Địa chỉ là bắt buộc'),
 
-    username: yup.string()
-        .required('Tên đăng nhập là bắt buộc'),
+    username: yup.string().required('Tên đăng nhập là bắt buộc'),
 
-    password: yup.string()
-        .required('Mật khẩu là bắt buộc'),
+    password: yup.string().required('Mật khẩu là bắt buộc'),
 
-    repeatPassword: yup.string()
+    repeatPassword: yup
+        .string()
         .oneOf([yup.ref('password'), null], 'Mật khẩu xác nhận không khớp')
         .required('Xác nhận mật khẩu là bắt buộc'),
 
-    roleName: yup.string()
-        .required('Vai trò là bắt buộc')
+    roleName: yup.string().required('Vai trò là bắt buộc'),
 });
 function UserForm() {
-
     const navigate = useNavigate();
     const { userId } = useParams();
     const [loading, setLoading] = useState(false);
@@ -93,7 +85,9 @@ function UserForm() {
                 .then((response) => {
                     console.log(response.data.data);
                 })
-                .catch((error) => { console.log(error); })
+                .catch((error) => {
+                    console.log(error);
+                });
         } else {
             formik.setValues(defaultValue);
         }
@@ -107,13 +101,17 @@ function UserForm() {
                 navigate(routes.viewUsers, { replace: true });
                 toast.success('Thành công');
             })
-            .catch((error) => { console.log(error); })
-            .finally(() => { setLoading(false); });
-    }
+            .catch((error) => {
+                console.log(error);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    };
 
     const handleClose = () => {
         navigate(routes.viewUsers, { replace: true });
-    }
+    };
 
     const handleChange = (info) => {
         const { status } = info.file;
@@ -132,9 +130,9 @@ function UserForm() {
     };
 
     return (
-        <div className='container my-3'>
-            <div className='row justify-content-center gx-3'>
-                <div className='col-4'>
+        <div className="container my-3">
+            <div className="row justify-content-center gx-3">
+                <div className="col-4">
                     <div className={cx('panel-wrapper')}>
                         <div className={cx('avatar-uploader')}>
                             <Upload
@@ -155,7 +153,9 @@ function UserForm() {
                                     }}
                                 />
                             </Upload>
-                            <Button size='small' variant='outlined' onClick={handleChooseImageClick}>Chọn ảnh</Button>
+                            <Button size="small" variant="outlined" onClick={handleChooseImageClick}>
+                                Chọn ảnh
+                            </Button>
                             <div className={cx('file-description')}>
                                 <div>Dụng lượng file tối đa 2 MB</div>
                                 <div>Định dạng: .JPG, .JPEG, .PNG</div>
@@ -163,22 +163,22 @@ function UserForm() {
                         </div>
                     </div>
                 </div>
-                <div className='col-6'>
+                <div className="col-6">
                     <div className={cx('panel-wrapper')}>
                         <div className={cx('panel-header')}>
-                            <div className={cx('panel-title')}>
-                                Thông tin cơ bản
-                            </div>
+                            <div className={cx('panel-title')}>Thông tin cơ bản</div>
                         </div>
-                        <div className='panel-content'>
+                        <div className="panel-content">
                             <div className={cx('form-group')}>
-                                <label className={cx('form-label')} htmlFor='inputName'><span>*</span>Tên khách hàng</label>
+                                <label className={cx('form-label')} htmlFor="inputName">
+                                    <span>*</span>Tên khách hàng
+                                </label>
                                 <div className={cx('form-input')}>
                                     <Input
-                                        id='inputName'
-                                        name='name'
-                                        size='large'
-                                        placeholder='Vui lòng nhập vào'
+                                        id="inputName"
+                                        name="name"
+                                        size="large"
+                                        placeholder="Vui lòng nhập vào"
                                         value={formik.values.name}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
@@ -190,17 +190,21 @@ function UserForm() {
                                 </div>
                             </div>
                             <div className={cx('form-group')}>
-                                <label className={cx('form-label')} htmlFor='inputPhoneNumber'><span>*</span>Số điện thoại</label>
+                                <label className={cx('form-label')} htmlFor="inputPhoneNumber">
+                                    <span>*</span>Số điện thoại
+                                </label>
                                 <div className={cx('form-input')}>
                                     <Input
-                                        id='inputPhoneNumber'
-                                        name='phoneNumber'
-                                        size='large'
-                                        placeholder='Vui lòng nhập vào'
+                                        id="inputPhoneNumber"
+                                        name="phoneNumber"
+                                        size="large"
+                                        placeholder="Vui lòng nhập vào"
                                         value={formik.values.phoneNumber}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
-                                        {...inputProps(formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber))}
+                                        {...inputProps(
+                                            formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber),
+                                        )}
                                     />
                                     {formik.touched.phoneNumber && formik.errors.phoneNumber && (
                                         <FormHelperText error>{formik.errors.phoneNumber}</FormHelperText>
@@ -208,13 +212,15 @@ function UserForm() {
                                 </div>
                             </div>
                             <div className={cx('form-group')}>
-                                <label className={cx('form-label')} htmlFor='inputAddress'><span>*</span>Địa chỉ</label>
+                                <label className={cx('form-label')} htmlFor="inputAddress">
+                                    <span>*</span>Địa chỉ
+                                </label>
                                 <div className={cx('form-input')}>
                                     <Input
-                                        id='inputAddress'
-                                        name='address'
-                                        size='large'
-                                        placeholder='Vui lòng nhập vào'
+                                        id="inputAddress"
+                                        name="address"
+                                        size="large"
+                                        placeholder="Vui lòng nhập vào"
                                         value={formik.values.address}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
@@ -226,13 +232,15 @@ function UserForm() {
                                 </div>
                             </div>
                             <div className={cx('form-group')}>
-                                <label className={cx('form-label')} htmlFor='inputUserName'><span>*</span>Tên đăng nhập</label>
+                                <label className={cx('form-label')} htmlFor="inputUserName">
+                                    <span>*</span>Tên đăng nhập
+                                </label>
                                 <div className={cx('form-input')}>
                                     <Input
-                                        id='inputUserName'
-                                        name='username'
-                                        size='large'
-                                        placeholder='Vui lòng nhập vào'
+                                        id="inputUserName"
+                                        name="username"
+                                        size="large"
+                                        placeholder="Vui lòng nhập vào"
                                         value={formik.values.username}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
@@ -244,13 +252,15 @@ function UserForm() {
                                 </div>
                             </div>
                             <div className={cx('form-group')}>
-                                <label className={cx('form-label')} htmlFor='inputPassword'><span>*</span>Mật khẩu</label>
+                                <label className={cx('form-label')} htmlFor="inputPassword">
+                                    <span>*</span>Mật khẩu
+                                </label>
                                 <div className={cx('form-input')}>
                                     <Input
-                                        id='inputPassword'
-                                        name='password'
-                                        size='large'
-                                        placeholder='Vui lòng nhập vào'
+                                        id="inputPassword"
+                                        name="password"
+                                        size="large"
+                                        placeholder="Vui lòng nhập vào"
                                         value={formik.values.password}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
@@ -262,17 +272,21 @@ function UserForm() {
                                 </div>
                             </div>
                             <div className={cx('form-group')}>
-                                <label className={cx('form-label')} htmlFor='inputRepeatPassword'><span>*</span>Nhập lại mật khẩu</label>
+                                <label className={cx('form-label')} htmlFor="inputRepeatPassword">
+                                    <span>*</span>Nhập lại mật khẩu
+                                </label>
                                 <div className={cx('form-input')}>
                                     <Input
-                                        id='inputRepeatPassword'
-                                        name='repeatPassword'
-                                        size='large'
-                                        placeholder='Vui lòng nhập vào'
+                                        id="inputRepeatPassword"
+                                        name="repeatPassword"
+                                        size="large"
+                                        placeholder="Vui lòng nhập vào"
                                         value={formik.values.repeatPassword}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
-                                        {...inputProps(formik.touched.repeatPassword && Boolean(formik.errors.repeatPassword))}
+                                        {...inputProps(
+                                            formik.touched.repeatPassword && Boolean(formik.errors.repeatPassword),
+                                        )}
                                     />
                                     {formik.touched.repeatPassword && formik.errors.repeatPassword && (
                                         <FormHelperText error>{formik.errors.repeatPassword}</FormHelperText>
@@ -280,13 +294,15 @@ function UserForm() {
                                 </div>
                             </div>
                             <div className={cx('form-group')}>
-                                <label className={cx('form-label')} htmlFor='inputEmail'><span>*</span>Email</label>
+                                <label className={cx('form-label')} htmlFor="inputEmail">
+                                    <span>*</span>Email
+                                </label>
                                 <div className={cx('form-input')}>
                                     <Input
-                                        id='inputEmail'
-                                        name='email'
-                                        size='large'
-                                        placeholder='Vui lòng nhập vào'
+                                        id="inputEmail"
+                                        name="email"
+                                        size="large"
+                                        placeholder="Vui lòng nhập vào"
                                         value={formik.values.email}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
@@ -298,13 +314,15 @@ function UserForm() {
                                 </div>
                             </div>
                             <div className={cx('form-group')}>
-                                <label className={cx('form-label')} htmlFor='inputRole'><span>*</span>Vai trò</label>
+                                <label className={cx('form-label')} htmlFor="inputRole">
+                                    <span>*</span>Vai trò
+                                </label>
                                 <div className={cx('form-input')}>
                                     <Input
-                                        id='inputRole'
-                                        name='roleName'
-                                        size='large'
-                                        placeholder='Vui lòng nhập vào'
+                                        id="inputRole"
+                                        name="roleName"
+                                        size="large"
+                                        placeholder="Vui lòng nhập vào"
                                         value={formik.values.roleName}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
@@ -324,7 +342,7 @@ function UserForm() {
                                     handleSubmit={handleClose}
                                 />
                                 <Button
-                                    variant='outlined'
+                                    variant="outlined"
                                     startIcon={<FontAwesomeIcon icon={faArrowLeft} />}
                                     onClick={() => setShowDialog(true)}
                                     sx={{ height: 35 }}
@@ -333,7 +351,7 @@ function UserForm() {
                                 </Button>
                                 <LoadingButton
                                     loading={loading}
-                                    variant='contained'
+                                    variant="contained"
                                     startIcon={<FontAwesomeIcon icon={faSave} />}
                                     onClick={formik.handleSubmit}
                                     sx={{ height: 35, marginLeft: '10px' }}

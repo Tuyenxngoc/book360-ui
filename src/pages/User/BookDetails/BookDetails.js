@@ -37,8 +37,8 @@ const settingsNav = {
     slidesToScroll: 1,
     vertical: true,
     verticalSwiping: true,
-    nextArrow: <CustomArrows isVertical color='red' isNextArrow />,
-    prevArrow: <CustomArrows isVertical color='red' />,
+    nextArrow: <CustomArrows isVertical color="red" isNextArrow />,
+    prevArrow: <CustomArrows isVertical color="red" />,
 };
 
 const settingsMain = {
@@ -51,9 +51,8 @@ const settingsMain = {
 };
 
 const calculateDiscountedPrice = (price, discount) => {
-    return discount > 0 ? price - (price * discount / 100) : price;
+    return discount > 0 ? price - (price * discount) / 100 : price;
 };
-
 
 function BookDetails() {
     const { id } = useParams();
@@ -82,7 +81,7 @@ function BookDetails() {
 
                 const [productDetailResponse, sameAuthorBooksResponse] = await Promise.all([
                     getProductDetails(id),
-                    getProductSameAuthor(id, 'pageSize=5')
+                    getProductSameAuthor(id, 'pageSize=5'),
                 ]);
 
                 setBookData(productDetailResponse.data.data);
@@ -125,7 +124,6 @@ function BookDetails() {
             } finally {
                 setIsSend(false);
             }
-
         } else {
             navigate('/login', { replace: true, state: { from: location } });
         }
@@ -141,18 +139,18 @@ function BookDetails() {
                 .catch((error) => {
                     let message = '';
                     if (!error?.response) {
-                        message = ('Máy chủ không phản hồi');
+                        message = 'Máy chủ không phản hồi';
                     } else if (error.response?.data) {
                         message = error.response.data.message;
                     } else {
-                        message = ('Đã có lỗi sảy ra, vui lòng thử lại sau');
+                        message = 'Đã có lỗi sảy ra, vui lòng thử lại sau';
                     }
                     toast.error(message);
                 });
         } else {
             navigate('/login', { replace: true, state: { from: location } });
         }
-    }
+    };
 
     const handleBuyNow = () => {
         if (isAuthenticated) {
@@ -163,19 +161,18 @@ function BookDetails() {
                 .catch((error) => {
                     let message = '';
                     if (!error?.response) {
-                        message = ('Máy chủ không phản hồi');
+                        message = 'Máy chủ không phản hồi';
                     } else if (error.response?.data) {
                         message = error.response.data.message;
                     } else {
-                        message = ('Đã có lỗi sảy ra, vui lòng thử lại sau');
+                        message = 'Đã có lỗi sảy ra, vui lòng thử lại sau';
                     }
                     toast.error(message);
                 });
-
         } else {
             navigate('/login', { replace: true, state: { from: location } });
         }
-    }
+    };
 
     const currentPrice = useMemo(() => {
         if (bookData) {
@@ -197,16 +194,21 @@ function BookDetails() {
                         ]}
                         currentPage={bookData.name}
                     />
-                    <div className='container'>
+                    <div className="container">
                         <main className={cx('product')}>
-                            <div className='row'>
-                                <div className='col-5'>
+                            <div className="row">
+                                <div className="col-5">
                                     <div className={cx('product-img')}>
-                                        <div className='row'>
-                                            <div className='col-3'>
+                                        <div className="row">
+                                            <div className="col-3">
                                                 <div className={cx('image')}>
                                                     {bookData.images.length > 1 ? (
-                                                        <Slider {...settingsNav} slidesToShow={Math.min(3, bookData.images.length - 1)} asNavFor={mainSlider} ref={(slider) => setNavSlider(slider)}>
+                                                        <Slider
+                                                            {...settingsNav}
+                                                            slidesToShow={Math.min(3, bookData.images.length - 1)}
+                                                            asNavFor={mainSlider}
+                                                            ref={(slider) => setNavSlider(slider)}
+                                                        >
                                                             {bookData.images.map((image, index) => (
                                                                 <img key={index} src={image.url} alt={bookData.name} />
                                                             ))}
@@ -216,11 +218,19 @@ function BookDetails() {
                                                     )}
                                                 </div>
                                             </div>
-                                            <div className='col-9'>
+                                            <div className="col-9">
                                                 <div className={cx('image')}>
-                                                    {bookData.discount > 0 && <div className={cx('sale-percentage-btn')}>{`-${bookData.discount}%`}</div>}
+                                                    {bookData.discount > 0 && (
+                                                        <div
+                                                            className={cx('sale-percentage-btn')}
+                                                        >{`-${bookData.discount}%`}</div>
+                                                    )}
                                                     {bookData.images.length > 1 ? (
-                                                        <Slider {...settingsMain} asNavFor={navSlider} ref={(slider) => setMainSlider(slider)}>
+                                                        <Slider
+                                                            {...settingsMain}
+                                                            asNavFor={navSlider}
+                                                            ref={(slider) => setMainSlider(slider)}
+                                                        >
                                                             {bookData.images.map((image, index) => (
                                                                 <img key={index} src={image.url} alt={bookData.name} />
                                                             ))}
@@ -229,16 +239,33 @@ function BookDetails() {
                                                         <img src={bookData.images[0]?.url} alt={bookData.name} />
                                                     )}
                                                     <div className={cx('interaction')}>
-                                                        <div className={cx('interaction-item')} style={{ marginRight: 8 }}>
-                                                            <img className={cx('interaction-img')} src={images.share} alt='share' />
+                                                        <div
+                                                            className={cx('interaction-item')}
+                                                            style={{ marginRight: 8 }}
+                                                        >
+                                                            <img
+                                                                className={cx('interaction-img')}
+                                                                src={images.share}
+                                                                alt="share"
+                                                            />
                                                         </div>
                                                         <div className={cx('interaction-item')}>
                                                             {isSend ? (
-                                                                <CircularProgress size={15} color='inherit' />
+                                                                <CircularProgress size={15} color="inherit" />
+                                                            ) : isFavorite ? (
+                                                                <img
+                                                                    className={cx('interaction-img')}
+                                                                    onClick={handleToggleFavorite}
+                                                                    src={images.like}
+                                                                    alt="like"
+                                                                />
                                                             ) : (
-                                                                isFavorite
-                                                                    ? <img className={cx('interaction-img')} onClick={handleToggleFavorite} src={images.like} alt='like' />
-                                                                    : <img className={cx('interaction-img')} onClick={handleToggleFavorite} src={images.unLike} alt='unlike' />
+                                                                <img
+                                                                    className={cx('interaction-img')}
+                                                                    onClick={handleToggleFavorite}
+                                                                    src={images.unLike}
+                                                                    alt="unlike"
+                                                                />
                                                             )}
                                                         </div>
                                                     </div>
@@ -248,7 +275,7 @@ function BookDetails() {
                                     </div>
                                 </div>
 
-                                <div className='col-7'>
+                                <div className="col-7">
                                     <div className={cx('product-content')}>
                                         <div className={cx('pro-content-head')}>
                                             <h1>{bookData.name}</h1>
@@ -259,17 +286,23 @@ function BookDetails() {
                                                 <MoneyDisplay amount={currentPrice}></MoneyDisplay>
                                             </div>
                                             <div className={cx('original-price')}>
-                                                <s><MoneyDisplay amount={bookData.price}></MoneyDisplay></s>
+                                                <s>
+                                                    <MoneyDisplay amount={bookData.price}></MoneyDisplay>
+                                                </s>
                                                 <span className={cx('priceSaving')}>
                                                     Bạn đã tiết kiệm được&nbsp;
-                                                    {<MoneyDisplay amount={bookData.price - currentPrice}></MoneyDisplay>}
+                                                    {
+                                                        <MoneyDisplay
+                                                            amount={bookData.price - currentPrice}
+                                                        ></MoneyDisplay>
+                                                    }
                                                 </span>
                                             </div>
                                         </div>
 
-                                        <div className='containerd'>
-                                            <div className='row g-0'>
-                                                <div className='col-5'>
+                                        <div className="containerd">
+                                            <div className="row g-0">
+                                                <div className="col-5">
                                                     <div className={cx('pro-short-desc')}>
                                                         <ul>
                                                             <li>
@@ -277,29 +310,35 @@ function BookDetails() {
                                                                 <strong>{bookData.isbn}</strong>
                                                             </li>
                                                             <li>
-                                                                <div className='row g-0'>
-                                                                    <div className='col-3'>
+                                                                <div className="row g-0">
+                                                                    <div className="col-3">
                                                                         <span> Tác giả: </span>
                                                                     </div>
-                                                                    <div className='col-9'>
-                                                                        {bookData.authors.map((author, index) =>
-                                                                            <div className='mb-1' key={index}>
-                                                                                <Link to={`/author/${author.id}`}>{author.fullName}</Link>
+                                                                    <div className="col-9">
+                                                                        {bookData.authors.map((author, index) => (
+                                                                            <div className="mb-1" key={index}>
+                                                                                <Link to={`/author/${author.id}`}>
+                                                                                    {author.fullName}
+                                                                                </Link>
                                                                             </div>
-                                                                        )}
+                                                                        ))}
                                                                     </div>
                                                                 </div>
                                                             </li>
                                                             <li>
-                                                                <div className='row g-0'>
-                                                                    <div className='col-3'>
+                                                                <div className="row g-0">
+                                                                    <div className="col-3">
                                                                         <span> Đối tượng: </span>
                                                                     </div>
-                                                                    <div className='col-9'>
-                                                                        {bookData.ageClassifications.map((item, index) =>
-                                                                            <div className='mb-1' key={index}>
-                                                                                <Link to={`/author/${item.key}`}>{item.label}</Link>
-                                                                            </div>
+                                                                    <div className="col-9">
+                                                                        {bookData.ageClassifications.map(
+                                                                            (item, index) => (
+                                                                                <div className="mb-1" key={index}>
+                                                                                    <Link to={`/author/${item.key}`}>
+                                                                                        {item.label}
+                                                                                    </Link>
+                                                                                </div>
+                                                                            ),
                                                                         )}
                                                                     </div>
                                                                 </div>
@@ -322,16 +361,18 @@ function BookDetails() {
                                                                 {bookData.weight}
                                                                 <span> gram </span>
                                                             </li>
-                                                            {bookData.bookSet &&
+                                                            {bookData.bookSet && (
                                                                 <li>
                                                                     <span> Bộ sách: </span>
-                                                                    <Link to={`/${bookData.bookSet.id}`}>{bookData.bookSet.name}</Link>
+                                                                    <Link to={`/${bookData.bookSet.id}`}>
+                                                                        {bookData.bookSet.name}
+                                                                    </Link>
                                                                 </li>
-                                                            }
+                                                            )}
                                                         </ul>
                                                     </div>
                                                 </div>
-                                                <div className='col-7'>
+                                                <div className="col-7">
                                                     <div className={cx('pro-rating')}>
                                                         <div className={cx('pro-selled')}>
                                                             {`Đã bán: ${bookData.soldQuantity}`}
@@ -349,21 +390,21 @@ function BookDetails() {
                                                         </div>
                                                     </div>
 
-                                                    {bookData.stockQuantity !== 0 ?
-                                                        <div className='product-actions'>
-                                                            <div className='row g-2'>
-                                                                <div className='col-12'>
+                                                    {bookData.stockQuantity !== 0 ? (
+                                                        <div className="product-actions">
+                                                            <div className="row g-2">
+                                                                <div className="col-12">
                                                                     <Button
-                                                                        variant='contained'
+                                                                        variant="contained"
                                                                         fullWidth
                                                                         onClick={handleAddProductToCart}
                                                                     >
                                                                         Thêm vào giỏ hàng
                                                                     </Button>
                                                                 </div>
-                                                                <div className='col-12'>
+                                                                <div className="col-12">
                                                                     <Button
-                                                                        variant='contained'
+                                                                        variant="contained"
                                                                         onClick={handleBuyNow}
                                                                         sx={{ width: '50%' }}
                                                                     >
@@ -372,14 +413,11 @@ function BookDetails() {
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        :
-                                                        <Button
-                                                            variant='contained'
-                                                            fullWidth
-                                                        >
+                                                    ) : (
+                                                        <Button variant="contained" fullWidth>
                                                             TẠM HẾT HÀNG
                                                         </Button>
-                                                    }
+                                                    )}
                                                 </div>
                                             </div>
                                         </div>
@@ -389,31 +427,33 @@ function BookDetails() {
                         </main>
                     </div>
 
-                    <div className='container'>
-                        <div className='row'>
-                            <div className='col'>
+                    <div className="container">
+                        <div className="row">
+                            <div className="col">
                                 <div className={cx('product-description-wrapper')}>
                                     <h2 className={cx('tile')}>Mô tả sản phẩm</h2>
                                     <div
                                         className={cx('description')}
-                                        dangerouslySetInnerHTML={{ __html: bookData.description }}>
-                                    </div>
+                                        dangerouslySetInnerHTML={{ __html: bookData.description }}
+                                    ></div>
                                 </div>
                             </div>
-                            {sameAuthorBookData.length > 0 &&
-                                <div className='col-4'>
+                            {sameAuthorBookData.length > 0 && (
+                                <div className="col-4">
                                     <div className={cx('product-author-wrapper')}>
                                         <h2 className={cx('tile')}>Sách cùng tác giả</h2>
-                                        <div className='row'>
+                                        <div className="row">
                                             {sameAuthorBookData.map((data, index) => (
-                                                <div key={index} className='col-12'>
-                                                    <Product data={data} small ></Product>
+                                                <div key={index} className="col-12">
+                                                    <Product data={data} small></Product>
                                                 </div>
                                             ))}
                                             {bookData && (
-                                                <div className='col-12 text-center'>
+                                                <div className="col-12 text-center">
                                                     <Button
-                                                        onClick={() => { navigate(`/author/${bookData.authors[0]?.id}`); }}
+                                                        onClick={() => {
+                                                            navigate(`/author/${bookData.authors[0]?.id}`);
+                                                        }}
                                                     >
                                                         Xem thêm
                                                     </Button>
@@ -422,73 +462,151 @@ function BookDetails() {
                                         </div>
                                     </div>
                                 </div>
-                            }
+                            )}
                         </div>
                     </div>
                 </>
             ) : (
                 <>
                     <Breadcrumbs currentPage={null} />
-                    <div className='container'>
+                    <div className="container">
                         <main className={cx('product')}>
-                            <div className='row'>
-                                <div className='col-5'>
+                            <div className="row">
+                                <div className="col-5">
                                     <div className={cx('product-img')}>
-                                        <div className='row'>
-                                            <div className='col-3'>
+                                        <div className="row">
+                                            <div className="col-3">
                                                 {Array.from({ length: 3 }).map((_, index) => (
-                                                    <div key={index} className='mb-1'>
-                                                        <Skeleton animation="wave" variant="rectangular" width='100%' height={120} />
+                                                    <div key={index} className="mb-1">
+                                                        <Skeleton
+                                                            animation="wave"
+                                                            variant="rectangular"
+                                                            width="100%"
+                                                            height={120}
+                                                        />
                                                     </div>
                                                 ))}
                                             </div>
-                                            <div className='col-9'>
-                                                {<Skeleton animation="wave" variant="rectangular" width='100%' height={450} />}
+                                            <div className="col-9">
+                                                {
+                                                    <Skeleton
+                                                        animation="wave"
+                                                        variant="rectangular"
+                                                        width="100%"
+                                                        height={450}
+                                                    />
+                                                }
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div className='col-7'>
+                                <div className="col-7">
                                     <div className={cx('product-content')}>
                                         <div className={cx('pro-content-head')}>
-                                            <Skeleton animation="wave" variant="rectangular" width='100%' height={40} />
+                                            <Skeleton animation="wave" variant="rectangular" width="100%" height={40} />
                                         </div>
                                         <div className={cx('pro-price')}>
                                             <div className={cx('current-price')}>
-                                                <Skeleton animation="wave" variant="rectangular" width='30%' height={20} />
+                                                <Skeleton
+                                                    animation="wave"
+                                                    variant="rectangular"
+                                                    width="30%"
+                                                    height={20}
+                                                />
                                             </div>
                                             <div className={cx('original-price')}>
-                                                <Skeleton animation="wave" variant="rectangular" width='50%' height={20} />
+                                                <Skeleton
+                                                    animation="wave"
+                                                    variant="rectangular"
+                                                    width="50%"
+                                                    height={20}
+                                                />
                                             </div>
                                         </div>
-                                        <div className='containerd'>
-                                            <div className='row g-0'>
-                                                <div className='col-5'>
+                                        <div className="containerd">
+                                            <div className="row g-0">
+                                                <div className="col-5">
                                                     <div className={cx('pro-short-desc')}>
-                                                        <Skeleton className='mb-1' animation="wave" variant="rectangular" width='80%' height={20} />
-                                                        <Skeleton className='mb-1' animation="wave" variant="rectangular" width='75%' height={20} />
-                                                        <Skeleton className='mb-1' animation="wave" variant="rectangular" width='85%' height={20} />
-                                                        <Skeleton className='mb-1' animation="wave" variant="rectangular" width='70%' height={20} />
-                                                        <Skeleton className='mb-1' animation="wave" variant="rectangular" width='60%' height={20} />
-                                                        <Skeleton className='mb-1' animation="wave" variant="rectangular" width='60%' height={20} />
+                                                        <Skeleton
+                                                            className="mb-1"
+                                                            animation="wave"
+                                                            variant="rectangular"
+                                                            width="80%"
+                                                            height={20}
+                                                        />
+                                                        <Skeleton
+                                                            className="mb-1"
+                                                            animation="wave"
+                                                            variant="rectangular"
+                                                            width="75%"
+                                                            height={20}
+                                                        />
+                                                        <Skeleton
+                                                            className="mb-1"
+                                                            animation="wave"
+                                                            variant="rectangular"
+                                                            width="85%"
+                                                            height={20}
+                                                        />
+                                                        <Skeleton
+                                                            className="mb-1"
+                                                            animation="wave"
+                                                            variant="rectangular"
+                                                            width="70%"
+                                                            height={20}
+                                                        />
+                                                        <Skeleton
+                                                            className="mb-1"
+                                                            animation="wave"
+                                                            variant="rectangular"
+                                                            width="60%"
+                                                            height={20}
+                                                        />
+                                                        <Skeleton
+                                                            className="mb-1"
+                                                            animation="wave"
+                                                            variant="rectangular"
+                                                            width="60%"
+                                                            height={20}
+                                                        />
                                                     </div>
                                                 </div>
-                                                <div className='col-7'>
+                                                <div className="col-7">
                                                     <div className={cx('pro-rating')}>
-                                                        <Skeleton animation="wave" variant="rectangular" width='20%' height={20} />
+                                                        <Skeleton
+                                                            animation="wave"
+                                                            variant="rectangular"
+                                                            width="20%"
+                                                            height={20}
+                                                        />
                                                     </div>
 
                                                     <div className={cx('product-quantity')}>
-                                                        <Skeleton animation="wave" variant="rectangular" width='60%' height={40} />
+                                                        <Skeleton
+                                                            animation="wave"
+                                                            variant="rectangular"
+                                                            width="60%"
+                                                            height={40}
+                                                        />
                                                     </div>
 
-                                                    <div className='product-actions'>
-                                                        <div className='row g-2'>
-                                                            <div className='col-12'>
-                                                                <Skeleton animation="wave" variant="rounded" width='100%' height={40} />
+                                                    <div className="product-actions">
+                                                        <div className="row g-2">
+                                                            <div className="col-12">
+                                                                <Skeleton
+                                                                    animation="wave"
+                                                                    variant="rounded"
+                                                                    width="100%"
+                                                                    height={40}
+                                                                />
                                                             </div>
-                                                            <div className='col-12'>
-                                                                <Skeleton animation="wave" variant="rounded" width='50%' height={40} />
+                                                            <div className="col-12">
+                                                                <Skeleton
+                                                                    animation="wave"
+                                                                    variant="rounded"
+                                                                    width="50%"
+                                                                    height={40}
+                                                                />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -500,40 +618,62 @@ function BookDetails() {
                             </div>
                         </main>
                     </div>
-                    <div className='container'>
-                        <div className='row'>
-                            <div className='col-8'>
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-8">
                                 <div className={cx('product-description-wrapper')}>
                                     <h2 className={cx('tile')}>
-                                        <Skeleton animation="wave" variant="rounded" width='20%' height={30} />
+                                        <Skeleton animation="wave" variant="rounded" width="20%" height={30} />
                                     </h2>
                                     <div className={cx('description')}>
                                         {Array.from({ length: 8 }).map((_, index) => (
-                                            <div key={index} className='mb-2'>
-                                                <Skeleton animation="wave" variant="rounded" width='100%' height={18} />
+                                            <div key={index} className="mb-2">
+                                                <Skeleton animation="wave" variant="rounded" width="100%" height={18} />
                                             </div>
                                         ))}
                                     </div>
                                 </div>
                             </div>
-                            <div className='col-4'>
+                            <div className="col-4">
                                 <div className={cx('product-author-wrapper')}>
                                     <h2 className={cx('tile')}>
-                                        <Skeleton animation="wave" variant="rounded" width='40%' height={30} />
+                                        <Skeleton animation="wave" variant="rounded" width="40%" height={30} />
                                     </h2>
-                                    <div className='row gy-2'>
+                                    <div className="row gy-2">
                                         {Array.from({ length: 2 }).map((_, index) => (
-                                            <div key={index} className='col-12' style={{ display: 'flex', alignItems: 'center' }}>
+                                            <div
+                                                key={index}
+                                                className="col-12"
+                                                style={{ display: 'flex', alignItems: 'center' }}
+                                            >
                                                 <Skeleton animation="wave" variant="rounded" width={80} height={100} />
                                                 <div style={{ width: '100%', marginLeft: '5px' }}>
-                                                    <Skeleton className='mb-1' animation="wave" variant="rounded" width='100%' height={20} />
-                                                    <Skeleton className='mb-1' animation="wave" variant="rounded" width='70%' height={20} />
-                                                    <Skeleton className='mb-1' animation="wave" variant="rounded" width='50%' height={20} />
+                                                    <Skeleton
+                                                        className="mb-1"
+                                                        animation="wave"
+                                                        variant="rounded"
+                                                        width="100%"
+                                                        height={20}
+                                                    />
+                                                    <Skeleton
+                                                        className="mb-1"
+                                                        animation="wave"
+                                                        variant="rounded"
+                                                        width="70%"
+                                                        height={20}
+                                                    />
+                                                    <Skeleton
+                                                        className="mb-1"
+                                                        animation="wave"
+                                                        variant="rounded"
+                                                        width="50%"
+                                                        height={20}
+                                                    />
                                                 </div>
                                             </div>
                                         ))}
-                                        <div className='col-12 d-flex justify-content-center'>
-                                            <Skeleton animation="wave" variant="rounded" width='30%' height={30} />
+                                        <div className="col-12 d-flex justify-content-center">
+                                            <Skeleton animation="wave" variant="rounded" width="30%" height={30} />
                                         </div>
                                     </div>
                                 </div>
@@ -541,20 +681,11 @@ function BookDetails() {
                         </div>
                     </div>
                 </>
-            )
-            }
-            <HomeProduct
-                title={'ƯU ĐÃI'}
-                sortBy={'discount'}
-                moreLink={'/search?sortBy=discount'}
-            />
-            <HomeProduct
-                title={'SÁCH MỚI'}
-                sortBy={'createdDate'}
-                moreLink={'/search?sortBy=createdDate'}
-            />
+            )}
+            <HomeProduct title={'ƯU ĐÃI'} sortBy={'discount'} moreLink={'/search?sortBy=discount'} />
+            <HomeProduct title={'SÁCH MỚI'} sortBy={'createdDate'} moreLink={'/search?sortBy=createdDate'} />
         </>
-    )
+    );
 }
 
 export default BookDetails;

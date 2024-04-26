@@ -4,12 +4,11 @@ import Product from '~/components/Common/Product';
 import { getFavoriteProducts } from '~/services/customerService';
 
 import Style from './Favorite.module.scss';
-import classNames from "classnames/bind";
+import classNames from 'classnames/bind';
 
 const cx = classNames.bind(Style);
 
 function Favorite() {
-
     const [data, setData] = useState([]);
 
     useEffect(() => {
@@ -33,11 +32,11 @@ function Favorite() {
                 {data.length > 0 ? (
                     data.map((product) => (
                         <div key={product.productId} className="col-2-4 mb-4">
-                            <Product data={product} ></Product>
+                            <Product data={product}></Product>
                         </div>
                     ))
                 ) : (
-                    <div className='pb-4'>Hiện tại bạn chưa có sản phẩm yêu thích nào</div>
+                    <div className="pb-4">Hiện tại bạn chưa có sản phẩm yêu thích nào</div>
                 )}
             </div>
         </div>

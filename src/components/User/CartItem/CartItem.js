@@ -14,7 +14,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const cx = classNames.bind(Style);
 
 function CartItem({ data: product, onUpdateQuantity, onDeleteProduct, checked, onChecked }) {
-
     const [quantity, setQuantity] = useState(product.quantity);
     const [isUpdate, setIsUpdate] = useState(false);
 
@@ -34,16 +33,14 @@ function CartItem({ data: product, onUpdateQuantity, onDeleteProduct, checked, o
 
     const handleCheckedChange = () => {
         onChecked(product.productId);
-    }
+    };
 
     const handleRemoveItem = () => {
         onDeleteProduct(product.productId);
-    }
+    };
 
     const calculateDiscountedPrice = () => {
-        return product.discount > 0
-            ? product.price - (product.price * product.discount / 100)
-            : product.price;
+        return product.discount > 0 ? product.price - (product.price * product.discount) / 100 : product.price;
     };
 
     const currentPrice = useMemo(calculateDiscountedPrice, [product.price, product.discount]);
@@ -54,39 +51,48 @@ function CartItem({ data: product, onUpdateQuantity, onDeleteProduct, checked, o
                 <Checkbox checked={checked} onChange={handleCheckedChange} />
             </td>
             <td className={cx('image-cell')}>
-                <Link className={cx('product-link')} to={`/product/${product.productId}`}                >
+                <Link className={cx('product-link')} to={`/product/${product.productId}`}>
                     <img className={cx('product-image')} src={product.image} alt={product.name} />
                 </Link>
             </td>
             <td className={cx('name-cell')}>
-                <Link className={cx('product-name')} to={`/product/${product.productId}`}>{product.name}</Link>
-                {product.discount > 0 && <div className={cx('product-discount')}>Khuyến mãi: Giảm {product.discount}%</div>}
+                <Link className={cx('product-name')} to={`/product/${product.productId}`}>
+                    {product.name}
+                </Link>
+                {product.discount > 0 && (
+                    <div className={cx('product-discount')}>Khuyến mãi: Giảm {product.discount}%</div>
+                )}
             </td>
             <td className={cx('price-cell')}>
-                {product.discount > 0 && <span className={cx('original-price')}><MoneyDisplay amount={product.price} /></span>}
-                <span className={cx('discounted-price')}><MoneyDisplay amount={currentPrice} /></span>
+                {product.discount > 0 && (
+                    <span className={cx('original-price')}>
+                        <MoneyDisplay amount={product.price} />
+                    </span>
+                )}
+                <span className={cx('discounted-price')}>
+                    <MoneyDisplay amount={currentPrice} />
+                </span>
             </td>
             <td className={cx('quantity-control-cell')}>
                 <div className={cx('quantity-control')}>
                     <button className={cx('quantity-button')} onClick={handleDecrement} disabled={isUpdate}>
                         <FontAwesomeIcon icon={faMinus} />
                     </button>
-                    <input
-                        className={cx('quantity-input')}
-                        type='text'
-                        value={quantity}
-                        disabled
-                    />
+                    <input className={cx('quantity-input')} type="text" value={quantity} disabled />
                     <button className={cx('quantity-button')} onClick={handleIncrement} disabled={isUpdate}>
                         <FontAwesomeIcon icon={faPlus} />
                     </button>
                 </div>
             </td>
             <td className={cx('total-price-cell')}>
-                <span className={cx('product-price')}><MoneyDisplay amount={quantity * currentPrice} /></span>
+                <span className={cx('product-price')}>
+                    <MoneyDisplay amount={quantity * currentPrice} />
+                </span>
             </td>
             <td className={cx('remove-cell')}>
-                <button className={cx('delete-button')} onClick={handleRemoveItem}>Xóa</button>
+                <button className={cx('delete-button')} onClick={handleRemoveItem}>
+                    Xóa
+                </button>
             </td>
         </tr>
     );

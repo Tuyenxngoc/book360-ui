@@ -7,7 +7,6 @@ import { getTotalProducts } from '~/services/cartService';
 const CartContext = createContext();
 
 const CartProvider = ({ children }) => {
-
     const { isAuthenticated } = useAuth();
     const [totalProducts, setTotalProducts] = useState(0);
 
@@ -30,11 +29,7 @@ const CartProvider = ({ children }) => {
         updateTotalProducts,
     };
 
-    return (
-        <CartContext.Provider value={contextValues}>
-            {children}
-        </CartContext.Provider>
-    );
+    return <CartContext.Provider value={contextValues}>{children}</CartContext.Provider>;
 };
 
 CartProvider.propTypes = {

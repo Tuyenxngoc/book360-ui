@@ -1,11 +1,10 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { toast } from "react-toastify";
-import ProductList from "~/components/User/ProductList";
-import { getProductByAuthorId } from "~/services/productService";
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import ProductList from '~/components/User/ProductList';
+import { getProductByAuthorId } from '~/services/productService';
 
 function Author() {
-
     const { authorId } = useParams();
 
     const [data, setData] = useState({});
@@ -14,7 +13,7 @@ function Author() {
         isAscending: false,
         pageNum: 1,
         pageSize: 10,
-    })
+    });
 
     const handlePageChange = (pageNumber) => {
         setFilters((prevFilters) => ({ ...prevFilters, pageNum: pageNumber }));
@@ -40,7 +39,7 @@ function Author() {
 
     return (
         <ProductList
-            currentPage='Kết quả tìm kiếm'
+            currentPage="Kết quả tìm kiếm"
             products={data.items}
             pagination={data.meta}
             filters={filters}

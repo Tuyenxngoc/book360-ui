@@ -21,10 +21,9 @@ const defaultValue = {
     isAscending: false,
     pageNum: 0,
     pageSize: 10,
-}
+};
 
 function UsersDashboard() {
-
     const navigate = useNavigate();
     const [dataUsers, setDataUsers] = useState([]);
     const [meta, setMeta] = useState({});
@@ -45,7 +44,7 @@ function UsersDashboard() {
             .catch((error) => {
                 toast.error('Đã có lỗi xảy ra khi lấy dữ liệu khách hàng');
             });
-    }
+    };
 
     useEffect(() => {
         fetchListUser();
@@ -54,25 +53,25 @@ function UsersDashboard() {
 
     const handleCreateUser = () => {
         navigate(routes.createUser);
-    }
+    };
     const handleChangePage = (event, newPage) => {
         setFilters({ ...filters, pageNum: newPage });
     };
 
     const handleChangeRowsPerPage = (event) => {
-        setFilters({ ...filters, pageNum: 0, pageSize: parseInt(event.target.value, 10) })
+        setFilters({ ...filters, pageNum: 0, pageSize: parseInt(event.target.value, 10) });
     };
 
     return (
-        <div className='container my-3'>
-            <div className='row justify-content-center'>
-                <div className='col-10'>
+        <div className="container my-3">
+            <div className="row justify-content-center">
+                <div className="col-10">
                     <div className={cx('list-main')}>
                         <div className={cx('header')}>
                             <div className={cx('title')}>{dataUsers.length} Khách hàng</div>
                             <Button
-                                size='small'
-                                variant='contained'
+                                size="small"
+                                variant="contained"
                                 startIcon={<FontAwesomeIcon icon={faPlus} />}
                                 onClick={handleCreateUser}
                             >
@@ -81,26 +80,28 @@ function UsersDashboard() {
                         </div>
 
                         <div className={cx('users-filter-card')}>
-                            <div className='row gy-3'>
-                                <div className='col-12'>
+                            <div className="row gy-3">
+                                <div className="col-12">
                                     <div className={cx('search-section')}>
                                         <Input
-                                            placeholder='Nhập tên cần tìm'
+                                            placeholder="Nhập tên cần tìm"
                                             allowClear
                                             value={filters.keyword}
                                             onChange={(e) => setFilters({ ...filters, keyword: e.target.value })}
                                         />
-                                        <Button size='small' variant='contained' onClick={handleSearch}>Tìm kiếm</Button>
+                                        <Button size="small" variant="contained" onClick={handleSearch}>
+                                            Tìm kiếm
+                                        </Button>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div className='content'>
+                        <div className="content">
                             <TableUsers listUsers={dataUsers} fetchListUser={fetchListUser} />
                             <TablePagination
                                 className={cx('table-pagination')}
-                                component='div'
+                                component="div"
                                 count={meta.totalElements || 1}
                                 page={filters.pageNum}
                                 onPageChange={handleChangePage}

@@ -8,14 +8,12 @@ function UserDashboard({ children }) {
     return (
         <>
             <Header></Header>
-            <main className='container my-3'>
-                <div className='row'>
-                    <div className='col-2'>
+            <main className="container my-3">
+                <div className="row">
+                    <div className="col-2">
                         <SideBar />
                     </div>
-                    <div className='col-10'>
-                        {children}
-                    </div>
+                    <div className="col-10">{children}</div>
                 </div>
             </main>
             <Footer></Footer>

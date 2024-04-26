@@ -26,37 +26,38 @@ import { customerUpload } from '~/services/customerService';
 const { TextArea } = Input;
 const { Dragger } = Upload;
 
-
 const cx = classNames.bind(Style);
 
 function inputProps(isError, message) {
     if (isError) {
-        return { status: 'error', placeholder: message, };
+        return { status: 'error', placeholder: message };
     }
 }
 
 const defaultValue = {
     fullName: '',
     biography: '',
-    avatar: ''
-}
+    avatar: '',
+};
 
 const validationSchema = yup.object({
-    fullName: yup.string()
+    fullName: yup
+        .string()
         .min(3, 'Tên tác giả tối thiểu 3 kí tự')
         .max(120, 'Tên tác giả tối đa 120 kí tự')
         .required('Tên tác giả là bắt buộc'),
 
-    biography: yup.string().trim().nullable()
+    biography: yup
+        .string()
+        .trim()
+        .nullable()
         .min(10, 'Mô tả tiểu sử quá ngắn. Vui lòng nhập ít nhất 10 kí tự.')
         .max(3000, 'Mô tả tiểu sử quá dài. Vui lòng nhập tối đa 3000 kí tự.'),
 
-    avatar: yup.string().trim().nullable()
-        .url('Vui lòng nhập một URL hợp lệ'),
+    avatar: yup.string().trim().nullable().url('Vui lòng nhập một URL hợp lệ'),
 });
 
 function AuthorForm() {
-
     const navigate = useNavigate();
     const { authorId } = useParams();
     const [loading, setLoading] = useState(false);
@@ -78,10 +79,12 @@ function AuthorForm() {
                     formik.setValues({
                         fullName,
                         biography,
-                        avatar
-                    })
+                        avatar,
+                    });
                 })
-                .catch((error) => { console.log(error); })
+                .catch((error) => {
+                    console.log(error);
+                });
         } else {
             formik.setValues(defaultValue);
         }
@@ -123,36 +126,38 @@ function AuthorForm() {
                     toast.error('Có lỗi xảy ra');
                 }
             })
-            .finally(() => { setLoading(false); });
-    }
+            .finally(() => {
+                setLoading(false);
+            });
+    };
 
     const handleClose = () => {
         navigate(routes.viewAuthors, { replace: true });
-    }
+    };
 
     const handleRemoveImage = () => {
         formik.setFieldValue('avatar', '');
-    }
+    };
 
     return (
-        <div className='container my-3'>
-            <div className='row justify-content-center'>
-                <div className='col-10'>
+        <div className="container my-3">
+            <div className="row justify-content-center">
+                <div className="col-10">
                     <div className={cx('panel-wrapper')}>
                         <div className={cx('panel-header')}>
-                            <div className={cx('panel-title')}>
-                                Thông tin cơ bản
-                            </div>
+                            <div className={cx('panel-title')}>Thông tin cơ bản</div>
                         </div>
-                        <div className='panel-content'>
+                        <div className="panel-content">
                             <div className={cx('form-group')}>
-                                <label className={cx('form-label')} htmlFor='inputFullName'><span>*</span>Tên tác giả</label>
+                                <label className={cx('form-label')} htmlFor="inputFullName">
+                                    <span>*</span>Tên tác giả
+                                </label>
                                 <div className={cx('form-input')}>
                                     <Input
-                                        id='inputFullName'
-                                        name='fullName'
-                                        size='large'
-                                        placeholder='Vui lòng nhập vào'
+                                        id="inputFullName"
+                                        name="fullName"
+                                        size="large"
+                                        placeholder="Vui lòng nhập vào"
                                         value={formik.values.fullName}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
@@ -165,18 +170,20 @@ function AuthorForm() {
                             </div>
 
                             <div className={cx('form-group')}>
-                                <label className={cx('form-label')} htmlFor='formControlTextarea'>Tiểu sử</label>
+                                <label className={cx('form-label')} htmlFor="formControlTextarea">
+                                    Tiểu sử
+                                </label>
                                 <div className={cx('form-input')}>
                                     <TextArea
-                                        id='formControlTextarea'
-                                        name='biography'
+                                        id="formControlTextarea"
+                                        name="biography"
                                         showCount
                                         maxLength={3000}
                                         value={formik.values.biography}
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
                                         {...inputProps(formik.touched.biography && Boolean(formik.errors.biography))}
-                                        style={{ height: 100, resize: 'none', }}
+                                        style={{ height: 100, resize: 'none' }}
                                     />
                                     {formik.touched.biography && formik.errors.biography && (
                                         <FormHelperText error>{formik.errors.biography}</FormHelperText>
@@ -185,13 +192,18 @@ function AuthorForm() {
                             </div>
 
                             <div className={cx('form-group')}>
-                                <label className={cx('form-label')} htmlFor='inputAvatar'>Hình ảnh</label>
+                                <label className={cx('form-label')} htmlFor="inputAvatar">
+                                    Hình ảnh
+                                </label>
                                 <div className={cx('form-input')}>
                                     {formik.values.avatar ? (
-                                        <div className={cx('form-upload-image')} >
-                                            <img className={cx('image-upload')} src={formik.values.avatar} alt='' />
+                                        <div className={cx('form-upload-image')}>
+                                            <img className={cx('image-upload')} src={formik.values.avatar} alt="" />
                                             <div className={cx('image-tools')}>
-                                                <button onClick={() => handleRemoveImage()} className={cx('delete-image')}>
+                                                <button
+                                                    onClick={() => handleRemoveImage()}
+                                                    className={cx('delete-image')}
+                                                >
                                                     <FontAwesomeIcon icon={faTrashCan} />
                                                 </button>
                                             </div>
@@ -199,18 +211,19 @@ function AuthorForm() {
                                     ) : (
                                         <>
                                             <Dragger {...props}>
-                                                <p className='ant-upload-drag-icon'>
+                                                <p className="ant-upload-drag-icon">
                                                     <InboxOutlined />
                                                 </p>
-                                                <p className='ant-upload-text'>Nhấp hoặc kéo tệp vào khu vực này để tải lên</p>
-                                                <p className='ant-upload-hint'>Kích thước đề xuất [200, 200]</p>
+                                                <p className="ant-upload-text">
+                                                    Nhấp hoặc kéo tệp vào khu vực này để tải lên
+                                                </p>
+                                                <p className="ant-upload-hint">Kích thước đề xuất [200, 200]</p>
                                             </Dragger>
                                             {formik.touched.avatar && formik.errors.avatar && (
                                                 <FormHelperText error>{formik.errors.avatar}</FormHelperText>
                                             )}
                                         </>
-                                    )
-                                    }
+                                    )}
                                 </div>
                             </div>
 
@@ -223,7 +236,7 @@ function AuthorForm() {
                                     handleSubmit={handleClose}
                                 />
                                 <Button
-                                    variant='outlined'
+                                    variant="outlined"
                                     startIcon={<FontAwesomeIcon icon={faArrowLeft} />}
                                     onClick={() => setShowDialog(true)}
                                     sx={{ height: 35 }}
@@ -232,7 +245,7 @@ function AuthorForm() {
                                 </Button>
                                 <LoadingButton
                                     loading={loading}
-                                    variant='contained'
+                                    variant="contained"
                                     startIcon={<FontAwesomeIcon icon={faSave} />}
                                     onClick={formik.handleSubmit}
                                     sx={{ height: 35, marginLeft: '10px' }}

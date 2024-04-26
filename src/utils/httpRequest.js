@@ -44,7 +44,7 @@ axiosPrivate.interceptors.request.use(
         }
         return config;
     },
-    (error) => Promise.reject(error)
+    (error) => Promise.reject(error),
 );
 
 // Thêm interceptor cho mọi response
@@ -65,7 +65,7 @@ axiosPrivate.interceptors.response.use(
             }
         }
         return Promise.reject(error);
-    }
+    },
 );
 
 export default httpRequest;

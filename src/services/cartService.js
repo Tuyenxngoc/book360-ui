@@ -1,11 +1,11 @@
-import { axiosPrivate } from "~/utils/httpRequest"
+import { axiosPrivate } from '~/utils/httpRequest';
 
 export const getTotalProducts = () => {
     return axiosPrivate.get('cart/product/total');
 };
 
 export const addProductToCart = (productId, quantity) => {
-    const data = { productId, quantity }
+    const data = { productId, quantity };
     return axiosPrivate.post('cart/product/add', data);
 };
 

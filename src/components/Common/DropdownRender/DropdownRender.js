@@ -1,6 +1,6 @@
-import { CheckOutlined, CloseOutlined, PlusOutlined } from "@ant-design/icons";
-import { Button, Divider, Input } from "antd";
-import { useRef, useState } from "react";
+import { CheckOutlined, CloseOutlined, PlusOutlined } from '@ant-design/icons';
+import { Button, Divider, Input } from 'antd';
+import { useRef, useState } from 'react';
 
 import Style from './DropdownRender.module.scss';
 import classNames from 'classnames/bind';
@@ -10,7 +10,6 @@ import PropTypes from 'prop-types';
 const cx = classNames.bind(Style);
 
 function DropdownRender({ menu, field, setFieldValue, options, customValues, setCustomValues }) {
-
     const [value, setValue] = useState('');
     const [isShowInput, setIsShowInput] = useState(false);
     const inputRef = useRef(null);
@@ -19,7 +18,7 @@ function DropdownRender({ menu, field, setFieldValue, options, customValues, set
         e.preventDefault();
         setFieldValue(field, value);
         // Check if the value already exists in the options array
-        const isValueExist = options.some(option => option.value === value);
+        const isValueExist = options.some((option) => option.value === value);
         if (!isValueExist) {
             const newValues = [...customValues, { value: value, label: value }];
             setCustomValues(newValues);
@@ -45,7 +44,7 @@ function DropdownRender({ menu, field, setFieldValue, options, customValues, set
     return (
         <>
             {menu}
-            <Divider style={{ margin: '8px 0', }} />
+            <Divider style={{ margin: '8px 0' }} />
             <div className={cx('dropdown-container')}>
                 {isShowInput ? (
                     <div className={cx('input-container')}>
@@ -92,13 +91,13 @@ DropdownRender.propTypes = {
         PropTypes.shape({
             value: PropTypes.string.isRequired,
             label: PropTypes.string.isRequired,
-        })
+        }),
     ).isRequired,
     customValues: PropTypes.arrayOf(
         PropTypes.shape({
             value: PropTypes.string.isRequired,
             label: PropTypes.string.isRequired,
-        })
+        }),
     ).isRequired,
     setCustomValues: PropTypes.func.isRequired,
 };

@@ -1,1 +1,1 @@
-export { default } from './MoneyDisplay'
+export { default } from './MoneyDisplay';

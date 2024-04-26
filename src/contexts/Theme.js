@@ -22,8 +22,8 @@ const antdConfig = {
             colorPrimary: '#00afef',
         },
     },
-    locale: viVnAntd
-}
+    locale: viVnAntd,
+};
 
 export { antdConfig };
 export default theme;

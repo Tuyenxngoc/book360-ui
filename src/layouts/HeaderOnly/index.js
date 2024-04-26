@@ -9,7 +9,6 @@ function HeaderOnly({ children }) {
             {children}
         </>
     );
-
 }
 
 HeaderOnly.propTypes = {

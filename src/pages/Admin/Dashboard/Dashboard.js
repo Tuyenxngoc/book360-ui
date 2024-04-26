@@ -161,7 +161,7 @@ const TODO = [
     { lable: 'Đã xử lý', link: '/admin/order?type=DELIVERED', key: 'deliveringCount' },
     { lable: 'Đơn hủy', link: '/admin/order?type=CANCELLED', key: 'cancelledCount' },
     { lable: 'Sản phẩm hết hàng', link: '/admin/product', key: 'productSoldOut' },
-]
+];
 
 const customer = [
     {
@@ -203,14 +203,13 @@ const customer = [
 
 function formatNumberWithPercent(value) {
     if (typeof value !== 'undefined' && value !== null && !isNaN(value)) {
-        return value.toFixed(2) + "%";
+        return value.toFixed(2) + '%';
     } else {
-        return "0.00 %";
+        return '0.00 %';
     }
 }
 
 function Dashboard() {
-
     const [countCustomer, setCountCustomer] = useState(0);
     const [countProducts, setCountProducts] = useState(0);
     const [countBills, setCountBills] = useState(0);
@@ -225,7 +224,7 @@ function Dashboard() {
                     getCountCustomer(),
                     getStockQuantity(),
                     getCountBill(),
-                    getTodos()
+                    getTodos(),
                 ]);
 
                 setCountCustomer(customerResponse.data.data);
@@ -244,21 +243,23 @@ function Dashboard() {
             })
             .catch((error) => {
                 toast.error('Đã có lỗi xảy ra khi lấy dữ liệu.');
-            })
+            });
     }, []);
 
     return (
-        <div className='container mt-2'>
-            <div className='row g-2'>
-                <div className='col-12'>
-                    <Space size={20} direction='vertical'>
-                        <Space direction='horizontal'
+        <div className="container mt-2">
+            <div className="row g-2">
+                <div className="col-12">
+                    <Space size={20} direction="vertical">
+                        <Space
+                            direction="horizontal"
                             style={{
                                 display: 'flex',
                                 justifyContent: 'space-around',
                                 alignItems: 'center',
-                                width: '100%'
-                            }}>
+                                width: '100%',
+                            }}
+                        >
                             <DashBoardCard
                                 icon={
                                     <ShoppingCartOutlined
@@ -327,25 +328,22 @@ function Dashboard() {
                     </Space>
                 </div>
 
-                <div className='col-12'>
-                    <div className='row g-2'>
-                        <div className='col-8'>
-                            <div className='row g-2'>
-                                <div className='col-12'>
+                <div className="col-12">
+                    <div className="row g-2">
+                        <div className="col-8">
+                            <div className="row g-2">
+                                <div className="col-12">
                                     <div className={cx('cart')}>
                                         <div className={cx('title')}>
                                             Danh sách cần làm
                                             <p className={cx('card-tips')}> Những việc bạn sẽ phải làm </p>
                                         </div>
 
-                                        <div className='cart-content'>
-                                            <div className='row'>
+                                        <div className="cart-content">
+                                            <div className="row">
                                                 {TODO.map((item, index) => (
                                                     <div key={index} className={cx('cart-item', 'col-3')}>
-                                                        <Link
-                                                            to={item.link}
-                                                            className={cx('cart-item-link')}
-                                                        >
+                                                        <Link to={item.link} className={cx('cart-item-link')}>
                                                             <p className={cx('item-title')}>{todos[item.key]}</p>
                                                             <span className={cx('item-desc')}>{item.lable}</span>
                                                         </Link>
@@ -355,56 +353,86 @@ function Dashboard() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className='col-12'>
+                                <div className="col-12">
                                     <div className={cx('cart')}>
                                         <div className={cx('title')}>
                                             Phân Tích Bán Hàng
-                                            <p className={cx('card-tips')}> Tổng quan dữ liệu của shop đối với đơn hàng đã tạo </p>
+                                            <p className={cx('card-tips')}>
+                                                {' '}
+                                                Tổng quan dữ liệu của shop đối với đơn hàng đã tạo{' '}
+                                            </p>
                                         </div>
 
-                                        <div className='cart-content'>
-                                            <div className='row'>
-                                                <div className='col-7' style={{ height: '300px' }}>
-                                                    <ResponsiveContainer width="100%" height='100%'>
-                                                        <LineChart
-                                                            data={data.timeSeries}
-                                                        >
+                                        <div className="cart-content">
+                                            <div className="row">
+                                                <div className="col-7" style={{ height: '300px' }}>
+                                                    <ResponsiveContainer width="100%" height="100%">
+                                                        <LineChart data={data.timeSeries}>
                                                             <CartesianGrid horizontal={false} vertical={false} />
-                                                            <XAxis dataKey='timestamp' type='number' />
+                                                            <XAxis dataKey="timestamp" type="number" />
                                                             <YAxis />
                                                             <Tooltip />
-                                                            <Line name='Số đơn' dataKey='value' stroke='#78abfc' dot={false} />
+                                                            <Line
+                                                                name="Số đơn"
+                                                                dataKey="value"
+                                                                stroke="#78abfc"
+                                                                dot={false}
+                                                            />
                                                         </LineChart>
                                                     </ResponsiveContainer>
                                                 </div>
-                                                <div className='col-5'>
-                                                    <div className='row gy-5'>
-                                                        <div className='col-6'>
+                                                <div className="col-5">
+                                                    <div className="row gy-5">
+                                                        <div className="col-6">
                                                             <div className={cx('item-box')}>
                                                                 <div className={cx('item-title')}> Doanh số </div>
-                                                                <div className={cx('item-number')}> <MoneyDisplay amount={data.sales || 0} /> </div>
-                                                                <div className={cx('item-increase')}> Vs hôm qua {formatNumberWithPercent(data.salesPctDiff)}</div>
+                                                                <div className={cx('item-number')}>
+                                                                    {' '}
+                                                                    <MoneyDisplay amount={data.sales || 0} />{' '}
+                                                                </div>
+                                                                <div className={cx('item-increase')}>
+                                                                    {' '}
+                                                                    Vs hôm qua{' '}
+                                                                    {formatNumberWithPercent(data.salesPctDiff)}
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                        <div className='col-6'>
+                                                        <div className="col-6">
                                                             <div className={cx('item-box')}>
                                                                 <div className={cx('item-title')}> Đơn hàng </div>
-                                                                <div className={cx('item-number')}>  {data.orders} </div>
-                                                                <div className={cx('item-increase')}> Vs hôm qua {formatNumberWithPercent(data.ordersPctDiff)}</div>
+                                                                <div className={cx('item-number')}> {data.orders} </div>
+                                                                <div className={cx('item-increase')}>
+                                                                    {' '}
+                                                                    Vs hôm qua{' '}
+                                                                    {formatNumberWithPercent(data.ordersPctDiff)}
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                        <div className='col-6'>
+                                                        <div className="col-6">
                                                             <div className={cx('item-box')}>
-                                                                <div className={cx('item-title')}> Số lượng đã bán </div>
-                                                                <div className={cx('item-number')}> {data.products} </div>
-                                                                <div className={cx('item-increase')}> Vs hôm qua {formatNumberWithPercent(data.productsPctDiff)}</div>
+                                                                <div className={cx('item-title')}>
+                                                                    {' '}
+                                                                    Số lượng đã bán{' '}
+                                                                </div>
+                                                                <div className={cx('item-number')}>
+                                                                    {' '}
+                                                                    {data.products}{' '}
+                                                                </div>
+                                                                <div className={cx('item-increase')}>
+                                                                    {' '}
+                                                                    Vs hôm qua{' '}
+                                                                    {formatNumberWithPercent(data.productsPctDiff)}
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                        <div className='col-6'>
+                                                        <div className="col-6">
                                                             <div className={cx('item-box')}>
                                                                 <div className={cx('item-title')}> Lượt truy cập </div>
                                                                 <div className={cx('item-number')}> 0 </div>
-                                                                <div className={cx('item-increase')}> Vs hôm qua 0,00%</div>
+                                                                <div className={cx('item-increase')}>
+                                                                    {' '}
+                                                                    Vs hôm qua 0,00%
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -415,22 +443,26 @@ function Dashboard() {
                                 </div>
                             </div>
                         </div>
-                        <div className='col-4'>
-                            <div className='row'>
-                                <div className='col-12'>
+                        <div className="col-4">
+                            <div className="row">
+                                <div className="col-12">
                                     <div className={cx('cart')}>
-                                        <div className='cart-header'>
+                                        <div className="cart-header">
                                             <div className={cx('title')}>
                                                 Tin nhắn
                                                 <p className={cx('card-tips')}></p>
                                             </div>
                                         </div>
-                                        <div className='cart-content'>
-                                            <div className='row'>
+                                        <div className="cart-content">
+                                            <div className="row">
                                                 {customer.map((item, index) => (
                                                     <div key={index} className={cx('user-cart-item', 'col-12')}>
                                                         <div className={cx('user-info-container')}>
-                                                            <Avatar className={cx('user-avatar')} alt={item.name} src={item.avatar} />
+                                                            <Avatar
+                                                                className={cx('user-avatar')}
+                                                                alt={item.name}
+                                                                src={item.avatar}
+                                                            />
                                                             <div className={cx('user-info')}>
                                                                 <h6>{item.name}</h6>
                                                                 <span>{item.message}</span>
@@ -450,12 +482,7 @@ function Dashboard() {
                         </div>
                     </div>
                 </div>
-
-
-
             </div>
-
-
         </div>
     );
 }

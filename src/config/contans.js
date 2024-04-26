@@ -1,9 +1,9 @@
 export const API_URL = process.env.REACT_APP_BASE_URL;
 
 export const ROLES = {
-    'User': 'ROLE_USER',
-    'Admin': 'ROLE_ADMIN',
-}
+    User: 'ROLE_USER',
+    Admin: 'ROLE_ADMIN',
+};
 
 export const billStatus = [
     {
@@ -37,8 +37,8 @@ export const billStatus = [
     {
         label: 'Giao không thành công',
         key: 'DELIVERY_FAILED',
-    }
-]
+    },
+];
 
 export const sizes = [
     { value: '8x10', label: '8x10' },
@@ -48,13 +48,11 @@ export const sizes = [
     { value: '18x24', label: '18x24' },
 ];
 
-export const publishers = [
-    { value: 'Kim Đồng', label: 'Kim Đồng' },
-];
+export const publishers = [{ value: 'Kim Đồng', label: 'Kim Đồng' }];
 
 export const coverTypes = [
     { value: 'Bìa cứng', label: 'Bìa cứng' },
-    { value: 'Bìa mềm', label: 'Bìa mềm' }
+    { value: 'Bìa mềm', label: 'Bìa mềm' },
 ];
 
 export const ages = [

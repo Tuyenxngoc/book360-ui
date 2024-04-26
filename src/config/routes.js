@@ -62,5 +62,5 @@ const routes = {
 
     accessDenied: '/access-denied',
     notFound: '*',
-}
+};
 export default routes;

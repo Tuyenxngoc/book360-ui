@@ -1,24 +1,32 @@
-import { useState, useEffect } from 'react';
-import { Button, TextField } from '@mui/material';
+import { useState, useEffect, useRef } from 'react';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, RadioGroup, TextField } from '@mui/material';
 import Stomp from 'stompjs';
 import SockJS from 'sockjs-client';
 import useAuth from '~/hooks/useAuth';
 import { getMessages } from '~/services/chatService';
 
-function Chat() {
+import Style from './Chat.module.scss';
+import classNames from 'classnames/bind';
+import ClearIcon from '@mui/icons-material/Clear';
+import SendIcon from '@mui/icons-material/Send';
+
+const cx = classNames.bind(Style);
+
+function Chat({ onClose }) {
     const { customer } = useAuth();
     const [stompClient, setStompClient] = useState(null);
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
+    const contentRef = useRef(null);
 
     useEffect(() => {
         getMessages()
             .then((response) => {
-                setMessages(response.data.data)
+                setMessages(response.data.data);
             })
             .catch((error) => {
                 console.log(error);
-            })
+            });
     }, []);
 
     useEffect(() => {
@@ -39,6 +47,9 @@ function Chat() {
     function onMessageReceived(message) {
         const receivedMessage = JSON.parse(message.body);
         setMessages((prevMessages) => [...prevMessages, receivedMessage]);
+
+        // Cuộn nội dung xuống đầu dòng mới
+        contentRef.current.scrollTop = contentRef.current.scrollHeight;
     }
 
     const sendMessage = () => {
@@ -52,22 +63,46 @@ function Chat() {
         }
     };
 
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            sendMessage();
+        }
+    };
+
     const handleMessageChange = (event) => {
         setMessage(event.target.value);
     };
 
     return (
-        <div>
-            {messages.map((msg, index) => (
-                <div key={index}>{msg.content}</div>
-            ))}
-            <TextField
-                value={message}
-                onChange={handleMessageChange}
-            />
-            <Button onClick={sendMessage} disabled={!message.trim()}>send</Button>
+        <div className={cx('chatContent', 'wrapper')}>
+            <div className={cx('header')}>
+                <div>Chat trực tiếp tại Website</div>
+                <div onClick={onClose}>
+                    <ClearIcon />
+                </div>
+            </div>
+            <div className={cx('content')} ref={contentRef}>
+                {messages.map((msg, index) => (
+                    <div
+                        className={cx('message-block', { 'message-block--mine': msg.senderName === customer.username })}
+                        key={index}
+                    >
+                        <div className={cx('message')}>{msg.content}</div>
+                    </div>
+                ))}
+            </div>
+
+            <div className={cx('chat-action')}>
+                <input
+                    value={message}
+                    onChange={handleMessageChange}
+                    onKeyDown={handleKeyDown}
+                    placeholder="Nhập nội dung..."
+                />
+                {message && <SendIcon onClick={sendMessage} color="primary" />}
+            </div>
         </div>
     );
-};
+}
 
 export default Chat;

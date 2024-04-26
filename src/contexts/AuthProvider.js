@@ -20,12 +20,11 @@ const defaultAuth = {
         phoneNumber: '',
         avatar: '',
         gender: '',
-        dob: ''
-    }
-}
+        dob: '',
+    },
+};
 
 const AuthProvider = ({ children }) => {
-
     const [authData, setAuthData] = useState(defaultAuth);
     const [loading, setLoading] = useState(true);
 
@@ -45,16 +44,7 @@ const AuthProvider = ({ children }) => {
             }
             const response = await getCurrentUserLogin();
             if (response.status === 200) {
-                const {
-                    username,
-                    fullName,
-                    roleName,
-                    email,
-                    phoneNumber,
-                    avatar,
-                    gender,
-                    dob
-                } = response.data.data;
+                const { username, fullName, roleName, email, phoneNumber, avatar, gender, dob } = response.data.data;
                 setAuthData({
                     isAuthenticated: true,
                     customer: {
@@ -65,7 +55,7 @@ const AuthProvider = ({ children }) => {
                         phoneNumber,
                         avatar,
                         gender,
-                        dob
+                        dob,
                     },
                 });
             } else {
@@ -108,14 +98,10 @@ const AuthProvider = ({ children }) => {
     };
 
     if (loading) {
-        return <Loading />
+        return <Loading />;
     }
 
-    return (
-        <AuthContext.Provider value={contextValues}>
-            {children}
-        </AuthContext.Provider>
-    )
+    return <AuthContext.Provider value={contextValues}>{children}</AuthContext.Provider>;
 };
 
 AuthProvider.propTypes = {
@@ -123,4 +109,3 @@ AuthProvider.propTypes = {
 };
 
 export { AuthContext, AuthProvider };
-

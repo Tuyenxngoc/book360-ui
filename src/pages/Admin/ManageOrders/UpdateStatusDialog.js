@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { toast } from 'react-toastify';
-import queryString from 'query-string';
 
 import { Select } from 'antd';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, FormHelperText } from '@mui/material';
@@ -17,7 +16,7 @@ const cx = classNames.bind(Style);
 
 const defaultValues = {
     status: '',
-}
+};
 
 function inputProps(isError) {
     if (isError) {
@@ -35,14 +34,13 @@ const billStatus = [
     { label: 'Đã hủy', value: 'CANCELLED' },
     { label: 'Trả hàng/Hoàn tiền', value: 'REFUND' },
     { label: 'Giao không thành công', value: 'DELIVERY_FAILED' },
-]
+];
 
 const validationSchema = yup.object({
     status: yup.string().required('Vui lòng chọn'),
 });
 
 function UpdateStatusDialog({ open, setOpen, dataOrder, fetchListOrder }) {
-
     const formik = useFormik({
         initialValues: defaultValues,
         validationSchema: validationSchema,
@@ -55,7 +53,7 @@ function UpdateStatusDialog({ open, setOpen, dataOrder, fetchListOrder }) {
         if (open) {
             formik.handleReset();
             if (dataOrder) {
-                const type = billStatus.find(r => r.value === dataOrder.billStatus);
+                const type = billStatus.find((r) => r.value === dataOrder.billStatus);
                 formik.setValues({ status: type?.value || '' });
             }
         }
@@ -67,14 +65,14 @@ function UpdateStatusDialog({ open, setOpen, dataOrder, fetchListOrder }) {
     };
 
     function handleSubmit(values) {
-        const item = billStatus.find(r => r.value === dataOrder.billStatus);
+        const item = billStatus.find((r) => r.value === dataOrder.billStatus);
         if (values.status !== item?.value) {
             updateBillStatus(dataOrder.id, values.status)
-                .then(response => {
+                .then((response) => {
                     fetchListOrder();
                     toast.success('Cập nhật thành công');
                 })
-                .catch(error => toast.error('Đã có lỗi sảy ra'))
+                .catch((error) => toast.error('Đã có lỗi sảy ra'))
                 .finally(() => setOpen(false));
         } else {
             setOpen(false);
@@ -85,15 +83,15 @@ function UpdateStatusDialog({ open, setOpen, dataOrder, fetchListOrder }) {
         <Dialog open={open} onClose={handleClose}>
             <DialogTitle>Trạng thái đơn hàng</DialogTitle>
             <DialogContent sx={{ minWidth: '444px' }}>
-                <div className='row gy-3'>
-                    <div className='col-12'>
+                <div className="row gy-3">
+                    <div className="col-12">
                         <div className={cx('form-group')}>
                             <div className={cx('form-input')}>
                                 <Select
-                                    id='status'
-                                    name='status'
-                                    size='large'
-                                    placeholder='Vui lòng chọn'
+                                    id="status"
+                                    name="status"
+                                    size="large"
+                                    placeholder="Vui lòng chọn"
                                     style={{ width: '100%' }}
                                     popupClassName={cx('form-popup')}
                                     value={formik.values.status || null}

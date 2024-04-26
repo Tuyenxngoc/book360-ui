@@ -8,13 +8,11 @@ function DateTimeDisplay({ datetime }) {
     // Sử dụng date-fns để định dạng ngày tháng năm
     const formattedDateTime = format(parsedDate, 'HH:mm dd-MM-yyyy');
 
-    return (
-        <>{formattedDateTime}</>
-    );
-};
+    return <>{formattedDateTime}</>;
+}
 
 DateTimeDisplay.propTypes = {
     datetime: PropTypes.string.isRequired,
-}
+};
 
 export default DateTimeDisplay;

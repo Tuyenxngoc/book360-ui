@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Skeleton } from "@mui/material";
+import { Skeleton } from '@mui/material';
 
 function Breadcrumbs({ breadcrumbs, currentPage }) {
     return (
@@ -11,17 +11,20 @@ function Breadcrumbs({ breadcrumbs, currentPage }) {
                         <li className="breadcrumb-item">
                             <Link to="/">Trang chủ</Link>
                         </li>
-                        {breadcrumbs && breadcrumbs.map((item, i) => {
-                            return (
-                                <li key={i} className="breadcrumb-item">
-                                    <Link to={item.url}>{item.label}</Link>
-                                </li>
-                            )
-                        })}
-                        <li className="breadcrumb-item active" aria-current="page">{currentPage}</li>
+                        {breadcrumbs &&
+                            breadcrumbs.map((item, i) => {
+                                return (
+                                    <li key={i} className="breadcrumb-item">
+                                        <Link to={item.url}>{item.label}</Link>
+                                    </li>
+                                );
+                            })}
+                        <li className="breadcrumb-item active" aria-current="page">
+                            {currentPage}
+                        </li>
                     </ol>
                 ) : (
-                    <Skeleton animation="wave" variant="rounded" width='50%' height={20} />
+                    <Skeleton animation="wave" variant="rounded" width="50%" height={20} />
                 )}
             </nav>
         </div>
@@ -30,7 +33,7 @@ function Breadcrumbs({ breadcrumbs, currentPage }) {
 
 Breadcrumbs.prototype = {
     breadcrumbs: PropTypes.array,
-    currentPage: PropTypes.string.isRequired
-}
+    currentPage: PropTypes.string.isRequired,
+};
 
 export default Breadcrumbs;

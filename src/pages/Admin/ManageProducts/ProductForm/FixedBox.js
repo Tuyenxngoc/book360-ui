@@ -10,7 +10,6 @@ import { Button } from '@mui/material';
 const cx = classNames.bind(Style);
 
 function FixedBox({ handleSubmit, loading }) {
-
     const navigate = useNavigate();
     const [isAtBottom, setIsAtBottom] = useState(false);
     const [showDialog, setShowDialog] = useState(false);
@@ -32,7 +31,7 @@ function FixedBox({ handleSubmit, loading }) {
 
     const handleClose = () => {
         navigate('/admin/product', { replace: true });
-    }
+    };
 
     return (
         <>
@@ -45,19 +44,17 @@ function FixedBox({ handleSubmit, loading }) {
             />
             <div className={cx('fixed-box', { 'fixed-botom': !isAtBottom })}>
                 <div className={cx('btn-group')}>
-                    <Button variant="outlined" onClick={() => setShowDialog(true)}>Hủy</Button>
-                    <LoadingButton
-                        onClick={() => handleSubmit()}
-                        loading={loading}
-                        variant="contained"
-                    >
+                    <Button variant="outlined" onClick={() => setShowDialog(true)}>
+                        Hủy
+                    </Button>
+                    <LoadingButton onClick={() => handleSubmit()} loading={loading} variant="contained">
                         <span>Lưu</span>
                     </LoadingButton>
                 </div>
             </div>
-            <div className={cx('fix-placeholder', { 'hide': isAtBottom })}></div>
+            <div className={cx('fix-placeholder', { hide: isAtBottom })}></div>
         </>
     );
-};
+}
 
 export default FixedBox;

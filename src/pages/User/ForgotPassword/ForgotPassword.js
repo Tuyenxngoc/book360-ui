@@ -24,18 +24,14 @@ import { useState } from 'react';
 import { LoadingButton } from '@mui/lab';
 
 const validationSchema = yup.object({
-    username: yup.string()
-        .required('Vui lòng nhập tên đăng nhập'),
+    username: yup.string().required('Vui lòng nhập tên đăng nhập'),
 
-    email: yup.string()
-        .email('Định dạng email chưa đúng')
-        .required('Vui lòng nhập email'),
+    email: yup.string().email('Định dạng email chưa đúng').required('Vui lòng nhập email'),
 });
 
 const cx = classNames.bind(Style);
 
 function ForgotPassword() {
-
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState();
 
@@ -49,15 +45,15 @@ function ForgotPassword() {
         } catch (error) {
             let message = '';
             if (!error?.response) {
-                message = ('Máy chủ không phản hồi');
+                message = 'Máy chủ không phản hồi';
             } else {
-                message = ('Có lỗi xảy ra, vui lòng thử lại sau');
+                message = 'Có lỗi xảy ra, vui lòng thử lại sau';
             }
             toast.error(message);
         } finally {
             setIsLoading(false);
         }
-    }
+    };
     const formik = useFormik({
         initialValues: {
             username: '',
@@ -72,57 +68,60 @@ function ForgotPassword() {
     return (
         <div>
             <main className={cx('main')}>
-                <div className='container'>
-                    <div className='row justify-content-center'>
-                        <div className='col-6'>
+                <div className="container">
+                    <div className="row justify-content-center">
+                        <div className="col-6">
                             <div className={cx('navbar-container')}>
                                 <div className={cx('button-back')}>
-                                    <Link to='/login'> <FontAwesomeIcon icon={faArrowLeft} /></Link>
+                                    <Link to="/login">
+                                        {' '}
+                                        <FontAwesomeIcon icon={faArrowLeft} />
+                                    </Link>
                                 </div>
                                 <div className={cx('title')}>Quên mật khẩu</div>
                             </div>
                             <div className={cx('image')}>
-                                <img src={images.logo} alt='logo' />
+                                <img src={images.logo} alt="logo" />
                             </div>
                             <form onSubmit={formik.handleSubmit}>
                                 <TextField
                                     fullWidth
-                                    variant='standard'
-                                    id='username'
-                                    name='username'
-                                    label='Nhập tên tài khoản'
+                                    variant="standard"
+                                    id="username"
+                                    name="username"
+                                    label="Nhập tên tài khoản"
                                     value={formik.values.username}
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                     error={formik.touched.username && Boolean(formik.errors.username)}
                                 />
-                                <p className={cx('message', (formik.touched.username && formik.errors.username) && 'error')}>
+                                <p
+                                    className={cx(
+                                        'message',
+                                        formik.touched.username && formik.errors.username && 'error',
+                                    )}
+                                >
                                     {formik.touched.username && formik.errors.username}
                                     &emsp;
                                 </p>
                                 <TextField
                                     fullWidth
-                                    variant='standard'
-                                    id='email'
-                                    name='email'
-                                    label='Nhập email'
+                                    variant="standard"
+                                    id="email"
+                                    name="email"
+                                    label="Nhập email"
                                     value={formik.values.email}
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                     error={formik.touched.email && Boolean(formik.errors.email)}
                                 />
-                                <p className={cx('message', (formik.touched.email && formik.errors.email) && 'error')}>
-                                    {(formik.touched.email && formik.errors.email)
+                                <p className={cx('message', formik.touched.email && formik.errors.email && 'error')}>
+                                    {formik.touched.email && formik.errors.email
                                         ? formik.errors.email
                                         : '(*) Mật khẩu mới sẽ được gửi qua email này'}
                                 </p>
                                 <div className={cx('forget-btn')}>
-                                    <LoadingButton
-                                        type='submit'
-                                        loading={isLoading}
-                                        variant='contained'
-                                        fullWidth
-                                    >
+                                    <LoadingButton type="submit" loading={isLoading} variant="contained" fullWidth>
                                         <span>Xác nhận</span>
                                     </LoadingButton>
                                 </div>
