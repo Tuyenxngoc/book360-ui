@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, RadioGroup, TextField } from '@mui/material';
 import Stomp from 'stompjs';
 import SockJS from 'sockjs-client';
 import useAuth from '~/hooks/useAuth';
-import { getMessages } from '~/services/chatService';
+import { getChatRooms, getMessages, getSupportUser } from '~/services/chatService';
 
 import Style from './Chat.module.scss';
 import classNames from 'classnames/bind';
+
 import ClearIcon from '@mui/icons-material/Clear';
 import SendIcon from '@mui/icons-material/Send';
 
@@ -20,13 +20,26 @@ function Chat({ onClose }) {
     const contentRef = useRef(null);
 
     useEffect(() => {
-        getMessages()
-            .then((response) => {
-                setMessages(response.data.data);
-            })
-            .catch((error) => {
+        const fetchData = async () => {
+            try {
+                const supportUserResponse = await getSupportUser();
+                let supportUser = supportUserResponse.data.data;
+
+                const chatRoomsResponse = await getChatRooms();
+                let chatRooms = chatRoomsResponse.data.data;
+                if (chatRooms) {
+                    const chatRoom = chatRooms.find((room) => room.recipientName === supportUser);
+                    if (chatRoom) {
+                        const messagesResponse = await getMessages(chatRoom.chatRoomId);
+                        setMessages(messagesResponse.data.data);
+                    }
+                }
+            } catch (error) {
                 console.log(error);
-            });
+            }
+        };
+
+        fetchData();
     }, []);
 
     useEffect(() => {
@@ -57,6 +70,7 @@ function Chat({ onClose }) {
             const chatMessage = {
                 content: message,
                 senderName: customer.username,
+                recipientName: 'tuyenngoc',
             };
             stompClient.send('/app/chat', {}, JSON.stringify(chatMessage));
             setMessage('');

@@ -1,3 +1,4 @@
+import EmojiPicker from 'emoji-picker-react';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -17,12 +18,17 @@ function AdminChat() {
     }, []);
 
     return (
-        <div>
-            {listUser.map((user, i) => (
-                <Link key={i} to={user.fullName}>
-                    {user.fullName}
-                </Link>
-            ))}
+        <div className="container-fluid">
+            <div className="row">
+                <div className="col-4">
+                    {listUser.map((user, i) => (
+                        <Link key={i} to={user.fullName}>
+                            {user.fullName}
+                        </Link>
+                    ))}
+                </div>
+                <div className="col-8"></div>
+            </div>
         </div>
     );
 }
