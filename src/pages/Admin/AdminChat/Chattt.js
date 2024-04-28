@@ -10,7 +10,7 @@ function Chattt() {
     const [stompClient, setStompClient] = useState(null);
 
     useEffect(() => {
-        const socket = new SockJS('http://localhost:8080/chat-websocket');
+        const socket = new SockJS('http://localhost:8080/chat');
         const client = Stomp.over(socket);
 
         client.connect({}, () => {
@@ -31,8 +31,9 @@ function Chattt() {
     function handleSendMessage() {
         const chatMessage = {
             content: 'message',
-            senderName: 'tuyenngoc2',
-            recipientName: 'bach2',
+            senderName: 'tuyenngoc',
+            recipientName: 'bach',
+            roomName: 'bach',
         };
         stompClient.send('/app/chat', {}, JSON.stringify(chatMessage));
     }

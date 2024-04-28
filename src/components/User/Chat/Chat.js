@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
+
 import Stomp from 'stompjs';
 import SockJS from 'sockjs-client';
+
 import useAuth from '~/hooks/useAuth';
 import { getChatRooms, getMessages, getSupportUser } from '~/services/chatService';
 
@@ -14,25 +16,28 @@ const cx = classNames.bind(Style);
 
 function Chat({ onClose }) {
     const { customer } = useAuth();
-    const [stompClient, setStompClient] = useState(null);
-    const [message, setMessage] = useState('');
-    const [messages, setMessages] = useState([]);
     const contentRef = useRef(null);
+
+    const [chatState, setChatState] = useState({
+        support: '',
+        message: '',
+        messages: [],
+        stompClient: null,
+    });
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const supportUserResponse = await getSupportUser();
-                let supportUser = supportUserResponse.data.data;
+                const supportUser = supportUserResponse.data.data;
+                setChatState((prevState) => ({ ...prevState, support: supportUser }));
 
                 const chatRoomsResponse = await getChatRooms();
-                let chatRooms = chatRoomsResponse.data.data;
-                if (chatRooms) {
-                    const chatRoom = chatRooms.find((room) => room.recipientName === supportUser);
-                    if (chatRoom) {
-                        const messagesResponse = await getMessages(chatRoom.chatRoomId);
-                        setMessages(messagesResponse.data.data);
-                    }
+                const chatRooms = chatRoomsResponse.data.data || [];
+                const chatRoom = chatRooms.find((room) => room.recipientName === supportUser);
+                if (chatRoom) {
+                    const messagesResponse = await getMessages(chatRoom.chatRoomId);
+                    setChatState((prevState) => ({ ...prevState, messages: messagesResponse.data.data }));
                 }
             } catch (error) {
                 console.log(error);
@@ -43,37 +48,37 @@ function Chat({ onClose }) {
     }, []);
 
     useEffect(() => {
-        const socket = new SockJS('http://localhost:8080/chat-websocket');
+        const socket = new SockJS('http://localhost:8080/chat');
         const client = Stomp.over(socket);
 
         client.connect({}, () => {
             client.subscribe(`/user/${customer.username}/queue/messages`, onMessageReceived);
         });
 
-        setStompClient(client);
+        setChatState((prevState) => ({ ...prevState, stompClient: client }));
 
         return () => {
             client.disconnect();
         };
-    }, []);
+    }, [customer.username]);
 
-    function onMessageReceived(message) {
+    const onMessageReceived = (message) => {
         const receivedMessage = JSON.parse(message.body);
-        setMessages((prevMessages) => [...prevMessages, receivedMessage]);
-
-        // Cuộn nội dung xuống đầu dòng mới
+        setChatState((prevState) => ({ ...prevState, messages: [...prevState.messages, receivedMessage] }));
         contentRef.current.scrollTop = contentRef.current.scrollHeight;
-    }
+    };
 
     const sendMessage = () => {
-        if (message.trim()) {
+        const { message, stompClient } = chatState;
+        if (message.trim() && stompClient) {
             const chatMessage = {
                 content: message,
                 senderName: customer.username,
-                recipientName: 'tuyenngoc',
+                recipientName: chatState.support,
+                roomName: customer.username,
             };
             stompClient.send('/app/chat', {}, JSON.stringify(chatMessage));
-            setMessage('');
+            setChatState((prevState) => ({ ...prevState, message: '' }));
         }
     };
 
@@ -84,7 +89,7 @@ function Chat({ onClose }) {
     };
 
     const handleMessageChange = (event) => {
-        setMessage(event.target.value);
+        setChatState((prevState) => ({ ...prevState, message: event.target.value }));
     };
 
     return (
@@ -96,7 +101,7 @@ function Chat({ onClose }) {
                 </div>
             </div>
             <div className={cx('content')} ref={contentRef}>
-                {messages.map((msg, index) => (
+                {chatState.messages.map((msg, index) => (
                     <div
                         className={cx('message-block', { 'message-block--mine': msg.senderName === customer.username })}
                         key={index}
@@ -108,12 +113,12 @@ function Chat({ onClose }) {
 
             <div className={cx('chat-action')}>
                 <input
-                    value={message}
+                    value={chatState.message}
                     onChange={handleMessageChange}
                     onKeyDown={handleKeyDown}
                     placeholder="Nhập nội dung..."
                 />
-                {message && <SendIcon onClick={sendMessage} color="primary" />}
+                {chatState.message && <SendIcon onClick={sendMessage} color="primary" />}
             </div>
         </div>
     );
