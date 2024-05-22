@@ -21,7 +21,7 @@ import { getAllBookSet } from '~/services/bookSetService';
 import { getAllAuthors } from '~/services/authorService';
 
 import { FormHelperText } from '@mui/material';
-import { Input, Select, message } from 'antd';
+import { Divider, Input, Select, message } from 'antd';
 
 import FixedBox from './FixedBox';
 import DropdownRender from '~/components/Common/DropdownRender';
@@ -318,7 +318,12 @@ function ProductForm() {
                 toast.success('Thành công');
             })
             .catch((error) => {
-                toast.error('Đã có lỗi xảy ra khi lưu sản phẩm');
+                const errorData = error.response.data;
+                if (errorData && errorData.status === 'ERROR') {
+                    toast.error(errorData.message);
+                } else {
+                    toast.error('Đã có lỗi xảy ra khi lưu sản phẩm');
+                }
             })
             .finally(() => {
                 setLoading(false);
@@ -350,6 +355,8 @@ function ProductForm() {
         };
 
         fetchData();
+        const interval = setInterval(fetchData, 1000);
+        return () => clearInterval(interval);
     }, []);
 
     useEffect(() => {
@@ -537,6 +544,17 @@ function ProductForm() {
                                                 options={authors}
                                                 {...inputProps(
                                                     formik.touched.authorIds && Boolean(formik.errors.authorIds),
+                                                )}
+                                                dropdownRender={(menu) => (
+                                                    <>
+                                                        {menu}
+                                                        <Divider style={{ margin: '8px 0' }} />
+                                                        <div style={{ padding: '0 8px 4px' }}>
+                                                            <Link to="/admin/author" target="_blank">
+                                                                Thêm mới
+                                                            </Link>
+                                                        </div>
+                                                    </>
                                                 )}
                                             />
                                             {formik.touched.authorIds && formik.errors.authorIds && (
