@@ -1,0 +1,68 @@
+[
+    {
+        "component": "ProductCategory",
+        "props": {
+            "children": "Slide"
+        }
+    },
+    {
+        "component": "HomeProduct",
+        "props": {
+            "title": "ƯU ĐÃI",
+            "sortBy": "discount",
+            "moreLink": "/search?sortBy=discount"
+        }
+    },
+    {
+        "component": "HomeProduct",
+        "props": {
+            "title": "SÁCH MỚI",
+            "sortBy": "createdDate",
+            "moreLink": "/search?sortBy=createdDate"
+        }
+    },
+    {
+        "component": "HomeProduct",
+        "props": {
+            "title": "SÁCH BÁN CHẠY",
+            "sortBy": "soldQuantity",
+            "moreLink": "/search?sortBy=soldQuantity"
+        }
+    },
+    {
+        "component": "HomeProduct",
+        "props": {
+            "showProductByCategory": true,
+            "categoryId": 3,
+            "sortBy": "createdDate",
+            "moreLink": "/category/3"
+        }
+    },
+    {
+        "component": "HomeProduct",
+        "props": {
+            "showProductByCategory": true,
+            "categoryId": 4,
+            "sortBy": "createdDate",
+            "moreLink": "/category/4"
+        }
+    },
+    {
+        "component": "HomeProduct",
+        "props": {
+            "showProductByCategory": true,
+            "categoryId": 5,
+            "sortBy": "createdDate",
+            "moreLink": "/category/5"
+        }
+    },
+    {
+        "component": "HomeProduct",
+        "props": {
+            "showProductByCategory": true,
+            "categoryId": 6,
+            "sortBy": "createdDate",
+            "moreLink": "/category/6"
+        }
+    }
+]

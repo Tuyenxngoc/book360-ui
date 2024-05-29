@@ -1,18 +1,35 @@
 import ProductCategory from '~/components/User/ProductCategory';
 import HomeProduct from '~/components/User/HomeProduct';
 import Slide from '~/components/Common/Slider';
+import React, { useEffect, useState } from 'react';
+import { homeConfig } from '~/config';
+
+const componentMap = {
+    ProductCategory,
+    HomeProduct,
+    Slide,
+};
 
 function Home() {
+    const [homeSections, setHomeSections] = useState([]);
+
+    useEffect(() => {
+        setHomeSections(homeConfig);
+    }, []);
+
     return (
         <main>
-            <ProductCategory>{<Slide></Slide>}</ProductCategory>
-            <HomeProduct title={'ƯU ĐÃI'} sortBy={'discount'} moreLink={'/search?sortBy=discount'} />
-            <HomeProduct title={'SÁCH MỚI'} sortBy={'createdDate'} moreLink={'/search?sortBy=createdDate'} />
-            <HomeProduct title={'SÁCH BÁN CHẠY'} sortBy={'soldQuantity'} moreLink={'/search?sortBy=soldQuantity'} />
-            <HomeProduct showProductByCategory={true} categoryId={3} sortBy={'createdDate'} moreLink={'/category/3'} />
-            <HomeProduct showProductByCategory={true} categoryId={4} sortBy={'createdDate'} moreLink={'/category/4'} />
-            <HomeProduct showProductByCategory={true} categoryId={5} sortBy={'createdDate'} moreLink={'/category/5'} />
-            <HomeProduct showProductByCategory={true} categoryId={6} sortBy={'createdDate'} moreLink={'/category/6'} />
+            {homeSections.map((section, index) => {
+                const Component = componentMap[section.component];
+                if (Component) {
+                    const props = { ...section.props };
+                    if (props.children && componentMap[props.children]) {
+                        props.children = React.createElement(componentMap[props.children]);
+                    }
+                    return <Component key={index} {...props} />;
+                }
+                return null;
+            })}
         </main>
     );
 }
