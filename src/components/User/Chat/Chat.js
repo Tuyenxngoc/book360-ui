@@ -17,6 +17,7 @@ const cx = classNames.bind(Style);
 function Chat({ onClose }) {
     const { customer } = useAuth();
     const contentRef = useRef(null);
+    const [isError, setIsError] = useState(false);
 
     const [chatState, setChatState] = useState({
         support: '',
@@ -30,6 +31,12 @@ function Chat({ onClose }) {
             try {
                 const supportUserResponse = await getSupportUser();
                 const supportUser = supportUserResponse.data.data;
+
+                if (supportUser && supportUser === customer.username) {
+                    setIsError(true);
+                    return;
+                }
+
                 setChatState((prevState) => ({ ...prevState, support: supportUser }));
 
                 const chatRoomsResponse = await getChatRooms();
@@ -109,6 +116,11 @@ function Chat({ onClose }) {
                         <div className={cx('message')}>{msg.content}</div>
                     </div>
                 ))}
+                {isError && (
+                    <div>
+                        <p>Hiện chưa tìm được người hỗ trợ</p>
+                    </div>
+                )}
             </div>
 
             <div className={cx('chat-action')}>
@@ -118,7 +130,7 @@ function Chat({ onClose }) {
                     onKeyDown={handleKeyDown}
                     placeholder="Nhập nội dung..."
                 />
-                {chatState.message && <SendIcon onClick={sendMessage} color="primary" />}
+                {chatState.message && !isError && <SendIcon onClick={sendMessage} color="primary" />}
             </div>
         </div>
     );
