@@ -486,6 +486,17 @@ function ProductForm() {
                                         onBlur={formik.handleBlur}
                                         options={categories}
                                         {...inputProps(formik.touched.categoryId && Boolean(formik.errors.categoryId))}
+                                        dropdownRender={(menu) => (
+                                            <>
+                                                {menu}
+                                                <Divider style={{ margin: '8px 0' }} />
+                                                <div style={{ padding: '0 8px 4px' }}>
+                                                    <Link to="/admin/category" target="_blank">
+                                                        Thêm mới
+                                                    </Link>
+                                                </div>
+                                            </>
+                                        )}
                                     />
                                     {formik.touched.categoryId && formik.errors.categoryId && (
                                         <FormHelperText error>{formik.errors.categoryId}</FormHelperText>
@@ -610,6 +621,17 @@ function ProductForm() {
                                                 options={bookSets}
                                                 {...inputProps(
                                                     formik.touched.bookSetId && Boolean(formik.errors.bookSetId),
+                                                )}
+                                                dropdownRender={(menu) => (
+                                                    <>
+                                                        {menu}
+                                                        <Divider style={{ margin: '8px 0' }} />
+                                                        <div style={{ padding: '0 8px 4px' }}>
+                                                            <Link to="/admin/book-set" target="_blank">
+                                                                Thêm mới
+                                                            </Link>
+                                                        </div>
+                                                    </>
                                                 )}
                                             />
                                             {formik.touched.bookSetId && formik.errors.bookSetId && (

@@ -99,13 +99,31 @@
     }
 
     .form-upload-image {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
+        position: relative;
+        border: 1px dashed #d9d9d9;
+        border-radius: 8px;
+        overflow: hidden;
 
         .image-upload {
             width: 100%;
-            object-fit: contain;
+            object-fit: cover;
+        }
+
+        .image-tools {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+
+            .delete-image {
+            }
+        }
+
+        &:hover {
+            .image-tools {
+                display: block;
+            }
         }
     }
 }

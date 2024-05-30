@@ -168,7 +168,11 @@ function CategoryForm() {
                                 <div className={cx('form-input')}>
                                     {formik.values.image ? (
                                         <div className={cx('form-upload-image')}>
-                                            <img className={cx('image-upload')} src={formik.values.image} alt="" />
+                                            <img
+                                                className={cx('image-upload')}
+                                                src={formik.values.image}
+                                                alt="Img Upload"
+                                            />
                                             <div className={cx('image-tools')}>
                                                 <button
                                                     onClick={() => handleRemoveImage()}
@@ -209,18 +213,19 @@ function CategoryForm() {
                                     variant="outlined"
                                     startIcon={<FontAwesomeIcon icon={faArrowLeft} />}
                                     onClick={() => setShowDialog(true)}
-                                    sx={{ height: 35 }}
+                                    size="small"
                                 >
-                                    <span>Quay lại</span>
+                                    Quay lại
                                 </Button>
                                 <LoadingButton
                                     loading={loading}
                                     variant="contained"
                                     startIcon={<FontAwesomeIcon icon={faSave} />}
                                     onClick={formik.handleSubmit}
-                                    sx={{ height: 35, marginLeft: '10px' }}
+                                    size="small"
+                                    sx={{ ml: 1 }}
                                 >
-                                    <span>Lưu</span>
+                                    Lưu
                                 </LoadingButton>
                             </div>
                         </div>
