@@ -262,7 +262,7 @@ function ProductsDashboard() {
                                     </div>
                                     <div className="col-6">
                                         <div className={cx('form-group')}>
-                                            <label className={cx('form-label')} htmlFor="inputCategory">
+                                            <label className={cx('form-label')} htmlFor="categoryId">
                                                 Danh mục
                                             </label>
                                             <div className={cx('form-input')}>

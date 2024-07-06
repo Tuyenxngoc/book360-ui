@@ -51,18 +51,18 @@
         "component": "HomeProduct",
         "props": {
             "showProductByCategory": true,
-            "categoryId": 5,
+            "categoryId": 1,
             "sortBy": "createdDate",
-            "moreLink": "/category/5"
+            "moreLink": "/category/1"
         }
     },
     {
         "component": "HomeProduct",
         "props": {
             "showProductByCategory": true,
-            "categoryId": 6,
+            "categoryId": 2,
             "sortBy": "createdDate",
-            "moreLink": "/category/6"
+            "moreLink": "/category/2"
         }
     }
 ]
